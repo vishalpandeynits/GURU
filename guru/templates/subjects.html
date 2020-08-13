@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Home view {% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12 col-md-6 ">
+			{% if form %}
+			<form method="POST">{% csrf_token %}
+				{% for field in form %}
+					{{ field.label }} {{ field }}
+				{% endfor %}
+				<input type="SUBMIT" class="btn btn-block btn-success mt-2" value="Add subject">
+			</form>
+			{% endif %}
+		</div>
+
+		<div class="col-10">
+			<div class="row">
+				{% for subject in subjects %}
+				<div class="col-3">
+					<a href='{% url "subject_page" classroom.unique_id subject.subject_name %}'>
+					<div class="card bg-dark text-center" style="max-width: 15rem;min-height:15rem;max-height:18rem;opacity:0.7;">
+					<div style="color:green;font-size:150%; margin-top:90px; ">{{ subject|upper }}</div>
+					</div>
+				</a>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
