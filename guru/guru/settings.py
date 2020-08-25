@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,8 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_email_verification',
     'basic.apps.BasicConfig',
+    'users.apps.UsersConfig',
     'crispy_forms',
-
+    'django.contrib.humanize',
+    'bootstrap_datepicker_plus',
+    'django.contrib.sites',
+    'ckeditor',
+    'ckeditor_uploader',
+    'django_comments'
 ]
 
 MIDDLEWARE = [
@@ -51,9 +56,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'guru.urls'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 TEMPLATES = [
     {
@@ -125,14 +132,14 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'static'),
 ]
-
+STATIC_ROOT = 'statica'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 LOGIN_REDIRECT_URL ='/homepage/'
 LOGOUT_REDIRECT_URL = '/'
 
-AUTHENTICATION_BACKENDS = ('guru.emaillogin.EmailBackend',)
+#AUTHENTICATION_BACKENDS = ('guru.emaillogin.EmailBackend',)
 
 EMAIL_USE_TLS = True
 EMAIL_ACTIVE_FIELD = 'is_active'
@@ -140,9 +147,45 @@ EMAIL_SERVER = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_ADDRESS = 'vishalpandeynits@gmail.com'
 EMAIL_FROM_ADDRESS = 'vishalpandeynits@gmail.com'
-EMAIL_PASSWORD = '!@#$%^&*()&#%&**' # Use your password here
+EMAIL_PASSWORD = '*******************' # Use your password here
 EMAIL_MAIL_SUBJECT = 'Confirm your email'
 EMAIL_MAIL_HTML = 'mail_body.html'
 EMAIL_MAIL_PLAIN = 'mail_body.txt'
 EMAIL_PAGE_TEMPLATE = 'confirm_template.html'
 EMAIL_PAGE_DOMAIN = 'http://127.0.0.1:8000/'
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_CONFIGS = {
+        'default': {
+        'skin': 'moono',
+        'toolbar_Basic': [
+            ['Source',  'Bold', 'Italic']
+        ],
+        'toolbar_YourCustomToolbarConfig': [
+            {'name': 'editing', 'items': ['Find', 'Replace', 'SelectAll']},
+
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike']},
+
+            {'name': 'insert',
+             'items': ['Image',  'Table', 'Smiley', 'SpecialChar',]},
+
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', 'Blockquote',
+                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'BidiLtr', 'BidiRtl',]},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+
+            {'name': 'styles', 'items': [ 'Format', 'Font', 'FontSize']},
+
+            ],
+        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+        'height': 300,
+        'width': '100%;',
+        'filebrowserWindowHeight': 725,
+        'filebrowserWindowWidth': 940,
+        'toolbarCanCollapse': True,
+        'tabSpaces': 4,
+    }
+}
+
+SITE_ID = 1
