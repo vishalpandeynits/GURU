@@ -1,0 +1,67 @@
+{% extends 'subject_page.html' %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block subject_content %}
+<div class="container-fluid">
+<div class="row ">
+	<div class="col-sm-0 col-md-1 col-lg-1 p-4 mr-4"></div>
+	<div class="col-sm-12 col-md-8 ml-md-4 col-lg-8"><br>
+		<form>
+		<div class="d-flex justify-content-end">
+	   		<div class="searchbar">
+	      	  <input class="search_input" type="text" name="search" placeholder="Search ...">
+	      		<button type="submit" class="search_icon"><i class="fas fa-search"></i></button>
+	    	</div>
+	  	</div><br>
+  		</form>
+		<ul>
+		{% if page %}
+		{% for note in page %}
+			<a href="{% url 'read_note' classroom.unique_id subject.id note.id %}" style="color:white; color:blue; font-size:1.3em; text-decoration:none;">
+				<li class="alert alert-info" style="list-style-type:none;">
+					<span style="font-size: 1.3em;">&#8250;</span>{{ note.topic }} <span class="float-right"> {{ note.uploaded_on|naturaltime }}</span>
+				</li>
+			</a>
+		{% endfor %}
+		{% endif %}
+		</ul>
+		{% include 'paginations.html' %}
+	</div>
+	
+		<!-- Button trigger modal -->
+		<button type="button" style="height:50px;border-radius:15px;float:right;"class="btn btn-info m-2" data-toggle="modal" data-target="#addResource">
+		  Add <i class="fa fa-plus" aria-hidden="true"></i>
+		</button>
+
+		<!-- Modal -->
+		<div class="modal fade " id="addResource" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content bg-info">
+
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Add a resource.</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      
+		      {% if form %}
+			  <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+		      <div class="modal-body">
+					{{ form|crispy }}
+				</div>
+
+		      <div class="modal-footer">
+				<input type="submit" class="btn btn-primary float-right"value="submit">
+				</form>
+				{% endif %}
+
+		      </div>
+		    </div>
+		  </div>
+
+		</div>
+	</div>
+</div>
+
+{% endblock %}

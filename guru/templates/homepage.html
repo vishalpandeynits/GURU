@@ -3,52 +3,30 @@
 {% block title %} Home view {% endblock %}
 {% block content %}
 {% load crispy_forms_tags %}
-<p style="background:black; color:white; font-size:25px;cursor:pointer;width:40px;margin:10px; padding:8px; border-radius:50%;"onclick="openNav()">&#9776;</p>
-<div class="container-fluid">
-
+<div class="container">
+  	<a href="{% url 'profile' user.username %}" class="btn btn-outline-info float-right" >Profile</a>
 	<div class="row">
-		<div class="col-sm-1 col-md-2">
-		<div style="float:right;" id="mySidenav" class="sidenav">
-			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-			<a href="#about" onclick="closeNav()">Home</a>
-			<a href="#symptoms" onclick="closeNav()">Notes</a>
-			<a href="#preventions" onclick="closeNav()">Assignment</a>
-			<a href="#mythbusters" onclick="closeNav()">Announcement</a>
-			<a href="#" onclick="closeNav()">Discussion</a> 
-			<a href="#youtube" onclick="closeNav()">Attend Class</a>
-			<a href="#youtube" onclick="closeNav()">Profile</a>
-			{% if user.is_authenticated %}
-			<a id="show-account"style="color:green;" onclick="showaccount()">{{user.username}}</a>
-				<span id="account" style="display:none;">
-					<a style="font-size: 1.3em;margin:0;" href="{% url 'logout' %}">Log Out </a>
-					<a style="font-size: 1.3em;margin:0;" href="{% url 'password_change' %}">Change Password </a>
-				</span>
-			{% endif %}
-		</div>
-		</div>
-
-		<div class="col">
+		<div class="col-sm-11 col-md-10">
 			<div id="home-btn-container">
-				<h2 id="intro col-md-6"> Online classes made easy by your own GURU.</h2>
+				<h2 id="intro col-md-6" style="font-size:5vw;"> Online classes made easy by your own GURU.</h2>
 				<a href="#" onclick ="createclassform()"class = "btn btn-home">Create a class </a>
 				<a href="#"  onclick ="joinform()" class = 'btn btn-home'>Join a class </a><br>
 
-				<div class="row">
-					<div class="col-md-4 col-xs-12 col-sm-6">			
-						<form id="classform" style="display:none;" method="POST">{% csrf_token %}
-							{{ createclassform }}  
-							<input style="width:30%;float:right;" type="submit" value="Create" class="btn btn-success m-2">
-						</form>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4 col-xs-12 col-sm-6">	
-						<form id="joinform" style="display:none;" method="POST">{% csrf_token %}
-						Unique id <input type="text" name="join_key">
-						<input style="width:30%;float:right;"type="submit" value="Join" class="btn btn-success m-2">
+				<div class="col-md-4 col-xs-12 col-sm-6">			
+					<form id="classform" style="display:none;" method="POST">{% csrf_token %}
+						{{ createclassform }}  
+						<input style="width:35%;float:right;" type="submit" value="Create" class="btn btn-success m-2">
 					</form>
-					</div>
 				</div>
+
+				<div >	
+					{% if form %}
+					<form id="joinform" style="display:none;" method="POST">{% csrf_token %}
+					Unique id <input type="text" name="join_key">
+					<input style="width:35%;float:right;"type="submit" value="Join" class="btn btn-success m-2">
+					</form>
+					{% endif %}
+				</div><br><br>
 
 				The list of classes you have created:<br>
 				{% for class in my_classes %}
@@ -60,20 +38,14 @@
 
 				The list of classes you have joined:<br>
 				{% for class in class_name %}
-	
-					<div style="color:white; background:black;max-width:400px;" class="row alert">
-						<div class="col-sm-12 col-md-8 align-self-center">
-  							<a href="{% url 'subjects' class.unique_id %}">	{{ class|upper }} </a>
-  							<span style="float:right"> {{ class.teacher.first_name}} {{ class.teacher.last_name}}  </span>	
-  						</div>
-					</div>
-
+				<div style="color:white; background:black;" class="alert">
+					<a href="{% url 'subjects' class.unique_id %}">	{{ class|upper }} </a>
+					<span style="float:right;"> {{ class.teacher.first_name}} {{ class.teacher.last_name}}  </span>	
+				</div>
 				{% endfor %}
 
 			</div>
 		</div>
 	</div>
 </div>
-
-<script src="{% static 'js/homepage.js' %}"> </script>
 {% endblock %} 
