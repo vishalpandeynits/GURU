@@ -2,7 +2,6 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-
 <div class="container" id="sign-up-form">
 <div class="row">
 	<div class="col-md-6">
@@ -10,11 +9,11 @@
 	</div>
 	<div class="col p-4">
 
-		<form method="POST">{% csrf_token %}
+		<form id="#signupform"method="POST">{% csrf_token %}
 				{% if message %}
 					<p style="color:red;"> {{message}}</p>
 				{% endif %}
-			{% for field in form %}
+			{% for field in signupform %}
 				{{field.label }}<br> {{ field }}<br>
 				{% if field.errors %}
 					{{ field.errors }}
