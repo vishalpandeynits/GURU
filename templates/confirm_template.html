@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation</title>
+    <style>
+        body{ color: blue; }
+    </style>
+</head>
+<body style="background:black; color:white;font-size:140%;">
+    <center>
+        <h1 style="font-size:400%;"> GURU </h1>
+        <p style="position:relative;top:-20px;"> A platform of online education</p>
+    {% if success %}
+        <h1 style="color:green;"> You have confirmed your account!</h1>
+        Please click on this link to go to login page <a href="/accounts/login"> Login </a>
+    {% else %}
+        <h1 style="color:red;"> Error, invalid token!</h1>
+        <h3> Please retry with same email, or generate a new email. </h3>
+        Click here to go on <a style="color:green; text-decoration: none;"href="{% url 'signup' %}"> Signup Page </a>
+        
+    {% endif %}
+</center>
+</body>
+</html>
