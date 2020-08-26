@@ -1,3 +1,22 @@
+/*
+    contentIndex 
+
+    1. basic css
+    2. signup form
+    3. login page
+    4. date time picker
+    5. search icon
+    6. profile page
+*/
+
+html * {
+    font-family: 'Montserrat', sans-serif;
+    scroll-behavior: smooth;
+}
+.dark-mode{
+  background-color: black;
+  color:white;
+}
 #home-btn-container{
 	margin:3% 5%;
 }
@@ -6,31 +25,19 @@
 	width:180px;
 	color:white;
 	background-color: black;
-    margin-bottom:10px;
-}
-#openNav{
-  background:black;
-  color:white;
-  font-size:30px;
-  cursor:pointer;
-  width:40px;
-  border-radius:10px;
-  border-color:white;
+  margin-bottom:10px;
 }
 .btn-home:hover{
-	color:black;
-	background-color: white;
-}
-body{
-/*	background: url("/media/bga.jpg") no-repeat center center fixed;*/
-	background-size: cover;
+  color:black;
+  background-color: white;
 }
 
 #intro{
-	color:white;
-	font-size:10vw;
+	color:black;
+	font-size:5vw;
 }
 
+/*Signup form*/
 #sign-up-form{
 	font-size:120%;
 	margin-top:8%;
@@ -41,11 +48,9 @@ body{
 #sign-up-form ul {
 	color:red;
 }
+/*Signup form*/
 
-html * {
-	  font-family: 'Montserrat', sans-serif;
-}
-
+/*login page */
 .login-box {
     background: #fff;
     padding: 20px;
@@ -145,7 +150,19 @@ html * {
     text-decoration: none;
 }
 
+/*login-page */
+
 /*Sidenav*/
+#openNav{
+  background:black;
+  color:white;
+  font-size:30px;
+  cursor:pointer;
+  width:40px;
+  border-radius:10px;
+  border-color:white;
+}
+
 .sidenav {
   height: 100%;
   width: 210px;
@@ -180,14 +197,12 @@ html * {
 }
 
 @media screen and (max-height: 450px) {
+  
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
 /*Sidenav*/
-.dark-mode{
-  background-color: black;
-  color:white;
-}
+
 #class-link{
   min-width: 15rem;opacity:0.7;height:300px;text-decoration:none;
 }
@@ -198,23 +213,7 @@ body {
 	background-color: #f7f7f7;
 }
 
-.bg-custom {
-	background-color: #181a19;
-}
-
-
-.profile-pic {
-  height: 50px;
-  width: 50px;
-  margin-right: 16px;
-  border-radius: 10px;
-}
-
-.profile-page-pic {
-  height: 170px;
-  width: 170px;
-  border-radius: 100px;	
-}
+/* date time picker */
 @font-face {
     font-family: 'Glyphicons Halflings';
     src: url('//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot');
@@ -273,28 +272,6 @@ body {
     content: "\e014";
 }
 
-.btn {
-    display: inline-block;
-    padding: 6px 12px;
-    margin-bottom: 0;
-    font-size: 14px;
-    font-weight: normal;
-    line-height: 1.42857143;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-image: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
-}
-
 .bootstrap-datetimepicker-widget.dropdown-menu {
     position: absolute;
     left: 0;
@@ -337,6 +314,9 @@ body {
     padding: 5px;
 }
 
+/*Date time picker*/
+
+/* search button */
 .searchbar{
     height: 60px;
     width: 300px;
@@ -371,4 +351,82 @@ body {
   background: white;
   color: #e74c3c;
   }
-  .imageuploadify{border:2px dashed #d2d2d2;position:relative;min-height:350px;min-width:250px;max-width:1000px;margin:auto;display:flex;padding:0;flex-direction:column;text-align:center;background-color:#fff;color:#3AA0FF}.imageuploadify .imageuploadify-overlay{z-index:10;width:100%;height:100%;position:absolute;flex-direction:column;top:0;left:0;display:none;font-size:7em;background-color:rgba(242,242,242,.7);text-align:center;pointer-events:none}.imageuploadify .imageuploadify-overlay i{z-index:10;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}.imageuploadify .imageuploadify-images-list{display:inline-block}.imageuploadify .imageuploadify-images-list i{display:block;font-size:7em;text-align:center;margin-top:.5em;padding-bottom:12px}.imageuploadify .imageuploadify-images-list span.imageuploadify-message{font-size:24px;border-top:1px solid #3AA0FF;border-bottom:1px solid #3AA0FF;padding:10px;display:inline-block}.imageuploadify .imageuploadify-images-list button.btn-default{display:block;color:#3AA0FF;border-color:#3AA0FF;border-radius:1em;margin:25px auto;width:100%;max-width:500px}.imageuploadify .imageuploadify-images-list .imageuploadify-container{width:100px;height:100px;position:relative;overflow:hidden;margin-bottom:1em;float:left;border-radius:12px;box-shadow:0 0 4px 0 #888}.imageuploadify .imageuploadify-images-list .imageuploadify-container button.btn-danger{position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:15px;font-size:10px;line-height:1.42;padding:2px 0;text-align:center;z-index:3}.imageuploadify .imageuploadify-images-list .imageuploadify-container img{height:100px;left:50%;position:absolute;top:50%;transform:translate(-50%,-50%);width:auto}.imageuploadify .imageuploadify-images-list .imageuploadify-container .imageuploadify-details{position:absolute;top:0;padding-top:20px;width:100%;height:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:rgba(255,255,255,.5);z-index:2;opacity:0}.imageuploadify .imageuploadify-images-list .imageuploadify-container .imageuploadify-details span{display:block} 
+/* search button */
+
+/* profile page */
+  .cover_photo{
+    text-align: center;
+    width:100%;
+    height:400px;
+  }
+  .media{
+    margin:20 0px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction: column;
+  }
+  .profile-pic {
+  height: 50px;
+  width: 50px;
+  margin-right: 16px;
+  border-radius: 10px;
+}
+
+.profile-page-pic {
+  height: 170px;
+  width: 170px;
+  border-radius: 100px; 
+  z-index:1;
+  position:relative;
+  top:-60px;
+  border:4px solid white;
+}
+#profile-btn-container{
+  font-size: 1.3em;
+  position:relative;
+  top:-70px;
+  display:flex; 
+  justify-content: center; 
+  flex-wrap:wrap;
+  align-items:center;
+}
+#subject-name{
+  color:red;
+  font-weight:bold;
+  font-size:200%;
+  display:flex;
+  justify-content:center; 
+  align-items:center;
+}
+/* profile page */
+
+/* home-page */
+#homepage-btn-group button{
+  color:white;
+  background-color: black;
+  padding:5px;
+  cursor:pointer;
+  width:140px;
+  margin:20px 0px;
+  height:40px;
+}
+#homepage-btn-group button:hover{
+  color:black;
+  background-color: white;
+  border:0;
+  border-bottom:4px solid green;
+}
+.member-card {
+  box-shadow: 0px 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  margin:30px;
+}
+
+.member-card:hover {
+  box-shadow: 0 14px 20px 0 rgba(0,0,0,0.2);
+}
+
+.member-container {
+  padding: 2px 16px;
+}
