@@ -5,7 +5,6 @@ from django.core.exceptions import ValidationError
 from .models import Profile
 
 class SignUpForm(UserCreationForm):
-
 	email = forms.EmailField(label="E-mail")
 
 	class Meta:
@@ -19,28 +18,23 @@ class SignUpForm(UserCreationForm):
 
 	def clean(self):
 		cleaned_data = self.cleaned_data
-
 		# checking Email unique
-
 		try:
 		    User.objects.get(email=cleaned_data['email'])
 		except User.DoesNotExist:
 		    pass
 		else:
 		    raise ValidationError('This Email address already exists! Try different one!')
-
 		# checking User unique
-
 		try:
 		    User.objects.get(username=cleaned_data['username'])
 		except User.DoesNotExist:
 		    pass
 		else:
 		    raise forms.ValidationError('User already exists! Try different one!')
-
 		return cleaned_data
 
 class ProfileUpdateForm(forms.ModelForm):
 	class Meta:
 		model = Profile
-		fields = ['bio', 'profile_pic']
+		fields = ['bio', 'profile_pic','phone_number','whatsapp_number','linked_in','facebook']
