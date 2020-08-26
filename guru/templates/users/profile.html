@@ -1,30 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container profile-page">
- {% if messages %}
-	{{ messages.last }}
- {% endif %}
- <div class="blog-section mb-3">
+<div class="container p-0 bg-light">
 	<div class="media">
-	  <img src="{{ profile.profile_pic.url }}" class="profile-page-pic">
-		<h3 class="ml-5 mt-5" >{{ profile.user }}</h3>
+		<img src="{{ profile.cover_photo.url }}" class="cover_photo">
+		<center > 
+			<img src="{{ profile.profile_pic.url }}" class="profile-page-pic"><br>
+				<span style="position:relative;top:-60px;"><h3>{{ profile.user.username }}</h3>
+				{{ profile.bio}}</center> </span>
+	 <div style="position:relative;top:-70px;" id="social-container">
+		<a href="#"  class="btn-floating btn-lg btn-fb"><i class="fab fa-facebook-f"></i></a>
+		<a href="#" class="btn-floating btn-lg btn-gplus"><i class="fas fa-envelope"></i></a>
+		<a href="#" class="btn-floating btn-lg btn-ins"><i class="fab fa-instagram"></i></a>
+		<a href="#" class="btn-floating btn-lg btn-whatsapp" ><i class="fab fa-whatsapp"></i></a>
 	</div>
-	{% if user.username == profile.user.username %}
-	<div style="font-size: 1.3em;" class="float-right">
-		<a style="margin:0;" id="assign-home" class="float-right btn btn-info ml-2" href="{% url 'home' %}" > Home Page </a>
-	    <a style="margin:0;" class="btn btn-info" href="{% url 'logout' %}">Log Out </a>
-		<a style="margin:0;" class="btn btn-info" href="{% url 'password_change' %}">Change Password </a>
-		<button style="margin:0;" class="btn-toggle btn btn-info"> Change Mode </button>
+		{% if user.username == profile.user.username %}
+	<div id="profile-btn-container">
+	    <a style="margin:10px;" class="btn btn-info" href="{% url 'logout' %}">Log Out </a>
+		<a style="margin:10px;" class="btn btn-info" href="{% url 'password_change' %}">Change Password </a>
+		<a style="margin:10px;" class="btn btn-info" href="/profile/edit-profile/{{user.username}}/">Edit profile</a>
+		<a style="margin:10px;" class="btn btn-info" href="{% url 'home' %}" > Home Page </a>
+		<a style="margin:10px;" class="btn btn-info" href="#"> Change Mode </a>
 	</div>
-	{% endif %}
-	<div class="mt-3"><p><em>{{ profile.bio }}</em></p></div><br>
-		{% if user %}
-			<div class="profile-follow">
-				{% if request.user == profile.user %}
-				<a href="/profile/edit-profile/{{user.username}}/"class="btn btn-outline-dark float-right btn-sm">Edit profile</a><br>
-			     {% endif %}<br>
-			</div>
-		{% endif %}
-	</div>
+	{% endif %}	
 </div>
-{% endblock content %}
+{% endblock %}

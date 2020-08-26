@@ -2,22 +2,12 @@
 {% load crispy_forms_tags %}
 {% load static %}
 {% block subject_content %}
-<div class="container-fluid">
-	<div class="col">
+<div class="container-fluid row">
+
+	<div class="col-1 float-right">
 		<a class="btn btn-danger m-2 float-right" href="{% url 'delete_subject' classroom.unique_id subject.id %}">Delete <i class="fa fa-trash" aria-hidden="true"></i></a>
 	</div>
+
 	add description to class a class page storeroom permissions email
-	<div class="col-3 float-right">
-	<ul>
-	{% for member in members %}
-	<a style="text-decoration: none;"href="{% url 'profile' member.profile.user.username %}">
-		<li style="list-style-type: none; margin:10px;border-radius: 50%;">
-			<img style="border-radius: 50%;" src="{{ member.profile.profile_pic.url }}" height="60" width="60">
-			<span style="font-size: 25px;"> {{member.first_name}} </span>
-		</li>
-	</a>
-	{% endfor %}
-	</ul>
-</div>
 </div>
 {% endblock %}

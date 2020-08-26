@@ -4,52 +4,97 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <div class="container-fluid m-2">
-	{% if form %} 
-	<button type="button" style="height:50px;border-radius:15px;float:right;"class="btn float-right btn-info m-2" data-toggle="modal" data-target="#addAnnouncement"> Add <i class="fa fa-plus" aria-hidden="true"> </i>
-	</button>
-	<div class="modal fade " id="addAnnouncement" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content bg-info">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">Add a Subject.</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-		  <form method="POST" enctype="multipart/form-data">{% csrf_token %}
-		      <div class="modal-body">
-			     {% for field in form %} 
-			         {{ field.label }} {{ field }} 
-			      {% endfor %}
-				</div>
 
-		      <div class="modal-footer">
-				<input type="SUBMIT" class="btn btn-success float-right" value="Add subject">
+     <center> <img src="{% static 'default.jpg' %}" style="height:20vw;"class="d-block w-50"></center>
+
+	<div id="vue-container">
+		<center id="homepage-btn-group">
+		<button @click="toggleSubjects">Subjects</button>
+		<button @click="togglePolls">Poll</button>
+		<button @click="toggleMembers">members</button>
+		</center>
+		<!-- Subjects -->
+			{% if form %} 
+			<button v-if="subjects" type="button" style="height:50px;border-radius:15px;position:relative;right:0;"class="btn float-right btn-info m-2" data-toggle="modal" data-target="#addAnnouncement"> Add <i class="fa fa-plus" aria-hidden="true"> </i>
+			</button>
+			<div class="modal fade " id="addAnnouncement" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content bg-info">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLabel">Add a Subject.</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+				  <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+				      <div class="modal-body">
+					     {% for field in form %} 
+					         {{ field.label }} {{ field }} 
+					      {% endfor %}
+						</div>
+
+				      <div class="modal-footer">
+						<input type="SUBMIT" class="btn btn-success float-right" value="Add subject">
+					  </div>
+					</form>
+			      </div>
+			    </div>
 			  </div>
-			</form>
-	      </div>
-	    </div>
-	  </div>
-	{% endif %}
+		{% endif %}
 
-	<div class="row">
-	{% for subject in subjects %}
+		<div v-if="subjects" class="row">
+		{% for subject in subjects %}
 		<div class="col-xs-12 col-md-6 col-lg-4"> 
-			<div style="background:url('/media/bga.jpg');background-size:cover;background-position:center;" id="card" class="card"> 
-			{% if subject %}
+			<div style="background:url('/media/bga.jpg');background-size:cover;background-position:center;"id="card" class="card"> {% if subject %}
 				<a class="text-center" id="class-link" href='{% url "subject_page" classroom.unique_id subject.id %}'>
-					<div style="color:white;font-weight:bold;font-size:300%;display:flex; justify-content:center; align-items:center; ">{{ subject|upper }}
-					</div>
+					<div id="subject-name">{{ subject|upper }}</div>
 				</a> 
 			{% endif %} 
-		    </div>
+			</div>
 		</div> 
-	{% endfor %} 
+		{% endfor %} 
+	   </div>
+	   	<div v-if="members">
+	   {% for member in members %}
+	   	<div class="row">
+			<div class="member-card">
+		  		<img src="{{member.profile.profile_pic.url}}">
+		  		<div class="member-container">
+		    		<h4><b>{{ member.username }}</b></h4> 
+		    		<p>{{user.profile.bio}}</p> 
+		  		</div>
+	   		</div>
+	   {% endfor %}
+		</div>
 	</div>
-	
-	</div>
-   </div>
+	<!-- Subjects end  -->
+
+
 </div>
+<script>
+	new Vue({ 
+		el:'#vue-container',
+		data:{
+			subjects:true,
+			polls:false,
+			members:false,
+		},
+		methods:{
+			toggleSubjects:function(){
+				this.subjects=true;
+				this.members=false;
+			},
+			togglePolls:function(){
+				this.subjects=false;
+				this.members=false;
+			},
+			toggleMembers:function(){
+				this.subjects=false;
+				this.members=this.members===true?false:true;
+			}
+		}
+	})
+</script>
 {% endblock %}
 
 

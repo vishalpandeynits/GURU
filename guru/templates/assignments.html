@@ -25,10 +25,10 @@
 					</div>
 					</a><hr>
 				{% endfor %}
+				{% include 'paginations.html' %}
 			{% else %}
 			<h2> No assignments found !!!</h2>
 			{% endif %} 
-			{% include 'paginations.html' %}
 		</div>
 		<div class="col">
 			{% if form %}

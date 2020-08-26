@@ -12,7 +12,7 @@
 		{% if announcement.file %}
 			<a href="{{note.file.url}}" download>Download file </a><br>
 		{% endif %}
-		{{ announcement.description|linebreaks }}
+		{{ announcement.description|safe }}
 			<br><br>
 		{% get_comment_count for announcement as comment_count %}
 			{{ comment_count }} Comments

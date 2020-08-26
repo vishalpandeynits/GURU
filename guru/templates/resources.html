@@ -14,18 +14,20 @@
 	    	</div>
 	  	</div><br>
   		</form>
+  		{% if page %}
 		<ul>
-		{% if page %}
 		{% for note in page %}
 			<a href="{% url 'read_note' classroom.unique_id subject.id note.id %}" style="color:white; color:blue; font-size:1.3em; text-decoration:none;">
 				<li class="alert alert-info" style="list-style-type:none;">
-					<span style="font-size: 1.3em;">&#8250;</span>{{ note.topic }} <span class="float-right"> {{ note.uploaded_on|naturaltime }}</span>
+					<span style="font-size: 1.3em;">&#8250;</span>{{ note.topic|safe }} <span class="float-right"> {{ note.uploaded_on|naturaltime }}</span>
 				</li>
 			</a>
 		{% endfor %}
-		{% endif %}
 		</ul>
 		{% include 'paginations.html' %}
+		{% else %}
+			<h1 style="color:blue; font-size: 2vw;">No item found </h1>
+		{% endif %}
 	</div>
 	
 		<!-- Button trigger modal -->
