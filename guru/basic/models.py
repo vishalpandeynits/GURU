@@ -10,11 +10,12 @@ def unique_id():
     return result_str
 
 class Classroom(models.Model):
+	created_by = models.ForeignKey(User, on_delete = models.CASCADE,related_name='create_by')
 	class_name = models.CharField(max_length = 100)
 	created_on = models.DateTimeField(auto_now_add=True)
 	unique_id = models.CharField(max_length=10,unique=True,default=unique_id(), editable=False)
 	members = models.ManyToManyField(User)
-	teacher = models.ForeignKey(User, on_delete = models.CASCADE,related_name='teacher')
+	teacher = models.ManyToManyField(User,related_name='teacher')
 
 	def __str__(self):
 		return self.class_name
@@ -62,4 +63,7 @@ class Submission(models.Model):
 	assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
 	file = models.FileField(upload_to="Submissions/",null=True,blank=True)
 	submitted_by = models.ForeignKey(User,on_delete=models.CASCADE)
-	# submitted_on = models.DateTimeField(auto_now_add=True)
+	submitted_on = models.DateTimeField(auto_now_add=True)
+
+class Poll(models.Model):
+	pass

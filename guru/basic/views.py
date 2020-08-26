@@ -46,7 +46,9 @@ def homepage(request):
         createclassform = CreateclassForm(request.POST or None)
         if createclassform.is_valid():
             classroom=createclassform.save(commit=False)
-            classroom.teacher = request.user
+            classroom.created_by = request.user
+            classroom.save()
+            classroom.teacher.add(request.user)
             classroom.save()
             classroom.members.add(request.user)
             classroom.save()
@@ -64,23 +66,27 @@ def homepage(request):
 @login_required
 def subjects(request,unique_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    if request.user==classroom.teacher:
-        if request.method=="POST": 
-            form = SubjectForm(request.POST or None, request.FILES)
-            if request.user==classroom.teacher:
-                if form.is_valid():
-                    subject=form.save(commit=False)
-                    subject.classroom=classroom
-                    subject.teacher = request.user.first_name + request.user.last_name
-                    subject.save()
-
-        else:
+    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
+    form = None
+    if request.method=="POST" and is_teacher: 
+        form = SubjectForm(request.POST)
+        if form.is_valid():
+            subject=form.save(commit=False)
+            subject.classroom=classroom
+            subject.teacher = request.user.first_name + request.user.last_name
+            subject.save()
+    else:
+        if is_teacher:
             form = SubjectForm()
-    subjects = Subject.objects.all().filter(classroom=classroom)
+    subjects = Subject.objects.all()
+    members = classroom.members.all()
+    teachers = classroom.teacher.all()
     params = {
         'subjects':subjects,
         'form':form,
-        'classroom':classroom
+        'classroom':classroom,
+        'members':members,
+        'teachers':teachers
         }
     return render(request,'subjects.html',params)
 
@@ -100,23 +106,24 @@ def resource(request,unique_id,subject_id):
     if request.GET.get('search'):
         search = request.GET.get('search')
         notes = notes.filter(Q(topic__icontains=search)|Q(description__icontains=search))
+    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
+    form = None
 
-    if request.user==classroom.teacher:
-        if request.method=="POST":
-            form = NoteForm(request.POST,request.FILES)
-            files = request.FILES.getlist('file')
-            print(len(files))
-            data = Note()
-            topic = request.POST.get('topic')
-            description = request.POST.get('description')
-            if form.is_valid():
-                data.topic = topic
-                data.description = "<pre>" + description + "</pre>"
-                data.subject_name = subject
-                for f in files:
-                    data.file = f
-                data.save()
-        else:
+    if request.method=="POST" and is_teacher:
+        form = NoteForm(request.POST,request.FILES)
+        files = request.FILES.getlist('file')
+        data = Note()
+        topic = request.POST.get('topic')
+        description = request.POST.get('description')
+        if form.is_valid():
+            data.topic = topic
+            data.description = "<pre>" + description + "</pre>"
+            data.subject_name = subject
+            for f in files:
+                data.file = f
+            data.save()
+    else:
+        if is_teacher:
             form= NoteForm()
 
     paginator = Paginator(notes,6)
@@ -154,7 +161,9 @@ def resource_update(request,unique_id,subject_id,id):
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     notes = Note.objects.all().filter(subject_name=subject)
     note = Note.objects.all().filter(subject_name=subject).get(id=id)
-    if request.user==classroom.teacher:
+    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
+    form = None
+    if is_teacher:
         if request.method=="POST":
             form = NoteForm(request.POST,request.FILES,instance=note)
             if form.is_valid():
@@ -163,6 +172,7 @@ def resource_update(request,unique_id,subject_id,id):
                 noteform.save()
                 return redirect(f'/{unique_id}/{subject_id}/{note.id}/read')
         else:
+            note.description = note.description[5:-6]
             form= NoteForm(instance=note)
     else:
         Http404()
@@ -180,7 +190,9 @@ def resource_delete(request,unique_id,subject_id,id):
     print(classroom.teacher)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     note = Note.objects.all().filter(subject_name=subject).get(id=id)
-    if request.user == classroom.teacher:
+    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
+    form = None
+    if is_teacher:
         note.delete()
         return redirect(f'/{unique_id}/{subject_id}/resource')
     else:
@@ -197,12 +209,16 @@ def assignment(request,unique_id,subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     form = None
-    if request.user == classroom.teacher:
+    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
+    form = None
+    if is_teacher:
         if request.method=="POST":
             form = AssignmentForm(request.POST,request.FILES)
+            description = "<pre>" + request.POST.get('description') + "</pre>"
             if form.is_valid():
                 announcement = form.save(commit=False)
                 announcement.subject_name = subject
+                announcement.description = description
                 announcement.save()
         else:
             form= AssignmentForm()
@@ -264,11 +280,14 @@ def assignment_update(request,unique_id,subject_id,id):
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     assignment = Assignment.objects.all().filter(subject_name=subject).get(id=id)
     assignments = Assignment.objects.all().filter(subject_name=subject).order_by('submission_date').reverse()
-    if request.user==classroom.teacher:
+    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
+    form = None
+    if is_teacher:
         if request.method=="POST":
             form = AssignmentForm(request.POST,request.FILES,instance=assignment)
             if form.is_valid():
                 assignmentform = form.save(commit=False)
+                assignmentform.description = assignmentform.description[5:-6]
                 assignmentform.subject_name = subject
                 assignmentform.save()
                 return redirect(f'/{unique_id}/{subject_id}/{assignment.id}/assignment')
@@ -290,7 +309,9 @@ def assignment_delete(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     assignment = Assignment.objects.all().filter(subject_name=subject).get(id=id)
-    if request.user==classroom.teacher:
+    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
+    form = None
+    if is_teacher:
         assignment.delete()
         return redirect(f'/{unique_id}/{subject_id}/assignments/')
     else:
@@ -306,14 +327,18 @@ def assignment_delete(request,unique_id,subject_id,id):
 def announcement(request,unique_id,subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-    if request.method=="POST":
-        form = AnnouncementForm(request.POST,request.FILES)
-        if form.is_valid():
-            announcement = form.save(commit=False)
-            announcement.subject_name = subject
-            announcement.save()
-    else:
-        form= AnnouncementForm()
+    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
+    form = None
+    if is_teacher:
+        if request.method=="POST":
+            form = AnnouncementForm(request.POST,request.FILES)
+            if form.is_valid():
+                announcement = form.save(commit=False)
+                announcement.subject_name = subject
+                announcement.description = "<pre>"+ request.POST.get('description')+"</pre>"
+                announcement.save()
+        else:
+            form= AnnouncementForm()
     announcements = Announcement.objects.all().filter(subject_name=subject).order_by('-id')
     if request.GET.get('search'):
         search = request.GET.get('search')
@@ -356,13 +381,17 @@ def announcement_update(request,unique_id,subject_id,id):
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     announcement = Announcement.objects.all().filter(subject_name=subject).get(id=id)
     announcements = Announcement.objects.all().filter(subject_name=subject).order_by('issued_on').reverse()
-    if request.user==classroom.teacher:
+    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
+    form = None
+    if is_teacher:
         if request.method=="POST":
             form = AnnouncementForm(request.POST,request.FILES,instance=announcement)
             if form.is_valid():
                 announcementform = form.save(commit=False)
                 announcementform.subject_name = subject
+                announcementform.description = announcementform.description[5:-6]
                 announcementform.save()
+
                 return redirect(f'/{unique_id}/{subject_id}/{announcement.id}/announcement/')
         else:
             form= AnnouncementForm(instance=announcement)
@@ -382,7 +411,9 @@ def announcement_delete(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     announcement = Announcement.objects.all().filter(subject_name=subject).get(id=id)
-    if request.user==classroom.teacher:
+    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
+    form = None
+    if is_teacher:
         announcement.delete()
         return redirect(f'/{unique_id}/{subject_id}/announcement/')
     else:
@@ -410,7 +441,9 @@ def this_subject(request,unique_id, subject_id):
 def delete_subject(request,unique_id, subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-    if request.user == classroom.teacher:
+    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
+    form = None
+    if is_teacher:
         subject.delete()
         return redirect(f'/{unique_id}/')
     else:
@@ -421,5 +454,3 @@ def delete_subject(request,unique_id, subject_id):
         'classroom':classroom,
     }
     return render(request,'homepage.html',params)
-
-
