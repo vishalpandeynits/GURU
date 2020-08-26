@@ -1,0 +1,374 @@
+#home-btn-container{
+	margin:3% 5%;
+}
+.btn-home{
+	border-radius: 20px;
+	width:180px;
+	color:white;
+	background-color: black;
+    margin-bottom:10px;
+}
+#openNav{
+  background:black;
+  color:white;
+  font-size:30px;
+  cursor:pointer;
+  width:40px;
+  border-radius:10px;
+  border-color:white;
+}
+.btn-home:hover{
+	color:black;
+	background-color: white;
+}
+body{
+/*	background: url("/media/bga.jpg") no-repeat center center fixed;*/
+	background-size: cover;
+}
+
+#intro{
+	color:white;
+	font-size:10vw;
+}
+
+#sign-up-form{
+	font-size:120%;
+	margin-top:8%;
+	background-color: black;
+	width:65%;
+	color:white;
+}
+#sign-up-form ul {
+	color:red;
+}
+
+html * {
+	  font-family: 'Montserrat', sans-serif;
+}
+
+.login-box {
+    background: #fff;
+    padding: 20px;
+    max-width: 480px;
+    text-align: center;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+.login-box:hover {
+	  box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.login-box h2 {
+    margin: 20px 0 20px;
+    padding: 0;
+    text-transform: uppercase;
+    color: #4688F1;
+}
+
+.social-button {
+	  background-position: 25px 0px;
+    box-sizing: border-box;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-block;
+    height: 50px;
+	  line-height: 50px;
+    text-align: left;
+    text-decoration: none;
+    text-transform: uppercase;
+    vertical-align: middle;
+    width: 100%;
+	  border-radius: 3px;
+    margin: 10px auto;
+    outline: rgb(255, 255, 255) none 0px;
+    padding-left: 20%;
+    transition: all 0.2s cubic-bezier(0.72, 0.01, 0.56, 1) 0s;
+    transition: all .3s ease;
+}
+
+#facebook-connect {
+    background: rgb(255, 255, 255) url('https://raw.githubusercontent.com/eswarasai/social-login/master/img/facebook.svg?sanitize=true') no-repeat scroll 5px 0px / 30px 50px padding-box border-box;
+    border: 1px solid rgb(60, 90, 154);
+}
+
+#facebook-connect:hover {
+	border-color: rgb(60, 90, 154);
+	background: rgb(60, 90, 154) url('https://raw.githubusercontent.com/eswarasai/social-login/master/img/facebook-white.svg?sanitize=true') no-repeat scroll 5px 0px / 30px 50px padding-box border-box;
+    transition: all .3s ease-out;
+    text-decoration: none;
+}
+
+#facebook-connect span {
+	  box-sizing: border-box;
+    color: rgb(60, 90, 154);
+    cursor: pointer;
+    text-align: center;
+    text-transform: uppercase;
+    border: 0px none rgb(255, 255, 255);
+    outline: rgb(255, 255, 255) none 0px;
+    transition: all .3s ease;
+}
+
+#facebook-connect:hover span {
+	  color: #FFF;
+    transition: all .3s ease;
+    text-decoration: none;
+}
+
+#google-connect {
+    background: rgb(255, 255, 255) url('https://raw.githubusercontent.com/eswarasai/social-login/master/img/google-plus.png') no-repeat scroll 5px 0px / 50px 50px padding-box border-box;
+    border: 1px solid rgb(220, 74, 61);
+}
+
+#google-connect:hover {
+	  border-color: rgb(220, 74, 61);
+	  background: rgb(220, 74, 61) url('https://raw.githubusercontent.com/eswarasai/social-login/master/img/google-plus-white.png') no-repeat scroll 5px 0px / 50px 50px padding-box border-box;
+    transition: all .3s ease-out;
+    text-decoration: none;
+}
+
+#google-connect span {
+	box-sizing: border-box;
+    color: rgb(220, 74, 61);
+    cursor: pointer;
+    text-align: center;
+    text-transform: uppercase;
+    border: 0px none rgb(220, 74, 61);
+    outline: rgb(255, 255, 255) none 0px;
+    transition: all .3s ease;
+}
+
+#google-connect:hover span {
+	color: #FFF;
+    transition: all .3s ease;
+    text-decoration: none;
+}
+
+/*Sidenav*/
+.sidenav {
+  height: 100%;
+  width: 210px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.2s;
+}
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+/*Sidenav*/
+.dark-mode{
+  background-color: black;
+  color:white;
+}
+#class-link{
+  min-width: 15rem;opacity:0.7;height:300px;text-decoration:none;
+}
+#card{
+  height:300px;border:2px solid white; margin:20px;
+}
+body {
+	background-color: #f7f7f7;
+}
+
+.bg-custom {
+	background-color: #181a19;
+}
+
+
+.profile-pic {
+  height: 50px;
+  width: 50px;
+  margin-right: 16px;
+  border-radius: 10px;
+}
+
+.profile-page-pic {
+  height: 170px;
+  width: 170px;
+  border-radius: 100px;	
+}
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot');
+    src: url('//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
+     url('//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.woff2') format('woff2'),
+     url('//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.woff') format('woff'),
+     url('//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.ttf') format('truetype'),
+     url('//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.glyphicon-time:before {
+    content: "\e023";
+}
+
+.glyphicon-chevron-left:before {
+    content: "\e079";
+}
+
+.glyphicon-chevron-right:before {
+    content: "\e080";
+}
+
+.glyphicon-chevron-up:before {
+    content: "\e113";
+}
+
+.glyphicon-chevron-down:before {
+    content: "\e114";
+}
+
+.glyphicon-calendar:before {
+    content: "\e109";
+}
+
+.glyphicon-screenshot:before {
+    content: "\e087";
+}
+
+.glyphicon-trash:before {
+    content: "\e020";
+}
+
+.glyphicon-remove:before {
+    content: "\e014";
+}
+
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.bootstrap-datetimepicker-widget.dropdown-menu {
+    position: absolute;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+
+.bootstrap-datetimepicker-widget .list-unstyled {
+    padding-left: 0;
+    list-style: none;
+}
+
+.bootstrap-datetimepicker-widget .collapse {
+    display: none;
+}
+
+.bootstrap-datetimepicker-widget .collapse.in {
+    display: block;
+}
+
+/* fix for bootstrap4 */
+.bootstrap-datetimepicker-widget .table-condensed > thead > tr > th,
+.bootstrap-datetimepicker-widget .table-condensed > tbody > tr > td,
+.bootstrap-datetimepicker-widget .table-condensed > tfoot > tr > td {
+    padding: 5px;
+}
+
+.searchbar{
+    height: 60px;
+    width: 300px;
+    background-color: #353b48;
+    border-radius: 30px;
+    padding: 10px;
+    color:white;
+    }
+
+  .search_input{
+  color: white;
+  border: 0;
+  outline: 0;
+  background: none;
+  width: 300px;
+  line-height: 40px;
+  transition: width 0.4s linear;
+  }
+
+  .search_icon{
+  position:relative;
+  top:-40px;
+  height: 40px;
+  width: 40px;
+  float: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color:white;
+  text-decoration:none;
+  background: white;
+  color: #e74c3c;
+  }
+  .imageuploadify{border:2px dashed #d2d2d2;position:relative;min-height:350px;min-width:250px;max-width:1000px;margin:auto;display:flex;padding:0;flex-direction:column;text-align:center;background-color:#fff;color:#3AA0FF}.imageuploadify .imageuploadify-overlay{z-index:10;width:100%;height:100%;position:absolute;flex-direction:column;top:0;left:0;display:none;font-size:7em;background-color:rgba(242,242,242,.7);text-align:center;pointer-events:none}.imageuploadify .imageuploadify-overlay i{z-index:10;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}.imageuploadify .imageuploadify-images-list{display:inline-block}.imageuploadify .imageuploadify-images-list i{display:block;font-size:7em;text-align:center;margin-top:.5em;padding-bottom:12px}.imageuploadify .imageuploadify-images-list span.imageuploadify-message{font-size:24px;border-top:1px solid #3AA0FF;border-bottom:1px solid #3AA0FF;padding:10px;display:inline-block}.imageuploadify .imageuploadify-images-list button.btn-default{display:block;color:#3AA0FF;border-color:#3AA0FF;border-radius:1em;margin:25px auto;width:100%;max-width:500px}.imageuploadify .imageuploadify-images-list .imageuploadify-container{width:100px;height:100px;position:relative;overflow:hidden;margin-bottom:1em;float:left;border-radius:12px;box-shadow:0 0 4px 0 #888}.imageuploadify .imageuploadify-images-list .imageuploadify-container button.btn-danger{position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:15px;font-size:10px;line-height:1.42;padding:2px 0;text-align:center;z-index:3}.imageuploadify .imageuploadify-images-list .imageuploadify-container img{height:100px;left:50%;position:absolute;top:50%;transform:translate(-50%,-50%);width:auto}.imageuploadify .imageuploadify-images-list .imageuploadify-container .imageuploadify-details{position:absolute;top:0;padding-top:20px;width:100%;height:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:rgba(255,255,255,.5);z-index:2;opacity:0}.imageuploadify .imageuploadify-images-list .imageuploadify-container .imageuploadify-details span{display:block} 

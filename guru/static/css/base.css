@@ -1,0 +1,58 @@
+body {
+	margin-top: 5rem;
+	background-color: #f7f7f7;
+}
+
+.bg-custom {
+	background-color: #181a19;
+}
+
+.want-to-write-something{
+	font-style: italic;
+	text-align: center;
+}
+
+.profile-pic {
+  height: 50px;
+  width: 50px;
+  margin-right: 16px;
+  border-radius: 10px;
+}
+
+.blog-section {
+	background-color: #ffffff;
+	border: 1px solid #bdbdbd;
+	padding-top: 10px;
+	padding-left: 25px;
+	padding-right: 25px;
+	padding-bottom: 10px; 
+	overflow-wrap: break-word; 
+	
+}
+
+.blog-title {
+	text-align: center;
+	font-weight: 100px;
+}
+
+.blog-content {
+	margin-top: 1rem;
+}
+
+/* Profile page */
+
+.profile-page-pic {
+  height: 170px;
+  width: 170px;
+  border-radius: 100px;	
+}
+
+.nav-pills .nav-link.active {
+    background-color: #3b3b3b!important;
+}
+
+/* search */
+
+.highlight {
+background-color: rgba(94, 151, 242, 0.5);
+ }

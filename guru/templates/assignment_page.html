@@ -1,0 +1,69 @@
+{% extends 'subject_page.html' %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% load comments %}
+{% load static %}
+{% block subject_content %}
+<div class="container-fluid m-0 p-4 float-left">
+	<div class="row">
+		<div class="col-7">
+			{% if user.username == classroom.teacher.username %}
+			<a class="btn btn-danger m-2 float-right" href="{% url 'delete_assignment' classroom.unique_id subject.id assignment.id %}">Delete <i class="fa fa-trash" aria-hidden="true"></i> </a>
+			<a class="btn btn-primary m-2 float-right" href="{% url 'update_assignment' classroom.unique_id subject.id assignment.id %}">Update <i class="fas fa-edit"></i> </a>
+			{% endif %}
+			{{ assignment.topic }}<br>
+			<b style="float:right;"> Submit Before <nobr>{{ assignment.submission_date }}</nobr></b><br>
+			{{ assignment.description|safe }}
+			<br><br><br>
+
+		{% get_comment_count for assignment as comment_count %}
+			{{ comment_count }} Comments
+
+		{% if user.is_authenticated %}
+		    {% get_comment_form for assignment as form %}
+		    <form action="{% comment_form_target %}" method="POST">
+		    {% csrf_token %}
+		    <textarea name="comment" style="width:100%;resize:none;" rows="4" maxlength="3000" required id="id_comment"> </textarea>
+		    {% if form.name == "honeypot" %} style="display:none;" {% endif %}
+		    {{ form.content_type }}
+		    {{ form.object_pk }}
+		    {{ form.timestamp }}
+		    {{ form.security_hash }}
+		    <input type="hidden" name="next" value="{% url 'assignment_page' classroom.unique_id subject.id assignment.id %}" />
+		    <input type="submit" style="width:130px;" class="btn btn-primary  float-right" value="Add comment" id="id_submit" />
+		    </form>
+		{% else %}
+    		<p>Please <a href="{% url 'login' %}">log in</a> to leave a comment.</p>
+		{% endif %}
+		<br><br>
+
+	{% get_comment_list for assignment as comment_list %}
+	{% for comment in comment_list %}
+		<div class="alert p-2 w-75">
+			<a href="/profile/{{comment.user.username}}">
+			<img class="float-left m-2 mr-4"style="border-radius: 50%;"src="{{comment.user.profile.profile_pic.url }}"height="60" width="60"></a><b>{{ comment.user.username}}</b> <br>
+			{{ comment.comment }}<br><span style="float:right;">Commented {{ comment.submit_date|naturaltime }}</span>
+		<br><br>
+		</div>
+	{% endfor %}
+
+		</div>
+		<div class="col"style="float:right;">
+		Submit your assignment:
+		<form method="POST" enctype="multipart/form-data">{% csrf_token %}
+			{{ submissionform|crispy }}
+			<input type="submit" style="width:150px;float:right;" class="btn btn-primary" value="submit">
+		</form>
+		{% if not submission %}
+		<h2 style="color:red;"> You have not submitted your assignment yet!!! </h2>
+		{% else %}
+		{% for data in submission %}
+		<h2 style="color:green;"> You have submitted your assignment!!! <a href="{{submission.file.url}}" download>Download</a></h2>
+		{% endfor %}
+		</div>
+		{% endif %}
+	</div>
+</div>
+
+
+{% endblock %}

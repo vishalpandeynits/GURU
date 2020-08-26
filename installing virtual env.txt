@@ -1,0 +1,6 @@
+1.check pip is installed or not.
+2. create a virual environment by "mkvirtualenv envname"
+2.if installed then type "pip install -r requirement.txt". It will install all packages
+3. then change your directory and visit in the directory of manage.py file
+4. run "python manage.py runserver" to run server at localhost:8000
+5. you should see my page, if you face any problem then contact me.

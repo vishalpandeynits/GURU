@@ -1,0 +1,63 @@
+{% extends 'subject_page.html' %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block subject_content %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-2 col-lg-2"></div>
+		<div class="col-sm-11 col-md-10 col-lg-8">
+			<form>
+				<div class="d-flex justify-content-end">
+				 <div class="searchbar">
+					<input class="search_input" type="text" name="search" placeholder="Search assignments...">
+					<button type="submit" class="search_icon"><i class="fas fa-search"></i></button>
+				</div>
+				</div>
+			</form><br>
+
+			{% if assignments %}
+				{% for assignment in assignments %}
+					<a style="cursor: pointer;text-decoration: none;" href="{% url 'assignment_page' classroom.unique_id  subject.id assignment.id %}">
+					<div class="alert w-100 alert-info">
+						{{ assignment.topic }}<br>
+						<b style="float:right;"> Submit Before <nobr>{{ assignment.submission_date }}</nobr></b><br>
+						{{ assignment.description|safe }}
+					</div>
+					</a><hr>
+				{% endfor %}
+			{% else %}
+			<h2> No assignments found !!!</h2>
+			{% endif %} 
+			{% include 'paginations.html' %}
+		</div>
+		<div class="col">
+			{% if form %}
+			<button style="border-radius:15px;"type="button" class="btn btn-info m-2 float-right" data-toggle="modal"data-target="#addAssignment">Add <i class="fa fa-plus" aria-hidden="true"></i> </button>
+			<div class="modal fade" id="addAssignment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+				    <div class="modal-content bg-info">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel">Add an assignment.</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				       </div>
+				      
+					    <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+					      	<div class="modal-body">
+								{{ form|crispy }}
+							</div>
+					      	<div class="modal-footer">
+							<input type="submit" class="btn btn-primary float-right"value="Add assignment">
+							</div>
+						</form>
+					   
+				      </div>
+				    </div>
+				  </div>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}
