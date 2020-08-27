@@ -431,3 +431,10 @@ body {
 .member-container {
   padding: 2px 16px;
 }
+
+.opts {
+  position: absolute;
+  cursor: pointer;
+  right: .5rem;
+  bottom: .5rem;
+}

@@ -3,98 +3,172 @@
 {% block title %} Home view {% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
+
+<style>
+	.opts {
+		position: absolute;
+		cursor: pointer;
+		right: 1rem;
+		bottom: 1rem;
+		font-size: 35px;
+	}
+
+	.dropdown-content {
+		position: absolute;
+		color: black;
+		font-size: 20px;
+		z-index: 100;
+	}
+
+	.member-card {
+		position: relative;
+	}
+
+	.dropbtn {
+		color: black;
+		padding: 16px;
+		font-size: 35px;
+		cursor: pointer;
+		border: none;
+		margin-bottom: -1rem;
+		right: -.5rem;
+	}
+
+	.dropdown {
+		position: relative;
+		display: inline-block;
+	}
+
+	.dropdown-content {
+		font-size: 15px;
+		display: none;
+		position: absolute;
+		background-color: #f1f1f1;
+		min-width: 160px;
+		box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+		z-index: 1;
+	}
+
+	.dropdown-content a {
+		color: black;
+		padding: 12px 16px;
+		text-decoration: none;
+		display: block;
+	}
+
+	.dropdown-content a:hover {
+		background-color: #ddd;
+	}
+
+	.dropdown:hover .dropdown-content {
+		display: block;
+	}
+</style>
 <div class="container-fluid m-2">
 
-     <center> <img src="{% static 'default.jpg' %}" style="height:20vw;"class="d-block w-50"></center>
+	<center> <img src="{% static 'default.jpg' %}" style="height:20vw;" class="d-block w-50"></center>
 
 	<div id="vue-container">
 		<center id="homepage-btn-group">
-		<button @click="toggleSubjects">Subjects</button>
-		<button @click="togglePolls">Poll</button>
-		<button @click="toggleMembers">members</button>
+			<button @click="toggleSubjects">Subjects</button>
+			<button @click="togglePolls">Poll</button>
+			<button @click="toggleMembers">members</button>
 		</center>
 		<!-- Subjects -->
-			{% if form %} 
-			<button v-if="subjects" type="button" style="height:50px;border-radius:15px;position:relative;right:0;"class="btn float-right btn-info m-2" data-toggle="modal" data-target="#addAnnouncement"> Add <i class="fa fa-plus" aria-hidden="true"> </i>
-			</button>
-			<div class="modal fade " id="addAnnouncement" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			  <div class="modal-dialog" role="document">
-			    <div class="modal-content bg-info">
-			      <div class="modal-header">
-			        <h5 class="modal-title" id="exampleModalLabel">Add a Subject.</h5>
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			          <span aria-hidden="true">&times;</span>
-			        </button>
-			      </div>
-				  <form method="POST" enctype="multipart/form-data">{% csrf_token %}
-				      <div class="modal-body">
-					     {% for field in form %} 
-					         {{ field.label }} {{ field }} 
-					      {% endfor %}
+		{% if form %}
+		<button v-if="subjects" type="button" style="height:50px;border-radius:15px;position:relative;right:0;"
+			class="btn float-right btn-info m-2" data-toggle="modal" data-target="#addAnnouncement"> Add <i
+				class="fa fa-plus" aria-hidden="true"> </i>
+		</button>
+		<div class="modal fade " id="addAnnouncement" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content bg-info">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Add a Subject.</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form method="POST" enctype="multipart/form-data">{% csrf_token %}
+						<div class="modal-body">
+							{% for field in form %}
+							{{ field.label }} {{ field }}
+							{% endfor %}
 						</div>
 
-				      <div class="modal-footer">
-						<input type="SUBMIT" class="btn btn-success float-right" value="Add subject">
-					  </div>
+						<div class="modal-footer">
+							<input type="SUBMIT" class="btn btn-success float-right" value="Add subject">
+						</div>
 					</form>
-			      </div>
-			    </div>
-			  </div>
+				</div>
+			</div>
+		</div>
 		{% endif %}
 
 		<div v-if="subjects" class="row">
-		{% for subject in subjects %}
-		<div class="col-xs-12 col-md-6 col-lg-4"> 
-			<div style="background:url('/media/bga.jpg');background-size:cover;background-position:center;"id="card" class="card"> {% if subject %}
-				<a class="text-center" id="class-link" href='{% url "subject_page" classroom.unique_id subject.id %}'>
-					<div id="subject-name">{{ subject|upper }}</div>
-				</a> 
-			{% endif %} 
+			{% for subject in subjects %}
+			<div class="col-xs-12 col-md-6 col-lg-4">
+				<div style="background:url('/media/bga.jpg');background-size:cover;background-position:center;"
+					id="card" class="card"> {% if subject %}
+					<a class="text-center" id="class-link"
+						href='{% url "subject_page" classroom.unique_id subject.id %}'>
+						<div id="subject-name">{{ subject|upper }}</div>
+					</a>
+					{% endif %}
+				</div>
 			</div>
-		</div> 
-		{% endfor %} 
-	   </div>
-	   	<div v-if="members">
-	   {% for member in members %}
-	   	<div class="row">
-			<div class="member-card">
-		  		<img src="{{member.profile.profile_pic.url}}">
-		  		<div class="member-container">
-		    		<h4><b>{{ member.username }}</b></h4> 
-		    		<p>{{user.profile.bio}}</p> 
-		  		</div>
-	   		</div>
-	   {% endfor %}
+			{% endfor %}
 		</div>
+		<div v-if="members">
+			{% for member in members %}
+			<div class="row">
+				<div class="member-card">
+					<div class="opts">
+						<div class="dropdown">
+							<div class="dropbtn">...</div>
+							<div class="dropdown-content">
+								<a href="#">Delete Student</a>
+								<a href="#">Leave Class</a>
+								<a href="#">Make Teacher</a>
+							</div>
+						</div>
+					</div>
+
+					<img src="{{member.profile.profile_pic.url}}">
+					<div class="member-container">
+						<h4><b>{{ member.username }} &nbsp; &nbsp; </b></h4>
+						<p>{{user.profile.bio}}</p>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+		<!-- Subjects end  -->
+
 	</div>
-	<!-- Subjects end  -->
-
-
-</div>
-<script>
-	new Vue({ 
-		el:'#vue-container',
-		data:{
-			subjects:true,
-			polls:false,
-			members:false,
-		},
-		methods:{
-			toggleSubjects:function(){
-				this.subjects=true;
-				this.members=false;
+	<script>
+		new Vue({
+			el: '#vue-container',
+			data: {
+				subjects: true,
+				polls: false,
+				members: false,
 			},
-			togglePolls:function(){
-				this.subjects=false;
-				this.members=false;
-			},
-			toggleMembers:function(){
-				this.subjects=false;
-				this.members=this.members===true?false:true;
+			methods: {
+				toggleSubjects: function () {
+					this.subjects = true;
+					this.members = false;
+				},
+				togglePolls: function () {
+					this.subjects = false;
+					this.members = false;
+				},
+				toggleMembers: function () {
+					this.subjects = false;
+					this.members = this.members === true ? false : true;
+				}
 			}
-		}
-	})
-</script>
-{% endblock %}
-
-
+		})
+	</script>
+	{% endblock %}
