@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import ClearableFileInput
-from .models import Classroom, Subject, Note, Announcement, Assignment, Submission
+from .models import Classroom, Subject, Note, Announcement, Assignment, Submission,Poll
 from bootstrap_datepicker_plus import DateTimePickerInput
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
@@ -77,3 +77,12 @@ class SignUpForm(UserCreationForm):
 		    raise forms.ValidationError('User already exists! Try different one!')
 
 		return cleaned_data
+
+class AddPollForm(forms.ModelForm):
+	class Meta:
+		model = Poll
+		fields = ['file','topic','description','declare_result_at']
+		widgets = {
+  				'declare_result_at': DateTimePickerInput(),
+  				}
+

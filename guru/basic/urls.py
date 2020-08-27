@@ -7,7 +7,12 @@ urlpatterns = [
     path('homepage/',homepage,name="homepage"),
     path('signup/',signup,name="signup"),
     path('email/', include(mail_urls)),
-    path('subjects/<unique_id>/',subjects,name="subjects"),
+    path('subject/<unique_id>/',subjects,name="subjects"),
+    path('<unique_id>/poll',add_poll,name="poll"),
+
+    path('subjects/<str:unique_id>/<str:username>/makeAdmin/',make_admin, name="make_admin"),
+    path('subjects/<str:unique_id>/<str:username>/removeAdmin/',remove_admin, name="remove_admin"),
+    path('subjects/<str:unique_id>/<str:username>/removeMember/',remove_member, name="remove_member"),
 
     path('<unique_id>/<int:subject_id>/',subject_page,name="subject_page"),
     path('<unique_id>/<int:subject_id>/delete/',delete_subject,name="delete_subject"),

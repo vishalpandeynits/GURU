@@ -42,7 +42,7 @@ class Announcement(models.Model):
 	subject_name = models.ForeignKey(Subject, on_delete=models.CASCADE)
 	issued_on = models.DateTimeField(auto_now_add= True)
 	subject = models.CharField(max_length=100)
-	description = RichTextUploadingField(max_length=500,)
+	description = models.TextField(max_length=500,)
 	file = models.FileField(upload_to='media/announcement/',)
 	
 	def __str__(self):
@@ -53,7 +53,7 @@ class Assignment(models.Model):
 	uploaded_on = models.DateTimeField(auto_now_add= True)
 	file = models.FileField(upload_to='media/',null=True,blank = True)
 	topic = models.CharField(max_length=100,)
-	description = RichTextUploadingField(max_length=500,)
+	description = models.TextField(max_length=500,)
 	submission_date = models.DateTimeField() 
 
 	def __str__(self):
@@ -65,5 +65,13 @@ class Submission(models.Model):
 	submitted_by = models.ForeignKey(User,on_delete=models.CASCADE)
 	submitted_on = models.DateTimeField(auto_now_add=True)
 
+	def __self__(self):
+		return self.submitted_by
+
 class Poll(models.Model):
-	pass
+	file = models.FileField(upload_to="poll/",null=True,blank=True)
+	topic = models.CharField(max_length=100,null=True,blank = True)
+	description = models.TextField(max_length=100)
+	declare_result_at = models.DateTimeField()
+	voter = models.ForeignKey(User,on_delete = models.DO_NOTHING)
+
