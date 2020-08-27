@@ -406,17 +406,20 @@ body {
 #homepage-btn-group button{
   color:white;
   background-color: black;
-  padding:5px;
+  border-radius: 10px;
+  border-style: none;
   cursor:pointer;
-  width:140px;
-  margin:20px 0px;
-  height:40px;
+  width:100px;
+  margin:20px 5px;
+  height:35px;
 }
+
 #homepage-btn-group button:hover{
   color:black;
   background-color: white;
   border:0;
-  border-bottom:4px solid green;
+  border: 1.5px solid #2b2b52;
+  /* border-bottom:4px solid green; */
 }
 .member-card {
   box-shadow: 0px 4px 8px 0 rgba(0,0,0,0.2);
@@ -438,3 +441,4 @@ body {
   right: .5rem;
   bottom: .5rem;
 }
+

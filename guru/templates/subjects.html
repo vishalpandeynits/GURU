@@ -63,10 +63,23 @@
 	.dropdown:hover .dropdown-content {
 		display: block;
 	}
+
+	.card {
+		border-radius: 2rem;
+		width: 300px;
+		height: 300px;
+		border: 10px solid #2b2b52;
+		transition: all .2s;
+	}
+
+	.card:hover {
+		transform: scale(1.05);
+	}
 </style>
 <div class="container-fluid m-2">
 
-	<center> <img src="{% static 'default.jpg' %}" style="height:20vw;" class="d-block w-50"></center>
+	<center> <img src="{% static 'default.jpg' %}" style="height:200px; width: 200px; border-radius: 50%;"
+			class="d-block"></center>
 
 	<div id="vue-container">
 		<center id="homepage-btn-group">
