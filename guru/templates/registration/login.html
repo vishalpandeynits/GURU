@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load socialaccount %}
 {% block content %}
 
 <div class="container" id="sign-up-form">
@@ -29,7 +30,7 @@
 			<center> --OR--</center><br>
 			<div class="login-box">
 			<a href="#" class="social-button" id="facebook-connect"> <span>Connect with Facebook</span></a>
-			<a href="#" class="social-button" id="google-connect"> <span>Connect with Google</span></a>
+			<a href="{% provider_login_url 'google' %}" class="social-button" id="google-connect"> <span>Connect with Google</span></a>
 		</div>
 		</form>
 	</div>

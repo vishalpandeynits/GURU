@@ -1,0 +1,9 @@
+1. ui maintain
+2. security -- only members can view details
+3. custom comments
+4. different permissions to teacher, students
+5. messaging
+6. email
+7. multiple file uploads
+8. polling
+white space pre line

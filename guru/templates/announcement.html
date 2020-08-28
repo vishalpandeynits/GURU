@@ -30,7 +30,7 @@
 				<h2> No announcements made yet. </h2>
 			{% endif %}
 		</div>
-
+		{% if is_teacher %}
 		<button type="button" style="height:50px;border-radius:15px;float:right;"class="btn float-right btn-info m-2" data-toggle="modal" data-target="#addAnnouncement">
 		  Add <i class="fa fa-plus" aria-hidden="true"></i>
 		</button>
@@ -45,7 +45,6 @@
 		        </button>
 		      </div>
 		      
-		      {% if form %}
 			  <form method="POST" enctype="multipart/form-data">{% csrf_token %}
 		      <div class="modal-body">
 					{{ form|crispy }}
@@ -54,10 +53,11 @@
 		      <div class="modal-footer">
 				<input type="submit" class="btn btn-primary float-right"value="submit">
 				</form>
-				{% endif %}
 		      </div>
+
 		    </div>
 		  </div>
 	</div>
+	{% endif %}
 </div>
 {% endblock %}

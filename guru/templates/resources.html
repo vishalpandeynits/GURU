@@ -29,7 +29,7 @@
 			<h1 style="color:blue; font-size: 2vw;">No item found </h1>
 		{% endif %}
 	</div>
-	
+		{% if is_teacher %}
 		<!-- Button trigger modal -->
 		<button type="button" style="height:50px;border-radius:15px;float:right;"class="btn btn-info m-2" data-toggle="modal" data-target="#addResource">
 		  Add <i class="fa fa-plus" aria-hidden="true"></i>
@@ -47,7 +47,6 @@
 		        </button>
 		      </div>
 		      
-		      {% if form %}
 			  <form method="POST" enctype="multipart/form-data">{% csrf_token %}
 		      <div class="modal-body">
 					{{ form|crispy }}
@@ -56,12 +55,11 @@
 		      <div class="modal-footer">
 				<input type="submit" class="btn btn-primary float-right"value="submit">
 				</form>
-				{% endif %}
 
 		      </div>
 		    </div>
 		  </div>
-
+		  {% endif %}
 		</div>
 	</div>
 </div>

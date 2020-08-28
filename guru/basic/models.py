@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 import random
 import string
-from ckeditor_uploader.fields import RichTextUploadingField
 
 def unique_id():
     chars= string.ascii_letters + string.digits
@@ -33,7 +32,7 @@ class Note(models.Model):
 	uploaded_on = models.DateTimeField(auto_now_add= True)
 	file = models.FileField(upload_to='media/notes/',null=True,blank=True)
 	topic = models.CharField(max_length=100,)
-	description = RichTextUploadingField(max_length=500,)
+	description = models.TextField(max_length=500,)
 
 	def __str__(self):
 		return self.topic

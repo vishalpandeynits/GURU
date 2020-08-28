@@ -63,29 +63,15 @@
 	.dropdown:hover .dropdown-content {
 		display: block;
 	}
-
-	.card {
-		border-radius: 2rem;
-		width: 300px;
-		height: 300px;
-		border: 10px solid #2b2b52;
-		transition: all .2s;
-	}
-
-	.card:hover {
-		transform: scale(1.05);
-	}
 </style>
 <div class="container-fluid m-2">
-
-	<center> <img src="{% static 'default.jpg' %}" style="height:200px; width: 200px; border-radius: 50%;"
-			class="d-block"></center>
+	<center> <img src="{% static 'default.jpg' %}" style="height:20vw;" class="d-block w-50"></center>
 
 	<div id="vue-container">
 		<center id="homepage-btn-group">
 			<button @click="toggleSubjects">Subjects</button>
-			<button @click="togglePolls">Poll</button>
-			<button @click="toggleMembers">members</button>
+			<button @click="togglePolls">Polls</button>
+			<button @click="toggleMembers">Members</button>
 		</center>
 		<!-- Subjects -->
 		{% if form %}
@@ -134,33 +120,67 @@
 			{% endfor %}
 		</div>
 		<div v-if="members">
-			{% for member in members %}
-			<div class="row">
 
+			{% for teacher in teachers %}
+			<div class="row">
 				<div class="member-card">
 					<div class="wrapper">
-						<br />
+						<br/>
+						{% if is_teacher %}
 						<div class="opts">
 							<div class="dropdown">
 								<div class="dropbtn">...</div>
 								<div class="dropdown-content">
-									<a href="#">Delete Student</a>
-									<a href="#">Leave Class</a>
-									<a href="#">Make Teacher</a>
+									<a href="{% url 'remove_member' classroom.unique_id teacher.username %}">Remove from classroom</a>
+									<a href="{% url 'remove_admin' classroom.unique_id teacher.username %}">Remove from teacher position</a>
 								</div>
 							</div>
 						</div>
+						{% endif %}
 					</div>
-					<img src="{{member.profile.profile_pic.url}}">
+					<img src="{{teacher.profile.profile_pic.url}}">
 					<div class="member-container">
-						<h4><b>{{ member.username }} &nbsp; &nbsp; </b></h4>
-						<p>{{user.profile.bio}}</p>
+						<h4><b>{{ teacher.username }} &nbsp; &nbsp; <span style="float:right;color:green;">Teacher</span></b></h4>
+						<p>{{teacher.profile.bio}}</p>
 					</div>
 				</div>
 				{% endfor %}
+
+			{% for student in students %}
+			<div class="row">
+				<div class="member-card">
+					<div class="wrapper">
+						<br/>
+						
+						<div class="opts">
+							<div class="dropdown">
+								<div class="dropbtn">...</div>
+								<div class="dropdown-content">
+									{% if is_teacher %}
+									<a href="{% url 'remove_member' classroom.unique_id student.username %}">Remove from classroom</a>
+									<a href="{% url 'make_admin' classroom.unique_id student.username %}">Make Teacher</a>
+									{% else %}
+									{% if user.username == student.username %}
+									<a href="{% url 'remove_member' classroom.unique_id user.username %}"> Leave classroom</a>
+									{% endif %}
+									{% endif %}
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					<img src="{{student.profile.profile_pic.url}}">
+					<div class="member-container">
+						<h4><b>{{ student.username }} &nbsp; &nbsp;</b></h4>
+						<p>{{student.profile.bio}}</p>
+					</div>
+				</div>
+				{% endfor %}
+
 			</div>
 		</div>
 		<!-- Subjects end  -->
+
 	</div>
 	<script>
 		new Vue({
