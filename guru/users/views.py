@@ -3,12 +3,8 @@ from .forms import SignUpForm, ProfileUpdateForm
 from .models import Profile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.contrib.auth import get_user_model
-from django_email_verification import sendConfirm
 
 def signup(request):
-	message = None
 	if request.method == 'POST':
 		form = SignUpForm(request.POST or None)
 		if form.is_valid():
@@ -16,7 +12,7 @@ def signup(request):
 			return redirect('/accounts/login')
 	else:
 		form = SignUpForm()
-	return render(request, 'registation/signup.html', {'form': form})
+	return render(request, 'registration/signup.html', {'form': form})
 
 def profiles(request, username):
 	p_user = get_object_or_404(User, username=username)
@@ -27,7 +23,6 @@ def profiles(request, username):
 @login_required
 def edit_profile(request,username=None):
 	profile = Profile.objects.get(user=request.user)
-	print(profile)
 	if request.method == "POST":
 		p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
 		if p_form.is_valid():

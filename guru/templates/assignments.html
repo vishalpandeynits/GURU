@@ -46,6 +46,8 @@
 					    <form method="POST" enctype="multipart/form-data">{% csrf_token %}
 					      	<div class="modal-body">
 								{{ form|crispy }}
+								Submission date*<br>
+								<input type="datetime-local" name="submission_date">
 							</div>
 					      	<div class="modal-footer">
 							<input type="submit" class="btn btn-primary float-right"value="Add assignment">

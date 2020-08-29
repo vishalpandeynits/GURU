@@ -6,6 +6,7 @@ urlpatterns = [
     path('',home,name="home"),
     path('homepage/',homepage,name="homepage"),
     path('signup/',signup,name="signup"),
+    path('activate/<uidb64>/<token>/',activate,name="activate"),
     path('email/', include(mail_urls)),
     path('subject/<unique_id>/',subjects,name="subjects"),
     path('<unique_id>/poll',add_poll,name="poll"),

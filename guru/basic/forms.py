@@ -24,10 +24,7 @@ class NoteForm(forms.ModelForm):
 class AssignmentForm(forms.ModelForm):
 	class Meta:
 		model = Assignment
-		fields = ['file','topic','description','submission_date']
-		widgets = {
-  				'submission_date': DateTimePickerInput(),
-  				}
+		fields = ['file','topic','description']
 
 class AnnouncementForm(forms.ModelForm):
 	class Meta:

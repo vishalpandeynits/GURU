@@ -2,12 +2,19 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.http import HttpResponse,Http404
 from django.contrib.auth import get_user_model
-from django_email_verification import sendConfirm
 from .forms import *
 from .models import *
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth import login, authenticate
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage,send_mail
+from .token import account_activation_token
+import datetime
 
 def proper_pagination(object,index):
     start_index=0
@@ -22,19 +29,48 @@ def home(request):
         return redirect('homepage')
     else:
         return render(request,'home.html')
-        
+
 def signup(request):
     if request.method == 'POST':
-        signupform = SignUpForm(request.POST or None)
-        if signupform.is_valid():
-            signupform.save()
-            # username = request.POST.get('username')
-            # sendConfirm(User.objects.get(username=username))
-            return redirect('/accounts/login')
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+            current_site = get_current_site(request)
+            message = render_to_string('acc_active_email.html', {
+                'user': user, 'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            # Sending activation link in terminal
+            # user.email_user(subject, message)
+            mail_subject = 'Activate your account.'
+            to_email = form.cleaned_data.get('email')
+            email = send_mail(mail_subject, message,'vishalpandeynits@gmail.com',[to_email])
+            if email==0:
+                return HttpResponse('Error in sending confirmation email')
+            # return HttpResponse('Please confirm your email address to complete the registration.')
+            return render(request, 'acc_activate_sent.html')
     else:
-        signupform = SignUpForm()
-    return render(request, 'registration/signup.html', {'signupform': signupform})
+        form = SignUpForm()
+    return render(request, 'registration/signup.html', {'signupform': form})
 
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        print(uid)
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, user.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+    else:
+        return HttpResponse('Activation link is invalid!')
+        
 @login_required
 def homepage(request):
     if request.POST.get('join_key'):
@@ -219,11 +255,16 @@ def assignment(request,unique_id,subject_id):
         if request.method=="POST":
             form = AssignmentForm(request.POST,request.FILES)
             description = "<pre>" + request.POST.get('description') + "</pre>"
+            time= request.POST.get('submission_date')
+            time= time.replace("T"," ")
+            d = datetime.datetime.fromisoformat(time+":00")
+            submission_date =d.strftime('%Y-%m-%d %H:%M:%S')
             if form.is_valid():
-                announcement = form.save(commit=False)
-                announcement.subject_name = subject
-                announcement.description = description
-                announcement.save()
+                assignment = form.save(commit=False)
+                assignment.submission_date = submission_date
+                assignment.subject_name = subject
+                assignment.description = description
+                assignment.save()
         else:
             form= AssignmentForm()
     assignments = Assignment.objects.all().filter(subject_name=subject).order_by('-id')

@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'registration',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,7 +42,6 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'crispy_forms',
     'django.contrib.humanize',
-    'bootstrap_datepicker_plus',
     'django.contrib.sites',
     'django_comments',
     'allauth',
@@ -156,18 +156,12 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_USE_TLS = True
-EMAIL_ACTIVE_FIELD = 'is_active'
-EMAIL_SERVER = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_ADDRESS = 'vishalpandeynits@gmail.com'
-EMAIL_FROM_ADDRESS = 'vishalpandeynits@gmail.com'
-EMAIL_PASSWORD = '*******************' # Use your password here
-EMAIL_MAIL_SUBJECT = 'Confirm your email'
-EMAIL_MAIL_HTML = 'mail_body.html'
-EMAIL_MAIL_PLAIN = 'mail_body.txt'
-EMAIL_PAGE_TEMPLATE = 'confirm_template.html'
-EMAIL_PAGE_DOMAIN = 'http://127.0.0.1:8000/'
+EMAIL_HOST= "smtp.gmail.com"
+EMAIL_HOST_USER= 'vishalpandeynits@gmail.com'
+EMAIL_HOST_PASSWORD= '!@#$%^&*()____)*&$#$%^&'
+EMAIL_PORT= 587
+EMAIL_USE_TLS= True
+DEFAULT_FROM_EMAIL= 'vishalpandeynits@gmail.com'
 
 # CKEDITOR_UPLOAD_PATH = 'uploads/'
 # CKEDITOR_CONFIGS = {
@@ -215,13 +209,7 @@ ACCOUNT_USERNAME_MIN_LENGTH = 5
 ACCOUNT_USERNAME_REQUIRED =False
 ACCOUNT_USERNAME_VALIDATORS = None
 
-# #Account adapters
-# ACCOUNT_ADAPTER = 'allauthdemo.adapter.CustomProcessAdapter'
 
-# #Account Signup
-# ACCOUNT_FORMS = {'signup': 'allauthdemo.forms.SignupForm',}
-
-#Social Account Settings
 SOCIALACCOUNT_PROVIDERS = {
      'google': {
         'SCOPE': [

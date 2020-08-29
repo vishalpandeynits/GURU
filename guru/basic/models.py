@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import random
 import string
+from django.contrib.auth.models import AbstractUser
 
 def unique_id():
     chars= string.ascii_letters + string.digits

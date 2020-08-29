@@ -15,6 +15,7 @@ class SignUpForm(UserCreationForm):
 		super(SignUpForm, self).__init__(*args, **kwargs)
 		self.fields['password1'].help_text = "Passwords must be of minimum 8 charactors"
 		self.fields['username'].help_text = ""
+		self.fields['username'].label = "Username/Email"
 
 	def clean(self):
 		cleaned_data = self.cleaned_data

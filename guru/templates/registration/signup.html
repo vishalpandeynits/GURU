@@ -10,7 +10,7 @@
 	<div class="col p-4">
 
 		<form id="#signupform"method="POST">{% csrf_token %}
-				{% if message %}
+<!-- 				{% if message %}
 					<p style="color:red;"> {{message}}</p>
 				{% endif %}
 			{% for field in signupform %}
@@ -19,7 +19,8 @@
 					{{ field.errors }}
 					<p style="color:red;"> Please try once again</p>
 				{% endif %}
-			{% endfor %}<br>
+			{% endfor %}<br> -->
+			{{ signupform|crispy }}
 			<input type="submit" value="Register" class="btn btn-primary">
 			Already have an account? 	<a href="{% url 'login' %}"> Login</a>
 		</form>
