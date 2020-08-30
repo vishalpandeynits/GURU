@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('basic.urls')),
     path('accounts/', include('registration.backends.default.urls')),
     path('account/',include('django.contrib.auth.urls')),
+    path('poll/',include('poll.urls')),
     path('profile/',include('users.urls')),
     path('signup/',signup, name="signup"),
     path('comments/', include('django_comments.urls')),

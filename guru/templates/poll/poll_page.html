@@ -1,0 +1,8 @@
+{% extends '../base.html' %}
+{% block content %}
+{{ message }}<br>
+{{ details }}<br>
+{% for choice in choices %}
+	<a href="/voting/{{poll.id}}/{{choice.id}}">{{ choice}}</a>
+{% endfor %}
+{% endblock %}

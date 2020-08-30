@@ -1,0 +1,34 @@
+{% extends '../base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container" id="poll-container">
+	<div class="row" >
+		<div class="col-lg-6">
+		<form method="POST">{% csrf_token %}
+		{{ pollform|crispy }}
+		<div v-for="i in p">
+			<input style="width:100%;" type="text" v-if="i==p" @click="insert" name="check">
+			<input style="width:100%;" type="text" v-else placeholder="Mention your option..." name="check">
+		</div>
+		<input type="datetime-local" name ='date'>
+		<input type="submit" class="btn btn-success"value="submit">
+		</form>
+	</div>
+	</div>
+</div>
+<script>
+new Vue({
+	delimeters:['[[',']]'],
+	el:'#poll-container',
+	data:{
+		message:'hello',
+		p:4,
+	},
+	methods:{
+		insert:function(){
+			this.p = this.p+1
+		}
+	}
+})
+</script>
+{% endblock %}

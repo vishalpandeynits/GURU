@@ -1,0 +1,8 @@
+{% extends '../base.html' %}
+{% block content %}
+<div style="display: flex; justify-content: space-around;font-size: 3em;">
+{% for poll in polls %}
+	<a href="{% url 'poll_page' poll.id %}"> {{ poll.poll_details }} </a>
+{% endfor %}
+</div>
+{% endblock %}
