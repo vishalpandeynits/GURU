@@ -35,23 +35,24 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_active = False
             user.save()
-            current_site = get_current_site(request)
-            message = render_to_string('acc_active_email.html', {
-                'user': user, 'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_activation_token.make_token(user),
-            })
-            # Sending activation link in terminal
-            # user.email_user(subject, message)
-            mail_subject = 'Activate your account.'
-            to_email = form.cleaned_data.get('email')
-            email = send_mail(mail_subject, message,'vishalpandeynits@gmail.com',[to_email])
-            if email==0:
-                return HttpResponse('Error in sending confirmation email')
-            # return HttpResponse('Please confirm your email address to complete the registration.')
-            return render(request, 'acc_activate_sent.html')
+            # user.is_active = False
+            # user.save()
+            # current_site = get_current_site(request)
+            # message = render_to_string('acc_active_email.html', {
+            #     'user': user, 'domain': current_site.domain,
+            #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            #     'token': account_activation_token.make_token(user),
+            # })
+            # # Sending activation link in terminal
+            # # user.email_user(subject, message)
+            # mail_subject = 'Activate your account.'
+            # to_email = form.cleaned_data.get('email')
+            # email = send_mail(mail_subject, message,'vishalpandeynits@gmail.com',[to_email])
+            # if email==0:
+            #     return HttpResponse('Error in sending confirmation email')
+            # # return HttpResponse('Please confirm your email address to complete the registration.')
+            # return render(request, 'acc_activate_sent.html')
     else:
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'signupform': form})
@@ -541,24 +542,6 @@ def remove_member(request,unique_id,username):
             return redirect(f'/homepage/{unique_id}')
     else:
         raise Http404()
-
-@login_required
-def add_poll(request,unique_id):
-    classroom = Classroom.objects.get(unique_id=unique_id)
-    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
-    form = None
-    if is_teacher:
-        if request.method=="POST":
-            form = AddPollForm(request.POST or None,request.FILES)
-            if form.is_valid():
-                form = form.save(commit=False)
-                form.save()
-        else:
-            form = AddPollForm()
-    params = {
-            'pollform':form
-    }
-    return render(request,'poll_page.html',params)
 
 
 

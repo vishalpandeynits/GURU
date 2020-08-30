@@ -68,10 +68,3 @@ class Submission(models.Model):
 	def __self__(self):
 		return self.submitted_by
 
-class Poll(models.Model):
-	file = models.FileField(upload_to="poll/",null=True,blank=True)
-	topic = models.CharField(max_length=100,null=True,blank = True)
-	description = models.TextField(max_length=100)
-	declare_result_at = models.DateTimeField()
-	voter = models.ForeignKey(User,on_delete = models.DO_NOTHING)
-

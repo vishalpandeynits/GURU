@@ -1,8 +1,19 @@
 {% extends '../base.html' %}
 {% block content %}
-{{ message }}<br>
-{{ details }}<br>
-{% for choice in choices %}
-	<a href="/voting/{{poll.id}}/{{choice.id}}">{{ choice}}</a>
-{% endfor %}
+<div class="container">
+	<p style="color:red;font-size: 3em;"> {{ message }} </p>
+	<p style="font-size: 2em;">{{ details }} </p><bRr>
+	{% for choice in choices %}
+		<a href="/polls/{{classroom.unique_id}}/voting/{{poll.id}}/{{choice.id}}">
+			<div class="alert alert-info">{{ choice.choice_text}} 
+				<span class="pill pill-success float-right">
+					{{ choice.votes }}
+				</span>
+			</div>
+		</a>
+	{% endfor %}
+	{{winner.choice_text}} {{ winner.votes }}
+	Note: Name of voters will not be disclosed.
+</div>
 {% endblock %}
+

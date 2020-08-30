@@ -4,23 +4,33 @@ from django.urls import reverse
 from .forms import *
 from .models import *
 from datetime import datetime
-from django.http import HttpResponse 
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from basic.models import *
+import datetime
+from django.utils import timezone
+from django.db.models import *
+
 def filter_fun(key):
 	return key!=""
 
-def home(request):
+@login_required
+def home(request,unique_id):
+	polls = Poll.objects.all()
+	classroom = Classroom.objects.get(unique_id=unique_id)
 	if request.method=='POST':
 		form = QuestionForm(request.POST or None)
+		classroom = Classroom.objects.get(unique_id = unique_id)
 		time= request.POST.get('date')
-		time= time.replace("T"," ")
-		d = datetime.fromisoformat(time+":00")
+		d = datetime.fromisoformat(time)
 		k=d.strftime('%Y-%m-%d %H:%M:%S')
 		choice_list = request.POST.getlist('check')
 		choice_list = list(filter(filter_fun,choice_list))
 		if form.is_valid():
 			form = form.save(commit=False)
+			form.classroom = classroom
 			form.announce_at = k
-			form.created_by = User.objects.get(id=1)
+			form.created_by = request.user
 			form.save()
 			for i in choice_list:
 				choice=Choice()
@@ -30,36 +40,50 @@ def home(request):
 			return redirect(reverse('home'))
 	else:
 		form = QuestionForm()
-	return render(request,'poll/form.html',{'pollform':form})
+	params = {
+		'pollform':form,
+		'polls':polls,
+		'classroom':classroom
+		}
+	return render(request,'poll/form.html',params)
 
-def poll_list(request):
-	polls = Poll.objects.all()
-	return render(request,'poll/poll_list.html',{'polls':polls})
-
-def poll_page(request,poll_id):
+def poll_page(request,unique_id, poll_id):
 	poll = Poll.objects.get(id=poll_id)
+	classroom = Classroom.objects.get(unique_id = unique_id)
 	choices = Choice.objects.all().filter(poll=poll)
+	message = winner=None
+	if poll.voters.filter(username=request.user.username).exists():
+		message = 'You have already voted !!!!'
+		choices = choices.order_by('-votes')
+		winner = Choice.objects.aggregate(Max('votes'))
 	params = {
 		'details':poll.poll_details,
 		'choices' : choices,
-		'poll':poll
+		'poll':poll,
+		'classroom':classroom,
+		'message':message,
+		'winner':choices.first()
 	}
 	return render(request,'poll/poll_page.html',params)
 
-def voting(request,poll_id,choice_id):
+def voting(request,unique_id,poll_id,choice_id):
 	message = None
 	poll=Poll.objects.get(id=poll_id)
 	choice = Choice.objects.all().filter(poll=poll)
-	if not poll.voters.all().filter(username=request.user.username).exists():
-		Choice.objects.get(id=choice_id).votes += 1
-		return redirect('poll_list')
+	classroom = Classroom.objects.get(unique_id = unique_id)
+	if not poll.voters.filter(username=request.user.username).exists():
+		choice=Choice.objects.get(id=choice_id)
+		choice.votes += 1
+		poll.voters.add(request.user)
+		choice.save()
+		return redirect(f'/polls/{unique_id}')
 	else:
-		return HttpResponse('You have already voted !!!!')
+		message = 'You have already voted !!!!'
 	params = {
 		'poll':poll,
 		'choices' : choice,
 		'message': message,
-		'poll':poll
+		'classroom':classroom
 	}
 	return render(request,'poll/poll_page.html',params)
 

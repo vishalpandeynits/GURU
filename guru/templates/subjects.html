@@ -70,7 +70,7 @@
 	<div id="vue-container">
 		<center id="homepage-btn-group">
 			<button @click="toggleSubjects">Subjects</button>
-			<button @click="togglePolls">Polls</button>
+			<a href="{% url 'polls' classroom.unique_id %}">Polls</a>
 			<button @click="toggleMembers">Members</button>
 		</center>
 		<!-- Subjects -->

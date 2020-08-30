@@ -1,15 +1,12 @@
 from django.urls import path,include
 from .views import *
-from django_email_verification import urls as mail_urls
 
 urlpatterns = [
     path('',home,name="home"),
     path('homepage/',homepage,name="homepage"),
     path('signup/',signup,name="signup"),
     path('activate/<uidb64>/<token>/',activate,name="activate"),
-    path('email/', include(mail_urls)),
     path('subject/<unique_id>/',subjects,name="subjects"),
-    path('<unique_id>/poll',add_poll,name="poll"),
 
     path('subjects/<str:unique_id>/<str:username>/makeAdmin/',make_admin, name="make_admin"),
     path('subjects/<str:unique_id>/<str:username>/removeAdmin/',remove_admin, name="remove_admin"),
