@@ -116,11 +116,10 @@ def subjects(request,unique_id):
     else:
         if is_teacher:
             form = SubjectForm()
-    subjects = Subject.objects.all()
+    subjects = Subject.objects.all().filter(classroom=classroom)
     members = classroom.members.all()
     teachers = classroom.teacher.all()
     students = members.difference(teachers)
-    print(students)
     params = {
         'subjects':subjects,
         'form':form,
@@ -148,10 +147,8 @@ def resource(request,unique_id,subject_id):
     if request.GET.get('search'):
         search = request.GET.get('search')
         notes = notes.filter(Q(topic__icontains=search)|Q(description__icontains=search))
-    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
     form = None
-
-    if request.method=="POST" and is_teacher:
+    if request.method=="POST" and classroom.created_by==request.user:
         form = NoteForm(request.POST,request.FILES)
         files = request.FILES.getlist('file')
         data = Note()
@@ -204,9 +201,8 @@ def resource_update(request,unique_id,subject_id,id):
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     notes = Note.objects.all().filter(subject_name=subject)
     note = Note.objects.all().filter(subject_name=subject).get(id=id)
-    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
     form = None
-    if is_teacher:
+    if classroom.created_by==request.user:
         if request.method=="POST":
             form = NoteForm(request.POST,request.FILES,instance=note)
             if form.is_valid():
@@ -224,7 +220,7 @@ def resource_update(request,unique_id,subject_id,id):
             'subject':subject,
             'form':form,
             'classroom':classroom,
-            'is_teacher':is_teacher
+            'is_teacher':classroom.created_by==request.user,
         }
     return render(request,'resources.html',params)
 
@@ -235,8 +231,7 @@ def resource_delete(request,unique_id,subject_id,id):
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     note = Note.objects.all().filter(subject_name=subject).get(id=id)
     is_teacher = Classroom.objects.filter(teacher=request.user).exists()
-    form = None
-    if is_teacher:
+    if classroom.created_by==request.user:
         note.delete()
         return redirect(f'/{unique_id}/{subject_id}/resource')
     else:
@@ -252,9 +247,8 @@ def resource_delete(request,unique_id,subject_id,id):
 def assignment(request,unique_id,subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-    form = None
-    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
-    if is_teacher:
+    form=None
+    if classroom.created_by==request.user:
         if request.method=="POST":
             form = AssignmentForm(request.POST,request.FILES)
             description = "<pre>" + request.POST.get('description') + "</pre>"
@@ -290,7 +284,6 @@ def assignment(request,unique_id,subject_id):
         'assignments':assignments,
         'page':query,
         'page_range':page_range,
-        'is_teacher':is_teacher
         }
     return render(request,'assignments.html',params)  
 
@@ -299,7 +292,6 @@ def assignment_page(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     assignment = Assignment.objects.all().filter(subject_name=subject).get(id=id)
-    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
     if request.method=="POST":
         form = SubmitAssignmentForm(request.POST, request.FILES)
         if form.is_valid():
@@ -325,9 +317,9 @@ def assignment_page(request,unique_id,subject_id,id):
         'submissionform':form,
         'submission':submission,
         'all_submissions':all_submissions,
-        'is_teacher':is_teacher,
         'late_submissions':late_submissions,
         'ontime_submissions':ontime_submissions,
+        'is_teacher':classroom.created_by==request.user,
         }
     return render(request,'assignment_page.html',params)
 
@@ -337,9 +329,8 @@ def assignment_update(request,unique_id,subject_id,id):
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     assignment = Assignment.objects.all().filter(subject_name=subject).get(id=id)
     assignments = Assignment.objects.all().filter(subject_name=subject).order_by('submission_date').reverse()
-    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
     form = None
-    if is_teacher:
+    if classroom.created_by==request.user:
         if request.method=="POST":
             form = AssignmentForm(request.POST,request.FILES,instance=assignment)
             if form.is_valid():
@@ -367,9 +358,7 @@ def assignment_delete(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     assignment = Assignment.objects.all().filter(subject_name=subject).get(id=id)
-    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
-    form = None
-    if is_teacher:
+    if classroom.created_by==request.user:
         assignment.delete()
         return redirect(f'/{unique_id}/{subject_id}/assignments/')
     else:
@@ -385,9 +374,8 @@ def assignment_delete(request,unique_id,subject_id,id):
 def announcement(request,unique_id,subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
     form = None
-    if is_teacher:
+    if classroom.created_by==request.user:
         if request.method=="POST":
             form = AnnouncementForm(request.POST,request.FILES)
             if form.is_valid():
@@ -418,7 +406,6 @@ def announcement(request,unique_id,subject_id):
             'announcements':announcements,
             'page':query,
             'page_range':page_range,
-            'is_teacher':is_teacher
         }
     return render(request,'announcement.html',params)
 
@@ -442,7 +429,7 @@ def announcement_update(request,unique_id,subject_id,id):
     announcements = Announcement.objects.all().filter(subject_name=subject).order_by('issued_on').reverse()
     is_teacher = Classroom.objects.filter(teacher=request.user).exists()
     form = None
-    if is_teacher:
+    if classroom.created_by==request.user:
         if request.method=="POST":
             form = AnnouncementForm(request.POST,request.FILES,instance=announcement)
             if form.is_valid():
@@ -462,7 +449,6 @@ def announcement_update(request,unique_id,subject_id,id):
             'form':form,
             'classroom':classroom,
             'announcements':announcements,
-            'is_teacher':is_teacher
         }
     return render(request,'announcement.html',params)
 
@@ -471,9 +457,7 @@ def announcement_delete(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     announcement = Announcement.objects.all().filter(subject_name=subject).get(id=id)
-    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
-    form = None
-    if is_teacher:
+    if classroom.created_by==request.user:
         announcement.delete()
         return redirect(f'/{unique_id}/{subject_id}/announcement/')
     else:
@@ -493,7 +477,8 @@ def this_subject(request,unique_id, subject_id):
     params={
         'subject':subject,
         'classroom':classroom,
-        'members':members
+        'members':members,
+        'is_teacher':classroom.created_by==request.user,
     }
     return render(request,'thissubject.html',params)
 
@@ -501,18 +486,15 @@ def this_subject(request,unique_id, subject_id):
 def delete_subject(request,unique_id, subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
-    form = None
-    if is_teacher:
+    if classroom.created_by==request.user:
         subject.delete()
-        return redirect(f'/{unique_id}/')
+        return redirect(f'/subject/{unique_id}/')
     else:
         raise Http404()
 
     params={
         'subject':subject,
         'classroom':classroom,
-        'is_teacher':is_teacher
     }
     return render(request,'homepage.html',params)
 
@@ -522,7 +504,7 @@ def make_admin(request,unique_id,username):
     is_teacher = Classroom.objects.filter(teacher=request.user).exists()
     if is_teacher:
         classroom.teacher.add(User.objects.get(username=username))
-        return redirect(f'/homepage/{unique_id}')   
+        return redirect(f'/subject/{unique_id}')   
     else:
         raise Http404()
 
@@ -532,7 +514,7 @@ def remove_admin(request,unique_id,username):
     is_teacher = Classroom.objects.filter(teacher=request.user).exists()
     if is_teacher:
         classroom.teacher.remove(User.objects.get(username=username))
-        return redirect(f'/homepage/{unique_id}')  
+        return redirect(f'/subject/{unique_id}')  
     else:
         raise Http404()
 
@@ -545,7 +527,7 @@ def remove_member(request,unique_id,username):
         if request.user==User.objects.get(username=username):
             return redirect('/homepage/')  
         else:
-            return redirect(f'/homepage/{unique_id}')
+            return redirect(f'/subject/{unique_id}')
     else:
         raise Http404()
 

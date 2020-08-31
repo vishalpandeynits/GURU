@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 import random
 import string
 from django.contrib.auth.models import AbstractUser
+import uuid
 
 def unique_id():
     chars= string.ascii_letters + string.digits
@@ -13,12 +14,13 @@ class Classroom(models.Model):
 	created_by = models.ForeignKey(User, on_delete = models.CASCADE,related_name='create_by')
 	class_name = models.CharField(max_length = 100)
 	created_on = models.DateTimeField(auto_now_add=True)
-	unique_id = models.CharField(max_length=10,unique=True,default=unique_id(), editable=False)
+	unique_id = models.UUIDField( primary_key = True, default = uuid.uuid4, editable = False)
 	members = models.ManyToManyField(User)
 	teacher = models.ManyToManyField(User,related_name='teacher')
 
 	def __str__(self):
 		return self.class_name
+
 
 class Subject(models.Model):
 	classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE)

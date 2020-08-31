@@ -4,13 +4,11 @@
 {% block content %}
 {% load crispy_forms_tags %}
 <div class="container">
-	<a href="{% url 'profile' user.username %}" class="btn btn-outline-info float-right">Profile</a>
 	<div class="row">
 		<div class="col-sm-11 col-md-10">
 			<div id="home-btn-container">
-
 				<div id="vuecontainer">
-					<h2 id="intro col-md-6" style="font-size:5vw;"> Online classes made easy by your own GURU.</h2>
+					<h2 id="col-md-6" style="font-size:5vw;"> Online classes made easy by your own GURU.</h2>
 					<button v-on:click="create" class="btn btn-home">Create a class </button>
 					<button v-on:click="join" class='btn btn-home'>Join a class </button> <br>
 
@@ -22,7 +20,7 @@
 				
 
 					<form v-if="joinform" id="joinform" method="POST">{% csrf_token %} Unique id<br>
-						<input type="text" name="join_key"><br>
+						<input type="text" placeholder="Unique ID"name="join_key"><br>
 						<input type="submit" value="Join" class="btn btn-success m-2">
 					</form><br><br> 
 				</div> 
