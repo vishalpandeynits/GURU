@@ -29,7 +29,7 @@
 			{% if user.is_authenticated %}
 			    {% get_comment_form for assignment as form %}
 			    	<form action="{% comment_form_target %}" method="POST">{% csrf_token %}
-			    		<textarea name="comment" style="width:100%;resize:none;" rows="4" maxlength="3000" required id="id_comment"> </textarea>
+			    		<textarea required="required" name="comment" style="width:100%;resize:none;" rows="4" maxlength="3000" required id="id_comment"> </textarea>
 					    {% if form.name == "honeypot" %} style="display:none;" {% endif %}
 					    {{ form.content_type }}
 					    {{ form.object_pk }}

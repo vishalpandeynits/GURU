@@ -36,6 +36,7 @@ def signup(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.save()
+            return redirect('login')
             # user.is_active = False
             # user.save()
             # current_site = get_current_site(request)
@@ -223,6 +224,7 @@ def resource_update(request,unique_id,subject_id,id):
             'subject':subject,
             'form':form,
             'classroom':classroom,
+            'is_teacher':is_teacher
         }
     return render(request,'resources.html',params)
 
@@ -356,6 +358,7 @@ def assignment_update(request,unique_id,subject_id,id):
             'form':form,
             'classroom':classroom,
             'assignments':assignments,
+            'is_teacher':is_teacher
         }
     return render(request,'assignments.html',params)
 
@@ -414,7 +417,8 @@ def announcement(request,unique_id,subject_id):
             'classroom':classroom,
             'announcements':announcements,
             'page':query,
-            'page_range':page_range
+            'page_range':page_range,
+            'is_teacher':is_teacher
         }
     return render(request,'announcement.html',params)
 
@@ -458,6 +462,7 @@ def announcement_update(request,unique_id,subject_id,id):
             'form':form,
             'classroom':classroom,
             'announcements':announcements,
+            'is_teacher':is_teacher
         }
     return render(request,'announcement.html',params)
 
@@ -507,6 +512,7 @@ def delete_subject(request,unique_id, subject_id):
     params={
         'subject':subject,
         'classroom':classroom,
+        'is_teacher':is_teacher
     }
     return render(request,'homepage.html',params)
 

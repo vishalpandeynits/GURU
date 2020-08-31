@@ -47,10 +47,12 @@ class SignUpForm(UserCreationForm):
 		model = User
 		fields = ['username', 'first_name','last_name','email', 'password1', 'password2']
 
+
 	def __init__(self, *args, **kwargs):
 		super(SignUpForm, self).__init__(*args, **kwargs)
-		self.fields['password1'].help_text = "Passwords must be of minimum 8 charactors"
-		self.fields['username'].help_text = ""
+		self.fields['password1'].help_text = "Passwords must be of minimum 8 characters"
+		self.fields['username'].label = "Username:"
+		self.fields['email'].widget.attrs.update({'required': 'required'})
 
 	def clean(self):
 		cleaned_data = self.cleaned_data
