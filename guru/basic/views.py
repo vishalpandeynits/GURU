@@ -15,6 +15,10 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage,send_mail
 from .token import account_activation_token
 import datetime
+from django.contrib.auth.decorators import user_passes_test
+
+def member_check(user,classroom):
+    return classroom.members.all().filter(username=user.username)
 
 def proper_pagination(object,index):
     start_index=0
@@ -35,25 +39,23 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
+            user.is_active = False
             user.save()
-            return redirect('login')
-            # user.is_active = False
-            # user.save()
-            # current_site = get_current_site(request)
-            # message = render_to_string('acc_active_email.html', {
-            #     'user': user, 'domain': current_site.domain,
-            #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-            #     'token': account_activation_token.make_token(user),
-            # })
-            # # Sending activation link in terminal
-            # # user.email_user(subject, message)
-            # mail_subject = 'Activate your account.'
-            # to_email = form.cleaned_data.get('email')
-            # email = send_mail(mail_subject, message,'vishalpandeynits@gmail.com',[to_email])
-            # if email==0:
-            #     return HttpResponse('Error in sending confirmation email')
-            # # return HttpResponse('Please confirm your email address to complete the registration.')
-            # return render(request, 'acc_activate_sent.html')
+            current_site = get_current_site(request)
+            message = render_to_string('acc_active_email.html', {
+                'user': user, 'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            # Sending activation link in terminal
+            # user.email_user(subject, message)
+            mail_subject = 'Activate your account.'
+            to_email = form.cleaned_data.get('email')
+            email = send_mail(mail_subject, message,'vishalpandeynits@gmail.com',[to_email])
+            if email==0:
+                return HttpResponse('Error in sending confirmation email')
+            # return HttpResponse('Please confirm your email address to complete the registration.')
+            return render(request, 'acc_activate_sent.html')
     else:
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'signupform': form})
@@ -101,141 +103,153 @@ def homepage(request):
         }
     return render(request,'homepage.html',params)
 
-@login_required
 def subjects(request,unique_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     is_teacher = Classroom.objects.filter(teacher=request.user).exists()
     form = None
-    if request.method=="POST" and is_teacher: 
-        form = SubjectForm(request.POST)
-        if form.is_valid():
-            subject=form.save(commit=False)
-            subject.classroom=classroom
-            subject.teacher = request.user.first_name + request.user.last_name
-            subject.save()
+    if member_check(request.user,classroom):
+        if request.method=="POST" and is_teacher: 
+            form = SubjectForm(request.POST)
+            if form.is_valid():
+                subject=form.save(commit=False)
+                subject.classroom=classroom
+                subject.teacher = request.user.first_name + request.user.last_name
+                subject.save()
+        else:
+            if is_teacher:
+                form = SubjectForm()
+        subjects = Subject.objects.all().filter(classroom=classroom)
+        members = classroom.members.all()
+        teachers = classroom.teacher.all()
+        students = members.difference(teachers)
+        params = {
+            'subjects':subjects,
+            'form':form,
+            'classroom':classroom,
+            'students':students,
+            'teachers':teachers,
+            'is_teacher':is_teacher
+            }
+        return render(request,'subjects.html',params)
     else:
-        if is_teacher:
-            form = SubjectForm()
-    subjects = Subject.objects.all().filter(classroom=classroom)
-    members = classroom.members.all()
-    teachers = classroom.teacher.all()
-    students = members.difference(teachers)
-    params = {
-        'subjects':subjects,
-        'form':form,
-        'classroom':classroom,
-        'students':students,
-        'teachers':teachers,
-        'is_teacher':is_teacher
-        }
-    return render(request,'subjects.html',params)
+        raise Http404()
 
 @login_required
 def subject_page(request,unique_id,subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-    announcements = Announcement.objects.all().filter(subject_name=subject)
-    params = {'subject':subject,'classroom':classroom,'announcements':announcements,}   
-    return render(request,'subject_page.html',params)
+    if member_check(request.user,classroom):
+        subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+        announcements = Announcement.objects.all().filter(subject_name=subject)
+        params = {'subject':subject,'classroom':classroom,'announcements':announcements,}   
+        return render(request,'subject_page.html',params)
+    else:
+        raise Http404()
 
 @login_required
 def resource(request,unique_id,subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
-    notes = Note.objects.all().filter(subject_name=subject).order_by('-id')
-    if request.GET.get('search'):
-        search = request.GET.get('search')
-        notes = notes.filter(Q(topic__icontains=search)|Q(description__icontains=search))
-    form = None
-    if request.method=="POST" and classroom.created_by==request.user:
-        form = NoteForm(request.POST,request.FILES)
-        files = request.FILES.getlist('file')
-        data = Note()
-        topic = request.POST.get('topic')
-        description = request.POST.get('description')
-        if form.is_valid():
-            data.topic = topic
-            data.description = "<pre>" + description + "</pre>"
-            data.subject_name = subject
-            for f in files:
-                data.file = f
-            data.save()
-    else:
-        if is_teacher:
-            form= NoteForm()
+    if member_check(request.user,classroom):
+        subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+        is_teacher = Classroom.objects.filter(teacher=request.user).exists()
+        notes = Note.objects.all().filter(subject_name=subject).order_by('-id')
+        if request.GET.get('search'):
+            search = request.GET.get('search')
+            notes = notes.filter(Q(topic__icontains=search)|Q(description__icontains=search))
+        form = None
+        if request.method=="POST" and classroom.created_by==request.user:
+            form = NoteForm(request.POST,request.FILES)
+            files = request.FILES.getlist('file')
+            data = Note()
+            topic = request.POST.get('topic')
+            description = request.POST.get('description')
+            if form.is_valid():
+                data.topic = topic
+                data.description = "<pre>" + description + "</pre>"
+                data.subject_name = subject
+                for f in files:
+                    data.file = f
+                data.save()
+        else:
+            if is_teacher:
+                form= NoteForm()
 
-    paginator = Paginator(notes,6)
-    page_num=1
-    if request.GET.get('page'):
-        page_num = request.GET.get('page')
-    query = paginator.page(page_num)
-    start_index,end_index = proper_pagination(query,index=4)
-    page_range = list(paginator.page_range)[start_index:end_index]
-    params={
-        'form':form,
-        'subject':subject,
-        'classroom':classroom,
-        'notes':notes,
-        'page':query,
-        'page_range':page_range,
-        'is_teacher':is_teacher
-        }
-    return render(request,'resources.html',params)
+        paginator = Paginator(notes,6)
+        page_num=1
+        if request.GET.get('page'):
+            page_num = request.GET.get('page')
+        query = paginator.page(page_num)
+        start_index,end_index = proper_pagination(query,index=4)
+        page_range = list(paginator.page_range)[start_index:end_index]
+        params={
+            'form':form,
+            'subject':subject,
+            'classroom':classroom,
+            'notes':notes,
+            'page':query,
+            'page_range':page_range,
+            'is_teacher':is_teacher
+            }
+        return render(request,'resources.html',params)
+    else:
+        raise Http404()
 
 @login_required
 def read_note(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-    note = Note.objects.all().filter(subject_name=subject).get(id=id)
-    params={
-        'note':note,
-        'subject':subject,
-        'classroom':classroom,
-        }
-    return render(request,'read_note.html',params) 
+    if member_check(request.user,classroom):
+        subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+        note = Note.objects.all().filter(subject_name=subject).get(id=id)
+        params={
+            'note':note,
+            'subject':subject,
+            'classroom':classroom,
+            }
+        return render(request,'read_note.html',params)
+    else:
+        raise Http404() 
 
 @login_required
 def resource_update(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-    notes = Note.objects.all().filter(subject_name=subject)
-    note = Note.objects.all().filter(subject_name=subject).get(id=id)
-    form = None
-    if classroom.created_by==request.user:
-        if request.method=="POST":
-            form = NoteForm(request.POST,request.FILES,instance=note)
-            if form.is_valid():
-                noteform = form.save(commit=False)
-                noteform.subject_name = subject
-                noteform.save()
-                return redirect(f'/{unique_id}/{subject_id}/{note.id}/read')
+    if member_check(request.user,classroom):
+        subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+        notes = Note.objects.all().filter(subject_name=subject)
+        note = Note.objects.all().filter(subject_name=subject).get(id=id)
+        form = None
+        if classroom.created_by==request.user:
+            if request.method=="POST":
+                form = NoteForm(request.POST,request.FILES,instance=note)
+                if form.is_valid():
+                    noteform = form.save(commit=False)
+                    noteform.subject_name = subject
+                    noteform.save()
+                    return redirect(f'/{unique_id}/{subject_id}/{note.id}/read')
+            else:
+                note.description = note.description[5:-6]
+                form= NoteForm(instance=note)
         else:
-            note.description = note.description[5:-6]
-            form= NoteForm(instance=note)
+            raise Http404()
+        params={
+                'notes':notes,
+                'subject':subject,
+                'form':form,
+                'classroom':classroom,
+                'is_teacher':classroom.created_by==request.user,
+            }
+        return render(request,'resources.html',params)
     else:
-        Http404()
-    params={
-            'notes':notes,
-            'subject':subject,
-            'form':form,
-            'classroom':classroom,
-            'is_teacher':classroom.created_by==request.user,
-        }
-    return render(request,'resources.html',params)
+        raise Http404()
 
 @login_required
 def resource_delete(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    print(classroom.teacher)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     note = Note.objects.all().filter(subject_name=subject).get(id=id)
-    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
     if classroom.created_by==request.user:
         note.delete()
         return redirect(f'/{unique_id}/{subject_id}/resource')
     else:
-        Http404()
+        raise Http404()
     params={
         'note':note,
         'subject':subject,
@@ -246,82 +260,89 @@ def resource_delete(request,unique_id,subject_id,id):
 @login_required
 def assignment(request,unique_id,subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-    form=None
-    if classroom.created_by==request.user:
-        if request.method=="POST":
-            form = AssignmentForm(request.POST,request.FILES)
-            description = "<pre>" + request.POST.get('description') + "</pre>"
-            time= request.POST.get('submission_date')
-            time= time.replace("T"," ")
-            d = datetime.datetime.fromisoformat(time+":00")
-            submission_date =d.strftime('%Y-%m-%d %H:%M:%S')
-            if form.is_valid():
-                assignment = form.save(commit=False)
-                assignment.submission_date = submission_date
-                assignment.subject_name = subject
-                assignment.description = description
-                assignment.save()
-        else:
-            form= AssignmentForm()
-    assignments = Assignment.objects.all().filter(subject_name=subject).order_by('-id')
-    if request.GET.get('search'):
-        search = request.GET.get('search')
-        assignments = assignments.filter(Q(topic__icontains=search)|Q(description__icontains=search))
-    
-    paginator = Paginator(assignments,6)
-    page_num=1
-    page_range = [i for i in range(1,paginator.num_pages+1)]
-    if request.GET.get('page'):
-        page_num = request.GET.get('page')
-    query = paginator.page(int(page_num))
-    assignments=query.object_list
+    if member_check(request.user,classroom):
+        subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+        form=None
+        if classroom.created_by==request.user:
+            if request.method=="POST":
+                form = AssignmentForm(request.POST,request.FILES)
+                description = "<pre>" + request.POST.get('description') + "</pre>"
+                time= request.POST.get('submission_date')
+                time= time.replace("T"," ")
+                d = datetime.datetime.fromisoformat(time+":00")
+                submission_date =d.strftime('%Y-%m-%d %H:%M:%S')
+                if form.is_valid():
+                    assignment = form.save(commit=False)
+                    assignment.submission_date = submission_date
+                    assignment.subject_name = subject
+                    assignment.description = description
+                    assignment.save()
+            else:
+                form= AssignmentForm()
+        assignments = Assignment.objects.all().filter(subject_name=subject).order_by('-id')
+        if request.GET.get('search'):
+            search = request.GET.get('search')
+            assignments = assignments.filter(Q(topic__icontains=search)|Q(description__icontains=search))
+        
+        paginator = Paginator(assignments,6)
+        page_num=1
+        page_range = [i for i in range(1,paginator.num_pages+1)]
+        if request.GET.get('page'):
+            page_num = request.GET.get('page')
+        query = paginator.page(int(page_num))
+        assignments=query.object_list
 
-    params={
-        'form':form,
-        'subject':subject,
-        'classroom':classroom,
-        'assignments':assignments,
-        'page':query,
-        'page_range':page_range,
-        }
-    return render(request,'assignments.html',params)  
+        params={
+            'form':form,
+            'subject':subject,
+            'classroom':classroom,
+            'assignments':assignments,
+            'page':query,
+            'page_range':page_range,
+            }
+        return render(request,'assignments.html',params)
+    else:
+        raise Http404()
 
 @login_required
 def assignment_page(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-    assignment = Assignment.objects.all().filter(subject_name=subject).get(id=id)
-    if request.method=="POST":
-        form = SubmitAssignmentForm(request.POST, request.FILES)
-        if form.is_valid():
-            data=form.save(commit=False)
-            data.submitted_by=request.user
-            data.assignment= assignment
-            data.save()
-    else:
-        form = SubmitAssignmentForm()
-    submission = None
-    try:
-        submission = Submission.objects.all().filter(assignment=assignment,submitted_by=request.user)
-    except Submission.DoesNotExist:
+    if member_check(request.user, classroom):
+        subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+        assignment = Assignment.objects.all().filter(subject_name=subject).get(id=id)
+        if request.method=="POST":
+            form = SubmitAssignmentForm(request.POST, request.FILES)
+            if form.is_valid():
+                data=form.save(commit=False)
+                data.submitted_by=request.user
+                data.assignment= assignment
+                data.save()
+        else:
+            form = SubmitAssignmentForm()
         submission = None
+        try:
+            submission = Submission.objects.all().filter(assignment=assignment,submitted_by=request.user)
+        except Submission.DoesNotExist:
+            submission = None
 
-    all_submissions = Submission.objects.all().filter(assignment=assignment)
-    late_submissions = Submission.objects.all().filter(submitted_on__gt=assignment.submission_date)
-    ontime_submissions = all_submissions.difference(late_submissions)
-    params={
-        'assignment':assignment,
-        'subject':subject,
-        'classroom':classroom,
-        'submissionform':form,
-        'submission':submission,
-        'all_submissions':all_submissions,
-        'late_submissions':late_submissions,
-        'ontime_submissions':ontime_submissions,
-        'is_teacher':classroom.created_by==request.user,
-        }
-    return render(request,'assignment_page.html',params)
+        all_submissions = Submission.objects.all().filter(assignment=assignment)
+        late_submissions = Submission.objects.all().filter(submitted_on__gt=assignment.submission_date)
+        ontime_submissions = all_submissions.difference(late_submissions)
+        params={
+            'assignment':assignment,
+            'subject':subject,
+            'classroom':classroom,
+            'submissionform':form,
+            'submission':submission,
+            'all_submissions':all_submissions,
+            'late_submissions':late_submissions,
+            'ontime_submissions':ontime_submissions,
+            'is_teacher':classroom.created_by==request.user,
+            }
+        return render(request,'assignment_page.html',params)
+    else:
+        raise Http404()
+
 
 @login_required
 def assignment_update(request,unique_id,subject_id,id):
@@ -342,7 +363,7 @@ def assignment_update(request,unique_id,subject_id,id):
         else:
             form= AssignmentForm(instance=assignment)
     else:
-        Http404()
+        raise Http404()
     params={
             'assignment':assignment,
             'subject':subject,
@@ -362,7 +383,7 @@ def assignment_delete(request,unique_id,subject_id,id):
         assignment.delete()
         return redirect(f'/{unique_id}/{subject_id}/assignments/')
     else:
-        Http404()
+        raise Http404()
     params={
         'subject':subject,
         'classroom':classroom,
@@ -373,53 +394,58 @@ def assignment_delete(request,unique_id,subject_id,id):
 @login_required
 def announcement(request,unique_id,subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-    form = None
-    if classroom.created_by==request.user:
-        if request.method=="POST":
-            form = AnnouncementForm(request.POST,request.FILES)
-            if form.is_valid():
-                announcement = form.save(commit=False)
-                announcement.subject_name = subject
-                announcement.description = "<pre>"+ request.POST.get('description')+"</pre>"
-                announcement.save()
-        else:
-            form= AnnouncementForm()
-    announcements = Announcement.objects.all().filter(subject_name=subject).order_by('-id')
-    if request.GET.get('search'):
-        search = request.GET.get('search')
-        announcements = announcements.filter(Q(subject__icontains=search)|Q(description__icontains=search))
+    if member_check(request.user, classroom):
+        subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+        form = None
+        if classroom.created_by==request.user:
+            if request.method=="POST":
+                form = AnnouncementForm(request.POST,request.FILES)
+                if form.is_valid():
+                    announcement = form.save(commit=False)
+                    announcement.subject_name = subject
+                    announcement.description = "<pre>"+ request.POST.get('description')+"</pre>"
+                    announcement.save()
+            else:
+                form= AnnouncementForm()
+        announcements = Announcement.objects.all().filter(subject_name=subject).order_by('-id')
+        if request.GET.get('search'):
+            search = request.GET.get('search')
+            announcements = announcements.filter(Q(subject__icontains=search)|Q(description__icontains=search))
 
-    paginator = Paginator(announcements,6)
-    page_num=1
-    page_range = [i for i in range(1,paginator.num_pages+1)]
-    print(page_range)
-    if request.GET.get('page'):
-        page_num = request.GET.get('page')
-    query = paginator.page(int(page_num))
-    announcements=query.object_list
+        paginator = Paginator(announcements,6)
+        page_num=1
+        page_range = [i for i in range(1,paginator.num_pages+1)]
+        if request.GET.get('page'):
+            page_num = request.GET.get('page')
+        query = paginator.page(int(page_num))
+        announcements=query.object_list
 
-    params={
-            'form':form,
-            'subject':subject,
-            'classroom':classroom,
-            'announcements':announcements,
-            'page':query,
-            'page_range':page_range,
-        }
-    return render(request,'announcement.html',params)
+        params={
+                'form':form,
+                'subject':subject,
+                'classroom':classroom,
+                'announcements':announcements,
+                'page':query,
+                'page_range':page_range,
+            }
+        return render(request,'announcement.html',params)
+    else:
+        raise Http404()
 
 @login_required
 def announcement_page(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-    announcement = Announcement.objects.all().filter(subject_name=subject).get(id=id)
-    params={
-        'announcement':announcement,
-        'subject':subject,
-        'classroom':classroom
-        }
-    return render(request,'announcement_page.html',params)
+    if member_check(request.user, classroom):
+        subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+        announcement = Announcement.objects.all().filter(subject_name=subject).get(id=id)
+        params={
+            'announcement':announcement,
+            'subject':subject,
+            'classroom':classroom
+            }
+        return render(request,'announcement_page.html',params)
+    else:
+        raise Http404()
 
 @login_required
 def announcement_update(request,unique_id,subject_id,id):
@@ -461,7 +487,7 @@ def announcement_delete(request,unique_id,subject_id,id):
         announcement.delete()
         return redirect(f'/{unique_id}/{subject_id}/announcement/')
     else:
-        Http404()
+        raise Http404()
     params={
         'subject':subject,
         'classroom':classroom,
@@ -472,15 +498,18 @@ def announcement_delete(request,unique_id,subject_id,id):
 @login_required
 def this_subject(request,unique_id, subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-    members = classroom.members.all()
-    params={
-        'subject':subject,
-        'classroom':classroom,
-        'members':members,
-        'is_teacher':classroom.created_by==request.user,
-    }
-    return render(request,'thissubject.html',params)
+    if member_check(request.user, classroom):
+        subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+        members = classroom.members.all()
+        params={
+            'subject':subject,
+            'classroom':classroom,
+            'members':members,
+            'is_teacher':classroom.created_by==request.user,
+        }
+        return render(request,'thissubject.html',params)
+    else:
+        raise Http404()
 
 @login_required
 def delete_subject(request,unique_id, subject_id):
@@ -530,6 +559,4 @@ def remove_member(request,unique_id,username):
             return redirect(f'/subject/{unique_id}')
     else:
         raise Http404()
-
-
 

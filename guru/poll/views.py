@@ -7,7 +7,6 @@ from datetime import datetime
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from basic.models import *
-import datetime
 from django.utils import timezone
 from django.db.models import *
 
@@ -21,15 +20,12 @@ def home(request,unique_id):
 	if request.method=='POST':
 		form = QuestionForm(request.POST or None)
 		classroom = Classroom.objects.get(unique_id = unique_id)
-		time= request.POST.get('date')
-		d = datetime.fromisoformat(time)
-		k=d.strftime('%Y-%m-%d %H:%M:%S')
 		choice_list = request.POST.getlist('check')
 		choice_list = list(filter(filter_fun,choice_list))
 		if form.is_valid():
 			form = form.save(commit=False)
 			form.classroom = classroom
-			form.announce_at = k
+			form.announce_at = request.POST.get('date')
 			form.created_by = request.user
 			form.save()
 			for i in choice_list:

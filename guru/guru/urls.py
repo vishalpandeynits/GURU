@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.urls import path,include
 from django.conf.urls.static import static
-from users.views import signup,edit_profile
+from users.views import edit_profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,7 +25,6 @@ urlpatterns = [
     path('account/',include('django.contrib.auth.urls')),
     path('polls/',include('poll.urls')),
     path('profile/',include('users.urls')),
-    path('signup/',signup, name="signup"),
     path('comments/', include('django_comments.urls')),
     path('edit-profile/', edit_profile, name='edit-profile'),
     path('accounts/', include('allauth.urls')),

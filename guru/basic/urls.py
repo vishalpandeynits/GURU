@@ -4,7 +4,7 @@ from .views import *
 urlpatterns = [
     path('',home,name="home"),
     path('homepage/',homepage,name="homepage"),
-    path('signup/',signup,name="signup"),
+    path('ksignup/',signup,name="signup"),
     path('activate/<uidb64>/<token>/',activate,name="activate"),
     path('subject/<unique_id>/',subjects,name="subjects"),
 

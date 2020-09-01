@@ -2,10 +2,9 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import ClearableFileInput
 from .models import Classroom, Subject, Note, Announcement, Assignment, Submission
-from bootstrap_datepicker_plus import DateTimePickerInput
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
-
+from django.forms.widgets import *
 class CreateclassForm(forms.ModelForm):
 	class Meta:
 		model =  Classroom
@@ -24,7 +23,7 @@ class NoteForm(forms.ModelForm):
 class AssignmentForm(forms.ModelForm):
 	class Meta:
 		model = Assignment
-		fields = ['file','topic','description']
+		fields = ['file','topic','description',]
 
 class AnnouncementForm(forms.ModelForm):
 	class Meta:

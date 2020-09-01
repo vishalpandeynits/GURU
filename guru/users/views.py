@@ -4,15 +4,15 @@ from .models import Profile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-def signup(request):
-	if request.method == 'POST':
-		form = SignUpForm(request.POST or None)
-		if form.is_valid():
-			form.save()
-			return redirect('/accounts/login')
-	else:
-		form = SignUpForm()
-	return render(request, 'registration/signup.html', {'form': form})
+# def signup(request):
+# 	if request.method == 'POST':
+# 		form = SignUpForm(request.POST or None)
+# 		if form.is_valid():
+# 			form.save()
+# 			return redirect('/accounts/login')
+# 	else:
+# 		form = SignUpForm()
+# 	return render(request, 'registration/signup.html', {'form': form})
 
 def profiles(request, username):
 	p_user = get_object_or_404(User, username=username)
