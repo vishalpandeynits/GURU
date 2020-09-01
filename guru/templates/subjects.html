@@ -3,78 +3,26 @@
 {% block title %} Home view {% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
-
-<style>
-	.opts {
-		position: absolute;
-		cursor: pointer;
-		top: -2.5rem;
-		right: -.5rem;
-		z-index: 100;
-		/* right: 1rem;
-		bottom: 1rem; */
-		font-size: 35px;
-	}
-	.member-card {
-		position: relative;
-	}
-	.dropbtn {
-		color: black;
-		padding: 16px;
-		font-size: 35px;
-		cursor: pointer;
-		margin-left: 10rem;
-		border: none;
-		margin-bottom: -1rem;
-		right: -.5rem;
-	}
-
-	.dropdown {
-		position: relative;
-		display: inline-block;
-	}
-
-	.dropdown-content {
-		font-size: 15px;
-		display: none;
-		margin-right: .6rem;
-		position: relative;
-		background-color: #f1f1f1;
-		min-width: 10px;
-		box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-		z-index: 1;
-	}
-
-	.dropdown-content a {
-		color: black;
-		padding: 12px 16px;
-		text-decoration: none;
-		display: block;
-	}
-
-	.dropdown-content a:hover {
-		background-color: #ddd;
-	}
-
-	.dropdown:hover .dropdown-content {
-		display: block;
-	}
-</style>
 <div class="container-fluid m-2">
-	<center> <img src="{% static 'classroom.jpg' %}" style="height:20vw;" class="d-block w-50"></center>
-
+	<center>
+		<img src="{% static 'classroom.jpg' %}" style="height:20vw;" class="d-block w-50">
+	</center>
 	<div id="vue-container">
+
 		<center id="homepage-btn-group">
 			<button @click="toggleSubjects">Subjects</button>
 			<a href="{% url 'polls' classroom.unique_id %}">Polls</a>
 			<button @click="toggleMembers">Members</button>
+			{% if form %}
+				<button v-if="subjects" type="button" style="height:50px;border-radius:15px;position:relative;right:0;"
+					class="btn float-right btn-info m-2" data-toggle="modal" data-target="#addAnnouncement"> Add <i
+						class="fa fa-plus" aria-hidden="true"> </i>
+				</button>
+			{% endif %}
 		</center>
+
 		<!-- Subjects -->
 		{% if form %}
-		<button v-if="subjects" type="button" style="height:50px;border-radius:15px;position:relative;right:0;"
-			class="btn float-right btn-info m-2" data-toggle="modal" data-target="#addAnnouncement"> Add <i
-				class="fa fa-plus" aria-hidden="true"> </i>
-		</button>
 		<div class="modal fade " id="addAnnouncement" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog" role="document">
@@ -105,16 +53,17 @@
 			{% for subject in subjects %}
 			<div class="col-xs-12 col-md-6 col-lg-4">
 				<div style="background:url('/media/bga.jpg');background-size:cover;background-position:center;"
-					id="card" class="card"> {% if subject %}
+					id="card" class="card">
 					<a class="text-center" id="class-link"
 						href='{% url "subject_page" classroom.unique_id subject.id %}'>
 						<div id="subject-name">{{ subject|upper }}</div>
 					</a>
-					{% endif %}
 				</div>
 			</div>
 			{% endfor %}
 		</div>
+
+
 		<div v-if="members">
 
 			{% for teacher in teachers %}
@@ -142,38 +91,36 @@
 				</div>
 				{% endfor %}
 
-			{% for student in students %}
-			<div class="row">
-				<div class="member-card">
-					<div class="wrapper">
-						<br/>
-						
-						<div class="opts">
-							<div class="dropdown">
-								<div class="dropbtn">...</div>
-								<div class="dropdown-content">
-									{% if is_teacher %}
-									<a href="{% url 'remove_member' classroom.unique_id student.username %}">Remove from classroom</a>
-									<a href="{% url 'make_admin' classroom.unique_id student.username %}">Make Teacher</a>
-									{% else %}
-									{% if user.username == student.username %}
-									<a href="{% url 'remove_member' classroom.unique_id user.username %}"> Leave classroom</a>
-									{% endif %}
-									{% endif %}
+				{% for student in students %}
+				<div class="row">
+					<div class="member-card">
+						<div class="wrapper">
+							<br/>
+							<div class="opts">
+								<div class="dropdown">
+									<div class="dropbtn">...</div>
+									<div class="dropdown-content">
+										{% if is_teacher %}
+										<a href="{% url 'remove_member' classroom.unique_id student.username %}">Remove from classroom</a>
+										<a href="{% url 'make_admin' classroom.unique_id student.username %}">Make Teacher</a>
+										{% else %}
+										{% if user.username == student.username %}
+										<a href="{% url 'remove_member' classroom.unique_id user.username %}"> Leave classroom</a>
+										{% endif %}
+									</div>
 								</div>
 							</div>
 						</div>
-						
-					</div>
-					<img src="{{student.profile.profile_pic.url}}">
-					<div class="member-container">
-						<h4><b>{{ student.username }} &nbsp; &nbsp;</b></h4>
-						<p>{{student.profile.bio}}</p>
+						<img src="{{student.profile.profile_pic.url}}">
+						<div class="member-container">
+							<h4><b>{{ student.username }} &nbsp; &nbsp;</b></h4>
+							<p>{{student.profile.bio}}</p>
+						</div>
 					</div>
 				</div>
 				{% endfor %}
-
 			</div>
+
 		</div>
 		<!-- Subjects end  -->
 
@@ -202,4 +149,4 @@
 			}
 		})
 	</script>
-	{% endblock %}
+{% endblock %}

@@ -6,56 +6,53 @@
 {% block subject_content %}
 <div class="container-fluid m-0 p-4 float-left">
 	<div class="row">
-
 		<div class="col-sm-12 col-md-6">
-			{% if user.username == classroom.teacher.username %}
+			<!-- Update assignment logic start -->
+			{% if is_teacher %}
 				<a class="btn btn-danger m-2 float-right" href="{% url 'delete_assignment' classroom.unique_id subject.id assignment.id %}">
 					Delete <i class="fa fa-trash" aria-hidden="true"></i> 
 				</a>
-				<a class="btn btn-primary m-2 float-right" href="{% url 'update_assignment' classroom.unique_id subject.id assignment.id %}">
-					Update <i class="fas fa-edit"></i> 
+				<a class="btn btn-primary m-2 float-right" data-toggle="modal" data-target="#updateresource">
+				 Update <i class="fas fa-edit"></i></i>
 				</a>
-			{% endif %}
+				<!-- Modal -->
+				<div class="modal fade " id="updateresource" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content bg-info">
 
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel">Update</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+
+				      <div class="modal-body">
+					  <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+						{{ updateform|crispy }}
+						<input type="submit" class="btn btn-primary float-right"value="submit">
+					  </form>
+				      </div>
+
+				    </div>
+				  </div>
+				</div>
+			{% endif %}
+			<!-- Update assignment logic ends -->
+
+			<!-- Assignment details -->
 			{{ assignment.topic }}<br>
 				<b style="float:right;">
 					 Submit Before <nobr>{{ assignment.submission_date }}</nobr>
 				</b><br>
-			{{ assignment.description|safe }}<br><br><br>
+			{{ assignment.description|safe }}<br><br>
+			<!-- Assignment details ends -->
 
-			{% get_comment_count for assignment as comment_count %}
-				{{ comment_count }} Comments
+			{% include 'assignmentcomment.html' %}
 
-			{% if user.is_authenticated %}
-			    {% get_comment_form for assignment as form %}
-			    	<form action="{% comment_form_target %}" method="POST">{% csrf_token %}
-			    		<textarea required="required" name="comment" style="width:100%;resize:none;" rows="4" maxlength="3000" required id="id_comment"> </textarea>
-					    {% if form.name == "honeypot" %} style="display:none;" {% endif %}
-					    {{ form.content_type }}
-					    {{ form.object_pk }}
-					    {{ form.timestamp }}
-					    {{ form.security_hash }}
-			    		<input type="hidden" name="next" value="{% url 'assignment_page' classroom.unique_id subject.id assignment.id %}" />
-			    		<input type="submit" style="width:130px;" class="btn btn-primary  float-right" value="Add comment" id="id_submit" />
-			    	</form>
-			{% endif %}<br><br>
-
-			{% get_comment_list for assignment as comment_list %}
-			{% for comment in comment_list %}
-				<div class="alert p-2 w-75">
-					<a href="/profile/{{comment.user.username}}">
-						<img class="float-left m-2 mr-4"style="border-radius: 50%;"src="{{comment.user.profile.profile_pic.url }}"height="60" width="60">
-					</a>
-					<b>{{ comment.user.username}}</b> <br>
-					{{ comment.comment }}<br>
-					<span style="float:right;">
-						Commented {{ comment.submit_date|naturaltime }}
-					</span><br><br>
-				</div>
-			{% endfor %}
 		</div>
-
 		<div class="col"style="float:right;">
+			<!-- Submission shown to teacher -->
 			{% if is_teacher %}
 			<div id="assignment-container">
 				<button class="btn btn-primary mb-2" @click="show_all_submissions">All Submissions {{message}}</button>
@@ -65,7 +62,7 @@
 				<span v-if="all_submissions">
 					{% for submission in all_submissions %}
 						<div class="alert alert-info">
-							<a href="{{submission.file.url}}" download>{{ submission.file }} </a>
+							<a href="{{submission}}" download>{{ submission.file }} </a>
 							submitted_by {{ submission.submitted_by }} at {{ submission.submitted_on }}. 
 						</div>
 					{% endfor %}
@@ -74,7 +71,7 @@
 				<span v-if="ontime_submissions">
 				{% for submission in ontime_submissions %}
 					<div class="alert alert-success">
-							<a href="{{submission.file.url}}" download>{{ submission.file }} </a>
+							<a href="{{submission}}" download>{{ submission.file }} </a>
 							submitted_by {{ submission.submitted_by }} at {{ submission.submitted_on }}. 
 					</div>
 				{% endfor %}
@@ -83,13 +80,14 @@
 				<span v-if="late_submissions">
 				{% for submission in late_submissions %}
 					<div class="alert alert-danger">
-							<a href="{{submission.file.url}}" download>{{ submission.file }} </a>
+							<a href="{{submission}}" download>{{ submission.file }} </a>
 							submitted_by {{ submission.submitted_by }} at {{ submission.submitted_on }}. 
 					</div>
 				{% endfor %}
 				</span>
 			</div>
 			{% else %}
+				<!-- Submission form for students  -->
 				Submit your assignment:
 				<form method="POST" enctype="multipart/form-data">{% csrf_token %}
 					{{ submissionform|crispy }}
@@ -101,12 +99,14 @@
 					{% for data in submission %}
 						<h2 style="color:green;">
 							You have submitted your assignment!!! 
-							<a href="{{submission.file.url}}" download>Download</a>
+							<a href="{{submission}}" download>Download</a>
 						</h2>
 					{% endfor %}
 				{% endif %}
+
 			{% endif %}
 		</div>
+</div>
 </div>
 <script>
 	new Vue({

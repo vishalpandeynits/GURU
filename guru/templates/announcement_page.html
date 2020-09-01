@@ -7,43 +7,40 @@
    <div class="row ">
 	<div class="col">
 		<a class="btn btn-danger m-2 float-right" href="{% url 'delete_announcement' classroom.unique_id subject.id announcement.id %}">Delete <i class="fa fa-trash" aria-hidden="true"></i></a>
-		<a class="btn btn-primary m-2 float-right" href="{% url 'update_announcement' classroom.unique_id subject.id announcement.id %}">Update <i class="fas fa-edit"></i></a>
+		<a class="btn btn-primary m-2 float-right" data-toggle="modal" data-target="#updateresource">
+		 Update <i class="fas fa-edit"></i></i>
+		</a>{{ is_teacher }}
+		{% if is_teacher %}
+		<!-- Modal -->
+		<div class="modal fade " id="updateresource" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content bg-info">
+
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Update</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+
+		      <div class="modal-body">
+			  <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+				{{ updateform|crispy }}
+				<input type="submit" class="btn btn-primary float-right"value="submit">
+			  </form>
+		      </div>
+
+		    </div>
+		  </div>
+		</div>
+		{% endif %}
 		{{announcement.subject}}<br><br>
 		{% if announcement.file %}
 			<a href="{{note.file.url}}" download>Download file </a><br>
 		{% endif %}
 		{{ announcement.description|safe }}
 			<br><br>
-		{% get_comment_count for announcement as comment_count %}
-			{{ comment_count }} Comments
-
-		{% if user.is_authenticated %}
-		    {% get_comment_form for announcement as form %}
-		       <form action="{% comment_form_target %}" method="POST">{% csrf_token %}
-		    	<textarea name="comment" style="width:100%;resize:none;" rows="4" maxlength="3000" v-model="comment" id="id_comment" required> </textarea>
-		    	{% if form.name == "honeypot" %} style="display:none;" {% endif %}
-		    	{{ form.content_type }}
-		    	{{ form.object_pk }}
-		    	{{ form.timestamp }}
-		    	{{ form.security_hash }}
-		    	<input type="hidden" name="next" value="{% url 'announcement_page' classroom.unique_id subject.id announcement.id %}" />
-		    	<input type="submit" style="width:130px;" class="btn btn-primary float-right" value="Add comment" 
-		    	id="id_submit" :disabled="disable"/>
-		    	</form>
-		{% else %}
-    		<p>Please <a href="{% url 'login' %}">log in</a> to leave a comment.</p>
-		{% endif %}
-
-		<br><br>
-			{% get_comment_list for announcement as comment_list %}
-			{% for comment in comment_list %}
-				<div class="alert p-2 w-75">
-					<a href="/profile/{{comment.user.username}}">
-					<img class="float-left m-2 mr-4"style="border-radius: 50%;"src="{{comment.user.profile.profile_pic.url }}"height="60" width="60"></a><b>{{ comment.user.username}}</b> <br>
-					{{ comment.comment }}<br><span style="float:right;">Commented {{ comment.submit_date|naturaltime }}</span>
-				<br><br>
-				</div>
-			{% endfor %}
+		{% include 'announcementcomment.html' %}
 		</div>
 	</div>
 </div>

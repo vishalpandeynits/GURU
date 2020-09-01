@@ -6,8 +6,9 @@
 	<div class="col-1 float-right">
 		{% if is_teacher %}
 		<a class="btn btn-danger m-2 float-right" href="{% url 'delete_subject' classroom.unique_id subject.id %}">Delete <i class="fa fa-trash" aria-hidden="true"></i></a>
-		{% endif %}}
+		{% endif %}
 	</div>
 	add description to class a class page storeroom permissions email
+	Tis classroom is created by {{ classroom.created_by.username }}
 </div>
 {% endblock %}
