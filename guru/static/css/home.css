@@ -48,7 +48,6 @@ text-area{
 	margin-top:8%;
 	background-color: black;
 	width:65%;
-	color:white;
 }
 #sign-up-form ul {
 	color:red;
@@ -383,7 +382,6 @@ text-area{
     border-radius:25%;
     width:70px;
     margin:20px;
-    color:white;
     text-decoration:none;
 }
 #social-container a i{

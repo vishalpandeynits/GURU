@@ -82,6 +82,7 @@ def homepage(request):
         classroom = Classroom.objects.get(unique_id=join_key)
         classroom.members.add(request.user)
     class_name=Classroom.objects.all().filter(members=request.user).exclude(teacher = request.user)
+
     if request.method=='POST':
         createclassform = CreateclassForm(request.POST or None)
         if createclassform.is_valid():
@@ -89,7 +90,6 @@ def homepage(request):
             classroom.created_by = request.user
             classroom.save()
             classroom.teacher.add(request.user)
-            classroom.save()
             classroom.members.add(request.user)
             classroom.save()
             return redirect(f'/subject/{classroom.unique_id}')
