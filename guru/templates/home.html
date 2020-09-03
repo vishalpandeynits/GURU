@@ -4,7 +4,7 @@
 {% block content %}
 <div id="home-btn-container">
 	<h1 id="intro"> Online classes made easy<br> by your own GURU.</h1><br>
-	<a href="/ksignup/" class = "btn btn-home">SIGN UP </a>
+	<a href="{% url 'signup' %}" class = "btn btn-home">SIGN UP </a>
 	<a href="{% url 'login' %}"  class = 'btn btn-home'> LOG IN </a>
 </div>
 {% endblock %}

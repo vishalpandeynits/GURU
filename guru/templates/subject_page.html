@@ -7,22 +7,19 @@
 		<div class="col-2">
 		<div style="float:right;"id="mySidenav" class="sidenav">
 			<a href="javascript:void(0)" class="closebtn" onclick="closeNav(this)">&times;</a>
-			<a href="{% url 'subject_page' classroom.unique_id subject.id %}" onclick="closeNav(this)">Home</a>
 			<a href="{% url 'resources' classroom.unique_id subject.id  %}" onclick="closeNav(this)">Resources</a>
 			<a href="{% url 'assignments' classroom.unique_id subject.id  %}" onclick="closeNav(this)">Assignment</a>
 			<a href="{% url 'announcement' classroom.unique_id subject.id %}" onclick="closeNav(this)">Announcement</a>
-<!-- 			<a href="#" onclick="closeNav(this)">Discussion</a> 
-			<a href="#youtube" onclick="closeNav(this)">Attend Class</a> -->
-			<a href="{% url 'this_subject' classroom.unique_id subject.id %}" onclick="closeNav(this)"> This Class </a>
+			<a href="{% url 'this_subject' classroom.unique_id subject.id %}" onclick="closeNav(this)"> This Class </a><hr>
+			<a href="{% url 'homepage' %}" onclick="closeNav(this)">Home</a>
+			<a href="{% url 'subjects' classroom.unique_id %}" onclick="closeNav(this)"> Subjects </a>
+			<a href="{% url 'profile' user.username %}" onclick="closeNav(this)"> {{ user.username|title }} </a>
 		</div>
 		</div>
 		<div class="col-12">
 			<div class="bg-info p-2">
-				<span class="pl-1 "id="openNav" style="display: inline;float:left;" onclick="openNav()">&#9776;</span>
-				<center> 
-					<span style="font-size:3em"> {{ subject.subject_name|title }}</span> by 
-				    {{ subject.classroom.teacher.first_name|upper }} {{ subject.classroom.teacher.last_name|upper }}
-				</center>
+				<span class="pl-1 "id="openNav" style="display: inline;float:left;position:relative;top:15px;" onclick="openNav()">&#9776;</span>
+					<span style="font-size:3em">&nbsp; {{ subject.subject_name|title }}</span>
 			</div>
 			{% block subject_content %} {% endblock %}
 		</div>

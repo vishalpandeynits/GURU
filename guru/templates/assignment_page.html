@@ -4,7 +4,7 @@
 {% load comments %}
 {% load static %}
 {% block subject_content %}
-<div class="container-fluid m-0 p-4 float-left">
+<div class="container-fluid">
 	<div class="row">
 		<div class="col-sm-12 col-md-6">
 			<!-- Update assignment logic start -->
@@ -15,6 +15,7 @@
 				<a class="btn btn-primary m-2 float-right" data-toggle="modal" data-target="#updateresource">
 				 Update <i class="fas fa-edit"></i></i>
 				</a>
+
 				<!-- Modal -->
 				<div class="modal fade " id="updateresource" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				  <div class="modal-dialog" role="document">
@@ -28,10 +29,10 @@
 				      </div>
 
 				      <div class="modal-body">
-					  <form method="POST" enctype="multipart/form-data">{% csrf_token %}
-						{{ updateform|crispy }}
-						<input type="submit" class="btn btn-primary float-right"value="submit">
-					  </form>
+						  <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+							{{ updateform|crispy }}
+							<input type="submit" class="btn btn-primary float-right"value="submit">
+						  </form>
 				      </div>
 
 				    </div>
@@ -45,12 +46,13 @@
 				<b style="float:right;">
 					 Submit Before <nobr>{{ assignment.submission_date }}</nobr>
 				</b><br>
-			{{ assignment.description|safe }}<br><br>
+				<pre>{{ assignment.description }}</pre> 
+
+				<br><br>
 			<!-- Assignment details ends -->
-
 			{% include 'assignmentcomment.html' %}
-
 		</div>
+		
 		<div class="col"style="float:right;">
 			<!-- Submission shown to teacher -->
 			{% if is_teacher %}
@@ -69,12 +71,12 @@
 				</span>
 
 				<span v-if="ontime_submissions">
-				{% for submission in ontime_submissions %}
-					<div class="alert alert-success">
-							<a href="{{submission}}" download>{{ submission.file }} </a>
-							submitted_by {{ submission.submitted_by }} at {{ submission.submitted_on }}. 
-					</div>
-				{% endfor %}
+					{% for submission in ontime_submissions %}
+						<div class="alert alert-success">
+								<a href="{{submission}}" download>{{ submission.file }} </a>
+								submitted_by {{ submission.submitted_by }} at {{ submission.submitted_on }}. 
+						</div>
+					{% endfor %}
 				</span>
 
 				<span v-if="late_submissions">
@@ -88,11 +90,13 @@
 			</div>
 			{% else %}
 				<!-- Submission form for students  -->
+				{% if not is_teacher %}
 				Submit your assignment:
 				<form method="POST" enctype="multipart/form-data">{% csrf_token %}
 					{{ submissionform|crispy }}
 					<input type="submit" style="width:150px;float:right;" class="btn btn-primary" value="submit">
 				</form>
+				{% endif %}
 				{% if not submission %}
 					<h2 style="color:red;"> You have not submitted your assignment yet!!! </h2>
 				{% else %}
@@ -108,6 +112,8 @@
 		</div>
 </div>
 </div>
+
+
 <script>
 	new Vue({
 		el:'#assignment-container',

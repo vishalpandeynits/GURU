@@ -4,6 +4,7 @@
 {% block content %}
 {% load crispy_forms_tags %}
 <div class="container">
+	<a class="btn btn-outline-primary float-right" href="{% url 'profile' user.username %}">{{ user.username }}</a>
 	<div class="row">
 		<div class="col-sm-11 col-md-10">
 			<div id="home-btn-container">
@@ -25,22 +26,12 @@
 					</form><br><br> 
 				</div> 
 				{% if my_classes %} 
-					The list of classes you have created:<br>
+					The list of classes you are member of:<br>
 					{% for class in my_classes %}
 						<div style="color:white; background:black;height:120%;" class="alert alert-primary" role="alert"> 
 							<a href="{% url 'subjects' class.unique_id %}">	{{ class|upper }} </a> 
 							<span style="float:right"> {{ class.unique_id}}</span> 
 						</div> 
-					{% endfor %} 
-				{% endif %} 
-
-				{% if class_name %} 
-					The list of classes you have joined:<br> 
-					{% for class in class_name %}
-						<div style="color:white; background:black;" class="alert"> 
-							<a href="{% url 'subjects' class.unique_id %}">	{{ class|upper }} </a> 
-							<span style="float:right;"> {{ class.teacher.first_name}} {{ class.teacher.last_name}}  </span> 
-						</div>
 					{% endfor %} 
 				{% endif %} 
 			</div>

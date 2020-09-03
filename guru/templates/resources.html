@@ -2,46 +2,46 @@
 {% load crispy_forms_tags %}
 {% load humanize %}
 {% block subject_content %}
-<div class="container-fluid">
-<div class="row ">
-	<div class="col-sm-0 col-md-1 col-lg-1 p-4 mr-4"></div>
-	<div class="col-sm-12 col-md-8 ml-md-4 col-lg-8"><br>
-		<form>
-		<div class="d-flex justify-content-end">
-	   		<div class="searchbar">
-	      	  <input class="search_input" type="text" name="search" placeholder="Search ...">
-	      		<button type="submit" class="search_icon"><i class="fas fa-search"></i></button>
-	    	</div>
-	  	</div><br>
-  		</form>
+<div class="container">
+		{% if is_teacher %}
+      	 <button type="button"class="btn btn-info mt-4" data-toggle="modal" data-target="#addResource">
+      	 	Add <i class="fa fa-plus" aria-hidden="true"></i>
+		</button>
+		{% endif %}
+
+		<form style="display: flex;justify-content: flex-end;">
+	      	 <input class="search_input" type="text" name="search" placeholder="Search ...">
+	      	 <button type="submit" class="search_icon"><i class="fas fa-search"></i></button>
+  		</form><br>
+
   		{% if page %}
-		<ul>
-		{% for note in page %}
-			<a href="{% url 'read_note' classroom.unique_id subject.id note.id %}" style="color:white; color:blue; font-size:1.3em; text-decoration:none;">
-				<li class="alert alert-info" style="list-style-type:none;">
-					<span style="font-size: 1.3em;">&#8250;</span>{{ note.topic|safe }} <span class="float-right"> {{ note.uploaded_on|naturaltime }}</span>
-				</li>
-			</a>
-		{% endfor %}
-		</ul>
-		{% include 'paginations.html' %}
+			<ul style="min-height:500px;">
+				{% for note in page %}
+					<a href="{% url 'read_note' classroom.unique_id subject.id note.id %}" 
+						style="color:white; color:blue; font-size:1.3em;text-decoration:none;">
+						<li class="alert  alert-info" style="list-style-type:none;">
+							<span style="font-size: 1.3em;">&#8250;</span>{{ note.topic }}<br>
+							<span class="float-right"> 
+								{{ note.uploaded_on|naturaltime }}
+							</span>
+						</li>
+					</a>
+				{% endfor %}
+			</ul>
+			{% include 'paginations.html' %}
 		{% else %}
 			<h1 style="color:blue; font-size: 2vw;">No item found </h1>
 		{% endif %}
-	</div>
-		{% if is_teacher %}
-		<!-- Button trigger modal -->
-		<button type="button" style="height:50px;border-radius:15px;float:right;"class="btn btn-info m-2" data-toggle="modal" data-target="#addResource">
-		  Add <i class="fa fa-plus" aria-hidden="true"></i>
-		</button>
 
+
+		{% if is_teacher %}
 		<!-- Modal -->
-		<div class="modal fade " id="addResource" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content bg-info">
+		<div class="modal fade" id="addResource" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div  class="modal-dialog " role="document">
+		    <div class="modal-content bg-light">
 
 		      <div class="modal-header">
-		        <h5 class="modal-title" id="exampleModalLabel">Add a resource.</h5>
+		        <h5 class="modal-title" id="exampleModalLabel ">Add a resource.</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">&times;</span>
 		        </button>
@@ -60,8 +60,6 @@
 		    </div>
 		  </div>
 		  {% endif %}
-		</div>
-	</div>
 </div>
 
 {% endblock %}

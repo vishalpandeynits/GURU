@@ -6,12 +6,11 @@
 <div class="container">
    <div class="row ">
 	<div class="col">
+		{% if is_teacher %}
 		<a class="btn btn-danger m-2 float-right" href="{% url 'delete_announcement' classroom.unique_id subject.id announcement.id %}">Delete <i class="fa fa-trash" aria-hidden="true"></i></a>
 		<a class="btn btn-primary m-2 float-right" data-toggle="modal" data-target="#updateresource">
 		 Update <i class="fas fa-edit"></i></i>
-		</a>{{ is_teacher }}
-		{% if is_teacher %}
-		<!-- Modal -->
+		</a>
 		<div class="modal fade " id="updateresource" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content bg-info">
@@ -29,16 +28,16 @@
 				<input type="submit" class="btn btn-primary float-right"value="submit">
 			  </form>
 		      </div>
-
 		    </div>
 		  </div>
 		</div>
 		{% endif %}
+
 		{{announcement.subject}}<br><br>
 		{% if announcement.file %}
 			<a href="{{note.file.url}}" download>Download file </a><br>
 		{% endif %}
-		{{ announcement.description|safe }}
+		<pre>{{ announcement.description }}</pre>
 			<br><br>
 		{% include 'announcementcomment.html' %}
 		</div>

@@ -1,0 +1,48 @@
+{% load comments %}
+{% load humanize %}
+<div id="con">
+{% get_comment_count for note as comment_count %}
+	{{ comment_count }} Comments
+{% if user.is_authenticated %}
+    {% get_comment_form for note as form %}
+       <form action="{% comment_form_target %}" method="POST">{% csrf_token %}
+    	<textarea name="comment" style="width:100%;resize:none;" rows="4" maxlength="3000" v-model="comment" id="id_comment" required> </textarea>
+    	{% if form.name == "honeypot" %} style="display:none;" {% endif %}
+    	{{ form.content_type }}
+    	{{ form.object_pk }}
+    	{{ form.timestamp }}
+    	{{ form.security_hash }}
+    	<input type="hidden" name="next" value="{% url 'read_note' classroom.unique_id subject.id note.id %}" />
+    	<input type="submit" style="width:130px;" class="btn btn-primary float-right" value="Add comment" 
+    	id="id_submit" :disabled="disable"/>
+    	</form>
+{% else %}
+	<p>Please <a href="{% url 'login' %}">log in</a> to leave a comment.</p>
+{% endif %}
+
+<br><br>
+	{% get_comment_list for note as comment_list %}
+	{% for comment in comment_list reversed %}
+		<div class="alert p-2 w-75">
+			<a href="/profile/{{comment.user.username}}">
+			<img class="float-left m-2 mr-4"style="border-radius: 50%;"src="{{comment.user.profile.profile_pic.url }}"height="60" width="60"></a><b>{{ comment.user.username}}</b> <br>
+			<pre>{{ comment.comment }}</pre><br><span style="float:right;">Commented {{ comment.submit_date|naturaltime }}</span>
+		<br><br>
+		</div>
+	{% endfor %}
+</div>
+<script>
+	new Vue({
+		el:'#con',
+		data:{
+			comment:"",
+		},
+		computed:{
+			disable:function(){
+				if (this.comment.trim() == ""){
+					return true
+				}
+			}
+		}
+	})
+</script>

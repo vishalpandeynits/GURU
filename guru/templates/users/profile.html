@@ -1,24 +1,49 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block content %}
-<div class="container p-0 bg-light">
-	<div class="media">
-		<img src="{{ profile.cover_photo.url }}" class="cover_photo">
-		<center > 
-			<img src="{{ profile.profile_pic.url }}" class="profile-page-pic"><br>
-				<span style="position:relative;top:-60px;"><h3>{{ profile.user.username }}</h3>
-				{{ profile.bio}}</center> </span>
-	 <div style="position:relative;top:-70px;" id="social-container">
-		<a href="#"  class="btn-floating btn-lg btn-fb"><i class="fab fa-facebook-f"></i></a>
-		<a href="#" class="btn-floating btn-lg btn-gplus"><i class="fas fa-envelope"></i></a>
-		<a href="#" class="btn-floating btn-lg btn-ins"><i class="fab fa-instagram"></i></a>
-		<a href="#" class="btn-floating btn-lg btn-whatsapp" ><i class="fab fa-whatsapp"></i></a>
+<div id="profile" class="container">
+	<div class="row">
+
+		<div class="col-sm-12 col-md-4">
+			<img style="width:100%;"class="img-fluid" src="{{ profile.profile_pic.url }}"><br>
+			<center><h3>{{ profile.user.username }}</h3></center>
+			<pre>{{ profile.bio }}</pre>
+		</div>
+
+		<div class="col-sm-12 col-md-8">
+
+			{% if user.username == profile.user.username %}
+			<center>
+				<a style="margin:10px;" class="btn btn-info" href="{% url 'logout' %}">Log Out </a>
+				<a style="margin:10px;" class="btn btn-info" href="{% url 'password_change' %}">Change Password </a>
+				<a style="margin:10px;" @click="showUpdateForm"class="btn btn-info">Edit profile</a>
+				<div id="social-container">
+					<a href="{{user.profile.facebook }}" target="_blank" class="btn-floating btn-lg btn-fb"><i class="fab fa-facebook-f"></i></a>
+					<a href="mailto:{{user.email}}" target="_blank" class="btn-floating btn-lg btn-gplus"><i class="fas fa-envelope"></i></a>
+					<a target="_blank" href="https://api.whatsapp.com/send?phone={{user.profile.whatsapp_number}}" class="btn-floating btn-lg btn-whatsapp" ><i class="fab fa-whatsapp"></i></a>
+					<a target="_blank" href="tel:{{user.profile.phone_number }}" class="btn-floating btn-lg" ><i class="fa fa-phone" aria-hidden="true"></i></i></a>
+				</div>
+			</center>
+			{% endif %}
+			<form method="POST" id="profileupdateform" v-if="updateForm" enctype="multipart/form-data"> {% csrf_token %}
+				{{ p_form|crispy }}
+				<button class="btn btn-primary" type="submit">Update</button>
+			</form>
+
+		</div>
 	</div>
-		{% if user.username == profile.user.username %}
-	<div id="profile-btn-container">
-	    <a style="margin:10px;" class="btn btn-info" href="{% url 'logout' %}">Log Out </a>
-		<a style="margin:10px;" class="btn btn-info" href="{% url 'password_change' %}">Change Password </a>
-		<a style="margin:10px;" class="btn btn-info" href="/profile/edit-profile/{{user.username}}/">Edit profile</a>
-	</div>
-	{% endif %}	
 </div>
+<script>
+	new Vue({
+		el:'#profile',
+		data:{
+			updateForm:false,
+		},
+		methods:{
+			showUpdateForm:function(){
+				this.updateForm=this.updateForm===true?false:true;
+			}
+		}
+	})
+</script>
 {% endblock %}

@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import *
 urlpatterns = [
+	path('signup/',signup,name="signup"),
+    path('activate/<uidb64>/<token>/',activate,name="activate"),
     path('<str:username>/', profiles, name='profile'),
-    path('edit-profile/<username>/',edit_profile,name="edit-profile")
  ]

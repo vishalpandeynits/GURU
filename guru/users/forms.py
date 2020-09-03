@@ -11,31 +11,42 @@ class SignUpForm(UserCreationForm):
 		model = User
 		fields = ['username', 'first_name','last_name','email', 'password1', 'password2']
 
+
 	def __init__(self, *args, **kwargs):
 		super(SignUpForm, self).__init__(*args, **kwargs)
-		self.fields['password1'].help_text = "Passwords must be of minimum 8 charactors"
-		self.fields['username'].help_text = ""
-		self.fields['username'].label = "Username/Email"
+		self.fields['password1'].help_text = "Passwords must be of minimum 8 characters"
+		self.fields['username'].label = "Username:"
+		self.fields['email'].widget.attrs.update({'required': 'required'})
 
 	def clean(self):
 		cleaned_data = self.cleaned_data
+
 		# checking Email unique
+
 		try:
 		    User.objects.get(email=cleaned_data['email'])
 		except User.DoesNotExist:
 		    pass
 		else:
 		    raise ValidationError('This Email address already exists! Try different one!')
+
 		# checking User unique
+
 		try:
 		    User.objects.get(username=cleaned_data['username'])
 		except User.DoesNotExist:
 		    pass
 		else:
 		    raise forms.ValidationError('User already exists! Try different one!')
+
 		return cleaned_data
 
 class ProfileUpdateForm(forms.ModelForm):
 	class Meta:
 		model = Profile
-		fields = ['bio', 'profile_pic','phone_number','whatsapp_number','linked_in','facebook']
+		fields = ['bio', 'profile_pic','phone_number','whatsapp_number','facebook']
+
+	def __init__(self, *args, **kwargs):
+		super(ProfileUpdateForm, self).__init__(*args, **kwargs)
+		self.fields['whatsapp_number'].label = "Whatsapp No. (with country code:)"
+		self.fields['phone_number'].label = "Phone No. (with country code:)"

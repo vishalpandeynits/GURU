@@ -1,6 +1,6 @@
 {% load comments %}
 {% load humanize %}
-<div id="#con">
+<div id="con">
 {% get_comment_count for announcement as comment_count %}
 	{{ comment_count }} Comments
 {% if user.is_authenticated %}
@@ -22,11 +22,11 @@
 
 <br><br>
 	{% get_comment_list for announcement as comment_list %}
-	{% for comment in comment_list %}
+	{% for comment in comment_list  reversed %}
 		<div class="alert p-2 w-75">
 			<a href="/profile/{{comment.user.username}}">
 			<img class="float-left m-2 mr-4"style="border-radius: 50%;"src="{{comment.user.profile.profile_pic.url }}"height="60" width="60"></a><b>{{ comment.user.username}}</b> <br>
-			{{ comment.comment }}<br><span style="float:right;">Commented {{ comment.submit_date|naturaltime }}</span>
+			<pre>{{ comment.comment }}</pre><br><span style="float:right;">Commented {{ comment.submit_date|naturaltime }}</span>
 		<br><br>
 		</div>
 	{% endfor %}

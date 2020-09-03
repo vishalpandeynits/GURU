@@ -11,10 +11,10 @@ def unique_id():
     return result_str
 
 class Classroom(models.Model):
-	created_by = models.ForeignKey(User, on_delete = models.CASCADE,related_name='create_by')
+	created_by = models.ForeignKey(User, on_delete = models.CASCADE,related_name='created_by')
 	class_name = models.CharField(max_length = 100)
 	created_on = models.DateTimeField(auto_now_add=True)
-	unique_id = models.UUIDField( primary_key = True, default = uuid.uuid4, editable = False)
+	unique_id = models.CharField(max_length=16,unique=True)
 	members = models.ManyToManyField(User)
 	teacher = models.ManyToManyField(User,related_name='teacher')
 
@@ -25,8 +25,8 @@ class Classroom(models.Model):
 class Subject(models.Model):
 	classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE)
 	subject_name = models.CharField(max_length=50)
-	subject_teacher = models.CharField(max_length=50)
-
+	teacher = models.ForeignKey(User,on_delete=models.CASCADE)
+	
 	def __str__(self):
 		return self.subject_name
 

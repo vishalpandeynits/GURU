@@ -4,8 +4,6 @@ from .views import *
 urlpatterns = [
     path('',home,name="home"),
     path('homepage/',homepage,name="homepage"),
-    path('ksignup/',signup,name="signup"),
-    path('activate/<uidb64>/<token>/',activate,name="activate"),
     path('subject/<unique_id>/',subjects,name="subjects"),
 
     path('subjects/<str:unique_id>/<str:username>/makeAdmin/',make_admin, name="make_admin"),

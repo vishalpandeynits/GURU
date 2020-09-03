@@ -1,13 +1,3 @@
-function showaccount(){
-	visibility = document.getElementById('account').style.display
-	if(visibility=='none'){
-	document.getElementById('account').style.display='block';
-	}
-	else{
-	document.getElementById('account').style.display='none';
-	}
-}
-
 function openNav(el) {
   document.getElementById("mySidenav").style.width = "250px";
   el.style.display="None";
@@ -36,8 +26,4 @@ document.getElementById('joinform').style.display='block';
 else{
 	document.getElementById('joinform').style.display='none';
 }
-}
-
-if ( window.history.replaceState ) {
-	window.history.replaceState( null, null, window.location.href );
 }
