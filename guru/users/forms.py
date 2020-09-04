@@ -11,7 +11,6 @@ class SignUpForm(UserCreationForm):
 		model = User
 		fields = ['username', 'first_name','last_name','email', 'password1', 'password2']
 
-
 	def __init__(self, *args, **kwargs):
 		super(SignUpForm, self).__init__(*args, **kwargs)
 		self.fields['password1'].help_text = "Passwords must be of minimum 8 characters"
@@ -22,7 +21,6 @@ class SignUpForm(UserCreationForm):
 		cleaned_data = self.cleaned_data
 
 		# checking Email unique
-
 		try:
 		    User.objects.get(email=cleaned_data['email'])
 		except User.DoesNotExist:
@@ -31,14 +29,12 @@ class SignUpForm(UserCreationForm):
 		    raise ValidationError('This Email address already exists! Try different one!')
 
 		# checking User unique
-
 		try:
 		    User.objects.get(username=cleaned_data['username'])
 		except User.DoesNotExist:
 		    pass
 		else:
 		    raise forms.ValidationError('User already exists! Try different one!')
-
 		return cleaned_data
 
 class ProfileUpdateForm(forms.ModelForm):

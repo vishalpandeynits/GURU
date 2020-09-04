@@ -24,23 +24,5 @@
 	</div>
 	</div>
 </div>
-<script>
-new Vue({
-	delimeters:['[[',']]'],
-	el:'#poll-container',
-	data:{
-		message:'hello',
-		p:4,
-		form:false,
-	},
-	methods:{
-		insert:function(){
-			this.p = this.p+1
-		},
-		showform:function(){
-			this.form = this.form===true?false:true;
-		}
-	}
-})
-</script>
+
 {% endblock %}

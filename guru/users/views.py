@@ -1,7 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import SignUpForm, ProfileUpdateForm
-from .models import Profile
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.sites.shortcuts import get_current_site
@@ -9,16 +6,19 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage,send_mail
-from .token import account_activation_token
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 
+from .token import account_activation_token
+from .forms import SignUpForm, ProfileUpdateForm
+from .models import Profile
 
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            # user.is_active = False
+            user.is_active = False
             user.save()
             current_site = get_current_site(request)
             message = render_to_string('acc_active_email.html', {
@@ -26,14 +26,11 @@ def signup(request):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
-            # Sending activation link in terminal
-            # user.email_user(subject, message)
             mail_subject = 'Activate your account.'
             to_email = form.cleaned_data.get('email')
             email = send_mail(mail_subject, message,'vishalpandeynits@gmail.com',[to_email])
             if email==0:
                 return HttpResponse('Error in sending confirmation email')
-            # return HttpResponse('Please confirm your email address to complete the registration.')
             return render(request, 'acc_activate_sent.html')
     else:
         form = SignUpForm()
@@ -58,6 +55,8 @@ def activate(request, uidb64, token):
 def profiles(request, username):
     p_user = get_object_or_404(User, username=username)
     profile = get_object_or_404(Profile, user=p_user)
+    p_form = None
+
     if p_user == request.user:
     	if request.method == "POST":
     		p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)

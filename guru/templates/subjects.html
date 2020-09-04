@@ -168,30 +168,4 @@
 		<!-- Subjects end  -->
 
 	</div>
-
-<script type="text/javascript">
-	new Vue({
-	el: '#vue-container',
-	data: {
-		subjects: true,
-		members: false,
-		addform:false,
-	},
-	methods: {
-		toggleSubjects: function () {
-			this.subjects = true;
-			this.addform = false;
-			this.members = false;
-		},
-		toggleMembers: function () {
-			this.subjects = false;
-			this.addform = false;
-			this.members = true;
-		},
-		addSubject:function(){
-			this.addform = this.addform===true?false:true;
-		},
-	}
-})
-</script>
 {% endblock %}

@@ -36,13 +36,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #myapps
     'basic.apps.BasicConfig',
     'users.apps.UsersConfig',
     'poll.apps.PollConfig',
+
+    #packages
     'crispy_forms',
     'django.contrib.humanize',
     'django.contrib.sites',
     'django_comments',
+
+    #all auth
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -140,19 +146,6 @@ STATIC_ROOT = 'statica'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 LOGIN_REDIRECT_URL ='/homepage/'
-LOGOUT_REDIRECT_URL='https://www.google.com/'
-
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
-    }
-}
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST= "smtp.gmail.com"
@@ -195,6 +188,7 @@ DEFAULT_FROM_EMAIL= 'vishalpandeynits@gmail.com'
 #         'tabSpaces': 4,
 #     }
 # }
+
 #all-auth registraion settings
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS =1
 ACCOUNT_EMAIL_REQUIRED = True
@@ -209,7 +203,7 @@ ACCOUNT_USERNAME_REQUIRED =False
 ACCOUNT_USERNAME_VALIDATORS = None
 
 SOCIALACCOUNT_PROVIDERS = {
-     'google': {
+    'google': {
         'SCOPE': [
             'profile',
             'email',
@@ -219,6 +213,7 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
 SOCIALACCOUNT_QUERY_EMAIL=ACCOUNT_EMAIL_REQUIRED
 SOCIALACCOUNT_EMAIL_REQUIRED=ACCOUNT_EMAIL_REQUIRED
 SOCIALACCOUNT_STORE_TOKENS=False

@@ -38,23 +38,4 @@
 		</div>
 	</div>
 </div>
-<script>
-  var homepage = new Vue({
-    el:'#vuecontainer',
-    data:{
-      joinform:false,
-      createclassform:false,
-    },
-    methods:{
-      create:function(){
-        this.createclassform=true;
-        this.joinform=false;
-      },
-      join:function(){
-        this.createclassform=false;
-        this.joinform=true;
-      }
-    }
-  })
-</script>
 {% endblock %} 

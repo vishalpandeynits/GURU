@@ -31,18 +31,3 @@
 		</div>
 	{% endfor %}
 </div>
-<script>
-	new Vue({
-		el:'#con',
-		data:{
-			comment:"",
-		},
-		computed:{
-			disable:function(){
-				if (this.comment.trim() == ""){
-					return true
-				}
-			}
-		}
-	})
-</script>
