@@ -11,6 +11,8 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage,send_mail
 from .token import account_activation_token
 from django.http import HttpResponse
+
+
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -47,6 +49,8 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
+        user = authenticate(request,username=user.username,password=user.password)
+        login(request, user)
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         return HttpResponse('Activation link is invalid!')
@@ -54,7 +58,6 @@ def activate(request, uidb64, token):
 def profiles(request, username):
     p_user = get_object_or_404(User, username=username)
     profile = get_object_or_404(Profile, user=p_user)
-    print(p_user,profile)
     if p_user == request.user:
     	if request.method == "POST":
     		p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)

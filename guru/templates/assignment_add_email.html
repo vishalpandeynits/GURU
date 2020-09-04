@@ -1,0 +1,12 @@
+{% autoescape off %}
+Hi {{ user.username }}, A new assignment on {{ assignment.topic }} is uploaded by {{ assignment.assigned_by}}, in {{ assignment.subject_name }}. Submit it before {{ assignment.submission_date }}
+click the link below to read more about this assignment:
+
+http://127.0.0.1:8000{% url 'assignment_page' classroom.unique_id assignment.subject_name.id assignment.id %}
+
+If clicking the link above doesn't work, please copy and paste the URL in a new browser
+window instead.
+
+Sincerely,
+The Guru Team
+{% endautoescape %}

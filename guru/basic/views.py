@@ -131,6 +131,7 @@ def resource(request,unique_id,subject_id,form = None):
                 if form.is_valid():
                     data=form.save(commit=False)
                     data.subject_name = subject
+                    data.uploaded_by = request.user
                     data.save() 
                     return redirect(f'/{unique_id}/{subject_id}/resource/')
             else:
@@ -212,6 +213,7 @@ def assignment(request ,unique_id, subject_id, form=None):
                     assignment = form.save(commit=False)
                     assignment.submission_date = time
                     assignment.subject_name = subject
+                    assignment.assigned_by = request.user
                     assignment.save()
             else:
                 form= AssignmentForm()
@@ -325,6 +327,7 @@ def announcement(request, unique_id, subject_id):
                 if form.is_valid():
                     announcement = form.save(commit=False)
                     announcement.subject_name = subject
+                    announcement.announced_by = request.user
                     announcement.save()
             else:
                 form= AnnouncementForm()
@@ -460,4 +463,3 @@ def remove_member(request,unique_id,username):
             return redirect(f'/subject/{unique_id}')
     else:
         raise Http404()
-

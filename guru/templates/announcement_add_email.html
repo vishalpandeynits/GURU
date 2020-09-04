@@ -1,0 +1,12 @@
+{% autoescape off %}
+Hi {{ user.username }}, A new announcement on {{ announcement.subject }} is made by {{ announcement.announced_by}}, in {{ announcement.subject_name }}.
+click the link below to read more about this announcement:
+
+http://127.0.0.1:8000{% url 'announcement_page' classroom.unique_id announcement.subject_name.id announcement.id %}
+
+If clicking the link above doesn't work, please copy and paste the URL in a new browser
+window instead.
+
+Sincerely,
+The Guru Team
+{% endautoescape %}

@@ -1,5 +1,15 @@
 {% autoescape off %}
-Hi {{ user.username }},
-Please click on the link to confirm your registration,
+
+To activate your {{ user.get_username }} Guru Account,
+click the link below:
+
 http://127.0.0.1:8000{% url 'activate' uidb64=uid token=token %}
+
+If clicking the link above doesn't work, please copy and paste the URL in a new browser
+window instead.
+
+
+Sincerely,
+The Guru Team
+
 {% endautoescape %}

@@ -1,14 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-import random
-import string
-from django.contrib.auth.models import AbstractUser
-import uuid
-
-def unique_id():
-    chars= string.ascii_letters + string.digits
-    result_str = ''.join((random.choice(chars) for i in range(8)))
-    return result_str
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from .email import *
 
 class Classroom(models.Model):
 	created_by = models.ForeignKey(User, on_delete = models.CASCADE,related_name='created_by')
@@ -17,10 +11,10 @@ class Classroom(models.Model):
 	unique_id = models.CharField(max_length=16,unique=True)
 	members = models.ManyToManyField(User)
 	teacher = models.ManyToManyField(User,related_name='teacher')
+	pending_members = models.ManyToManyField(User,related_name='pending_members')
 
 	def __str__(self):
 		return self.class_name
-
 
 class Subject(models.Model):
 	classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE)
@@ -36,6 +30,7 @@ class Note(models.Model):
 	file = models.FileField(upload_to='media/notes/',null=True,blank=True)
 	topic = models.CharField(max_length=100,)
 	description = models.TextField(max_length=500,)
+	uploaded_by = models.ForeignKey(User,on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.topic
@@ -46,7 +41,8 @@ class Announcement(models.Model):
 	subject = models.CharField(max_length=100)
 	description = models.TextField(max_length=500,)
 	file = models.FileField(upload_to='media/announcement/',)
-	
+	announced_by = models.ForeignKey(User,on_delete=models.CASCADE)
+
 	def __str__(self):
 		return self.subject
 
@@ -57,6 +53,7 @@ class Assignment(models.Model):
 	topic = models.CharField(max_length=100,)
 	description = models.TextField(max_length=500,)
 	submission_date = models.DateTimeField() 
+	assigned_by = models.ForeignKey(User,on_delete=models.CASCADE)
 
 	def __str__(self):
 		return "Assignment on "+ self.topic
@@ -69,4 +66,20 @@ class Submission(models.Model):
 
 	def __self__(self):
 		return self.submitted_by
+
+@receiver(post_save, sender=Note)
+def note_signal(sender, instance, created, **kwargs):
+	if created:
+		note_email(instance)
+
+@receiver(post_save, sender=Announcement)
+def announcement_signal(sender, instance, created, **kwargs):
+	if created:
+		announcement_email(instance)
+
+@receiver(post_save, sender=Assignment)
+def assignment_signal(sender, instance, created, **kwargs):
+	if created:
+		assignment_email(instance)
+
 
