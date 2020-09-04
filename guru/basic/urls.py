@@ -4,11 +4,13 @@ from .views import *
 urlpatterns = [
     path('',home,name="home"),
     path('homepage/',homepage,name="homepage"),
-    path('subject/<unique_id>/',subjects,name="subjects"),
+    path('guru/<unique_id>/',subjects,name="subjects"),
 
     path('subjects/<str:unique_id>/<str:username>/makeAdmin/',make_admin, name="make_admin"),
     path('subjects/<str:unique_id>/<str:username>/removeAdmin/',remove_admin, name="remove_admin"),
     path('subjects/<str:unique_id>/<str:username>/removeMember/',remove_member, name="remove_member"),
+    path('subjects/<str:unique_id>/<str:username>/acceptRequest/',accept_request, name="accept_request"),
+    path('subjects/<str:unique_id>/<str:username>/deleteRequest/',delete_request, name="delete_request"),
 
     path('<unique_id>/<int:subject_id>/',subject_page,name="subject_page"),
     path('<unique_id>/<int:subject_id>/delete/',delete_subject,name="delete_subject"),

@@ -12,7 +12,7 @@ class Classroom(models.Model):
 	members = models.ManyToManyField(User)
 	teacher = models.ManyToManyField(User,related_name='teacher')
 	pending_members = models.ManyToManyField(User,related_name='pending_members')
-
+	need_permission = models.BooleanField(default=True)
 	def __str__(self):
 		return self.class_name
 

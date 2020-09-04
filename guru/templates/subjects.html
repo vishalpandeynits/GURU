@@ -4,21 +4,39 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <div class="container-fluid m-2">
-	<center> <img src="{% static 'classroom.jpg' %}" style="height:20vw;" class="d-block w-50"></center>
+	<center><img src="{% static 'classroom.jpg' %}" style="height:20vw;" class="d-block w-50"></center>
 	<div id="vue-container">
+
 		<center id="homepage-btn-group">
-			<button @click="toggleSubjects">Subjects</button>
-			<a href="{% url 'polls' classroom.unique_id %}">Polls</a>
-			<button @click="toggleMembers">Members</button>
+
+			<button @click="toggleSubjects">
+				Subjects
+			</button>
+
+			<a href="{% url 'polls' classroom.unique_id %}">
+				Polls
+			</a>
+
+			<button @click="toggleMembers">Members 
+				{% if pending_members %}
+					{{pending_members|length}}
+				{% endif %}
+			</button>
+
 			{% if form %}
-			<button @click="addSubject"> Add </button><br>
+				<button @click="addSubject"> Add </button><br>
 			{% endif %}
+
 			{% if message %}
-				<p style="color:red;"> {{ message }} </p>
+				<p style="color:red;" v-if="subjects" > {{ message }} </p>
 			{% endif %}
+
 			{% if form %}
-				<form v-if="addform" method="POST" enctype="multipart/form-data">{% csrf_token %}
-					<input type="text" name="subject_name" placeholder="Add a subject." maxlength="50" required id="id_subject_name">
+				<form v-if="addform" action="/guru/{{classroom.unique_id}}/" 
+					method="POST" enctype="multipart/form-data">{% csrf_token %}
+
+					<input type="text" name="subject_name" placeholder="Add a subject."
+						 maxlength="50" required id="id_subject_name">
 					<input type="text" name="teacher" placeholder="username of teacher.">
 					<input type="submit" value="submit">
 				</form>
@@ -28,20 +46,67 @@
 
 
 		<div v-if="subjects" class="row">
+
 			{% for subject in subjects %}
 			<div class="col-xs-12 col-md-6 col-lg-4">
+
 				<div style="background:url('/media/bga.jpg');background-size:cover;background-position:center;"
-					id="card" class="card"> {% if subject %}
+					id="card" class="card"> 
+					{% if subject %}
 					<a class="text-center" id="class-link"
 						href="{% url 'resources' classroom.unique_id subject.id  %}">
-						<div id="subject-name">{{ subject|upper }} by {{subject.teacher }}</div>
+
+						<div id="subject-name">
+							{{ subject|upper }} by {{subject.teacher }}
+						</div>
+
 					</a>
 					{% endif %}
 				</div>
+
 			</div>
 			{% endfor %}
+
 		</div>
+
 		<div v-if="members">
+
+			{% if is_teacher %}
+				{% if pending_members %}
+					<center><h1 style="color:green">Pending members</h1></center>
+				{% endif %}
+
+				{% for member in pending_members %}
+					<div class="row">
+						<div class="member-card">
+							<div class="wrapper">
+								<br/>
+								
+								<div class="opts">
+									<div class="dropdown">
+										<div class="dropbtn">...</div>
+										<div class="dropdown-content">
+											<a href="{% url 'delete_request' classroom.unique_id member.username %}">
+												Delete request
+											</a>
+											<a href="{% url 'accept_request' classroom.unique_id member.username %}">
+												Accept request
+											</a>
+										</div>
+									</div>
+								</div>
+
+								<img src="{{member.profile.profile_pic.url}}">
+								<div class="member-container">
+									<h4><b>{{ member.username }} &nbsp; &nbsp;</b></h4>
+									<p>{{member.profile.bio}}</p>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				{% endfor %} 
+			{% endif %}
 
 			{% for teacher in teachers %}
 			<div class="row">
@@ -89,7 +154,6 @@
 								</div>
 							</div>
 						</div>
-						
 					</div>
 					<img src="{{student.profile.profile_pic.url}}">
 					<div class="member-container">
@@ -104,23 +168,18 @@
 		<!-- Subjects end  -->
 
 	</div>
-	<script>
+
+<script type="text/javascript">
 	new Vue({
 	el: '#vue-container',
 	data: {
 		subjects: true,
-		polls: false,
 		members: false,
 		addform:false,
 	},
 	methods: {
 		toggleSubjects: function () {
 			this.subjects = true;
-			this.addform = false;
-			this.members = false;
-		},
-		togglePolls: function () {
-			this.subjects = false;
 			this.addform = false;
 			this.members = false;
 		},
@@ -135,4 +194,4 @@
 	}
 })
 </script>
-	{% endblock %}
+{% endblock %}
