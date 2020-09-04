@@ -4,42 +4,49 @@
 {% load humanize %}
 {% load comments %}
 <div class="container" id="con">
+
 	{% if is_teacher %}
-	<a class="btn btn-danger m-2 float-right" href="{% url 'delete_resource' classroom.unique_id subject.id note.id %}">
-		Delete <i class="fa fa-trash" aria-hidden="true"></i> 
-	</a>
-<!-- Button trigger modal -->
-	<a class="btn btn-primary m-2 float-right" data-toggle="modal" data-target="#updateresource">
-	 Update <i class="fas fa-edit"></i>
-	</a>
-<!-- Modal -->
-	<div class="modal fade " id="updateresource" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content bg-info">
+		<a class="btn btn-danger m-2 float-right" 
+			href="{% url 'delete_resource' classroom.unique_id subject.id note.id %}">
+			Delete <i class="fa fa-trash" aria-hidden="true"></i> 
+		</a>
 
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">Update</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
+		<a class="btn btn-primary m-2 float-right" data-toggle="modal" data-target="#updateresource">
+		 Update <i class="fas fa-edit"></i>
+		</a>
 
-	      <div class="modal-body">
-		  <form method="POST" enctype="multipart/form-data">{% csrf_token %}
-			{{ updateform|crispy }}
-			<input type="submit" class="btn btn-primary float-right"value="submit">
-		  </form>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+		<div class="modal fade " id="updateresource" tabindex="-1" role="dialog" 
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content bg-info">
+
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Update</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+
+		      <div class="modal-body">
+			  <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+				{{ updateform|crispy }}
+				<input type="submit" class="btn btn-primary float-right"value="submit">
+			  </form>
+		      </div>
+
+		    </div>
+		  </div>
+		</div>
 	{% endif %}
 
 	{{note.topic}}<br><br>
+
 	{% if note.file %}
 	<a href="{{note.file.url}}" download>Download file </a><br>
 	{% endif %}
+
 	<pre>{{ note.description }}</pre>
+	
 	{% include 'read_notecomment.html' %}
 </div>
 {% endblock %}

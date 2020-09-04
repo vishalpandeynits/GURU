@@ -166,6 +166,10 @@ text-area{
   width:40px;
   border-radius:10px;
   border-color:white;
+  display: inline;
+  float:left;
+  position:relative;
+  top:15px;
 }
 
 .sidenav {

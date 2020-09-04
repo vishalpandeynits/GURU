@@ -2,27 +2,34 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <div class="container" id="poll-container">
+
 	{% for poll in polls %}
-	<a href="/polls/{{classroom.unique_id}}/poll-page/{{ poll.id }} ">
+	<a href="/polls/{{classroom.unique_id}}/poll-page/{{ poll.id }}">
 		<div class="alert alert-info">
 		 {{ poll.poll_details }}
 		</div> 
 	</a>
 	{% endfor %}
 	<button @click="showform" class="btn btn-primary">Show </button>
+
 	<div class="row">
 		<div class="col-lg-6">
-		<form v-if="form" method="POST">{% csrf_token %}
-		{{ pollform|crispy }}
-		<div v-for="i in p">
-			<input style="width:100%;margin:10px;" type="text" v-if="i==p" placeholder="Mention your option..." @click="insert" name="check">
-			<input style="width:100%;margin:10px;" type="text" v-else placeholder="Mention your option..." name="check">
+			<form v-if="form" method="POST">{% csrf_token %}
+				{{ pollform|crispy }}
+				<div v-for="i in p">
+
+					<input style="width:100%;margin:10px;" type="text" v-if="i==p" 
+						placeholder="Mention your option..." @click="insert" name="check">
+					<input style="width:100%;margin:10px;" type="text" v-else 
+						placeholder="Mention your option..." name="check">
+
+				</div>
+
+				<input type="datetime-local" required="required" name ='date'>
+				<input type="submit" class="btn btn-success"value="submit">
+
+			</form>
 		</div>
-		<input type="datetime-local" required="required" name ='date'>
-		<input type="submit" class="btn btn-success"value="submit">
-		</form>
-	</div>
 	</div>
 </div>
-
 {% endblock %}

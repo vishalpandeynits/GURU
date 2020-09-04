@@ -1,8 +1,14 @@
 {% extends '../base.html' %}
 {% block content %}
 <div class="container">
-	<p style="color:red;font-size: 3em;"> {{ message }} </p>
-	<p style="font-size: 2em;">{{ details }} </p><bRr>
+	<p style="color:red;font-size: 3em;">
+		{{ message }} 
+	</p>
+
+	<p style="font-size: 2em;">
+		{{ details }}
+	</p><br>
+
 	{% for choice in choices %}
 		<a href="/polls/{{classroom.unique_id}}/voting/{{poll.id}}/{{choice.id}}">
 			<div class="alert alert-info">{{ choice.choice_text}} 
@@ -12,8 +18,10 @@
 			</div>
 		</a>
 	{% endfor %}
+	
 	{{winner.choice_text}} {{ winner.votes }}
 	Note: Name of voters will not be disclosed.
+
 </div>
 {% endblock %}
 

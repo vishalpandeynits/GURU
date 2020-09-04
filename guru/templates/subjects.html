@@ -33,7 +33,8 @@
 
 			{% if form %}
 				<form v-if="addform" action="/guru/{{classroom.unique_id}}/" 
-					method="POST" enctype="multipart/form-data">{% csrf_token %}
+					method="POST" enctype="multipart/form-data">
+					{% csrf_token %}
 
 					<input type="text" name="subject_name" placeholder="Add a subject."
 						 maxlength="50" required id="id_subject_name">
@@ -41,6 +42,7 @@
 					<input type="submit" value="submit">
 				</form>
 			{% endif %}
+
 		</center>
 		<!-- Subjects -->
 
@@ -111,15 +113,20 @@
 			{% for teacher in teachers %}
 			<div class="row">
 				<div class="member-card">
-					<div class="wrapper">
-						<br/>
+					<div class="wrapper"><br/>
 						{% if is_teacher %}
 						<div class="opts">
 							<div class="dropdown">
 								<div class="dropbtn">...</div>
 								<div class="dropdown-content">
-									<a href="{% url 'remove_member' classroom.unique_id teacher.username %}">Remove from classroom</a>
-									<a href="{% url 'remove_admin' classroom.unique_id teacher.username %}">Remove from teacher position</a>
+
+									<a href="{% url 'remove_member' classroom.unique_id teacher.username %}">
+										Remove from classroom
+									</a>
+									<a href="{% url 'remove_admin' classroom.unique_id teacher.username %}">
+										Remove from teacher position
+									</a>
+
 								</div>
 							</div>
 						</div>
@@ -144,12 +151,18 @@
 								<div class="dropbtn">...</div>
 								<div class="dropdown-content">
 									{% if is_teacher %}
-									<a href="{% url 'remove_member' classroom.unique_id student.username %}">Remove from classroom</a>
-									<a href="{% url 'make_admin' classroom.unique_id student.username %}">Make Teacher</a>
+									<a href="{% url 'remove_member' classroom.unique_id student.username %}">
+										Remove from classroom
+									</a>
+									<a href="{% url 'make_admin' classroom.unique_id student.username %}">
+										Make Teacher
+									</a>
 									{% else %}
-									{% if user.username == student.username %}
-									<a href="{% url 'remove_member' classroom.unique_id user.username %}"> Leave classroom</a>
-									{% endif %}
+										{% if user.username == student.username %}
+											<a href="{% url 'remove_member' classroom.unique_id user.username %}">
+											 Leave classroom
+											</a>
+										{% endif %}
 									{% endif %}
 								</div>
 							</div>
@@ -157,15 +170,19 @@
 					</div>
 					<img src="{{student.profile.profile_pic.url}}">
 					<div class="member-container">
-						<h4><b>{{ student.username }} &nbsp; &nbsp;</b></h4>
-						<p>{{student.profile.bio}}</p>
+						<h4>	
+							<b>
+								{{ student.username }} &nbsp; &nbsp;
+							</b>
+						</h4>
+						<p>
+							{{student.profile.bio}}
+						</p>
 					</div>
 				</div>
 				{% endfor %}
-
 			</div>
 		</div>
 		<!-- Subjects end  -->
-
 	</div>
 {% endblock %}
