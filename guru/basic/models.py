@@ -13,6 +13,7 @@ class Classroom(models.Model):
 	teacher = models.ManyToManyField(User,related_name='teacher')
 	pending_members = models.ManyToManyField(User,related_name='pending_members')
 	need_permission = models.BooleanField(default=True)
+	
 	def __str__(self):
 		return self.class_name
 
@@ -54,6 +55,7 @@ class Assignment(models.Model):
 	description = models.TextField(max_length=500,)
 	submission_date = models.DateTimeField() 
 	assigned_by = models.ForeignKey(User,on_delete=models.CASCADE)
+	submitted_by = models.ManyToManyField(User,related_name="Submissions")
 
 	def __str__(self):
 		return "Assignment on "+ self.topic
@@ -63,7 +65,8 @@ class Submission(models.Model):
 	file = models.FileField(upload_to="Submissions/",null=True,blank=True)
 	submitted_by = models.ForeignKey(User,on_delete=models.CASCADE)
 	submitted_on = models.DateTimeField(auto_now_add=True)
-
+	current_status = models.BooleanField(default=False)
+	
 	def __self__(self):
 		return self.submitted_by
 

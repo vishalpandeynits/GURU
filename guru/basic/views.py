@@ -40,7 +40,6 @@ def homepage(request):
             classroom.pending_members.add(request.user)
         else:
             classroom.members.add(request.user)
-        classroom.save()
     
     if request.method=='POST':
         createclassform = CreateclassForm(request.POST or None)
@@ -51,7 +50,6 @@ def homepage(request):
             classroom.save()
             classroom.teacher.add(request.user)
             classroom.members.add(request.user)
-            classroom.save()
             return redirect(f'/guru/{classroom.unique_id}/')
     else:
         createclassform = CreateclassForm()
@@ -88,7 +86,6 @@ def subjects(request, unique_id, form = None):
                             subject.save()
                             message="Subject added"
                             classroom.teacher.add(teacher)
-                            classroom.save()
                             return redirect(f'/guru/{unique_id}/')
                             
                     except User.DoesNotExist:
@@ -275,7 +272,10 @@ def assignment_page(request,unique_id,subject_id,id):
                     data=form.save(commit=False)
                     data.submitted_by=request.user
                     data.assignment= assignment
+                    data.current_status = True
                     data.save()
+                    assignment.submitted_by.add(request.user)
+                    return redirect(f'/{unique_id}/{subject_id}/{assignment.id}/assignment/')
             else:
                 form = SubmitAssignmentForm()
         #list of submissions
@@ -283,10 +283,12 @@ def assignment_page(request,unique_id,subject_id,id):
             submission = Submission.objects.all().filter(assignment=assignment,submitted_by=request.user)
         except Submission.DoesNotExist:
             submission = None
+
         all_submissions = Submission.objects.all().filter(assignment=assignment)
         late_submissions = Submission.objects.all().filter(submitted_on__gt=assignment.submission_date)
         ontime_submissions = all_submissions.difference(late_submissions)
-
+        submitted,not_submitted= None,None
+        is_teacher = classroom.created_by==request.user or request.user==subject.teacher
         params={
             'assignment':assignment,
             'subject':subject,
@@ -298,8 +300,17 @@ def assignment_page(request,unique_id,subject_id,id):
             'all_submissions':all_submissions,
             'late_submissions':late_submissions,
             'ontime_submissions':ontime_submissions,
-            'is_teacher':classroom.created_by==request.user or request.user==subject.teacher,
+            'is_teacher':is_teacher,
             }
+
+        if is_teacher:          
+            members = classroom.members.all()
+            teachers = classroom.teacher.all()
+            students = members.difference(teachers)
+            submitted = assignment.submitted_by.all()
+            not_submitted = students.difference(submitted)
+            params['submitted']=submitted
+            params['not_submitted']=not_submitted
         return render(request,'assignment_page.html',params)
     else:
         raise Http404()
@@ -478,7 +489,6 @@ def accept_request(request,unique_id,username):
             user = User.objects.get(username=username)
             classroom.members.add(user)
             classroom.pending_members.remove(user)
-            classroom.save()
             return redirect(f'/guru/{unique_id}/')
     else:
         raise Http404()
@@ -490,7 +500,6 @@ def delete_request(request,unique_id,username):
         if request.user==classroom.created_by:
             user = User.objects.get(username=username)
             classroom.pending_members.remove(user)
-            classroom.save()
             return redirect(f'/guru/{unique_id}/')
     else:
         raise Http404()

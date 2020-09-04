@@ -51,15 +51,18 @@
 				<br><br>
 			<!-- Assignment details ends -->
 			{% include 'assignmentcomment.html' %}
+			{{ submitted }} {{ not_submitted }}
 		</div>
 		
 		<div class="col"style="float:right;">
 			<!-- Submission shown to teacher -->
 			{% if is_teacher %}
 			<div id="assignment-container">
-				<button class="btn btn-primary mb-2" @click="show_all_submissions">All Submissions {{message}}</button>
+				<button class="btn btn-primary mb-2" @click="show_all_submissions">All Submissions</button>
 				<button class="btn btn-success mb-2" @click='show_ontime_submissions'>Ontime Submissions </button>
 				<button class="btn btn-danger mb-2" @click="show_late_submissions"> Late Submissions </button>
+				<button class="btn btn-primary mb-2" @click="show_submitted">Submitted  </button>
+				<button class="btn btn-primary mb-2" @click="show_not_submitted">Not submitted</button>
 
 				<span v-if="all_submissions">
 					{% for submission in all_submissions %}
@@ -84,6 +87,22 @@
 					<div class="alert alert-danger">
 							<a href="{{submission}}" download>{{ submission.file }} </a>
 							submitted_by {{ submission.submitted_by }} at {{ submission.submitted_on }}. 
+					</div>
+				{% endfor %}
+				</span>
+
+				<span v-if="submitted">
+				{% for student in submitted %}
+					<div class="alert">
+							<a href="/profile/{{student.username}}">{{student.username}} </a>
+					</div>
+				{% endfor %}
+				</span>
+
+				<span v-if="not_submitted">
+				{% for student in not_submitted %}
+					<div class="alert">
+							<a href="/profile/{{student.username}}">{{student.username}} </a>
 					</div>
 				{% endfor %}
 				</span>
@@ -121,27 +140,49 @@
 			all_submissions:true,
 			ontime_submissions:false,
 			late_submissions:false,
-			message:'Hello',
+			submitted:false,
+			not_submitted:false,
 		},
 
 		methods:{
 			show_all_submissions:function(){
-				this.all_submissions=true,
-				this.ontime_submissions=false,
-				this.late_submissions=false
+				this.all_submissions=true;
+				this.ontime_submissions=false;
+				this.late_submissions=false;
+				this.submitted = false;
+				this.not_submitted = false
 			},
 
 			show_ontime_submissions:function(){
 				this.all_submissions=false,
 				this.ontime_submissions=true,
-				this.late_submissions=false
+				this.late_submissions=false;
+				this.submitted = false;
+				this.not_submitted = false
 			},
 
 			show_late_submissions:function(){
 				this.all_submissions=false,
 				this.ontime_submissions=false,
 				this.late_submissions=true
-			}
+				this.submitted = false;
+				this.not_submitted = false
+			},
+			show_submitted:function(){
+				this.all_submissions=false;
+				this.ontime_submissions=false;
+				this.late_submissions=false;
+				this.submitted = true;
+				this.not_submitted = false;
+				console.log('submitted')
+			},
+			show_not_submitted:function(){
+				this.all_submissions=false;
+				this.ontime_submissions=false;
+				this.late_submissions=false;
+				this.submitted = false;
+				this.not_submitted = true;
+			},
 		}
 	})
 </script>
