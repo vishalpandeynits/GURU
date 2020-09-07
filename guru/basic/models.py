@@ -1,27 +1,33 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save,pre_delete
 from django.dispatch import receiver
 from .email import *
 
 class Classroom(models.Model):
 	created_by = models.ForeignKey(User, on_delete = models.CASCADE,related_name='created_by')
+	members = models.ManyToManyField(User)
+	teacher = models.ManyToManyField(User, related_name='classroom_teachers')
+	special_permissions = models.ManyToManyField(User, related_name= "special_permissions")
+	pending_members = models.ManyToManyField(User,related_name='pending_members')
+	classroom_pic = models.ImageField(default="classroom.jpg",upload_to="classrooms/",null=True)
 	class_name = models.CharField(max_length = 100)
+	description = models.TextField(null=True, blank=True)
 	created_on = models.DateTimeField(auto_now_add=True)
 	unique_id = models.CharField(max_length=16,unique=True)
-	members = models.ManyToManyField(User)
-	teacher = models.ManyToManyField(User,related_name='teacher')
-	pending_members = models.ManyToManyField(User,related_name='pending_members')
 	need_permission = models.BooleanField(default=True)
-	
+
 	def __str__(self):
 		return self.class_name
 
 class Subject(models.Model):
 	classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE)
 	subject_name = models.CharField(max_length=50)
-	teacher = models.ForeignKey(User,on_delete=models.CASCADE)
-	
+	teacher = models.ForeignKey(User,on_delete=models.CASCADE,related_name="teacher")
+	upload_permission = models.ManyToManyField(User,related_name="upload_permitted")
+	subject_pic = models.ImageField(upload_to="subject_content/")
+	description = models.TextField(max_length=150)
+
 	def __str__(self):
 		return self.subject_name
 
@@ -56,19 +62,32 @@ class Assignment(models.Model):
 	submission_date = models.DateTimeField() 
 	assigned_by = models.ForeignKey(User,on_delete=models.CASCADE)
 	submitted_by = models.ManyToManyField(User,related_name="Submissions")
-
+	full_marks = models.IntegerField()
+	
 	def __str__(self):
 		return "Assignment on "+ self.topic
 
 class Submission(models.Model):
 	assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
-	file = models.FileField(upload_to="Submissions/",null=True,blank=True)
+	file = models.FileField(upload_to="Submissions/")
 	submitted_by = models.ForeignKey(User,on_delete=models.CASCADE)
 	submitted_on = models.DateTimeField(auto_now_add=True)
 	current_status = models.BooleanField(default=False)
-	
-	def __self__(self):
+	marks_assigned = models.IntegerField(null=True,blank=True)
+
+	def __str__(self):
 		return self.submitted_by
+
+class Subject_activity(models.Model):
+	subject = models.ForeignKey(Subject, on_delete = models.CASCADE)
+	action = models.CharField(max_length=100)
+	actor = models.ForeignKey(User,on_delete = models.DO_NOTHING)
+	time = models.DateTimeField(auto_now_add = True)
+	url = models.URLField(null=True,blank=True)
+
+	def __str__(self):
+		return self.action
+
 
 @receiver(post_save, sender=Note)
 def note_signal(sender, instance, created, **kwargs):
@@ -85,4 +104,41 @@ def assignment_signal(sender, instance, created, **kwargs):
 	if created:
 		assignment_email(instance)
 
+@receiver(post_save, sender=Note)
+def note_tracker(sender, instance, created, **kwargs):
+	if created:
+		activity = Subject_activity(subject=instance.subject_name,actor=instance.uploaded_by)
+		activity.action = "A new note is added."
+		activity.save()
 
+@receiver(pre_delete, sender=Note)
+def note_tracker_delete(sender, instance, **kwargs):
+	activity = Subject_activity(subject=instance.subject_name,actor=instance.uploaded_by)
+	activity.action = "A note is deleted"
+	activity.save()
+
+@receiver(post_save, sender=Announcement)
+def announcement_tracker(sender, instance, created,**kwargs):
+	if created:
+		activity = Subject_activity(subject=instance.subject_name,actor=instance.announced_by)
+		activity.action = "A new Announcement is added."
+		activity.save()
+
+@receiver(pre_delete, sender=Announcement)
+def announcement_delete(sender, instance, **kwargs):
+	activity = Subject_activity(subject=instance.subject_name,actor=instance.uploaded_by)
+	activity.action = "An Announcement is deleted"
+	activity.save()
+
+@receiver(post_save, sender=Assignment)
+def assignment_tracker(sender, instance, created, **kwargs):
+	if created:
+		activity = Subject_activity(subject=instance.subject_name,actor=instance.assigned_by)
+		activity.action = f"A new Assignment is added. Submission date is {instance.submission_date}"
+		activity.save()
+
+@receiver(pre_delete, sender=Assignment)
+def assignment_delete(sender, instance, **kwargs):
+	activity = Subject_activity(subject=instance.subject_name,actor=instance.uploaded_by)
+	activity.action = "An Assignment is deleted."
+	activity.save()

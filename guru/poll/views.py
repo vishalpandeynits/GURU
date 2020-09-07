@@ -16,7 +16,7 @@ def filter_fun(key):
 @login_required
 def home(request,unique_id):
 	classroom = Classroom.objects.get(unique_id=unique_id)
-	if member_check(request.usermclassroom):
+	if member_check(request.user,classroom):
 		polls = Poll.objects.all()
 
 		#handling forms of poll and its choice

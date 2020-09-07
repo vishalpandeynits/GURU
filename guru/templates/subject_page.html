@@ -5,34 +5,34 @@
 {% block content %}
 <div class="row">
 		<div class="col-2">
-		<div style="float:right;"id="mySidenav" class="sidenav">
-			<a href="javascript:void(0)" class="closebtn" onclick="closeNav(this)">
+		<div style="float:right;" id="mySidenav" class="sidenav">
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
 				&times;
 			</a>
-			<a href="{% url 'resources' classroom.unique_id subject.id  %}" onclick="closeNav(this)">
+			<a href="{% url 'resources' classroom.unique_id subject.id  %}" onclick="closeNav()">
 				Resources
 			</a>
-			<a href="{% url 'assignments' classroom.unique_id subject.id  %}" onclick="closeNav(this)">
+			<a href="{% url 'assignments' classroom.unique_id subject.id  %}" onclick="closeNav()">
 				Assignment
 			</a>
-			<a href="{% url 'announcement' classroom.unique_id subject.id %}" onclick="closeNav(this)">
+			<a href="{% url 'announcement' classroom.unique_id subject.id %}" onclick="closeNav()">
 				Announcement
 			</a>
-			<a href="{% url 'this_subject' classroom.unique_id subject.id %}" onclick="closeNav(this)"> 
+			<a href="{% url 'this_subject' classroom.unique_id subject.id %}" onclick="closeNav()"> 
 				This Class 
 			</a><hr>
-			<a href="{% url 'homepage' %}" onclick="closeNav(this)">
+			<a href="{% url 'homepage' %}" onclick="closeNav()">
 				Home
 			</a>
-			<a href="{% url 'subjects' classroom.unique_id %}" onclick="closeNav(this)"> 
+			<a href="{% url 'subjects' classroom.unique_id %}" onclick="closeNav()"> 
 				Subjects 
 			</a>
-			<a href="{% url 'profile' user.username %}" onclick="closeNav(this)"> 
+			<a href="{% url 'profile' user.username %}" onclick="closeNav()"> 
 				{{ user.username|title }} 
 			</a>
 		</div>
 		</div>
-		<div class="col-12">
+		<div class="col-12" id="#main">
 			<div class="bg-info p-2">
 				<span class="pl-1" id="openNav" onclick="openNav()">
 					&#9776;

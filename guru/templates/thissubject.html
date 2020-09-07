@@ -16,5 +16,43 @@
 	add description to class a class page storeroom permissions email
 	This classroom is created by {{ classroom.created_by.username }} 
 	Teacher {{ subject.teacher }}
+
+	Give upload permission to users.
+	{{ admins }}
+	Track activity of class
+	{% for member in members %}
+	<div class="member-card">
+		<div class="wrapper"><br/>
+			{% if user == teacher  or user in admins %}
+			<div class="opts">
+				<div class="dropdown">
+					<div class="dropbtn">...</div>
+					<div class="dropdown-content">
+							{% if member in upload_permissions %}
+								<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
+									Take upload permssion
+								</a>
+							{% else %}
+								<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
+									Give upload permissions
+								</a>
+							{% endif %}
+					</div>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+
+		<img src="{{member.profile.profile_pic.url}}">
+		<div class="member-container">
+			<h4><b>{{ member.username }} &nbsp; &nbsp; {% if member in admins %} Admin {% endif %} <span style="float:right;color:green;">{% if member == teacher %} Teacher {% endif %} </span></b></h4>
+			<p style="word-wrap: wrap;">{{member.profile.bio}}</p>
+			{% if member in upload_permissions %}
+				Can upload resources
+			{% endif %}
+		</div>
+	</div>
+	{% endfor %}
+
 </div>
 {% endblock %}

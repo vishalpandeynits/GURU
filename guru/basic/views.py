@@ -2,13 +2,14 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
-from django.http import Http404
+from django.http import Http404,HttpResponse
 from django.db.models import Q
 from .forms import *
 from .models import *
 import string
 from random import choice,randint
 
+#--------------------------------------------helper functions-----------------------------------
 def unique_id():
     characters = string.ascii_letters + string.digits
     return  "".join(choice(characters) for x in range(randint(8,12)))
@@ -36,21 +37,39 @@ def pagination(request,object):
         page_range = list(paginator.page_range)[start_index:end_index]
         return query,page_range
 
+
+#--------------------------------------------helper functions end ------------------------------
 def home(request):
     if request.user.is_authenticated:
         return redirect('/homepage/')
     return render(request,'home.html')
-       
+
+@login_required
+def join(request,key):
+    classroom = Classroom.objects.get(unique_id=key)
+    if classroom.need_permission==True:
+        classroom.pending_members.add(request.user)
+    else:
+        classroom.members.add(request.user)
+    return HttpResponse('he')
+
 @login_required
 def homepage(request):
     #joining by key
     if request.POST.get('join_key'):
         join_key = request.POST.get('join_key')
-        classroom = Classroom.objects.get(unique_id=join_key)
-        if classroom.need_permission==True:
+        try:
+            classroom = Classroom.objects.get(unique_id=join_key)
+        except Classroom.DoesNotExist:
+            return HttpResponse("No such classroom exists")
+        if classroom.members.all().filter(username=request.user.username).exists():
+            return HttpResponse('You are already a member of this classroom.')
+        checking = classroom.need_permission
+        if checking:
             classroom.pending_members.add(request.user)
         else:
             classroom.members.add(request.user)
+            return HttpResponse('You request is pending. You can join when someone lets you in.')
     
     #create classroom
     if request.method=='POST':
@@ -62,6 +81,7 @@ def homepage(request):
             classroom.save()
             classroom.teacher.add(request.user)
             classroom.members.add(request.user)
+            classroom.special_permissions.add(request.user)
             return redirect(f'/guru/{classroom.unique_id}/')
     else:
         createclassform = CreateclassForm()
@@ -75,27 +95,71 @@ def homepage(request):
     return render(request,'homepage.html',params)
 
 @login_required
-def subjects(request, unique_id, form = None):
+def admin_status(request,unique_id,username):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    if member_check(request.user,classroom):
+    admin = classroom.special_permissions.filter(username=request.user.username).exists()
+    if admin:
+        check = classroom.special_permissions.filter(username = username).exists()
+        if check:
+            if classroom.created_by == User.objects.get(username=username):
+                return HttpResponse("This user have created this class. He can't be dropped")
+            classroom.special_permissions.remove(User.objects.get(username=username))
+            return redirect(f'/classroom/{unique_id}')
+        else:
+            classroom.special_permissions.add(User.objects.get(username=username))
+            return redirect(f'/classroom/{unique_id}')  
+    else:
+        raise Http404()
 
-        #querysets
-        subjects = Subject.objects.all().filter(classroom=classroom)
+
+@login_required
+def classroom_page(request,unique_id):
+    classroom = Classroom.objects.get(unique_id=unique_id)
+    if member_check(request.user, classroom):
         members = classroom.members.all()
         teachers = classroom.teacher.all()
         students = members.difference(teachers)
         pending_members = classroom.pending_members.all()
-        is_teacher = classroom.created_by == request.user or Classroom.objects.filter(teacher=request.user).exists(),
+        admins = classroom.special_permissions.all()
+        is_admin = classroom.created_by == request.user
+        #classroom_update
+        if request.method=="POST":
+            form = CreateclassForm(request.POST,request.FILES,instance=classroom)
+            if form.is_valid():
+                form.save()
+                return redirect(f'/classroom/{unique_id}/')
+        else:
+            form = CreateclassForm(instance=classroom)
+        params={
+            'students':students,
+            'teachers':teachers,
+            'pending_members':pending_members,
+            'classroom':classroom,
+            'is_admin':is_admin,
+            'form':form,
+            'admins':admins
+        }
+        return render(request,'classroom.html',params)
+
+@login_required
+def subjects(request, unique_id, form = None):
+    classroom = Classroom.objects.get(unique_id=unique_id)
+    if member_check(request.user,classroom):
+        #querysets
+        members = classroom.members.all()
+        subjects = Subject.objects.all().filter(classroom=classroom)
+        subject_teacher_check = Classroom.objects.filter(teacher=request.user).exists()
+        admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+        is_teacher = subject_teacher_check or admin_check
         message=False
 
-        # creator of classroom can add a subject with its teacher
-        if request.user==classroom.created_by:
+        # Admins can add a subject with its teacher
+        if admin_check:
             if request.method=="POST": 
                 form = SubjectForm(request.POST)
                 if form.is_valid():
                     subject=form.save(commit=False)
                     subject.classroom=classroom
-
                     try:
                         teacher = User.objects.get(username=request.POST.get('teacher'))
                         if not members.filter(username=teacher.username).exists():
@@ -103,6 +167,7 @@ def subjects(request, unique_id, form = None):
                         else:
                             subject.teacher = teacher
                             subject.save()
+                            subject.upload_permission.add(teacher)
                             message="Subject added"
                             classroom.teacher.add(teacher)
                             return redirect(f'/guru/{unique_id}/')
@@ -115,11 +180,8 @@ def subjects(request, unique_id, form = None):
             'subjects':subjects,
             'form':form,
             'classroom':classroom,
-            'students':students,
-            'teachers':teachers,
             'is_teacher':is_teacher,
             'message':message,
-            'pending_members':pending_members
             }
         return render(request,'subjects.html',params)
 
@@ -127,13 +189,19 @@ def subjects(request, unique_id, form = None):
 def subject_page(request,unique_id,subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     if member_check(request.user,classroom):
-
+        members = classroom.members.all()
+        admins = classroom.special_permissions.all()
+        teachers = classroom.teachers.all()
         subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+        teacher = subject.teacher
+        members = members.difference(teachers)+admins+teacher
+
         announcements = Announcement.objects.all().filter(subject_name=subject)
         params = {
             'subject':subject,
             'classroom':classroom,
             'announcements':announcements,
+            'members':members
         }   
         return render(request,'subject_page.html',params)
 
@@ -149,7 +217,9 @@ def resource(request,unique_id,subject_id,form = None):
             search = request.GET.get('search')
             notes = notes.filter(Q(topic__icontains=search)|Q(description__icontains=search)) 
         query,page_range = pagination(request, notes)
-        is_teacher = classroom.created_by==request.user or request.user==subject.teacher  
+        upload_permission = subject.upload_permission.all().filter(username=request.user.username).exists()
+        admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+        is_teacher = admin_check or upload_permission or request.user==subject.teacher  
 
         #Add note form handling
         if is_teacher:
@@ -183,7 +253,9 @@ def read_note(request, unique_id, subject_id, id, form = None):
         subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
         notes = Note.objects.all().filter(subject_name=subject)
         note = Note.objects.get(id=id)
-        is_teacher = classroom.created_by==request.user or request.user==subject.teacher
+        upload_permission = subject.upload_permission.filter(username=request.user.username).exists()
+        admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+        is_teacher = admin_check or upload_permission or request.user==subject.teacher 
 
         #Note update form handling
         if is_teacher:
@@ -210,7 +282,9 @@ def resource_delete(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     subject = Subject.objects.get(id=subject_id)
     note = Note.objects.get(id=id)
-    is_teacher = classroom.created_by==request.user or subject.teacher==request.user
+    upload_permission = subject.upload_permission.filter(username=request.user.username).exists()
+    admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+    is_teacher = admin_check or upload_permission or request.user==subject.teacher 
     if is_teacher:
         note.delete()
         return redirect(f'/{unique_id}/{subject_id}/resource/')
@@ -222,7 +296,8 @@ def assignment(request ,unique_id, subject_id, form=None):
     classroom = Classroom.objects.get(unique_id=unique_id)
     if member_check(request.user,classroom):
         subject = Subject.objects.get(id=subject_id)
-        is_teacher = classroom.created_by==request.user or subject.teacher==request.user
+        admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+        is_teacher = admin_check or subject.teacher==request.user
 
         #add assignent form handling
         if is_teacher:
@@ -276,7 +351,8 @@ def assignment_page(request,unique_id,subject_id,id):
         all_submissions = Submission.objects.all().filter(assignment=assignment)
         late_submissions = Submission.objects.all().filter(submitted_on__gt=assignment.submission_date)
         ontime_submissions = all_submissions.difference(late_submissions)
-        is_teacher = classroom.created_by==request.user or request.user==subject.teacher
+        admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+        is_teacher = admin_check or request.user==subject.teacher
 
         #update assignment
         if is_teacher:
@@ -297,6 +373,8 @@ def assignment_page(request,unique_id,subject_id,id):
                 if form.is_valid():
                     data=form.save(commit=False)
                     data.submitted_by=request.user
+                    if Submission.objects.filter(submitted_by=request.user).exists():
+                        return HttpResponse('You have already submitted')
                     data.assignment= assignment
                     data.current_status = True
                     data.save()
@@ -335,7 +413,9 @@ def assignment_delete(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     assignment = Assignment.objects.all().filter(subject_name=subject).get(id=id)
-    if classroom.created_by==request.user or request.user==subject.teacher:
+    admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+    is_teacher = admin_check or request.user==subject.teacher
+    if is_teacher:
         assignment.delete()
         return redirect(f'/{unique_id}/{subject_id}/assignments/')
     else:
@@ -349,7 +429,8 @@ def announcement(request, unique_id, subject_id):
 
         #querysets
         subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-        is_teacher = classroom.created_by==request.user or request.user==subject.teacher
+        admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+        is_teacher = admin_check or request.user==subject.teacher
         announcements = Announcement.objects.all().filter(subject_name=subject).order_by('-id')
         if request.GET.get('search'):
             search = request.GET.get('search')
@@ -390,7 +471,8 @@ def announcement_page(request,unique_id,subject_id,id):
         subject = Subject.objects.get(id=subject_id)
         announcements = Announcement.objects.all().filter(subject_name=subject).order_by('issued_on','-id')
         announcement = Announcement.objects.get(id=id)
-        is_teacher = classroom.created_by==request.user or request.user==subject.teacher
+        admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+        is_teacher = admin_check or request.user==subject.teacher
 
         #announcement update handling
         if is_teacher:
@@ -417,7 +499,9 @@ def announcement_delete(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     announcement = Announcement.objects.all().filter(subject_name=subject).get(id=id)
-    if classroom.created_by==request.user or request.user==subject.teacher:
+    admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+    is_teacher = admin_check or request.user==subject.teacher
+    if is_teacher:
         announcement.delete()
         return redirect(f'/{unique_id}/{subject_id}/announcement/')
     else:
@@ -428,10 +512,22 @@ def this_subject(request,unique_id, subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     if member_check(request.user, classroom):
         subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+        admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+        upload_permission = subject.upload_permission.all()
+        members = classroom.members.all()
+        admins = classroom.special_permissions.all()
+        teachers = classroom.teacher.all()
+        subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+        teacher = subject.teacher
+        members = admins.distinct() | members.difference(teachers).distinct()
         params={
             'subject':subject,
-            'classroom':classroom,
-            'is_teacher':classroom.created_by==request.user,
+            'classroom':classroom, 
+            'is_teacher':admin_check,
+            'members':members,
+            'upload_permissions':upload_permission,
+            'admins':admins,
+            'teacher':teacher,
         }
         return render(request,'thissubject.html',params)
 
@@ -439,60 +535,56 @@ def this_subject(request,unique_id, subject_id):
 def delete_subject(request,unique_id, subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-    if classroom.created_by==request.user:
+    admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+    if admin_check:
         subject.delete()
         return redirect(f'/guru/{unique_id}/')
     else:
         raise Http404()
 
 @login_required
-def make_admin(request,unique_id,username):
-    classroom = Classroom.objects.get(unique_id=unique_id)
-    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
-    if is_teacher:
-        classroom.teacher.add(User.objects.get(username=username))
-        return redirect(f'/guru/{unique_id}/')   
-    else:
-        raise Http404()
-
-@login_required
-def remove_admin(request,unique_id,username):
-    classroom = Classroom.objects.get(unique_id=unique_id)
-    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
-    if is_teacher and not request.user==classroom.created_by:
-        classroom.teacher.remove(User.objects.get(username=username))
-        return redirect(f'/guru/{unique_id}/')  
-    else:
-        raise Http404()
-
-@login_required
 def remove_member(request,unique_id,username):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    is_teacher = Classroom.objects.filter(teacher=request.user).exists()
-    if is_teacher or request.user==User.objects.get(username=username):
+    admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+    if admin_check or request.user==User.objects.get(username=username):
         classroom.members.remove(User.objects.get(username=username))
         if request.user==User.objects.get(username=username):
             return redirect('/homepage/')  
         else:
-            return redirect(f'/guru/{unique_id}/')
+            return redirect(f'/classroom/{unique_id}/')
     else:
         raise Http404()
 
 @login_required
 def accept_request(request,unique_id,username):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    if member_check(request.user, classroom):
-        if request.user==classroom.created_by:
-            user = User.objects.get(username=username)
-            classroom.members.add(user)
-            classroom.pending_members.remove(user)
-            return redirect(f'/guru/{unique_id}/')
+    admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+    if admin_check:
+        user = User.objects.get(username=username)
+        classroom.members.add(user)
+        classroom.pending_members.remove(user)
+        return redirect(f'/classroom/{unique_id}/')
 
 @login_required
 def delete_request(request,unique_id,username):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    if member_check(request.user, classroom):
-        if request.user==classroom.created_by:
-            user = User.objects.get(username=username)
-            classroom.pending_members.remove(user)
-            return redirect(f'/guru/{unique_id}/')
+    admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+    if request.user==classroom.created_by:
+        user = User.objects.get(username=username)
+        classroom.pending_members.remove(user)
+        return redirect(f'/classroom/{unique_id}/')
+
+@login_required
+def manage_upload_permission(request,unique_id,subject_id,username):
+    classroom = Classroom.objects.get(unique_id=unique_id)  
+    if member_check(request.user,classroom):
+        user = User.objects.get(username=username)
+        subject = Subject.objects.get(id=subject_id)
+        check = subject.upload_permission.filter(username = user.username).exists()
+        if check:
+            subject.upload_permission.remove(user)
+            return redirect(f'/{unique_id}/{subject_id}/this_subject')
+        else:
+            subject.upload_permission.add(user)
+            return redirect(f'/{unique_id}/{subject_id}/this_subject')
+

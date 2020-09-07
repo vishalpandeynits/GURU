@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Home view {% endblock %}
+{% block content %}
+{% load crispy_forms_tags %}
+<div class="container-fluid">
+
+	#invitation link
+<a target="_blank" class="btn-floating btn-lg btn-whatsapp" 
+	href="https://api.whatsapp.com/send?text=Click on
+	 this link http://www.guru/join/{{classroom.unique_id}}/ 
+	 to join classroom {{classroom}} created by 
+	 {{classroom.created_by}}/)">
+	<i class="fab fa-whatsapp"></i>
+</a>
+
+<a target="_blank" class="btn-floating btn-lg btn-gmail" 
+	href="mailto:?subject= Invitation for {{classroom}} 
+	&body=Click on this link http://www.guru/join/{{classroom.unique_id}}/
+	 to join classroom {{classroom}} created by {{classroom.created_by}}">
+	<i class="fab fa-whatsapp"></i>
+</a>
+
+{% if user in admins %}
+<div id="update-form">{{ user.username }}
+	<button @click="classUpdateForm">
+		Update
+	</button>
+	<div v-if="updateForm" class="container">
+		<form method="POST" enctype="multipart/form-data">{% csrf_token %}
+			{{ form|crispy }}
+			<input type="Submit" value="Update" class="btn btn-primary float-right">
+		</form>
+	</div>
+</div>
+{% endif %}
+
+<center id="homepage-btn-group">
+	<button @click="toggleMembers">Members 
+		{% if pending_members %}
+			{{pending_members|length}}
+		{% endif %}
+	</button>
+</center>
+
+		<!-- Subjects -->
+
+	<div v-if="members">
+		{% if is_admin %}
+			{% if pending_members %}
+				<center><h1 style="color:green">Pending members</h1></center>
+			{% endif %}
+
+			<div class="row">
+			{% for member in pending_members %}
+				<div class="member-card">
+					<div class="wrapper"><br/>
+						<div class="opts">
+							<div class="dropdown">
+								<div class="dropbtn">...</div>
+								<div class="dropdown-content">
+									<a href="{% url 'delete_request' classroom.unique_id member.username %}">
+										Delete request
+									</a>
+									<a href="{% url 'accept_request' classroom.unique_id member.username %}">
+										Accept request
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<img src="{{member.profile.profile_pic.url}}">
+						<div class="member-container">
+							<h4><b>{{ member.username }} &nbsp; &nbsp;</b></h4>
+							<p>{{member.profile.bio}}</p>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+			</div> 
+		{% endif %}
+
+		<div class="row">
+			{% for teacher in teachers %}
+			<div class="member-card">
+				<div class="wrapper"><br/>
+					{% if user in admins %}
+					<div class="opts">
+						<div class="dropdown">
+							<div class="dropbtn">...</div>
+							<div class="dropdown-content">
+								<a href="{% url 'class_admin' classroom.unique_id teacher.username %}">
+									{% if teacher in admins %}
+										Remove from admin status
+									{% else %}
+										Give admin status
+									{% endif %}
+								</a>
+								
+								<a href="{% url 'remove_member' classroom.unique_id teacher.username %}">
+									Remove from classroom
+								</a>
+							</div>
+						</div>
+					</div>
+					{% endif %}
+					<img src="{{teacher.profile.profile_pic.url}}">
+					<div class="member-container">
+						<h4><b>{{ teacher.username }} &nbsp; &nbsp; 
+								{% if teacher in admins %} Admin {% endif %}
+								<span style="float:right;color:green;">
+									Teacher
+								</span>
+							</b>
+						</h4>
+						<p style="word-wrap: wrap;">{{teacher.profile.bio}}</p>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+
+		{% for student in students %}
+			<div class="member-card">
+				<div class="wrapper"><br/>
+					<div class="opts">
+						<div class="dropdown">
+							{% if user in admins %} 
+							<div class="dropbtn">...</div>
+							<div class="dropdown-content">
+									<a href="{% url 'class_admin' classroom.unique_id student.username %}">
+										{% if student in admins %}
+											Remove from admin position
+										{% else %}
+											Give admin status
+										{% endif %}
+									</a>
+									{% if user.username == student.username %}
+									<a href="{% url 'remove_member' classroom.unique_id user.username %}">
+										 Leave classroom
+									</a>
+									{% endif %}
+									<a href="{% url 'remove_member' classroom.unique_id student.username %}">
+										Remove from classroom
+									</a>	
+							</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<img src="{{student.profile.profile_pic.url}}">
+				<div class="member-container">
+					<h4><b>{{ student.username }} 
+						&nbsp; &nbsp;{% if student in admins %}Admin{% endif %} 
+					</b></h4>
+					<p>{{student.profile.bio}}</p>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}

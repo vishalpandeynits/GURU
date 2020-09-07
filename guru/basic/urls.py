@@ -3,11 +3,12 @@ from .views import *
 
 urlpatterns = [
     path('',home,name="home"),
+    path('guru/join/<unique_id>/',join,name="join"),
     path('homepage/',homepage,name="homepage"),
+    path('classroom/<unique_id>/',classroom_page,name="classroom_page"),
     path('guru/<unique_id>/',subjects,name="subjects"),
+    path('<unique_id>/<username>/Classadmin/',admin_status,name="class_admin"),
 
-    path('subjects/<str:unique_id>/<str:username>/makeAdmin/',make_admin, name="make_admin"),
-    path('subjects/<str:unique_id>/<str:username>/removeAdmin/',remove_admin, name="remove_admin"),
     path('subjects/<str:unique_id>/<str:username>/removeMember/',remove_member, name="remove_member"),
     path('subjects/<str:unique_id>/<str:username>/acceptRequest/',accept_request, name="accept_request"),
     path('subjects/<str:unique_id>/<str:username>/deleteRequest/',delete_request, name="delete_request"),
@@ -27,5 +28,6 @@ urlpatterns = [
     path('<unique_id>/<subject_id>/<id>/assignment/',assignment_page,name="assignment_page"),
     path('<unique_id>/<subject_id>/<id>/assignment/delete/',assignment_delete,name="delete_assignment"),
 
-    path('<unique_id>/<subject_id>/this_subject/',this_subject,name="this_subject")
+    path('<unique_id>/<subject_id>/this_subject/',this_subject,name="this_subject"),
+    path('<unique_id>/<subject_id>/upload_permissions/<username>/',manage_upload_permission,name="upload_permissions")
 ]

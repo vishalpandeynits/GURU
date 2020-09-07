@@ -4,7 +4,6 @@
 {% block content %}
 {% load crispy_forms_tags %}
 <div class="container">
-
 	<a class="btn btn-outline-primary float-right" 
 		href="{% url 'profile' user.username %}">
 		{{ user.username }}
@@ -55,7 +54,7 @@
 					{% endfor %} 
 				{% endif %}
 
-				{% if my_classes %} 
+<!-- 				{% if my_classes %} 
 					THe list of classes you are requested for: <br>
 					{% for class in my_classes %}
 						<div style="color:white; background:black;height:120%;"
@@ -68,8 +67,7 @@
 							</span> 
 						</div> 
 					{% endfor %} 
-				{% endif %}
-
+				{% endif %} -->
 			</div>
 		</div>
 	</div>

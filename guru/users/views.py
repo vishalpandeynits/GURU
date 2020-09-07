@@ -18,7 +18,7 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_active = False
+            # user.is_active = False
             user.save()
             current_site = get_current_site(request)
             message = render_to_string('acc_active_email.html', {
@@ -46,8 +46,6 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        user = authenticate(request,username=user.username,password=user.password)
-        login(request, user)
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         return HttpResponse('Activation link is invalid!')

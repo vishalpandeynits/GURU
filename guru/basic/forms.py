@@ -7,7 +7,7 @@ from django.forms.widgets import *
 class CreateclassForm(forms.ModelForm):
 	class Meta:
 		model =  Classroom
-		fields = ['class_name','need_permission']
+		fields = ['class_name','need_permission','description','classroom_pic']
 
 class SubjectForm(forms.ModelForm):
 	class Meta:

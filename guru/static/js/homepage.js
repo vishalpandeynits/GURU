@@ -2,14 +2,12 @@ if ( window.history.replaceState ) {
   window.history.replaceState( null, null, window.location.href );
 }
 
-function openNav(el) {
+function openNav() {
   document.getElementById("mySidenav").style.width = "250px";
-  el.style.display="None";
 }
 
-function closeNav(el) {
+function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
-  el.style.display="block";
 }
 
 function createclassform(){
@@ -47,9 +45,9 @@ new Vue({
 			this.members = false;
 		},
 		toggleMembers: function () {
+			this.members = this.members===true?false:true;
 			this.subjects = false;
 			this.addform = false;
-			this.members = true;
 		},
 		addSubject:function(){
 			this.addform = this.addform===true?false:true;
@@ -182,3 +180,16 @@ new Vue({
 	}
 })
 // POLL PAGE ENDS 
+
+	new Vue({
+		el:'#update-form',
+		data:{
+			updateForm:false
+		},
+		methods:{
+			classUpdateForm:function(){
+				this.updateForm=this.updateForm===true?false:true;
+				console.log('div')
+			}
+		}
+	})
