@@ -22,7 +22,7 @@ class NoteForm(forms.ModelForm):
 class AssignmentForm(forms.ModelForm):
 	class Meta:
 		model = Assignment
-		fields = ['file','topic','description',]
+		fields = ['file','topic','description','full_marks']
 
 class AnnouncementForm(forms.ModelForm):
 	class Meta:

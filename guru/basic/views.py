@@ -8,7 +8,8 @@ from .forms import *
 from .models import *
 import string
 from random import choice,randint
-
+from .email import email_marks
+from .delete_notify import *
 #--------------------------------------------helper functions-----------------------------------
 def unique_id():
     characters = string.ascii_letters + string.digits
@@ -67,9 +68,12 @@ def homepage(request):
         checking = classroom.need_permission
         if checking:
             classroom.pending_members.add(request.user)
+            return HttpResponse('You request is pending. You can join when someone lets you in.')
         else:
             classroom.members.add(request.user)
-            return HttpResponse('You request is pending. You can join when someone lets you in.')
+            notify = Classroom_activity(classroom=classroom,actor=request.user)
+            notify.action = "A new member "+str(request.user.username)+ "Have joined your classroom."
+            notify.save()
     
     #create classroom
     if request.method=='POST':
@@ -216,6 +220,7 @@ def resource(request,unique_id,subject_id,form = None):
         if request.GET.get('search'):
             search = request.GET.get('search')
             notes = notes.filter(Q(topic__icontains=search)|Q(description__icontains=search)) 
+
         query,page_range = pagination(request, notes)
         upload_permission = subject.upload_permission.all().filter(username=request.user.username).exists()
         admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
@@ -225,11 +230,15 @@ def resource(request,unique_id,subject_id,form = None):
         if is_teacher:
             if request.method=="POST":
                 form = NoteForm(request.POST,request.FILES)
+                files = request.FILES.getlist('file')
+                print(files)
                 if form.is_valid():
                     data=form.save(commit=False)
                     data.subject_name = subject
                     data.uploaded_by = request.user
-                    data.save() 
+                    for f in files:
+                        data.file = f
+                        data.save()
                     return redirect(f'/{unique_id}/{subject_id}/resource/')
             else:
                 form= NoteForm()
@@ -287,6 +296,7 @@ def resource_delete(request,unique_id,subject_id,id):
     is_teacher = admin_check or upload_permission or request.user==subject.teacher 
     if is_teacher:
         note.delete()
+        note_delete_notify(request,note)
         return redirect(f'/{unique_id}/{subject_id}/resource/')
     else:
         raise Http404()
@@ -366,6 +376,17 @@ def assignment_page(request,unique_id,subject_id,id):
             else:
                 updateform= AssignmentForm(instance=assignment)
 
+            # assigning marks by techer for each assignment
+            if request.POST.get('marks_assigned'):
+                id  = request.POST.get('id')
+                submission = Submission.objects.get(id=id)
+                marks = request.POST.get('marks_assigned')
+                submission.marks_assigned = marks
+                submission.save()
+                email_marks(request,submission,assignment)
+
+                return redirect(f'/{unique_id}/{subject_id}/{assignment.id}/assignment/')
+
         #submitting assignment
         if not is_teacher:
             if request.method=="POST":
@@ -373,7 +394,7 @@ def assignment_page(request,unique_id,subject_id,id):
                 if form.is_valid():
                     data=form.save(commit=False)
                     data.submitted_by=request.user
-                    if Submission.objects.filter(submitted_by=request.user).exists():
+                    if Submission.objects.filter(Q(submitted_by=request.user) & Q(assignment=assignment)).exists():
                         return HttpResponse('You have already submitted')
                     data.assignment= assignment
                     data.current_status = True
@@ -417,6 +438,7 @@ def assignment_delete(request,unique_id,subject_id,id):
     is_teacher = admin_check or request.user==subject.teacher
     if is_teacher:
         assignment.delete()
+        assignment_delete_notify(request,assignment)
         return redirect(f'/{unique_id}/{subject_id}/assignments/')
     else:
         raise Http404()
@@ -503,6 +525,7 @@ def announcement_delete(request,unique_id,subject_id,id):
     is_teacher = admin_check or request.user==subject.teacher
     if is_teacher:
         announcement.delete()
+        announcement_delete_notify(request,announcement)
         return redirect(f'/{unique_id}/{subject_id}/announcement/')
     else:
         raise Http404()
@@ -536,8 +559,12 @@ def delete_subject(request,unique_id, subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+
     if admin_check:
         subject.delete()
+        notify = Classroom_activity(classroom=classroom,actor=request.user)
+        notify.action = "A Subject "+subject.subject_name + " is deleted by "+request.user.username
+        notify.save()
         return redirect(f'/guru/{unique_id}/')
     else:
         raise Http404()
@@ -559,10 +586,14 @@ def remove_member(request,unique_id,username):
 def accept_request(request,unique_id,username):
     classroom = Classroom.objects.get(unique_id=unique_id)
     admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+
     if admin_check:
         user = User.objects.get(username=username)
         classroom.members.add(user)
         classroom.pending_members.remove(user)
+        notify = Classroom_activity(classroom=classroom,actor=request.user)
+        notify.action = "A new member "+ str(user.username) + "have joined your classroom."
+        notify.save()
         return redirect(f'/classroom/{unique_id}/')
 
 @login_required

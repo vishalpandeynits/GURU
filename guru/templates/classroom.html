@@ -124,9 +124,9 @@
 				<div class="wrapper"><br/>
 					<div class="opts">
 						<div class="dropdown">
-							{% if user in admins %} 
 							<div class="dropbtn">...</div>
 							<div class="dropdown-content">
+									{% if user in admins %} 
 									<a href="{% url 'class_admin' classroom.unique_id student.username %}">
 										{% if student in admins %}
 											Remove from admin position
@@ -134,16 +134,12 @@
 											Give admin status
 										{% endif %}
 									</a>
-									{% if user.username == student.username %}
-									<a href="{% url 'remove_member' classroom.unique_id user.username %}">
-										 Leave classroom
-									</a>
 									{% endif %}
-									<a href="{% url 'remove_member' classroom.unique_id student.username %}">
-										Remove from classroom
-									</a>	
+									<a href="{% url 'remove_member' classroom.unique_id user.username %}">
+										 {% if is_admin %} Remove from classroom {% else %} Leave classroom {% endif %}
+									</a>
 							</div>
-							{% endif %}
+							
 						</div>
 					</div>
 				</div>

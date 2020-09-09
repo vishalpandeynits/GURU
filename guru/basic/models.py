@@ -34,7 +34,7 @@ class Subject(models.Model):
 class Note(models.Model):
 	subject_name = models.ForeignKey(Subject, on_delete=models.CASCADE)
 	uploaded_on = models.DateTimeField(auto_now_add= True)
-	file = models.FileField(upload_to='media/notes/',null=True,blank=True)
+	file = models.FileField(upload_to='media/notes/',null=True,blank=True,)
 	topic = models.CharField(max_length=100,)
 	description = models.TextField(max_length=500,)
 	uploaded_by = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -47,7 +47,7 @@ class Announcement(models.Model):
 	issued_on = models.DateTimeField(auto_now_add= True)
 	subject = models.CharField(max_length=100)
 	description = models.TextField(max_length=500,)
-	file = models.FileField(upload_to='media/announcement/',)
+	file = models.FileField(upload_to='media/announcement/',null=True,)
 	announced_by = models.ForeignKey(User,on_delete=models.CASCADE)
 
 	def __str__(self):
@@ -56,13 +56,13 @@ class Announcement(models.Model):
 class Assignment(models.Model):
 	subject_name = models.ForeignKey(Subject,on_delete=models.CASCADE)
 	uploaded_on = models.DateTimeField(auto_now_add= True)
-	file = models.FileField(upload_to='media/',null=True,blank = True)
+	file = models.FileField(upload_to='media/',null=True,blank = True,)
 	topic = models.CharField(max_length=100,)
 	description = models.TextField(max_length=500,)
 	submission_date = models.DateTimeField() 
 	assigned_by = models.ForeignKey(User,on_delete=models.CASCADE)
 	submitted_by = models.ManyToManyField(User,related_name="Submissions")
-	full_marks = models.IntegerField()
+	full_marks = models.IntegerField(default=100)
 	
 	def __str__(self):
 		return "Assignment on "+ self.topic
@@ -76,10 +76,20 @@ class Submission(models.Model):
 	marks_assigned = models.IntegerField(null=True,blank=True)
 
 	def __str__(self):
-		return self.submitted_by
+		return "Assignment upload of "+self.assignment.topic + self.submitted_by.username
 
 class Subject_activity(models.Model):
 	subject = models.ForeignKey(Subject, on_delete = models.CASCADE)
+	action = models.CharField(max_length=100)
+	actor = models.ForeignKey(User,on_delete = models.DO_NOTHING)
+	time = models.DateTimeField(auto_now_add = True)
+	url = models.URLField(null=True,blank=True)
+
+	def __str__(self):
+		return self.action
+
+class Classroom_activity(models.Model):
+	classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE)
 	action = models.CharField(max_length=100)
 	actor = models.ForeignKey(User,on_delete = models.DO_NOTHING)
 	time = models.DateTimeField(auto_now_add = True)
@@ -111,24 +121,12 @@ def note_tracker(sender, instance, created, **kwargs):
 		activity.action = "A new note is added."
 		activity.save()
 
-@receiver(pre_delete, sender=Note)
-def note_tracker_delete(sender, instance, **kwargs):
-	activity = Subject_activity(subject=instance.subject_name,actor=instance.uploaded_by)
-	activity.action = "A note is deleted"
-	activity.save()
-
 @receiver(post_save, sender=Announcement)
 def announcement_tracker(sender, instance, created,**kwargs):
 	if created:
 		activity = Subject_activity(subject=instance.subject_name,actor=instance.announced_by)
 		activity.action = "A new Announcement is added."
 		activity.save()
-
-@receiver(pre_delete, sender=Announcement)
-def announcement_delete(sender, instance, **kwargs):
-	activity = Subject_activity(subject=instance.subject_name,actor=instance.uploaded_by)
-	activity.action = "An Announcement is deleted"
-	activity.save()
 
 @receiver(post_save, sender=Assignment)
 def assignment_tracker(sender, instance, created, **kwargs):
@@ -137,8 +135,9 @@ def assignment_tracker(sender, instance, created, **kwargs):
 		activity.action = f"A new Assignment is added. Submission date is {instance.submission_date}"
 		activity.save()
 
-@receiver(pre_delete, sender=Assignment)
-def assignment_delete(sender, instance, **kwargs):
-	activity = Subject_activity(subject=instance.subject_name,actor=instance.uploaded_by)
-	activity.action = "An Assignment is deleted."
-	activity.save()
+@receiver(post_save,sender=Subject)
+def classroom_tracker(sender, instance, created, **kwargs):
+	if created:
+		activity = Classroom_activity(classroom=instance.classroom,actor=instance.classroom.created_by)#CHECK
+		activity.action = f"A new subject is added."
+		activity.save()

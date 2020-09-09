@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Classroom, Subject, Note, Assignment, Announcement, Submission,Subject_activity
+from .models import *
 
 class ClassroomAdmin(admin.ModelAdmin):
 	list_display = ['class_name','unique_id']
@@ -16,3 +16,4 @@ admin.site.register(Assignment)
 admin.site.register(Announcement)
 admin.site.register(Submission)
 admin.site.register(Subject_activity)
+admin.site.register(Classroom_activity)

@@ -30,3 +30,13 @@ def announcement_email(announcement):
 	to_email = announcement.subject_name.classroom.members.values_list('email', flat=True)
 	send_mail(mail_subject, message,'vishalpandeynits@gmail.com',to_email)
 
+def email_marks(request,submission,assignment):
+	message = render_to_string('submission_mark.html', {
+		'user':request.user,
+		'assignment':assignment,
+		'submission':submission
+	})
+	mail_subject = 'marks is assigned for your submission of '+ assignment.topic
+	to_email = submission.submitted_by.email
+	send_mail(mail_subject, message,'vishalpandeynits@gmail.com',[to_email])	
+

@@ -90,6 +90,11 @@
 							</a>
 							submitted_by {{ submission.submitted_by }} at
 							{{ submission.submitted_on }}. 
+							 <form method="POST">{% csrf_token %}
+							 	<input type="hidden" name="id" value = "{{submission.id}}">
+							 	<input name="marks_assigned" type="number" value = "{{submission.marks_assigned}}" max="100">
+							 	<input type="submit" id="assignMarks" onclick="fun" value = "Submit">
+							</form>
 						</div>
 					{% endfor %}
 				</span>
@@ -101,7 +106,7 @@
 									{{ submission.file }} 
 								</a>
 								submitted_by {{ submission.submitted_by }} at
-								 {{ submission.submitted_on }}. 
+								 {{ submission.submitted_on }}.
 						</div>
 					{% endfor %}
 				</span>
@@ -169,4 +174,9 @@
 		</div>
 	</div>
 </div>
+<script>
+	function fun(){
+		alert('hello')
+	}
+</script>
 {% endblock %}
