@@ -1,0 +1,58 @@
+{% extends 'subject_page.html' %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block subject_content %}
+<div class="container">
+
+	<form class="float-right mt-4">
+      	<input class="search-input" autocomplete="off" type="text"
+      	 placeholder="Search..."name="search">
+      	<button class="search-icon" type="submit">
+      	 	<i class="fas fa-search"></i>
+      	</button>
+	</form>
+	<div id="containannouncement">
+	{% if form %}
+      	 <button @click = "addAnnouncementFormToggle" type="button" 
+      	 	class="btn add-btn float-left mt-4">
+      	 	Add <i class="fa fa-plus" aria-hidden="true"></i>
+		</button><br><br><br>
+		<form method="POST" v-if="addform" class="addForm" enctype="multipart/form-data">{% csrf_token %}
+			{{ form|crispy}}
+			<input type="submit" class="submit-button"value="submit">
+		</form>
+    {% endif %}
+	</div>
+
+	{% if announcements %}
+		<div style="min-height:500px;">
+			{% for announcement in announcements %}
+				<div class="content" style="padding:10px;">
+					<a class="link" href="{% url 'announcement_page' classroom.unique_id  subject.id announcement.id %}">
+						0{{ forloop.counter}} {{ announcement.subject }}
+					</a><br><br>
+					<div class="time">
+						 <b style="float:right;">Announced <nobr>{{announcement.issued_on|naturaltime }} </nobr></b>
+					</div><br>
+				</div>
+			{% endfor %}
+		</div>
+		{% include 'paginations.html' %}
+	{% else %}
+		<h2> No announcements made yet. </h2>
+	{% endif %}
+</div>
+<script>
+	new Vue({
+		el:'#containannouncement',
+		data:{
+			addform:false,
+		},
+		methods:{
+			addAnnouncementFormToggle:function(){
+				this.addform=this.addform===true?false:true;
+			}
+		}
+	})
+</script>
+{% endblock %}

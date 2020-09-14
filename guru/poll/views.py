@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.urls import reverse
 from django.db.models import *
+from django.contrib import messages
 
 from basic.models import *
 from basic.views import member_check
@@ -70,11 +71,11 @@ def poll_page(request,unique_id, poll_id):
 		return render(request,'poll/poll_page.html',params)
 
 def voting(request,unique_id,poll_id,choice_id):
+	classroom = Classroom.objects.get(unique_id = unique_id)
 	if member_check(request.user,classroom):
 		message = None
 		poll=Poll.objects.get(id=poll_id)
 		choice = Choice.objects.all().filter(poll=poll)
-		classroom = Classroom.objects.get(unique_id = unique_id)
 		if not poll.voters.filter(username=request.user.username).exists():
 			choice=Choice.objects.get(id=choice_id)
 			choice.votes += 1
@@ -82,11 +83,11 @@ def voting(request,unique_id,poll_id,choice_id):
 			choice.save()
 			return redirect(f'/polls/{unique_id}')
 		else:
-			message = 'You have already voted !!!!'
+			messages.add_message(request,messages.INFO,"You have already voted.")
+			return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
 		params = {
 			'poll':poll,
 			'choices' : choice,
-			'message': message,
 			'classroom':classroom
 		}
 		return render(request,'poll/poll_page.html',params)

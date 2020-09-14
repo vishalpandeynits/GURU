@@ -1,0 +1,58 @@
+{% extends 'subject_page.html' %}
+{% load crispy_forms_tags %}
+{% block subject_content %}
+{% load humanize %}
+{% load comments %}
+<style>
+	#note-content{
+		background:white;
+		box-shadow: 3px 6px 6px black;
+		color:black;
+		padding:20px;
+		border-radius:15px;
+		margin:0 0 10px 0px;
+	}
+</style>
+<div class="container">
+
+	<div id="note-contain">
+		{% if is_teacher %}
+			<a class="btn btn-danger m-2 float-right" 
+				style="border:none;color:white;background:red;padding: 7px;" href="{% url 'delete_resource' classroom.unique_id subject.id note.id %}">
+					Delete <i class="fa fa-trash" aria-hidden="true"></i>
+			</a>
+			<a @click="formToggle" style="border:none;color:white;background:black;padding: 7px;"
+			 class="btn m-2 float-right">Update <i class="fas fa-edit"></i>
+			</a><br><br>
+
+		    <form method="POST" v-if="showUpdateForm" class="addForm" enctype="multipart/form-data">{% csrf_token %}
+				 {{ updateform|crispy }}
+				 <input type="submit" class="submit-button" value="submit">
+		    </form>
+		{% endif %}<br>
+	</div>
+
+	<div id="note-content">
+		<p style="font-weight: bold;text-align: center;font-size:1.2em;">{{note.topic}}</p>
+		{% if note.file %}
+			<a href="{{note.file.url}}" download> Download file {{ note.file  }} </a><br>
+		{% endif %}
+		<pre>{{ note.description }}</pre>
+	</div><br>
+	{% include 'comments/read_notecomment.html' %}
+
+</div>
+<script>
+	new Vue({
+		el:'#note-contain',
+		data:{
+			showUpdateForm:false,
+		},
+		methods:{
+			formToggle:function(){
+				this.showUpdateForm = this.showUpdateForm === true?false:true;
+			}
+		}
+	})
+</script>
+{% endblock %}

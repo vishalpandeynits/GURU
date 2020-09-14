@@ -3,7 +3,7 @@ from django.core.mail import EmailMessage,send_mail
 from django.contrib.auth.models import User
 
 def note_email(note):
-	message = render_to_string('note_add_email.html', {
+	message = render_to_string('emails/note_add_email.html', {
 		'note':note,
 		'subject_name':note.subject_name,
 		'classroom':note.subject_name.classroom,
@@ -13,7 +13,7 @@ def note_email(note):
 	send_mail(mail_subject, message,'vishalpandeynits@gmail.com',to_email)
 
 def assignment_email(assignment):
-	message = render_to_string('assignment_add_email.html', {
+	message = render_to_string('emails/assignment_add_email.html', {
 		'assignment':assignment,
 		'classroom':assignment.subject_name.classroom,
 	})
@@ -22,7 +22,7 @@ def assignment_email(assignment):
 	send_mail(mail_subject, message,'vishalpandeynits@gmail.com',to_email)
 
 def announcement_email(announcement):
-	message = render_to_string('announcement_add_email.html', {
+	message = render_to_string('emails/announcement_add_email.html', {
 		'announcement':announcement,
 		'classroom':announcement.subject_name.classroom,
 	})
@@ -31,7 +31,7 @@ def announcement_email(announcement):
 	send_mail(mail_subject, message,'vishalpandeynits@gmail.com',to_email)
 
 def email_marks(request,submission,assignment):
-	message = render_to_string('submission_mark.html', {
+	message = render_to_string('emails/submission_mark.html', {
 		'user':request.user,
 		'assignment':assignment,
 		'submission':submission

@@ -4,7 +4,6 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <div class="container-fluid m-2">
-	<center><img src="{{ classroom.classroom_pic.url }}" style="height:20vw;" class="d-block w-50"></center>
 	<div id="vue-container">
 
 		<center id="homepage-btn-group">
@@ -19,12 +18,11 @@
 			<a href="/classroom/{{classroom.unique_id}}/">
 				Classroom
 			</a>
-			<button @click="toggleMembers">Members 
-				{% if pending_members %}
-					{{pending_members|length}}
-				{% endif %}
-			</button>
-
+			{% if pending_members %}
+				<button @click="toggleMembers">Members 	
+						{{pending_members|length}}
+				</button>
+			{% endif %}
 			{% if form %}
 				<button @click="addSubject"> Add </button><br>
 			{% endif %}

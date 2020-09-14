@@ -2,11 +2,10 @@
 {% load humanize %}
 <div id="con">
     
-{% get_comment_count for announcement as comment_count %}
+{% get_comment_count for note as comment_count %}
     {{ comment_count }} Comments
 
-{% if user.is_authenticated %}
-    {% get_comment_form for announcement as form %}
+    {% get_comment_form for note as form %}
    <form action="{% comment_form_target %}" method="POST">{% csrf_token %}
 
         <textarea name="comment" style="width:100%;resize:none;" rows="4" 
@@ -20,14 +19,13 @@
         {{ form.security_hash }}
 
         <input type="hidden" name="next" 
-            value="{% url 'announcement_page' classroom.unique_id subject.id announcement.id %}" />
+            value="{% url 'read_note' classroom.unique_id subject.id note.id %}" />
 
         <input type="submit" style="width:130px;" class="btn btn-primary float-right"
           value="Add comment" id="id_submit" :disabled="disable"/>
-    </form>
-{% endif %}<br><br>
+    </form><br><br>
 
-{% get_comment_list for announcement as comment_list %}
+{% get_comment_list for note as comment_list %}
 
 {% for comment in comment_list reversed %}
     <div class="alert p-2 w-75">
@@ -35,9 +33,7 @@
           <img class="float-left m-2 mr-4"style="border-radius: 50%;"
             src="{{comment.user.profile.profile_pic.url }}" height="60" width="60">
         </a>
-        <b>
-            {{ comment.user.username}}
-        </b> <br>
+        <b>{{ comment.user.username}}</b> <br>
         <pre>{{ comment.comment }}</pre><br>
         <span style="float:right;">
             Commented {{ comment.submit_date|naturaltime }}

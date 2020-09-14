@@ -1,0 +1,65 @@
+{% extends 'subject_page.html' %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block subject_content %}
+<div class="container">
+
+	<div id="containassignment">
+		<form class="float-right mt-4">
+	      	<input class="search-input" autocomplete="off" type="text"
+	      	 placeholder="Search..."name="search">
+	      	<button class="search-icon" type="submit">
+	      	 	<i class="fas fa-search"></i>
+	      	</button>
+		</form>
+
+	
+		{% if form %}
+	      	 <button @click = "addAssignmentFormToggle" type="button" 
+	      	 	class="btn add-btn float-left mt-4">
+	      	 	Add <i class="fa fa-plus" aria-hidden="true"></i>
+			</button><br>
+		{% endif %}<br><br>
+
+		{% if form %}
+		    <form method="POST" v-if="addform" class="addForm" enctype="multipart/form-data">{% csrf_token %}
+				{{ form|crispy}}
+				Submit before * <br><input type="datetime-local" required name="submission_date">
+				<input type="submit" class="submit-button"value="submit">
+			</form>
+		{% endif %}
+	</div>
+
+
+	{% if assignments %}
+		<div style="min-height: 500px;">
+			{% for assignment in assignments %}
+			<div class="content">
+				<a class="link" href="{% url 'assignment_page' classroom.unique_id subject.id assignment.id %}">
+					0{{ forloop.counter}} {{ assignment.topic }}
+				</a><br>
+				<div class="time">
+					 Submit Before <nobr>{{ assignment.submission_date }}</nobr>
+				</div><br>
+			</div>
+			{% endfor %}
+		</div>
+		{% include 'paginations.html' %}
+	{% else %}
+		<h2> No assignments found !!!</h2>
+	{% endif %} 
+</div>
+<script>
+	new Vue({
+		el:'#containassignment',
+		data:{
+			addform:false,
+		},
+		methods:{
+			addAssignmentFormToggle:function(){
+				this.addform=this.addform===true?false:true;
+			}
+		}
+	})
+</script>
+{% endblock %}

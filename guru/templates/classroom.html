@@ -5,150 +5,184 @@
 {% load crispy_forms_tags %}
 <div class="container-fluid">
 
-	#invitation link
-<a target="_blank" class="btn-floating btn-lg btn-whatsapp" 
-	href="https://api.whatsapp.com/send?text=Click on
-	 this link http://www.guru/join/{{classroom.unique_id}}/ 
-	 to join classroom {{classroom}} created by 
-	 {{classroom.created_by}}/)">
-	<i class="fab fa-whatsapp"></i>
-</a>
-
-<a target="_blank" class="btn-floating btn-lg btn-gmail" 
-	href="mailto:?subject= Invitation for {{classroom}} 
-	&body=Click on this link http://www.guru/join/{{classroom.unique_id}}/
-	 to join classroom {{classroom}} created by {{classroom.created_by}}">
-	<i class="fab fa-whatsapp"></i>
-</a>
-
-{% if user in admins %}
-<div id="update-form">{{ user.username }}
-	<button @click="classUpdateForm">
-		Update
-	</button>
-	<div v-if="updateForm" class="container">
-		<form method="POST" enctype="multipart/form-data">{% csrf_token %}
-			{{ form|crispy }}
-			<input type="Submit" value="Update" class="btn btn-primary float-right">
-		</form>
-	</div>
-</div>
-{% endif %}
-
-<center id="homepage-btn-group">
-	<button @click="toggleMembers">Members 
-		{% if pending_members %}
-			{{pending_members|length}}
+	<div class="text-center mt-4 ">
+		<h2> {{ classroom.class_name }} </h2>
+		{% if classroom.description %}
+		<p> {{ classroom.description }} </p>
 		{% endif %}
-	</button>
-</center>
+	</div>
+
+	{% if messages %}
+	<div class="messages container">
+	    {% for message in messages %}
+	    <div class='alert alert-{{ message.tags }}'>{{ message }} </div>
+	    {% endfor %}
+	</div>
+	{% endif %}
+
+	<span id="update-form">
+		<span style="display:flex; align-items:center; justify-content:center;" id="homepage-btn-group">
+			<button @click="classUpdateForm">Update</button>
+
+			{% if user in admins %}
+				<button>Members
+					{% if pending_members %}
+						{{ pending_members|length }}
+					{% endif %}
+				</button>
+			{% endif %}
+
+			<span class="dropdown ">
+		  	<button class="btn btn-secondary dropdown-toggle" type="button" 
+		  		id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		   		 Invitation link
+		  	</button>
+
+		  	<div class="dropdown-menu bg-light" aria-labelledby="dropdownMenuButton">
+		    	<a style="text-decoration: none;" target="_blank" class="invite-link" 
+					href="https://api.whatsapp.com/send?text=Click on
+				 	this link http://www.guru/join/{{classroom.unique_id}}/ 
+				 	to join classroom {{classroom}} created by 
+				 	{{classroom.created_by}}/)">
+				 	Invite by Whatsapp
+				</a>
+				<a style="text-decoration: none;" target="_blank" class="invite-link" 
+					href="mailto:?subject= Invitation for {{classroom}} 
+					&body=Click on this link http://www.guru/join/{{classroom.unique_id}}/
+				 	to join classroom {{classroom}} created by {{classroom.created_by}}">
+					Invite by email
+				</a>
+		 	</div>
+			</span>
+		</span>	
+
+		<div  v-if="updateForm" class="container">
+			<form id="updateForm" method="POST" enctype="multipart/form-data">{% csrf_token %}
+				{{ form|crispy }}
+				<input type="Submit" value="Update" class="btn mt-4 btn-primary btn-block">
+			</form>
+		</div>
+	</span>
 
 		<!-- Subjects -->
 
-	<div v-if="members">
+	<div  style="display:flex;justify-content: center;"v-if="members">
+
 		{% if is_admin %}
 			{% if pending_members %}
 				<center><h1 style="color:green">Pending members</h1></center>
 			{% endif %}
 
-			<div class="row">
+			<div style="display: flex;" class="row">
 			{% for member in pending_members %}
-				<div class="member-card">
-					<div class="wrapper"><br/>
-						<div class="opts">
-							<div class="dropdown">
-								<div class="dropbtn">...</div>
-								<div class="dropdown-content">
-									<a href="{% url 'delete_request' classroom.unique_id member.username %}">
-										Delete request
-									</a>
-									<a href="{% url 'accept_request' classroom.unique_id member.username %}">
-										Accept request
-									</a>
-								</div>
-							</div>
-						</div>
+			<div style="position:relative;" class="member-card">
 
-						<img src="{{member.profile.profile_pic.url}}">
-						<div class="member-container">
-							<h4><b>{{ member.username }} &nbsp; &nbsp;</b></h4>
-							<p>{{member.profile.bio}}</p>
-						</div>
+				<div style="display:flex;position:relative;top:-15px;">
+
+					<div style="justify-content: flex-start;">
+						<img height="70" width="70" style="border-radius:10px;margin-right:20px;"
+						src="{{member.profile.profile_pic.url}}">
+					</div>
+
+					<div class="member-container">
+						<h4><b>{{ member.username }} &nbsp; &nbsp;</b></h4>
+						<p>{{member.profile.bio}}</p>
 					</div>
 				</div>
+
+				<div style="position:absolute;top:5px;right:10px;"class="btn-group dropleft float-right">
+					  <button type="button" class="btn dropdown-toggle btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
+					  <div class="dropdown-menu dropdown-content">
+							<a href="{% url 'delete_request' classroom.unique_id member.username %}">
+								Delete request
+							</a>
+							<a href="{% url 'accept_request' classroom.unique_id member.username %}">
+								Accept request
+							</a>
+					  </div>
+				</div>
+
+				</div>
 			{% endfor %}
-			</div> 
+		</div>
 		{% endif %}
 
-		<div class="row">
-			{% for teacher in teachers %}
-			<div class="member-card">
-				<div class="wrapper"><br/>
-					{% if user in admins %}
-					<div class="opts">
-						<div class="dropdown">
-							<div class="dropbtn">...</div>
-							<div class="dropdown-content">
-								<a href="{% url 'class_admin' classroom.unique_id teacher.username %}">
-									{% if teacher in admins %}
-										Remove from admin status
-									{% else %}
-										Give admin status
-									{% endif %}
-								</a>
-								
-								<a href="{% url 'remove_member' classroom.unique_id teacher.username %}">
-									Remove from classroom
-								</a>
-							</div>
-						</div>
-					</div>
-					{% endif %}
-					<img src="{{teacher.profile.profile_pic.url}}">
+		<div class="row" style="width:65%;">
+		{% for teacher in teachers %}
+			<div style="position:relative;" class="member-card"><br/>
+
+				<div style="display:flex;position:relative;top:-15px;">
+
+				<div style="justify-content: flex-start;">
+					<img height="70" width="70" style="border-radius:10px;margin-right:20px;"
+					src="{{teacher.profile.profile_pic.url}}">
+				</div>
+
+				<div style="justify-content: flex-end;">
 					<div class="member-container">
-						<h4><b>{{ teacher.username }} &nbsp; &nbsp; 
-								{% if teacher in admins %} Admin {% endif %}
-								<span style="float:right;color:green;">
-									Teacher
-								</span>
-							</b>
-						</h4>
-						<p style="word-wrap: wrap;">{{teacher.profile.bio}}</p>
+						<b>{{ teacher.username }} </b><br>
+							{% if teacher in admins %}Admin{% endif %} 
+						<p>{{teacher.profile.bio}}</p>
 					</div>
+				</div>
+
+				</div>
+
+				<div style="position:absolute;top:5px;right:10px;"class="btn-group dropleft float-right">
+				  <button type="button" class="btn dropdown-toggle btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
+				  <div class="dropdown-menu dropdown-content">
+				  	{% if user in admins %} 
+						<a href="{% url 'class_admin' classroom.unique_id teacher.username %}">
+						{% if teacher in admins %}
+							Dismiss as admin
+						{% else %}
+							Give admin status
+						{% endif %}
+						</a>
+					{% endif %}
+					<a href="{% url 'remove_member' classroom.unique_id user.username %}">
+					 	{% if is_admin %} Remove from classroom {% else %} Leave classroom {% endif %}
+					</a>
+				  </div>
 				</div>
 			</div>
 			{% endfor %}
 
 		{% for student in students %}
-			<div class="member-card">
-				<div class="wrapper"><br/>
-					<div class="opts">
-						<div class="dropdown">
-							<div class="dropbtn">...</div>
-							<div class="dropdown-content">
-									{% if user in admins %} 
-									<a href="{% url 'class_admin' classroom.unique_id student.username %}">
-										{% if student in admins %}
-											Remove from admin position
-										{% else %}
-											Give admin status
-										{% endif %}
-									</a>
-									{% endif %}
-									<a href="{% url 'remove_member' classroom.unique_id user.username %}">
-										 {% if is_admin %} Remove from classroom {% else %} Leave classroom {% endif %}
-									</a>
-							</div>
-							
-						</div>
+			<div style="position:relative;" class="member-card"><br/>
+
+				<div style="display:flex;position:relative;top:-15px;">
+
+				<div style="justify-content: flex-start;">
+					<img height="70" width="70" style="border-radius:10px;margin-right:20px;"
+						src="{{student.profile.profile_pic.url}}">
+				</div>
+				<div style="justify-content: flex-end;">
+					<div class="member-container">
+						<b>{{ student.username }} </b><br>
+							{% if student in admins %}Admin{% endif %} 
+						<p>{{student.profile.bio}}</p>
 					</div>
 				</div>
-				<img src="{{student.profile.profile_pic.url}}">
-				<div class="member-container">
-					<h4><b>{{ student.username }} 
-						&nbsp; &nbsp;{% if student in admins %}Admin{% endif %} 
-					</b></h4>
-					<p>{{student.profile.bio}}</p>
+				</div>
+
+				<div style="position:absolute;top:5px;right:10px;"class="btn-group dropleft float-right">
+				  <button type="button" class="btn dropdown-toggle btn-lg" data-toggle="dropdown" 
+				  	aria-haspopup="true" aria-expanded="false"> </button>
+				  <div class="dropdown-menu dropdown-content">
+				  	{% if user in admins %} 
+						<a href="{% url 'class_admin' classroom.unique_id student.username %}">
+						{% if student in admins %}
+							Dismiss as admin
+						{% else %}
+							Give admin status
+						{% endif %}
+						</a>
+					{% endif %}
+					<a href="{% url 'remove_member' classroom.unique_id user.username %}">
+					 	{% if is_admin %} Remove from classroom {% else %} Leave classroom {% endif %}
+					</a>
+				  </div>
 				</div>
 			</div>
 		{% endfor %}

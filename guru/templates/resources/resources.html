@@ -1,0 +1,61 @@
+{% extends 'subject_page.html' %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block subject_content %}
+<div class="container" >
+	<div id="contain">
+		{% if is_teacher %}
+	      	 <button @click = "addFormToggle" type="button" class="btn add-btn float-left mt-4">
+	      	 	Add <i class="fa fa-plus" aria-hidden="true"></i>
+			</button><br>
+		{% endif %}
+
+		<form class="float-right">
+	      	<input class="search-input" autocomplete="off" type="text" placeholder="Search..."name="search">
+	      	<button class="search-icon" type="submit">
+	      	 	<i class="fas fa-search"></i>
+	      	</button>
+		</form><br><br>
+		{% if is_teacher %}
+	    <form method="POST" v-if="addform" class="addForm" enctype="multipart/form-data">{% csrf_token %}
+			{{ form|crispy}}
+			<input type="submit" class="submit-button"value="submit">
+		</form>
+		{% endif %}
+	</div>
+
+	{% if page %}
+		{% for note in page %}
+		<div class="content">
+			<a class="link" href="{% url 'read_note' classroom.unique_id subject.id note.id %}" >
+				0{{ forloop.counter}} {{ note.topic }}
+			</a><br>
+			<div class="uploaded_by"> uploaded by: 
+				<a href="/profile/{{note.uploaded_by}}">
+					{{ note.uploaded_by }}
+				</a>
+			</div>
+			<div class="time">
+				Uploaded {{ note.uploaded_on|naturaltime }}
+			</div><br>
+		</div>
+		{% endfor %}
+		<br>{% include 'paginations.html' %}	
+	{% else %}
+		<h1 style="color:blue; font-size: 2vw;">No item found </h1>
+	{% endif %}
+</div>
+<script>
+	new Vue({
+		el:'#contain',
+		data:{
+			addform:false,
+		},
+		methods:{
+			addFormToggle:function(){
+				this.addform=this.addform===true?false:true;
+			}
+		}
+	})
+</script>
+{% endblock %}

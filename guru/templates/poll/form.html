@@ -1,35 +1,63 @@
 {% extends '../base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
+<style>
+	#pollform{
+		display:flex;
+		justify-content:center;
+		background:tomato;
+		padding:10px;
+		width:100%;
+	}
+	#pollform input,textarea{
+		border:0.5px solid black;
+		border-radius:4px;
+		margin-bottom: 10px;
+		width:100%;	
+	}
+	#addpollbtn{
+		border:2px solid green;
+		color:white;
+		background-color: black;
+		margin:10px;
+	}
+	#addpollbtn:hover{
+		color:black;
+		background-color: white;
+	}
+</style>
+
 <div class="container" id="poll-container">
 
-	{% for poll in polls %}
-	<a href="/polls/{{classroom.unique_id}}/poll-page/{{ poll.id }}">
-		<div class="alert alert-info">
-		 {{ poll.poll_details }}
-		</div> 
-	</a>
-	{% endfor %}
-	<button @click="showform" class="btn btn-primary">Show </button>
+	{% if pollform %}
+	<div style="display:flex;justify-content:center;">
+		<button id="addpollbtn" @click="showform" class="btn btn-primary mx-auto">Add a poll </button>
+	</div>
 
-	<div class="row">
-		<div class="col-lg-6">
-			<form v-if="form" method="POST">{% csrf_token %}
+	<div v-if="form" id="pollform">
+			<form style="width:80%;"method="POST">{% csrf_token %}
 				{{ pollform|crispy }}
 				<div v-for="i in p">
-
-					<input style="width:100%;margin:10px;" type="text" v-if="i==p" 
-						placeholder="Mention your option..." @click="insert" name="check">
-					<input style="width:100%;margin:10px;" type="text" v-else 
+					<input type="text" v-if="i==p" 
+						placeholder="Mention more options..." @click="insert" name="check">
+					<input type="text" v-else 
 						placeholder="Mention your option..." name="check">
-
 				</div>
 
 				<input type="datetime-local" required="required" name ='date'>
 				<input type="submit" class="btn btn-success"value="submit">
-
 			</form>
-		</div>
 	</div>
+	{% endif %}
+
+	<h2> List of polls in classroom </h2>
+	{% for poll in polls %}
+	<a href="/polls/{{classroom.unique_id}}/poll-page/{{ poll.id }}">
+		<div style="background: aqua;" class="alert">
+		 {{ poll.poll_details }}
+		</div> 
+	</a>
+	{% endfor %}
+
 </div>
 {% endblock %}

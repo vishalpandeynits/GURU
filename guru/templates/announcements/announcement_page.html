@@ -1,0 +1,64 @@
+{% extends 'subject_page.html' %}
+{% load crispy_forms_tags %}
+{% load comments %}
+{% load humanize %}
+{% block subject_content %}
+<style>
+	#announcement-content{
+		background:white;
+		box-shadow: 3px 6px 6px black;
+		color:black;
+		padding:20px;
+		border-radius:15px;
+		margin:0 0 10px 0px;
+	}
+</style>
+<div class="container">
+   <div class="row ">
+	<div class="col">
+
+		{% if is_teacher %}
+		<div id="contain">
+			<a class="btn btn-danger m-2 float-right" 
+				style="border:none;color:white;background:red;padding: 7px;" href="{% url 'delete_announcement' classroom.unique_id subject.id announcement.id %}">
+					Delete <i class="fa fa-trash" aria-hidden="true"></i>
+			</a>
+
+			<a @click="updateFormToggle" style="border:none;color:white;background:black;padding: 7px;" class="btn m-2 float-right">
+			 	Update <i class="fas fa-edit"></i>
+			</a><br><br>
+
+			  <form method="POST" v-if="updateform"class="addForm" enctype="multipart/form-data">{% csrf_token %}
+				{{ updateform|crispy }}
+				<input type="submit" class="submit-button" value="submit">
+			  </form>
+		 </div>
+		{% endif %}<br>
+		
+		<div id="announcement-content">
+			<p style="font-weight: bold;text-align: center;font-size:1.2em;">{{announcement.subject}}</p>
+			{% if announcement.file %}
+				<a href="{{announcement.file.url}}" download> Download file {{ announcement.file  }} </a><br>
+			{% endif %}
+			<pre>{{ announcement.description }}</pre>
+		</div><br>
+
+		{% include 'comments/announcementcomment.html' %}
+	</div>
+
+  </div>
+</div>
+<script>
+	new Vue({
+		el:'#contain',
+		data:{
+			updateform:false,
+		},
+		methods:{
+			updateFormToggle:function(){
+				this.updateform=this.updateform===true?false:true;
+			}
+		}
+	})
+</script>
+{% endblock %}

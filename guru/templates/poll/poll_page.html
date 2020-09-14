@@ -1,27 +1,32 @@
 {% extends '../base.html' %}
 {% block content %}
 <div class="container">
-	<p style="color:red;font-size: 3em;">
-		{{ message }} 
-	</p>
 
-	<p style="font-size: 2em;">
-		{{ details }}
-	</p><br>
+	{% if messages %}
+	<div class="messages">
+	    {% for message in messages %}
+	    <div class='alert alert-dismissible alert-danger'>
+	    	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	    		<span aria-hidden="true">&times;</span>
+  			</button>
+	   		 {{ message }}
+	     </div>
+	    {% endfor %}
+	</div>
+	{% endif %}
 
+	
+	<pre style="font-size: 1.2em;">{{ details }}</pre>
+	Note: Choose only one option
 	{% for choice in choices %}
 		<a href="/polls/{{classroom.unique_id}}/voting/{{poll.id}}/{{choice.id}}">
 			<div class="alert alert-info">{{ choice.choice_text}} 
-				<span class="pill pill-success float-right">
+				<span class="pill pill-danger float-right">
 					{{ choice.votes }}
 				</span>
 			</div>
 		</a>
 	{% endfor %}
-	
-	{{winner.choice_text}} {{ winner.votes }}
-	Note: Name of voters will not be disclosed.
-
 </div>
 {% endblock %}
 

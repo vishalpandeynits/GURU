@@ -4,12 +4,16 @@
 {% block content %}
 {% load crispy_forms_tags %}
 <div class="container">
-	<a class="btn btn-outline-primary float-right" 
+	<div>
+	<a style="display: block;"class="btn btn-outline-primary float-right" 
 		href="{% url 'profile' user.username %}">
 		{{ user.username }}
 	</a>
+</div>
+
 
 	<div class="row">
+
 		<div class="col-sm-11 col-md-10">
 			<div id="home-btn-container">
 				<div id="vuecontainer">
@@ -17,7 +21,13 @@
 					<h2 id="col-md-6" style="font-size:5vw;"> 
 						Online classes made easy by your own GURU.
 					</h2>
-
+					{% if messages %}
+					<div class="messages">
+					    {% for message in messages %}
+					    <div class='alert alert-{{ message.tags }}'>{{ message }} </div>
+					    {% endfor %}
+					</div>
+					{% endif %}
 					<button v-on:click="create" class="btn btn-home">
 						Create a class 
 					</button>

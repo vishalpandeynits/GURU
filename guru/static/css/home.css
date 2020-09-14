@@ -266,64 +266,38 @@ text-area{
   border:0;
   border-bottom:4px solid green;
 }
+
 .opts {
-  position: absolute;
   cursor: pointer;
-  top: -2.5rem;
-  right: -.5rem;
-  z-index: 100;
-  /* right: 1rem;
-  bottom: 1rem; */
   font-size: 35px;
 }
 .member-card {
-  position: relative;
-  margin:40px;
-  word-wrap: break-word;
-  width:340px;
+  margin:20px;
+  width:100%;
+  max-height:130px;
+  padding:10px;
+  border-radius:10px;
+  box-shadow: 10px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
-
-.dropbtn {
-  color: black;
-  padding: 16px;
-  font-size: 35px;
-  cursor: pointer;
-  margin-left: 10rem;
-  border: none;
-  margin-bottom: -1rem;
-  right: -.5rem;
-}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
 .dropdown-content {
   font-size: 15px;
-  display: none;
   margin-right: .6rem;
-  position: relative;
   background-color: #f1f1f1;
-  min-width: 10px;
+  min-width: 200px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
 }
 
 .dropdown-content a {
   color: black;
   padding: 12px 16px;
   text-decoration: none;
-  display: block;
+  display:block;
 }
 
 .dropdown-content a:hover {
   background-color: #ddd;
 }
 
-.dropdown:hover .dropdown-content {
-  display: block;
-}
 #signupform input{
   width:100%;
 }
@@ -376,4 +350,19 @@ text-area{
 }
 .modal-content{
   background:aqua;
+}
+
+#updateForm{
+  padding:10px;
+  background:tomato;
+}
+#updateForm input,textarea{
+  width:100%;
+}
+.invite-link{
+  display:block;
+  padding:5px;
+}
+.invite-link:hover{
+  background:  #ddd;
 }

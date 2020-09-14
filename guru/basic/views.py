@@ -2,12 +2,14 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
-from django.http import Http404,HttpResponse
+from django.http import Http404
+from django.contrib import messages
 from django.db.models import Q
+from random import choice,randint
+
 from .forms import *
 from .models import *
 import string
-from random import choice,randint
 from .email import email_marks
 from .delete_notify import *
 #--------------------------------------------helper functions-----------------------------------
@@ -50,9 +52,13 @@ def join(request,key):
     classroom = Classroom.objects.get(unique_id=key)
     if classroom.need_permission==True:
         classroom.pending_members.add(request.user)
+        messages.add_message(request,message.INFO,"Your request is pending, you can access when someone let's you in.")
+        return('/homepage/')
     else:
         classroom.members.add(request.user)
-    return HttpResponse('he')
+        messages.add_message(request,message.SUCCESS,"You have joined the classroom. Happy studing!!!")
+        return redirect(f'/classroom/{key}')
+    
 
 @login_required
 def homepage(request):
@@ -62,13 +68,17 @@ def homepage(request):
         try:
             classroom = Classroom.objects.get(unique_id=join_key)
         except Classroom.DoesNotExist:
-            return HttpResponse("No such classroom exists")
+            messages.add_message(request, messages.WARNING,"No such classroom exists.")
+            return redirect(f'/homepage/')
         if classroom.members.all().filter(username=request.user.username).exists():
-            return HttpResponse('You are already a member of this classroom.')
+            messages.add_message(request, messages.INFO,"You are already a member of this class.")
+            return redirect(f'/homepage/')
         checking = classroom.need_permission
         if checking:
             classroom.pending_members.add(request.user)
-            return HttpResponse('You request is pending. You can join when someone lets you in.')
+            messages.add_message(request, messages.SUCCESS,"Your request is sent.\
+             You can acsess classroom when someone lets you in.")
+            return redirect(f'/homepage/')
         else:
             classroom.members.add(request.user)
             notify = Classroom_activity(classroom=classroom,actor=request.user)
@@ -106,7 +116,8 @@ def admin_status(request,unique_id,username):
         check = classroom.special_permissions.filter(username = username).exists()
         if check:
             if classroom.created_by == User.objects.get(username=username):
-                return HttpResponse("This user have created this class. He can't be dropped")
+                messages.add_message(request,messages.WARNING,"This user have created this class. He can't be dropped")
+                return redirect(f'/classroom/{unique_id}/')
             classroom.special_permissions.remove(User.objects.get(username=username))
             return redirect(f'/classroom/{unique_id}')
         else:
@@ -230,15 +241,11 @@ def resource(request,unique_id,subject_id,form = None):
         if is_teacher:
             if request.method=="POST":
                 form = NoteForm(request.POST,request.FILES)
-                files = request.FILES.getlist('file')
-                print(files)
                 if form.is_valid():
                     data=form.save(commit=False)
                     data.subject_name = subject
                     data.uploaded_by = request.user
-                    for f in files:
-                        data.file = f
-                        data.save()
+                    data.save()
                     return redirect(f'/{unique_id}/{subject_id}/resource/')
             else:
                 form= NoteForm()
@@ -252,7 +259,7 @@ def resource(request,unique_id,subject_id,form = None):
             'page_range':page_range,
             'is_teacher':is_teacher,
             }
-        return render(request,'resources.html',params)
+        return render(request,'resources/resources.html',params)
 
 @login_required
 def read_note(request, unique_id, subject_id, id, form = None):
@@ -284,7 +291,7 @@ def read_note(request, unique_id, subject_id, id, form = None):
                 'classroom':classroom,
                 'is_teacher': is_teacher,
             }
-        return render(request,'read_note.html',params)
+        return render(request,'resources/read_note.html',params)
 
 @login_required
 def resource_delete(request,unique_id,subject_id,id):
@@ -339,7 +346,7 @@ def assignment(request ,unique_id, subject_id, form=None):
             'page':query,
             'page_range':page_range,
             }
-        return render(request,'assignments.html',params)
+        return render(request,'assignments/assignments.html',params)
 
 @login_required
 def assignment_page(request,unique_id,subject_id,id):
@@ -395,7 +402,8 @@ def assignment_page(request,unique_id,subject_id,id):
                     data=form.save(commit=False)
                     data.submitted_by=request.user
                     if Submission.objects.filter(Q(submitted_by=request.user) & Q(assignment=assignment)).exists():
-                        return HttpResponse('You have already submitted')
+                        messages.add_mesage(request,message.WARNING,'You have already submitted') 
+                        return redirect(f'/{unique_id}/{subject_id}/{assignment.id}/assignment/')
                     data.assignment= assignment
                     data.current_status = True
                     data.save()
@@ -427,7 +435,7 @@ def assignment_page(request,unique_id,subject_id,id):
             params['submitted']=submitted
             params['not_submitted']=not_submitted
 
-        return render(request,'assignment_page.html',params)
+        return render(request,'assignments/assignment_page.html',params)
 
 @login_required
 def assignment_delete(request,unique_id,subject_id,id):
@@ -481,7 +489,7 @@ def announcement(request, unique_id, subject_id):
                 'page_range':page_range,
                 'is_teacher':is_teacher
             }
-        return render(request,'announcement.html',params)
+        return render(request,'announcements/announcement.html',params)
 
 @login_required
 def announcement_page(request,unique_id,subject_id,id):
@@ -514,7 +522,7 @@ def announcement_page(request,unique_id,subject_id,id):
             'classroom':classroom,
             'is_teacher':is_teacher,
             }
-        return render(request,'announcement_page.html',params)
+        return render(request,'announcements/announcement_page.html',params)
 
 @login_required
 def announcement_delete(request,unique_id,subject_id,id):
