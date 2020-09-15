@@ -6,38 +6,38 @@
 <div class="row">
 		<div class="col-2">
 		<div style="float:right;" id="mySidenav" class="sidenav">
-			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
+			<button class="closebtn" onclick="closeNav()">
 				&times;
-			</a>
+			</button >
 			<a href="{% url 'resources' classroom.unique_id subject.id  %}" onclick="closeNav()">
-				Resources
+				<i class="fas fa-book-open mr-2"></i> Resources
 			</a>
 			<a href="{% url 'assignments' classroom.unique_id subject.id  %}" onclick="closeNav()">
-				Assignment
+				<i class="fas fa-briefcase mr-2"></i> Assignment
 			</a>
 			<a href="{% url 'announcement' classroom.unique_id subject.id %}" onclick="closeNav()">
-				Announcement
+				<i class="fas fa-bullhorn mr-2"></i> Announcement
 			</a>
-			<a href="{% url 'this_subject' classroom.unique_id subject.id %}" onclick="closeNav()"> 
-				This Class 
-			</a><hr>
+			<a style="border-bottom:5px solid black;" href="{% url 'this_subject' classroom.unique_id subject.id %}" onclick="closeNav()"> 
+				<i class="fas fa-chalkboard-teacher mr-2"></i> {{ classroom.class_name }}
+			</a>
 			<a href="{% url 'homepage' %}" onclick="closeNav()">
-				Home
+				<i class="fas fa-home mr-2"></i> Home
 			</a>
 			<a href="{% url 'subjects' classroom.unique_id %}" onclick="closeNav()"> 
-				Subjects 
+				<i class="fas fa-book mr-2"></i> Subjects 
 			</a>
 			<a href="{% url 'profile' user.username %}" onclick="closeNav()"> 
-				{{ user.username|title }} 
+				<i class="fas fa-user mr-2"></i> {{ user.username|title }} 
 			</a>
 		</div>
 		</div>
 		<div class="col-12" id="#main">
-			<div class="bg-info p-2">
+			<div style="background:black;" class="p-2">
 				<span class="pl-1" id="openNav" onclick="openNav()">
 					&#9776;
 				</span>
-				<span style="font-size:3em">
+				<span style="font-size:2.5em;color:white;">
 					&nbsp; {{ subject.subject_name|title }}
 				</span>
 			</div>

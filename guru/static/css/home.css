@@ -164,25 +164,29 @@ text-area{
   font-size:30px;
   cursor:pointer;
   width:40px;
-  border-radius:10px;
+  border-radius:15px;
   border-color:white;
   display: inline;
   float:left;
   position:relative;
-  top:15px;
+  top:9px;
+  left:15px;
+  background:white;
+  color:black;
 }
 
 .sidenav {
   height: 100%;
   width: 0px;
   position: fixed;
-  z-index: 1; 
+  z-index: 100; 
   top: 0;
   left: 0;
-  background-color: #1E90FF;
+  background-color: white;
   overflow-x: hidden;
   transition: 0.2s;
   padding-top: 60px;
+  box-shadow:1px 3px 8px grey;
 }
 
 .sidenav a {
@@ -192,16 +196,30 @@ text-area{
   color: black;
   display: block;
   transition: 0.2s;
+  border-bottom: 1px solid black;
+  transition:background 0.6s;
+}
+.sidenav button {
+  border: none;
+  color: black;
+  background:white;
+  cursor:pointer;
+  transition: 0.2s;
+}
+.sidenav button:active {
+  border: none;
 }
 .sidenav a:hover {
   color: blue;
-  box-shadow:3px 3px 3px black;
+  background:black;
+  color:white;
+  
 }
 
 .sidenav .closebtn {
   position: absolute;
-  top: 0;
-  right: 25px;
+  top: 0px;
+  right: 15px;
   font-size: 36px;
   margin-left: 50px;
 }

@@ -2,57 +2,53 @@
 {% load crispy_forms_tags %}
 {% load static %}
 {% block subject_content %}
-<div class="container-fluid row">
-
-	<div class="col-1 float-right">
-		{% if is_teacher %}
-			<a class="btn btn-danger m-2 float-right" 
-				href="{% url 'delete_subject' classroom.unique_id subject.id %}">
-					Delete <i class="fa fa-trash" aria-hidden="true"></i>
-			</a>
-		{% endif %}
-	</div>
-
-	add description to class a class page storeroom permissions email
-	This classroom is created by {{ classroom.created_by.username }} 
-	Teacher {{ subject.teacher }}
-
-	Give upload permission to users.
-	{{ admins }}
-	Track activity of class
+<div class="container-fluid">
+	<p style="display:block;">
+		Teacher name: {{ subject.teacher }}<br>
+		subject: {{ subject.subject_name }} <br>
+		No. of members: {{members|length }}<br> 
+		Subject activity: <br>
+	</p> 
+	<!-- Members list -->
 	{% for member in members %}
-	<div class="member-card">
-		<div class="wrapper"><br/>
-			{% if user == teacher  or user in admins %}
-			<div class="opts">
-				<div class="dropdown">
-					<div class="dropbtn">...</div>
-					<div class="dropdown-content">
-							{% if member in upload_permissions %}
-								<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
-									Take upload permssion
-								</a>
-							{% else %}
-								<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
-									Give upload permissions
-								</a>
-							{% endif %}
-					</div>
-				</div>
+	<div style="position:relative;" class="member-card w-75 m-auto">
+		<div style="display:flex;">
+			<div style="display:flex;position:relative;top:-15px;">
+				<img height="70" width="70" style="border-radius:10px;margin-right:20px;"
+				src="{{member.profile.profile_pic.url}}">
 			</div>
-			{% endif %}
+			<div class="member-container">
+				<h4><b>
+					{{ member.username }} &nbsp; &nbsp;<br>
+					{% if member in admins %}Admin {% endif %}
+				</b></h4>
+				<p>{{member.profile.bio}}</p>
+				{% if member in upload_permissions %}
+					Can upload resources
+				{% endif %}
+			</div>
 		</div>
 
-		<img src="{{member.profile.profile_pic.url}}">
-		<div class="member-container">
-			<h4><b>{{ member.username }} &nbsp; &nbsp; {% if member in admins %} Admin {% endif %} <span style="float:right;color:green;">{% if member == teacher %} Teacher {% endif %} </span></b></h4>
-			<p style="word-wrap: wrap;">{{member.profile.bio}}</p>
-			{% if member in upload_permissions %}
-				Can upload resources
-			{% endif %}
+		<div style="position:absolute;top:5px;right:10px;" class="btn-group dropleft float-right">
+			  <button type="button" class="btn dropdown-toggle btn-lg" data-toggle="dropdown" 
+			  	aria-haspopup="true" aria-expanded="false"> </button>
+				{% if user == teacher  or user in admins %}
+					<div class="dropdown-content dropdown-menu">
+						{% if member in upload_permissions %}
+							<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
+								Take upload permssion
+							</a>
+						{% else %}
+							<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
+								Give upload permissions
+							</a>
+						{% endif %}
+					</div>
+				{% endif %}
+			</div>
 		</div>
-	</div>
+
 	{% endfor %}
-
+	<!-- Members list end -->
 </div>
 {% endblock %}

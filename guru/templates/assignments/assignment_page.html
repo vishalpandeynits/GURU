@@ -5,18 +5,36 @@
 {% load static %}
 {% block subject_content %}
 <style>
-	#assignment-content{
-		background:white;
-		box-shadow: 3px 6px 6px black;
-		color:black;
-		padding:20px;
-		border-radius:15px;
-		margin:0 0 10px 0px;
-	}
+#assignment-content{
+	background:white;
+	box-shadow: 3px 6px 6px black;
+	color:black;
+	padding:20px;
+	border-radius:15px;
+	margin:0 0 10px 0px;
+	display:block;
+	margin:auto;	
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding:10px;
+  z-index: 1;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
 </style>
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-sm-12 col-md-6">
+		<div class="col-sm-12 col-md-7">
 
 			<!-- Update assignment logic start -->
 			{% if is_teacher %}
@@ -57,27 +75,30 @@
 		<div class="col"style="float:right;">
 			<!-- Submission shown to teacher -->
 			{% if is_teacher %}
-			<div id="assignment-container">
+			<div id="assignment-container" class="text-align-center">
+				<div class="dropdown">
+				  <button class="btn btn-primary ">Submissions</button>
+				  <div class="dropdown-content">
+						<button class="btn btn-primary d-block w-100 m-1" @click="show_all_submissions">
+							All Submissions
+						</button>
 
-				<button class="btn btn-primary mb-2" @click="show_all_submissions">
-					All Submissions
-				</button>
+						<button class="btn btn-success w-100 m-1 " @click='show_ontime_submissions'>
+							Ontime Submissions 
+						</button>
 
-				<button class="btn btn-success mb-2" @click='show_ontime_submissions'>
-					Ontime Submissions 
-				</button>
+						<button class="btn btn-danger w-100 m-1" @click="show_late_submissions"> 
+							Late Submissions 
+						</button>
 
-				<button class="btn btn-danger mb-2" @click="show_late_submissions"> 
-					Late Submissions 
-				</button>
-
-				<button class="btn btn-primary mb-2" @click="show_submitted">
-					Submitted  
-				</button>
-				<button class="btn btn-primary mb-2" @click="show_not_submitted">
-					Not submitted
-				</button>
-
+						<button class="btn btn-primary w-100 m-1 " @click="show_submitted">
+							Submitted  
+						</button>
+						<button class="btn btn-primary w-100 m-1" @click="show_not_submitted">
+							Not submitted
+						</button>
+				  </div>
+				</div>
 				<span v-if="all_submissions">
 					{% for submission in all_submissions %}
 						<div class="alert alert-info">
