@@ -3,72 +3,92 @@
 {% block title %} Home view {% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div class="container-fluid m-2">
-	<div id="vue-container">
+<style>
+	#subject-add-form{
+		padding:10px;
+		box-shadow:2px 4px 8px grey;
+	}
+	#subject-add-form input{
+		padding:10px;
+		background:white;
+		margin:5px 4px;
+	}
+	#add-subject-btn{
+		width:150px;
+		color:white;
+		border-radius:5px;
+		background:black;
+		text-align:center;
+		padding:5px 10px;
+		margin:10px 0px;
+	}
+	* {
+	  box-sizing: border-box;
+	}
 
-		<center id="homepage-btn-group">
+	.subject-container {
+	  position: relative;
+	  max-width: 800px;
+	  margin: 10px auto;
+	  line-height: 5px;
+	}
 
-			<button @click="toggleSubjects">
-				Subjects
-			</button>
+	.subject-container img {vertical-align: middle;}
 
-			<a href="{% url 'polls' classroom.unique_id %}">
-				Polls
-			</a>
-			<a href="/classroom/{{classroom.unique_id}}/">
-				Classroom
-			</a>
-			{% if pending_members %}
-				<button @click="toggleMembers">Members 	
-						{{pending_members|length}}
-				</button>
-			{% endif %}
+	.subject-container .content {
+	  position: absolute;
+	  bottom: 0;
+	  background: rgba(0, 0, 0, 0.5); /* Black background with 0.5 opacity */
+	  color: #f1f1f1;
+	  width: 100%;
+	  padding: 5px;
+	}
+</style>
+<div>	
+	{% include 'navigation.html' %}
+	{% if messages %}
+		<div class="messages container">
+		    {% for message in messages %}
+		    <div class='alert alert-{{ message.tags }}'>{{ message }} </div>
+		    {% endfor %}
+		</div>
+	{% endif %}
+	<div id="vue-container" class="container-fluid">
+		<div style="display:flex;justify-content: center;">
+			<center> <button @click="addSubject" id="add-subject-btn"> Add a subject</button><center><br>
+			
 			{% if form %}
-				<button @click="addSubject"> Add </button><br>
-			{% endif %}
-
-			{% if message %}
-				<p style="color:red;" v-if="subjects" > {{ message }} </p>
-			{% endif %}
-
-			{% if form %}
-				<form v-if="addform" action="/guru/{{classroom.unique_id}}/" 
+				<div v-if="addform" id="subject-add-form">
+				<form  action="/guru/{{classroom.unique_id}}/" 
 					method="POST" enctype="multipart/form-data">
 					{% csrf_token %}
-
 					<input type="text" name="subject_name" placeholder="Add a subject."
-						 maxlength="50" required id="id_subject_name">
-					<input type="text" name="teacher" placeholder="username of teacher.">
-					<input type="submit" value="submit">
+						 maxlength="50" required id="id_subject_name"><br>
+					<input type="text" name="teacher" placeholder="username of teacher."><br>
+					<button class="btn btn-block btn-primary" type="submit">Add </button>
 				</form>
+				</div>
 			{% endif %}
-
-		</center>
-		<!-- Subjects -->
+			
+		</div>
+	<!-- Subjects -->
 
 
 		<div v-if="subjects" class="row">
-
 			{% for subject in subjects %}
 			<div class="col-xs-12 col-md-6 col-lg-4">
-
-				<div style="background:url('/media/bga.jpg');background-size:cover;background-position:center;"
-					id="card" class="card"> 
-					{% if subject %}
-					<a class="text-center" id="class-link"
-						href="{% url 'resources' classroom.unique_id subject.id  %}">
-
-						<div id="subject-name">
-							{{ subject|upper }} by {{subject.teacher }}
-						</div>
-
-					</a>
-					{% endif %}
+				<a class="text-center" style="color:white;"
+								href="{% url 'resources' classroom.unique_id subject.id  %}">
+				<div class="subject-container">
+				  <img src="/media/bga.jpg" alt="Notebook" style="width:100%;height:350px;">
+				  <div class="content">
+					    <h1>{{ subject|upper }}</h1>
+					    <p>by {{subject.teacher }}</p>
+				  </div>
 				</div>
-
+				</a>
 			</div>
 			{% endfor %}
-
 		</div>
 
 		<div v-if="members">
@@ -77,13 +97,10 @@
 				{% if pending_members %}
 					<center><h1 style="color:green">Pending members</h1></center>
 				{% endif %}
-
 				{% for member in pending_members %}
 					<div class="row">
 						<div class="member-card">
-							<div class="wrapper">
-								<br/>
-								
+							<div class="wrapper"><br/>
 								<div class="opts">
 									<div class="dropdown">
 										<div class="dropbtn">...</div>
@@ -97,7 +114,6 @@
 										</div>
 									</div>
 								</div>
-
 								<img src="{{member.profile.profile_pic.url}}">
 								<div class="member-container">
 									<h4><b>{{ member.username }} &nbsp; &nbsp;</b></h4>
@@ -119,14 +135,12 @@
 							<div class="dropdown">
 								<div class="dropbtn">...</div>
 								<div class="dropdown-content">
-
 									<a href="{% url 'remove_member' classroom.unique_id teacher.username %}">
 										Remove from classroom
 									</a>
 									<a href="{% url 'remove_admin' classroom.unique_id teacher.username %}">
 										Remove from teacher position
 									</a>
-
 								</div>
 							</div>
 						</div>
@@ -138,14 +152,13 @@
 						<p style="word-wrap: wrap;">{{teacher.profile.bio}}</p>
 					</div>
 				</div>
-				{% endfor %}
+			</div>
+			{% endfor %}
 
 			{% for student in students %}
 			<div class="row">
 				<div class="member-card">
-					<div class="wrapper">
-						<br/>
-						
+					<div class="wrapper"><br/>
 						<div class="opts">
 							<div class="dropdown">
 								<div class="dropbtn">...</div>
@@ -170,19 +183,14 @@
 					</div>
 					<img src="{{student.profile.profile_pic.url}}">
 					<div class="member-container">
-						<h4>	
-							<b>
-								{{ student.username }} &nbsp; &nbsp;
-							</b>
-						</h4>
-						<p>
-							{{student.profile.bio}}
-						</p>
+						<h4><b>{{ student.username }} &nbsp; &nbsp;</b></h4>
+						<p>{{student.profile.bio}}</p>
 					</div>
 				</div>
-				{% endfor %}
 			</div>
+			{% endfor %}
 		</div>
-		<!-- Subjects end  -->
 	</div>
+	<!-- Subjects end  -->
+</div>
 {% endblock %}

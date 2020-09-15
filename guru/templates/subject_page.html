@@ -18,7 +18,8 @@
 			<a href="{% url 'announcement' classroom.unique_id subject.id %}" onclick="closeNav()">
 				<i class="fas fa-bullhorn mr-2"></i> Announcement
 			</a>
-			<a style="border-bottom:5px solid black;" href="{% url 'this_subject' classroom.unique_id subject.id %}" onclick="closeNav()"> 
+			<a style="border-bottom:5px solid black;" href="{% url 'this_subject' classroom.unique_id subject.id %}"
+				 onclick="closeNav()"> 
 				<i class="fas fa-chalkboard-teacher mr-2"></i> {{ classroom.class_name }}
 			</a>
 			<a href="{% url 'homepage' %}" onclick="closeNav()">

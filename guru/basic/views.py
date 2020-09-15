@@ -136,6 +136,7 @@ def classroom_page(request,unique_id):
         students = members.difference(teachers)
         pending_members = classroom.pending_members.all()
         admins = classroom.special_permissions.all()
+        classes = Classroom.objects.all().filter(members=request.user)
         is_admin = classroom.created_by == request.user
         #classroom_update
         if request.method=="POST":
@@ -152,7 +153,8 @@ def classroom_page(request,unique_id):
             'classroom':classroom,
             'is_admin':is_admin,
             'form':form,
-            'admins':admins
+            'admins':admins,
+            'classes':classes
         }
         return render(request,'classroom.html',params)
 
@@ -165,8 +167,8 @@ def subjects(request, unique_id, form = None):
         subjects = Subject.objects.all().filter(classroom=classroom)
         subject_teacher_check = Classroom.objects.filter(teacher=request.user).exists()
         admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+        classes = Classroom.objects.all().filter(members=request.user)
         is_teacher = subject_teacher_check or admin_check
-        message=False
 
         # Admins can add a subject with its teacher
         if admin_check:
@@ -177,18 +179,18 @@ def subjects(request, unique_id, form = None):
                     subject.classroom=classroom
                     try:
                         teacher = User.objects.get(username=request.POST.get('teacher'))
-                        if not members.filter(username=teacher.username).exists():
-                            message="This user is not a member of this class. Tell him to join this classroom first."
+                        if not teacher and not members.filter(username=teacher.username).exists():
+                            messages.add_message(request,messages.WARNING,"This user is not a member of this class. Tell him to join this classroom first.")
                         else:
                             subject.teacher = teacher
                             subject.save()
                             subject.upload_permission.add(teacher)
-                            message="Subject added"
+                            messages.add_message(request,messages.INFO,"Subject added")
                             classroom.teacher.add(teacher)
                             return redirect(f'/guru/{unique_id}/')
                             
                     except User.DoesNotExist:
-                        message= "No such User exists."
+                        messages.add_message(request,messages.WARNING,"No such User exists.")
             else:
                 form = SubjectForm()
         params = {
@@ -196,7 +198,7 @@ def subjects(request, unique_id, form = None):
             'form':form,
             'classroom':classroom,
             'is_teacher':is_teacher,
-            'message':message,
+            'classes':classes
             }
         return render(request,'subjects.html',params)
 
@@ -204,19 +206,10 @@ def subjects(request, unique_id, form = None):
 def subject_page(request,unique_id,subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     if member_check(request.user,classroom):
-        members = classroom.members.all()
-        admins = classroom.special_permissions.all()
-        teachers = classroom.teachers.all()
         subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-        teacher = subject.teacher
-        members = members.difference(teachers)+admins+teacher
-
-        announcements = Announcement.objects.all().filter(subject_name=subject)
         params = {
             'subject':subject,
             'classroom':classroom,
-            'announcements':announcements,
-            'members':members
         }   
         return render(request,'subject_page.html',params)
 
@@ -551,6 +544,9 @@ def this_subject(request,unique_id, subject_id):
         subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
         teacher = subject.teacher
         members = admins.distinct() | members.difference(teachers).distinct()
+        activities = Subject_activity.objects.filter(subject=subject).order_by('-id')
+        query,page_range = pagination(request,activities)
+        activities=query.object_list
         params={
             'subject':subject,
             'classroom':classroom, 
@@ -559,6 +555,8 @@ def this_subject(request,unique_id, subject_id):
             'upload_permissions':upload_permission,
             'admins':admins,
             'teacher':teacher,
+            'page':query,
+            'page_range':page_range
         }
         return render(request,'thissubject.html',params)
 

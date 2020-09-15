@@ -3,9 +3,9 @@
 {% block title %} Home view {% endblock %}
 {% block content %}
 {% load crispy_forms_tags %}
-<div class="container-fluid">
-
-	<div class="text-center mt-4 ">
+<div>
+	{% include 'navigation.html' %}
+	<div class="text-center w-50 m-auto mt-4 ">
 		<h2> {{ classroom.class_name }} </h2>
 		{% if classroom.description %}
 		<p> {{ classroom.description }} </p>
@@ -23,17 +23,8 @@
 	<span id="update-form">
 		<span style="display:flex; align-items:center; justify-content:center;" id="homepage-btn-group">
 			<button @click="classUpdateForm">Update</button>
-
-			{% if user in admins %}
-				<button>Members
-					{% if pending_members %}
-						{{ pending_members|length }}
-					{% endif %}
-				</button>
-			{% endif %}
-
 			<span class="dropdown ">
-		  	<button class="btn btn-secondary dropdown-toggle" type="button" 
+		  	<button class="btn btn-secondary dropdown-toggle mx-2 " type="button" 
 		  		id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		   		 Invitation link
 		  	</button>
@@ -91,7 +82,7 @@
 				</div>
 
 				<div style="position:absolute;top:5px;right:10px;"class="btn-group dropleft float-right">
-					  <button type="button" class="btn dropdown-toggle btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
+					  <button type="button" class="btn dropdown-toggle bg-transparent btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
 					  <div class="dropdown-menu dropdown-content">
 							<a href="{% url 'delete_request' classroom.unique_id member.username %}">
 								Delete request
@@ -129,7 +120,7 @@
 				</div>
 
 				<div style="position:absolute;top:5px;right:10px;"class="btn-group dropleft float-right">
-				  <button type="button" class="btn dropdown-toggle btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
+				  <button type="button" class="btn dropdown-toggle bg-transparent btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 				  <div class="dropdown-menu dropdown-content">
 				  	{% if user in admins %} 
 						<a href="{% url 'class_admin' classroom.unique_id teacher.username %}">
@@ -146,7 +137,7 @@
 				  </div>
 				</div>
 			</div>
-			{% endfor %}
+		{% endfor %}
 
 		{% for student in students %}
 			<div style="position:relative;" class="member-card"><br/>
@@ -167,7 +158,7 @@
 				</div>
 
 				<div style="position:absolute;top:5px;right:10px;"class="btn-group dropleft float-right">
-				  <button type="button" class="btn dropdown-toggle btn-lg" data-toggle="dropdown" 
+				  <button type="button" class="btn dropdown-toggle bg-transparent btn-lg" data-toggle="dropdown" 
 				  	aria-haspopup="true" aria-expanded="false"> </button>
 				  <div class="dropdown-menu dropdown-content">
 				  	{% if user in admins %} 

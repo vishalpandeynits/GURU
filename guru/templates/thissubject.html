@@ -1,20 +1,48 @@
 {% extends 'subject_page.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% load humanize %}
 {% block subject_content %}
-<div class="container-fluid">
-	<p style="display:block;">
-		Teacher name: {{ subject.teacher }}<br>
-		subject: {{ subject.subject_name }} <br>
-		No. of members: {{members|length }}<br> 
-		Subject activity: <br>
-	</p> 
+<style>
+	.subject-intro{
+		color:black;
+		background:white;
+		padding:20px;
+		border-radius:15px;
+		margin:40px auto;
+		font-size:2em;
+		text-align: center;
+		box-shadow: 1px 2px 3px grey;
+	}
+	.activity-container{
+		padding:15px;
+		border-radius:10px;
+		font-size:1.2em;
+		box-shadow: 1px 2px 3px grey;
+	}
+</style>
+<div class="container" id="subject">
+	<div class="subject-intro w-sm-100" style="display:block;">
+		Subject: {{ subject.subject_name }} <br>
+		Teacher: {{ subject.teacher }}<br>
+	</div> 
 	<!-- Members list -->
+	<div class="d-flex justify-content-center w-75 m-auto">
+		<button style="position:relative; top:8px;" @click="toggleMembers" 
+			class ="btn btn-primary btn-block h-100 mx-2 "> Members </button>
+		<button @click="toggleActivity" class ="btn btn-primary btn-block h-100 mx-2"> Activities </button>
+		{% if user == teacher  or user in admins %}
+			<a class ="btn btn-danger btn-block mx-2 h-100" href=""> Delete</a>
+		{% endif %}
+	</div>
+
+	<div v-if="members" class="w-75 m-auto">
+		<br><h1 style="text-align:center;"> Members </h1>
 	{% for member in members %}
-	<div style="position:relative;" class="member-card w-75 m-auto">
+	<div style="position:relative;" class="member-card bg-light m-auto">
 		<div style="display:flex;">
 			<div style="display:flex;position:relative;top:-15px;">
-				<img height="70" width="70" style="border-radius:10px;margin-right:20px;"
+				<img height="70" width="70" style="border-radius:10px;margin:30px 10px; "
 				src="{{member.profile.profile_pic.url}}">
 			</div>
 			<div class="member-container">
@@ -30,7 +58,7 @@
 		</div>
 
 		<div style="position:absolute;top:5px;right:10px;" class="btn-group dropleft float-right">
-			  <button type="button" class="btn dropdown-toggle btn-lg" data-toggle="dropdown" 
+			  <button type="button" class="btn dropdown-toggle btn-lg bg-light" data-toggle="dropdown" 
 			  	aria-haspopup="true" aria-expanded="false"> </button>
 				{% if user == teacher  or user in admins %}
 					<div class="dropdown-content dropdown-menu">
@@ -45,10 +73,41 @@
 						{% endif %}
 					</div>
 				{% endif %}
-			</div>
 		</div>
-
+	</div><br>
 	{% endfor %}
+	</div>
+
 	<!-- Members list end -->
+	<div v-if="activity" class="w-75 m-auto">
+		<br><h1 style="text-align:center;"> Activities </h1>
+		{% for activity in page %}
+			<div class="row activity-container mx-auto bg-light my-2">
+				{{ activity.action }}<br>
+				{{ activity.actor }}<br>
+				{{ activity.time|naturaltime }}<br>
+			</div>
+		{% endfor %}
+		{% include 'paginations.html' %}
+	</div>
 </div>
+<script>
+	new Vue({
+		el:'#subject',
+		data:{
+			'members':false,
+			'activity':true,
+		},
+		methods:{
+			toggleMembers:function(){
+				this.members=this.members===true?false:true;
+				this.activity=this.activity===true?false:true;
+			},
+			toggleActivity:function(){
+				this.members=this.members===true?false:true;
+				this.activity=this.activity===true?false:true;
+			}
+		}
+	})
+</script>
 {% endblock %}
