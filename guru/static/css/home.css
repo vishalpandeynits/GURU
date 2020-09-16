@@ -65,10 +65,6 @@ text-area{
     position: relative;
 }
 
-.login-box:hover {
-	  box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-}
-
 .login-box h2 {
     margin: 20px 0 20px;
     padding: 0;
@@ -105,8 +101,8 @@ text-area{
 #facebook-connect:hover {
 	border-color: rgb(60, 90, 154);
 	background: rgb(60, 90, 154) url('https://raw.githubusercontent.com/eswarasai/social-login/master/img/facebook-white.svg?sanitize=true') no-repeat scroll 5px 0px / 30px 50px padding-box border-box;
-    transition: all .3s ease-out;
-    text-decoration: none;
+  transition: all .3s ease-out;
+  text-decoration: none;
 }
 
 #facebook-connect span {

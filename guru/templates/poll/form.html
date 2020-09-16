@@ -5,15 +5,18 @@
 	#pollform{
 		display:flex;
 		justify-content:center;
-		background:tomato;
+		background:white;
 		padding:10px;
 		width:100%;
+		border-radius:20px;
+		box-shadow:2px 4px 6px grey;
 	}
 	#pollform input,textarea{
 		border:0.5px solid black;
 		border-radius:4px;
 		margin-bottom: 10px;
 		width:100%;	
+		padding: 10px;
 	}
 	#addpollbtn{
 		border:2px solid green;
@@ -25,39 +28,50 @@
 		color:black;
 		background-color: white;
 	}
+	.poll-list{
+		background:white;
+		margin:10px 0px;
+		padding:10px;
+		font-size:1.5em;
+		font-weight:bolder;
+		display:flex;
+	}
 </style>
-
-<div class="container" id="poll-container">
+<div>
+	{% include 'navigation.html' %}
+	<div class="container" id="poll-container">
 
 	{% if pollform %}
-	<div style="display:flex;justify-content:center;">
-		<button id="addpollbtn" @click="showform" class="btn btn-primary mx-auto">Add a poll </button>
-	</div>
+		<div style="display:flex;justify-content:center;">
+			<button id="addpollbtn" @click="showform" class="btn btn-primary mx-auto">Add a poll </button>
+		</div>
 
-	<div v-if="form" id="pollform">
-			<form style="width:80%;"method="POST">{% csrf_token %}
-				{{ pollform|crispy }}
-				<div v-for="i in p">
-					<input type="text" v-if="i==p" 
-						placeholder="Mention more options..." @click="insert" name="check">
-					<input type="text" v-else 
-						placeholder="Mention your option..." name="check">
-				</div>
+		<div v-if="form" id="pollform">
+				<form style="width:80%;"method="POST">{% csrf_token %}
+					{{ pollform|crispy }}
+					<div v-for="i in p">
+						<input type="text" v-if="i==p" autocomplete="off"
+							placeholder="Mention more options..." @click="insert" name="check">
+						<input type="text" v-else autocomplete="off"
+							placeholder="Mention your option..." name="check">
+					</div>
 
-				<input type="datetime-local" required="required" name ='date'>
-				<input type="submit" class="btn btn-success"value="submit">
-			</form>
-	</div>
+					<input type="datetime-local" autocomplete="off" required="required" name ='date'>
+					<input type="submit" class="btn btn-success"value="submit">
+				</form>
+		</div>
 	{% endif %}
 
-	<h2> List of polls in classroom </h2>
+	<h2 style="text-align:center;"> List of Polls.</h2>
 	{% for poll in polls %}
 	<a href="/polls/{{classroom.unique_id}}/poll-page/{{ poll.id }}">
-		<div style="background: aqua;" class="alert">
+		<div class="poll-list" class="alert">
+		 <div style="display:flex;justify-content: flex-start;margin-right:20px;">0{{ forloop.counter }}</div>
 		 {{ poll.poll_details }}
 		</div> 
 	</a>
 	{% endfor %}
 
+</div>
 </div>
 {% endblock %}

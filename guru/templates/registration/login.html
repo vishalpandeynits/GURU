@@ -3,24 +3,69 @@
 {% load crispy_forms_tags %}
 {% load socialaccount %}
 {% block content %}
-<div class="container" id="sign-up-form">
-<div class="row">
-	<div class="col-md-6">
-		<img src ="/media/bga.jpg" style="height:100%;width:100%;opacity:1;padding:0;">
-	</div>
-	<div class="col p-4">
-		<form method="POST">{% csrf_token %}
-			{{ form|crispy }}
-			<input type="submit" value="Log In" class="btn btn-primary">
-			<a href="{%url 'password_reset' %}">Forgot Password? </a><br>
-			Don't have an account? <a href="{%url 'signup' %}">Create account</a>
-			<center> --OR--</center><br>
-			<div class="login-box">
-			<a href="#" class="social-button" id="facebook-connect"> <span>Connect with Facebook</span></a>
-			<a href="{% provider_login_url 'google' %}" class="social-button" id="google-connect"> <span>Connect with Google</span></a>
+<style>
+	.login-form{
+		padding:20px;
+		background: white;
+		width:40%;
+		margin:10px auto;
+		box-shadow:2px 4px 8px grey;
+		position:relative;
+		font-size:1.3em;
+		color:bolder;
+
+	}
+	.login-form input{
+		width:100%;
+		padding:10px;
+		margin:10px 0px;
+		height:45px;
+		border-radius:10px;
+		outline: none;
+	}
+	.submit-btn{
+		background:black;
+		color:white;
+		width:50%;
+		border-radius:20px;
+		margin:10px auto;
+		padding:5px;
+		transition:width 0.3s;
+		display: block;
+		cursor: pointer;
+	}
+
+	.submit-btn:hover{
+		width:100%;
+		box-shadow: 2px 4px 5px grey;
+	}
+	@media screen and (max-width: 600px){
+		.login-form{
+		width:95%;
+		}
+	}
+	@media screen and (max-width: 1200px){
+	.login-form{
+		width:75%;
+		}
+	}
+</style>
+<div class="container-fluid">
+	<form method="POST" class="login-form">{% csrf_token %}
+		<h1 style="text-align: center;font-weight: bolder;padding:10px 0px;color:white;background:black;"> LOG IN</h1>
+		{{ form|crispy }}
+		<button type="submit" class="submit-btn">Log In</button>
+		<a style="position:absolute;left:10px;font-weight: bolder;" href="{%url 'password_reset' %}">Forgot Password? </a>
+		<a style="position:absolute;right:10px;font-weight: bolder;" href="{%url 'signup' %}">Create a new account</a>
+		<br><br>
+		<div class="login-box" style="margin:auto;width:100%;">
+			<a href="#" class="social-button" id="facebook-connect">
+				<span>Connect with Facebook</span>
+			</a>
+			<a href="{% provider_login_url 'google' %}" class="social-button" id="google-connect">
+				<span>Connect with Google</span>
+			</a>
 		</div>
-		</form>
-	</div>
-</div>
+	</form>
 </div>
 {% endblock %}

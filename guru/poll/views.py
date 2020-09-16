@@ -19,7 +19,7 @@ def home(request,unique_id):
 	classroom = Classroom.objects.get(unique_id=unique_id)
 	if member_check(request.user,classroom):
 		polls = Poll.objects.all()
-
+		my_classes = Classroom.objects.all().filter(members=request.user)
 		#handling forms of poll and its choice
 		if request.method=='POST':
 			form = QuestionForm(request.POST or None)
@@ -44,7 +44,8 @@ def home(request,unique_id):
 		params = {
 			'pollform':form,
 			'polls':polls,
-			'classroom':classroom
+			'classroom':classroom,
+			'classes':my_classes,
 			}
 		return render(request,'poll/form.html',params)
 
@@ -55,18 +56,18 @@ def poll_page(request,unique_id, poll_id):
 		#poll list and voting page.
 		poll = Poll.objects.get(id=poll_id)
 		choices = Choice.objects.all().filter(poll=poll)
-		message = winner = None
 		if poll.voters.filter(username=request.user.username).exists():
 			message = 'You have already voted !!!!'
 			choices = choices.order_by('-votes')
 			winner = Choice.objects.aggregate(Max('votes'))
+			my_classes = Classroom.objects.all().filter(members=request.user)
 		params = {
 			'details':poll.poll_details,
 			'choices' : choices,
 			'poll':poll,
 			'classroom':classroom,
-			'message':message,
-			'winner':choices.first()
+			'classes':my_classes
+
 		}
 		return render(request,'poll/poll_page.html',params)
 
@@ -81,7 +82,7 @@ def voting(request,unique_id,poll_id,choice_id):
 			choice.votes += 1
 			poll.voters.add(request.user)
 			choice.save()
-			return redirect(f'/polls/{unique_id}')
+			return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
 		else:
 			messages.add_message(request,messages.INFO,"You have already voted.")
 			return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
