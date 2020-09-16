@@ -16,7 +16,9 @@
                {% endif %}
              </a>
           {% endif %}
+          {% if classes %}
           <h4 style="text-align:center;font-weight: bolder;"> Switch classroom </h4>
+          {% endif %}
           {% for class in classes %}
             <a href="{% url 'subjects' class.unique_id %}" onclick="closeNav()">
               <i class="fas fa-chalkboard-teacher mr-2"></i> {{ class.class_name }}

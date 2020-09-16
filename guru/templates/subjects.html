@@ -71,7 +71,7 @@
 		{% endif %}
 	<!-- Subjects -->
 
-
+		{% if subjects %}
 		<div v-if="subjects" class="row">
 			{% for subject in subjects %}
 			<div class="col-xs-12 col-md-6 col-lg-4">
@@ -88,6 +88,13 @@
 			</div>
 			{% endfor %}
 		</div>
+		{% else %}
+			{% if user in admins %}
+				<h1> No subject is added yet. Kindly add a subject so others can study </h1>
+			{% else %}
+				<h1> No subject is added yet. Kindly ask your admin to add a subject. </h1>
+			{% endif %}
+		{% endif %}
 
 		<div v-if="members">
 

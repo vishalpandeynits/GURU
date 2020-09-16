@@ -34,16 +34,16 @@
 	{% if assignments %}
 		<div style="min-height: 500px;">
 			{% for assignment in assignments %}
-			<div class="content">
-				<a class="link" href="{% url 'assignment_page' classroom.unique_id subject.id assignment.id %}">
-					0{{ forloop.counter}} {{ assignment.topic }}
-				</a><br>
-				<div class="time">
-					 Submit Before <nobr>{{ assignment.submission_date }}</nobr>
-				</div><br>
+			<a href="{% url 'assignment_page' classroom.unique_id subject.id assignment.id %}">
+			<div class="content" >
+					<div style="justify-content: flex-start;"> 0{{ forloop.counter}}</div> <div>{{ assignment.topic }} </div>
+					<span  style="justify-content: flex-end;">
+						 Submit Before <nobr>{{ assignment.submission_date }}</nobr>
+					</span><br>
 			</div>
+			</a>
 			{% endfor %}
-		</div>
+		</div><br>
 		{% include 'paginations.html' %}
 	{% else %}
 		<h2> No assignments found !!!</h2>
