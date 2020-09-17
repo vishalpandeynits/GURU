@@ -26,7 +26,7 @@ class Subject(models.Model):
 	teacher = models.ForeignKey(User,on_delete=models.CASCADE,related_name="teacher")
 	upload_permission = models.ManyToManyField(User,related_name="upload_permitted")
 	subject_pic = models.ImageField(upload_to="subject_content/")
-	description = models.TextField(max_length=150)
+	description = models.TextField(max_length=500)
 
 	def __str__(self):
 		return self.subject_name
@@ -36,7 +36,7 @@ class Note(models.Model):
 	uploaded_on = models.DateTimeField(auto_now_add= True)
 	file = models.FileField(upload_to='media/notes/',null=True,blank=True,)
 	topic = models.CharField(max_length=100,)
-	description = models.TextField(max_length=500,)
+	description = models.TextField()
 	uploaded_by = models.ForeignKey(User,on_delete=models.CASCADE)
 
 	def __str__(self):
@@ -46,7 +46,7 @@ class Announcement(models.Model):
 	subject_name = models.ForeignKey(Subject, on_delete=models.CASCADE)
 	issued_on = models.DateTimeField(auto_now_add= True)
 	subject = models.CharField(max_length=100)
-	description = models.TextField(max_length=500,)
+	description = models.TextField()
 	file = models.FileField(upload_to='media/announcement/',null=True,)
 	announced_by = models.ForeignKey(User,on_delete=models.CASCADE)
 
@@ -56,9 +56,9 @@ class Announcement(models.Model):
 class Assignment(models.Model):
 	subject_name = models.ForeignKey(Subject,on_delete=models.CASCADE)
 	uploaded_on = models.DateTimeField(auto_now_add= True)
-	file = models.FileField(upload_to='media/',null=True,blank = True,)
-	topic = models.CharField(max_length=100,)
-	description = models.TextField(max_length=500,)
+	file = models.FileField(upload_to='media/',null=True,blank = True)
+	topic = models.CharField(max_length=100)
+	description = models.TextField()
 	submission_date = models.DateTimeField() 
 	assigned_by = models.ForeignKey(User,on_delete=models.CASCADE)
 	submitted_by = models.ManyToManyField(User,related_name="Submissions")
