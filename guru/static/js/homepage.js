@@ -78,11 +78,16 @@ var homepage = new Vue({
 el:'#vuecontainer',
 data:{
   joinform:false,
+  createclassform:false,
 },
 methods:{
+  create:function(){
+    this.createclassform=true;
+    this.joinform=false;
+  },
   join:function(){
-    this.joinform=this.joinform===false?true:false;
-    off()
+    this.createclassform=false;
+    this.joinform=true;
   }
 }
 })

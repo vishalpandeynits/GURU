@@ -3,139 +3,81 @@
 {% block title %} Home view {% endblock %}
 {% block content %}
 {% load crispy_forms_tags %}
-<style>
-#overlay {
-  position: fixed;
-  display: none;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0,0,0,0.5);
-  z-index: 2;
-  cursor: pointer;
-}
+<div class="container">
+	<div>
+	<a style="display: block;"class="btn btn-outline-primary float-right" 
+		href="{% url 'profile' user.username %}">
+		{{ user.username }}
+	</a>
+</div>
 
-#classform{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-}
-#vuecontainer form{
-	background:white;
-	padding:20px;
-	border-radius:15px;
-}
-#vuecontainer input[type="text"]{
-	width:100%;
-	outline:none;
-	border-bottom:1px solid black;
-}
-#close{
-	float:right;
-	font-size:1.5em;
-	color: red;
-	font-weight:bolder;
-}
-* {
-  box-sizing: border-box;
-}
-
-.subject-container {
-  position: relative;
-  max-width: 800px;
-  margin: 10px auto;
-  line-height: 5px;
-}
-
-.subject-container img {
-	vertical-align: middle;
-	opacity: 0.8;
-	transition:opacity 0.4s, transform 0.4s;
-}
-.subject-container img:hover {
-	opacity:1;
-	transform:scale(1.04,1.04);
-}
-.subject-container .content {
-  position: absolute;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5); /* Black background with 0.5 opacity */
-  color: #f1f1f1;
-  width: 100%;
-  padding: 5px;
-  font-weight: bolder;
-}
-</style>
-<div>
-	{% include 'navigation.html' %}
 	<div class="row">
-		<div id="home-btn-container">
-			<div id="vuecontainer">
-				<h2 id="col-md-6" style="font-size:4vw;"> 
-					Online classes made easy by your own GURU.
-				</h2>
-				{% if messages %}
-				<div class="messages">
-				    {% for message in messages %}
-				    <div class='alert alert-{{ message.tags }}'>{{ message }} </div>
-				    {% endfor %}
-				</div>
-				{% endif %}
-				<button onclick="on()" class="btn btn-home">
-					Create a class
-				</button>
+		<div class="col-sm-11 col-md-10">
+			<div id="home-btn-container">
+				<div id="vuecontainer">
 
-				<button @click="join" class='btn btn-home'>
-					Join a class 
-				</button> <br>
-				<div id="overlay" >
-					<form id="classform" method="POST">{% csrf_token %}
-						<a onclick="off()" id="close"> &times;</a> 
+					<h2 id="col-md-6" style="font-size:5vw;"> 
+						Online classes made easy by your own GURU.
+					</h2>
+					{% if messages %}
+					<div class="messages">
+					    {% for message in messages %}
+					    <div class='alert alert-{{ message.tags }}'>{{ message }} </div>
+					    {% endfor %}
+					</div>
+					{% endif %}
+					<button v-on:click="create" class="btn btn-home">
+						Create a class 
+					</button>
+
+					<button v-on:click="join" class='btn btn-home'>
+						Join a class 
+					</button> <br>
+
+					<form v-if="createclassform" id="classform" method="POST">{% csrf_token %} 
 						{{ createclassform|crispy }}
 						<input type="submit" value="Create" class="btn btn-success m-2"> 
 					</form>
-				</div>
+				
 
-				<form v-if="joinform" id="joinform" style="width:70%;" method="POST">{% csrf_token %} 
-					Unique id: <br>
-					<input type="text" placeholder="Unique ID"name="join_key"><br>
-					<input type="submit" value="Join" class="btn btn-success float-right m-2"><br><br>
-				</form>
-			</div> <br>
+					<form v-if="joinform" id="joinform" method="POST">{% csrf_token %} 
+						Unique id: <br>
+						<input type="text" placeholder="Unique ID"name="join_key"><br>
+						<input type="submit" value="Join" class="btn btn-success m-2">
+					</form><br><br>
+				</div> 
 
-			{% if my_classes %} 
-				<h4 style="font-weight:bolder;color:grey;"> The list of classes you are member of:</h4>
-				<div class="row">
+				{% if my_classes %} 
+					The list of classes you are member of:<br>
 					{% for class in my_classes %}
-					<div class="col-xs-12 col-md-6 col-lg-4">
-						<a class="text-center" style="color:white;"
-										href="{% url 'subjects' class.unique_id %}">
-						<div class="subject-container">
-						  <img src="{{class.classroom_pic.url }}" alt="Notebook" style="width:100%;height:350px;">
-						  <div class="content">
-							    <h1>{{ class|upper }} </h1>
-							    <p>by {{ class.unique_id}}</p>
-						  </div>
-						</div>
-						</a>
-					</div>
-					{% endfor %}
-				</div>
-			{% endif %}
+						<div style="color:white; background:black;height:120%;"
+							class="alert alert-primary" role="alert"> 
+							<a href="{% url 'subjects' class.unique_id %}">	
+								{{ class|upper }} 
+							</a>
+							<span style="float:right"> 
+								{{ class.unique_id}}
+							</span> 
+						</div> 
+					{% endfor %} 
+				{% endif %}
 
+<!-- 				{% if my_classes %} 
+					THe list of classes you are requested for: <br>
+					{% for class in my_classes %}
+						<div style="color:white; background:black;height:120%;"
+							class="alert alert-primary" role="alert"> 
+							<a href="{% url 'subjects' class.unique_id %}">	
+								{{ class|upper }} 
+							</a>
+							<span style="float:right"> 
+								{{ class.unique_id}}
+							</span> 
+						</div> 
+					{% endfor %} 
+				{% endif %} -->
+			</div>
 		</div>
+	</div>
 </div>
-<script>
-function on() {
-  document.getElementById("overlay").style.display = "block";
-}
-
-function off() {
-  document.getElementById("overlay").style.display = "none";
-}
-</script>
 {% endblock %} 
