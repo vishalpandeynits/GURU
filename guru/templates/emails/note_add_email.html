@@ -1,12 +1,31 @@
-{% autoescape off %}
-Hi {{ user.username }}, A new note {{ note.topic }} is uploaded by {{ note.uploaded_by}}, in {{ note.subject_name }}
-click the link below to read about this note:
-
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		pre {
+			overflow-x: auto;
+			white-space: pre-wrap;
+			white-space: -moz-pre-wrap;
+			white-space: -pre-wrap;
+			white-space: -o-pre-wrap;
+			word-wrap: break-word;
+			font-family: verdana;
+		}
+		body{
+			background: lightblue;
+		}
+	</style>
+</head>
+<body>
+<h1 style="text-align: center;font-weight:bolder;"> GURU </h1> 
+<pre>Hi {{ user.username }}, A new note on <q>{{ note.topic }}</q> is uploaded by {{ note.uploaded_by}}, in {{ note.subject_name }}
+click the link below to read more about this note:
+<a href="http://127.0.0.1:8000{% url 'read_note' classroom.unique_id note.subject_name.id note.id %}"> Visit </a>
+<p>If clicking the link above doesn't work, please copy and paste the URL in a new browser window instead.</p>
 http://127.0.0.1:8000{% url 'read_note' classroom.unique_id note.subject_name.id note.id %}
 
-If clicking the link above doesn't work, please copy and paste the URL in a new browser
-window instead.
 
-Sincerely,
-The Guru Team
-{% endautoescape %}
+ Sincerely,
+ The Guru Team</pre>
+</body>
+</html>

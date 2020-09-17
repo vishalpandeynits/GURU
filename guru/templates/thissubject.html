@@ -3,29 +3,22 @@
 {% load static %}
 {% load humanize %}
 {% block subject_content %}
-<style>
-	.subject-intro{
-		color:black;
-		background:white;
-		padding:20px;
-		border-radius:15px;
-		margin:40px auto;
-		font-size:2em;
-		text-align: center;
-		box-shadow: 1px 2px 3px grey;
-	}
-	.activity-container{
-		padding:15px;
-		border-radius:10px;
-		font-size:1.2em;
-		box-shadow: 1px 2px 3px grey;
-	}
-</style>
 <div class="container" id="subject">
 	<div class="subject-intro w-sm-100" style="display:block;">
 		Subject: {{ subject.subject_name }} <br>
 		Teacher: {{ subject.teacher }}<br>
-	</div> 
+		{% if subject.description %}
+		Description: {{ subject.description }}<br>
+		{% endif %}
+	</div>
+
+	{% if user == teacher  or user in admins %}
+	<button @click="toggleEditForm" id="edit"> Edit </button>
+	<form id="subjectedit" v-if="editForm" method="POST" enctype="multipart/form-data">{% csrf_token %}
+		{{ form|crispy }}
+		<input type="submit" value="Edit">
+	</form>
+	{% endif %}
 	<!-- Members list -->
 	<div class="d-flex justify-content-center w-75 m-auto">
 		<button style="position:relative; top:8px;" @click="toggleMembers" 
@@ -97,6 +90,7 @@
 		data:{
 			'members':false,
 			'activity':true,
+			'editForm':false,
 		},
 		methods:{
 			toggleMembers:function(){
@@ -106,6 +100,9 @@
 			toggleActivity:function(){
 				this.members=this.members===true?false:true;
 				this.activity=this.activity===true?false:true;
+			},
+			toggleEditForm:function(){
+				this.editForm=this.editForm===true?false:true;
 			}
 		}
 	})

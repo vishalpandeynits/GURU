@@ -1,6 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+	pre {
+		overflow-x: auto;
+		white-space: pre-wrap;
+		white-space: -moz-pre-wrap;
+		white-space: -pre-wrap;
+		white-space: -o-pre-wrap;
+		word-wrap: break-word;
+		font-family: verdana;
+	}
+	body{
+		background: lightblue;
+	}
+</style>
+</head>
+<body>
 {% autoescape off %}
 Hi, You have been awarded {{submission.marks_assigned }} out of {{ assignment.full_marks }} for {{ assignment.topic }}.
 
 Sincerely,
 The Guru Team
-{% endautoescape %}
+{% endautoescape %}                            
+</body>
+</html>

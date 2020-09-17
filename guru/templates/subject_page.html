@@ -20,7 +20,7 @@
 			</a>
 			<a style="border-bottom:5px solid black;" href="{% url 'this_subject' classroom.unique_id subject.id %}"
 				 onclick="closeNav()"> 
-				<i class="fas fa-chalkboard-teacher mr-2"></i> {{ classroom.class_name }}
+				<i class="fas fa-chalkboard-teacher mr-2"></i> {{ subject.subject_name }}
 			</a>
 			<a href="{% url 'homepage' %}" onclick="closeNav()">
 				<i class="fas fa-home mr-2"></i> Home
@@ -41,6 +41,26 @@
 				<span style="font-size:2.5em;color:white;">
 					&nbsp; {{ subject.subject_name|title }}
 				</span>
+				        <div style="color:white;"  class="float-right mx-2 mt-2"> 
+          <div class="btn-group">
+            <div class="btn-group dropleft" role="group">
+              <button type="button" style="border:none;outline:none;" class="btn btn-secondary bg-transparent dropdown-toggle bg-transparent dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="sr-only">Toggle Dropleft</span>
+              </button>
+              <div class="dropdown-menu-lg-right bg-dark text-light dropdown-menu p-0">
+                  <a style="margin:10px;display:block;" class="text-light" href="{% url 'logout' %}">
+                    Log Out
+                  </a>
+                  <a style="margin:10px;display:block;" class="text-light" href="{% url 'password_change' %}">
+                    Change Password
+                  </a>
+              </div>
+            </div>
+            <a style="color:white;font-size:2.3em;"  class="float-right mx-2 mt-2" href="{% url 'profile' user.username %}"> 
+              <i class="fas fa-user mr-2"></i>
+            </a>
+          </div>
+        </div>
 			</div>
 			{% block subject_content %} {% endblock %}
 		</div>

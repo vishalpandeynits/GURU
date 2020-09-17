@@ -27,17 +27,16 @@
 	{% if announcements %}
 		<div style="min-height:500px;">
 			{% for announcement in announcements %}
-				<div class="content" style="padding:10px;">
-					<a class="link" href="{% url 'announcement_page' classroom.unique_id  subject.id announcement.id %}">
-						0{{ forloop.counter}} {{ announcement.subject }}
-					</a><br><br>
+			<a class="link" href="{% url 'announcement_page' classroom.unique_id  subject.id announcement.id %}">
+				<div class="content" style="padding:5px;">
+					0{{ forloop.counter}} {{ announcement.subject }}<br><br>
 					<div class="time">
-						 <b style="float:right;">Announced <nobr>{{announcement.issued_on|naturaltime }} </nobr></b>
+						 <span style="float:right;">Announced <nobr>{{announcement.issued_on|naturaltime }} </nobr></span>
 					</div><br>
 				</div>
-			{% endfor %}
-		</div>
-		{% include 'paginations.html' %}
+			</a>
+			{% endfor %}<br>
+			{% include 'paginations.html' %}
 	{% else %}
 		<h2> No announcements made yet. </h2>
 	{% endif %}

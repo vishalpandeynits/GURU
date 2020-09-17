@@ -1,12 +1,32 @@
-{% autoescape off %}
-Hi {{ user.username }}, A new assignment on {{ assignment.topic }} is uploaded by {{ assignment.assigned_by}}, in {{ assignment.subject_name }}. Submit it before {{ assignment.submission_date }}
+{% load humanize %}
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		pre {
+			overflow-x: auto;
+			white-space: pre-wrap;
+			white-space: -moz-pre-wrap;
+			white-space: -pre-wrap;
+			white-space: -o-pre-wrap;
+			word-wrap: break-word;
+			font-family: verdana;
+		}
+		body{
+			background: lightblue;
+		}
+	</style>
+</head>
+<body>
+<h1 style="text-align: center;font-weight:bolder;"> GURU </h1> 
+<pre>Hi {{ user.username }}, A new assignment on <q>{{assignment.topic }}</q> is uploaded by vishalpandeynits, in {{ assignment.subject_name }} subject. Submit it before {{ assignment.submission_date|naturaltime }}
 click the link below to read more about this assignment:
-
+<a href="http://127.0.0.1:8000{% url 'assignment_page' classroom.unique_id assignment.subject_name.id assignment.id %}"> Visit </a>
+<p>If clicking the link above doesn't work, please copy and paste the URL in a new browser window instead.</p>
 http://127.0.0.1:8000{% url 'assignment_page' classroom.unique_id assignment.subject_name.id assignment.id %}
 
-If clicking the link above doesn't work, please copy and paste the URL in a new browser
-window instead.
 
-Sincerely,
-The Guru Team
-{% endautoescape %}
+ Sincerely,
+ The Guru Team</pre>
+</body>
+</html>

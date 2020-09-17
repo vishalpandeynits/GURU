@@ -1,0 +1,169 @@
+
+/*Homepage css*/
+
+#overlay {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+
+#classform{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+#vuecontainer form{
+	background:white;
+	padding:20px;
+	border-radius:15px;
+}
+#vuecontainer input[type="text"]{
+	width:100%;
+	outline:none;
+	border-bottom:1px solid black;
+}
+#close{
+	float:right;
+	font-size:1.5em;
+	color: red;
+	font-weight:bolder;
+}
+* {
+  box-sizing: border-box;
+}
+
+.subject-container {
+  position: relative;
+  max-width: 800px;
+  margin: 10px auto;
+  line-height: 5px;
+}
+
+.subject-container img {
+	vertical-align: middle;
+	opacity: 0.8;
+	transition:opacity 0.4s, transform 0.4s;
+}
+.subject-container img:hover {
+	opacity:1;
+	transform:scale(1.04,1.04);
+}
+.subject-container .content {
+  position: absolute;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Black background with 0.5 opacity */
+  color: #f1f1f1;
+  width: 100%;
+  padding: 5px;
+  font-weight: bolder;
+}
+
+/*homepage css ends */
+
+
+/*Subject page css*/
+  #subject-add-form{
+    padding:10px;
+    box-shadow:2px 4px 8px grey;
+  }
+  #subject-add-form input{
+    padding:10px;
+    background:white;
+    margin:5px 4px;
+  }
+  #add-subject-btn{
+    width:150px;
+    color:white;
+    border-radius:5px;
+    background:black;
+    text-align:center;
+    padding:5px 10px;
+    margin:10px 0px;
+  }
+  * {
+    box-sizing: border-box;
+  }
+
+  .subject-container {
+    position: relative;
+    max-width: 800px;
+    margin: 10px auto;
+    line-height: 5px;
+  }
+
+  .subject-container img {vertical-align: middle;}
+
+  .subject-container .content {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: #f1f1f1;
+    width: 100%;
+    padding: 5px;
+  }
+/*Subject page css ends*/
+
+/*This subject css */
+
+  .subject-intro{
+    color:black;
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    margin:40px auto;
+    font-size:2em;
+    text-align: center;
+    box-shadow: 1px 2px 3px grey;
+  }
+  .activity-container{
+    padding:15px;
+    border-radius:10px;
+    font-size:1.2em;
+    box-shadow: 1px 2px 3px grey;
+  }
+  #subjectedit{
+    padding:20px;
+    background:white;
+    border-radius:15px;
+  }
+  #subjectedit input[type="text"]{
+    width:100%;
+    padding:8px;
+    border-bottom:1px solid black;
+    outline:none;
+
+  }
+  #subjectedit input[type="submit"]{
+    width:75%;
+    display: block;
+    margin:auto;
+    color:white;
+    background:black;
+    border-radius:8px;
+    padding: 5px;
+    transition:width 0.6s;
+  }
+  #subjectedit input[type="submit"]:hover{
+    width:100%;
+
+  }
+  #edit{
+    display:block;
+    margin:auto;
+    background:black;
+    color:white;
+    width:100px;
+    border-radius:10px;
+    padding: 8px 12px;
+  }
+
+  /*This subject css ends */

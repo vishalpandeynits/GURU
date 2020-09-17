@@ -34,10 +34,9 @@
 	{% if assignments %}
 		<div style="min-height: 500px;">
 			{% for assignment in assignments %}
+			<a class="link" href="{% url 'assignment_page' classroom.unique_id subject.id assignment.id %}">
 			<div class="content">
-				<a class="link" href="{% url 'assignment_page' classroom.unique_id subject.id assignment.id %}">
-					0{{ forloop.counter}} {{ assignment.topic }}
-				</a><br>
+				0{{ forloop.counter}} {{ assignment.topic }}<br>
 				<div class="time">
 					 Submit Before <nobr>{{ assignment.submission_date }}</nobr>
 				</div><br>

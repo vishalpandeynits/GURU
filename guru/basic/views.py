@@ -547,6 +547,12 @@ def this_subject(request,unique_id, subject_id):
         activities = Subject_activity.objects.filter(subject=subject).order_by('-id')
         query,page_range = pagination(request,activities)
         activities=query.object_list
+        if request.method=='POST':
+            form = SubjectEditForm(request.POST , request.FILES,instance=subject)
+            if form.is_valid():
+                form.save()
+        else:
+            form = SubjectEditForm(instance=subject)
         params={
             'subject':subject,
             'classroom':classroom, 
@@ -556,8 +562,9 @@ def this_subject(request,unique_id, subject_id):
             'admins':admins,
             'teacher':teacher,
             'page':query,
-            'page_range':page_range
-        }
+            'page_range':page_range,
+            'form':form
+                    }
         return render(request,'thissubject.html',params)
 
 @login_required

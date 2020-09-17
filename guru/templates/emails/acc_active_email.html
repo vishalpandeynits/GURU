@@ -1,5 +1,23 @@
-{% autoescape off %}
-
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+	pre {
+		overflow-x: auto;
+		white-space: pre-wrap;
+		white-space: -moz-pre-wrap;
+		white-space: -pre-wrap;
+		white-space: -o-pre-wrap;
+		word-wrap: break-word;
+		font-family: verdana;
+	}
+	body{
+		background: lightblue;
+	}
+</style>
+</head>
+<body>
+<pre><h1 style="text-align: center;font-weight:bolder;"> GURU </h1> 
 To activate your {{ user.get_username }} Guru Account,
 click the link below:
 
@@ -11,5 +29,6 @@ window instead.
 
 Sincerely,
 The Guru Team
-
-{% endautoescape %}
+</pre>
+</body>
+</html>

@@ -26,19 +26,15 @@
 
 	{% if page %}
 		{% for note in page %}
-		<div class="content">
-			<a class="link" href="{% url 'read_note' classroom.unique_id subject.id note.id %}" >
-				0{{ forloop.counter}} {{ note.topic }}
-			</a><br>
-			<div class="uploaded_by"> uploaded by: 
-				<a href="/profile/{{note.uploaded_by}}">
-					{{ note.uploaded_by }}
-				</a>
-			</div>
+		<a href="{% url 'read_note' classroom.unique_id subject.id note.id %}">
+		<div style="font-size: 1.2em; word-wrap: break-word;" class="content">
+			0{{ forloop.counter}} {{ note.topic }}<br><br>
+			<div class="uploaded_by"> uploaded by: {{ note.uploaded_by }} </div>
 			<div class="time">
 				Uploaded {{ note.uploaded_on|naturaltime }}
-			</div><br>
+			</div><br><br>
 		</div>
+		</a>
 		{% endfor %}
 		<br>{% include 'paginations.html' %}	
 	{% else %}

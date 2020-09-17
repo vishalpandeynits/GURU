@@ -1,12 +1,32 @@
-{% autoescape off %}
-Hi {{ user.username }}, A new announcement on {{ announcement.subject }} is made by {{ announcement.announced_by}}, in {{ announcement.subject_name }}.
+{% load humanize %}
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		pre {
+			overflow-x: auto;
+			white-space: pre-wrap;
+			white-space: -moz-pre-wrap;
+			white-space: -pre-wrap;
+			white-space: -o-pre-wrap;
+			word-wrap: break-word;
+			font-family: verdana;
+		}
+		body{
+			background: lightblue;
+		}
+	</style>
+</head>
+<body>
+<h1 style="text-align: center;font-weight:bolder;"> GURU </h1> 
+<pre>Hi {{ user.username }}, A new announcement on <q>{{ announcement.subject }}</q> is made by {{ announcement.announced_by }} , in {{announcement.subject_name }} subject.
 click the link below to read more about this announcement:
-
+<a href="http://127.0.0.1:8000{% url 'announcement_page' classroom.unique_id announcement.subject_name.id announcement.id %}"> Visit </a>
+<p>If clicking the link above doesn't work, please copy and paste the URL in a new browser window instead.</p>
 http://127.0.0.1:8000{% url 'announcement_page' classroom.unique_id announcement.subject_name.id announcement.id %}
 
-If clicking the link above doesn't work, please copy and paste the URL in a new browser
-window instead.
 
-Sincerely,
-The Guru Team
-{% endautoescape %}
+ Sincerely,
+ The Guru Team</pre>
+</body>
+</html>

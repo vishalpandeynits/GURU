@@ -27,15 +27,18 @@
 
     <div class="col-12">
       <div style="background:black;height:70px;" class="p-1">
+        {% if classes %}
         <span class="pl-1 ml-2" id="openNav" onclick="openNav()">
           &#9776; 
         </span>
+        {% endif %}
         {% if classroom %}
         <span style="font-size:2.5em;color:white;">
           &nbsp; {{ classroom.class_name }}
         </span>
         {% endif %}
-        {% if user.is_authenticated %}
+
+        
         <div style="color:white;"  class="float-right mx-2 mt-2"> 
           <div class="btn-group">
             <div class="btn-group dropleft" role="group">
@@ -56,7 +59,6 @@
             </a>
           </div>
         </div>
-        {% endif %}
       </div>
     </div>
 </div>
