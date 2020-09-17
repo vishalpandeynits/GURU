@@ -17,7 +17,7 @@
 		{% if form %}
 	      	 <button @click = "addAssignmentFormToggle" type="button" 
 	      	 	class="btn add-btn float-left mt-4">
-	      	 	Add <i class="fa fa-plus" aria-hidden="true"></i>
+	      	 	Add f<i class="fa fa-plus" aria-hidden="true"></i>
 			</button><br>
 		{% endif %}<br><br>
 
@@ -34,7 +34,6 @@
 	{% if assignments %}
 		<div style="min-height: 500px;">
 			{% for assignment in assignments %}
-			<a href="{% url 'assignment_page' classroom.unique_id subject.id assignment.id %}">
 			<div class="content">
 				<a class="link" href="{% url 'assignment_page' classroom.unique_id subject.id assignment.id %}">
 					0{{ forloop.counter}} {{ assignment.topic }}
