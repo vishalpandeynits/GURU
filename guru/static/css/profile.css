@@ -1,0 +1,29 @@
+#info{
+
+	padding:40px;
+	background:white;
+	width:50%;
+}
+#info img{
+	box-shadow: 2px 4px 6px grey;
+	border-radius:15px;
+	transition:transform 0.4s;
+	}
+	#info img:hover{
+		transform:scale(1.1,1.1);
+	}
+@media screen and (max-width:600px){
+	#info{
+		width:100%;
+	}
+}
+@media screen and (min-width:600px){
+	#info{
+		width:65%;
+	}
+}
+@media screen and (min-width:1200px){
+	#info{
+		width:50%;
+	}
+}

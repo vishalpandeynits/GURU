@@ -1,42 +1,6 @@
 {% extends '../base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-<style>
-	#pollform{
-		display:flex;
-		justify-content:center;
-		background:white;
-		padding:10px;
-		width:100%;
-		border-radius:20px;
-		box-shadow:2px 4px 6px grey;
-	}
-	#pollform input,textarea{
-		border:0.5px solid black;
-		border-radius:4px;
-		margin-bottom: 10px;
-		width:100%;	
-		padding: 10px;
-	}
-	#addpollbtn{
-		border:2px solid green;
-		color:white;
-		background-color: black;
-		margin:10px;
-	}
-	#addpollbtn:hover{
-		color:black;
-		background-color: white;
-	}
-	.poll-list{
-		background:white;
-		margin:10px 0px;
-		padding:10px;
-		font-size:1.5em;
-		font-weight:bolder;
-		display:flex;
-	}
-</style>
 <div>
 	{% include 'navigation.html' %}
 	<div class="container" id="poll-container">

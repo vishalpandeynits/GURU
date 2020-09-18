@@ -1,0 +1,47 @@
+/*Login page css*/
+.login-form{
+	padding:20px;
+	background: white;
+	width:40%;
+	margin:10px auto;
+	box-shadow:2px 4px 8px grey;
+	position:relative;
+	font-size:1.3em;
+	color:bolder;
+
+}
+.login-form input{
+	width:100%;
+	padding:10px;
+	margin:10px 0px;
+	height:45px;
+	border-radius:10px;
+	outline: none;
+}
+.submit-btn{
+	background:black;
+	color:white;
+	width:50%;
+	border-radius:20px;
+	margin:10px auto;
+	padding:5px;
+	transition:width 0.3s;
+	display: block;
+	cursor: pointer;
+}
+
+.submit-btn:hover{
+	width:100%;
+	box-shadow: 2px 4px 5px grey;
+}
+@media screen and (max-width: 600px){
+	.login-form{
+	width:95%;
+	}
+}
+@media screen and (max-width: 1200px){
+.login-form{
+	width:75%;
+	}
+}
+/*Log in page ends*/

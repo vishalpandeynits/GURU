@@ -8,18 +8,7 @@
 		<img src ="/media/bga.jpg" style="height:100%;width:100%;">
 	</div>
 	<div class="col p-4">
-
 		<form id="#signupform"method="POST">{% csrf_token %}
-<!-- 				{% if message %}
-					<p style="color:red;"> {{message}}</p>
-				{% endif %}
-			{% for field in signupform %}
-				{{field.label }}<br> {{ field }}<br>
-				{% if field.errors %}
-					{{ field.errors }}
-					<p style="color:red;"> Please try once again</p>
-				{% endif %}
-			{% endfor %}<br> -->
 			{{ signupform|crispy }}
 			<input type="submit" value="Register" class="btn btn-primary">
 			Already have an account? 	<a href="{% url 'login' %}"> Login</a>

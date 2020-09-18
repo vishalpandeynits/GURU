@@ -6,7 +6,6 @@ Django==3.1
 django-allauth==0.42.0
 django-contrib-comments==1.9.2
 django-crispy-forms==1.9.2
-django-user-visit==0.4.1
 djangorestframework==3.11.0
 humanize==2.6.0
 idna==2.10

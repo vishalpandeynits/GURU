@@ -24,7 +24,7 @@ SECRET_KEY = '*j)kfw7j9ltu!=t$o0@4m!umac+&j#3)q^*j_g%z%qpwoeh=9d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-SITE_ID = 2
+SITE_ID = 1
 ALLOWED_HOSTS = ['*']
 
 # Application definition
@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.sites',
     'django_comments',
-    'user_visit',
+    # 'user_visit',
 
     #all auth
     'allauth',
@@ -64,7 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'user_visit.middleware.UserVisitMiddleware',
+    # 'user_visit.middleware.UserVisitMiddleware',
 ]
 
 ROOT_URLCONF = 'guru.urls'
