@@ -11,36 +11,47 @@
 			{% if is_teacher %}
 			<div id="containassignment">
 				<a class="btn btn-danger m-2 float-right" 
-					style="border:none;color:white;background:red;padding: 7px;" href="{% url 'delete_assignment' classroom.unique_id subject.id assignment.id %}">
-						Delete <i class="fa fa-trash" aria-hidden="true"></i>
+					style="border:none;color:white;background:red;padding: 7px;" 
+					href="{% url 'delete_assignment' classroom.unique_id subject.id assignment.id %}">
+					Delete <i class="fa fa-trash" aria-hidden="true"></i>
 				</a>
 
-				<a @click="addAssignmentFormToggle" style="border:none;color:white;background:black;padding: 7px;" 
-					class="btn m-2 float-right">
+				<a class="btn btn-dark m-2 float-right" 
+					style="border:none;color:white;padding: 7px;" 
+					href="/profile/{{assignment.assigned_by}}">
+					Contact <i class="fas fa-phone-volume"></i>
+				</a>
+
+				<a @click="addAssignmentFormToggle" class="btn m-2 float-right"
+					style="border:none;color:white;background:black;padding: 7px;">
 				 	Update <i class="fas fa-edit"></i>
 				</a><br><br>
 
-				  <form method="POST" v-if="addform" class="addForm" enctype="multipart/form-data">{% csrf_token %}
+				<form method="POST" v-if="addform" class="addForm" 
+					enctype="multipart/form-data">{% csrf_token %}
 					{{ updateform|crispy }}
 					<input type="submit" class="submit-button" value="submit">
-				  </form>
+				</form>
 			 </div>
 			{% endif %}<br>
 			<!-- Update assignment logic ends -->
 
 			<!-- Assignment details -->
-				<div id="assignment-content">
-					<p style="font-weight: bold;text-align: center;font-size:1.2em;">{{ assignment.topic }}</p>
-					<b style="float:right;">
-					 	Submit Before <nobr>{{ assignment.submission_date }}</nobr>
-					</b><br>
-					{% if assignment.file %}
-						<a href="{{assignment.file.url}}" download> Download file {{ assignment.file  }} </a><br>
-					{% endif %}
-					<pre>{{ assignment.description }}</pre>
-				</div><br>
+			<div id="assignment-content">
+				<p style="font-weight: bold;text-align: center;font-size:1.2em;">
+					{{ assignment.topic }}
+				</p>
+				<b style="float:right;">
+				 	Submit Before <nobr>{{ assignment.submission_date }}</nobr>
+				</b><br>
+				{% if assignment.file %}
+					<a href="{{assignment.file.url}}" download> 
+						Download file {{ assignment.file  }} 
+					</a><br>
+				{% endif %}
+				<pre>{{ assignment.description }}</pre>
+			</div><br>
 			<!-- Assignment details ends -->
-
 			{% include 'comments/assignmentcomment.html' %}
 		</div>
 		
@@ -54,17 +65,4 @@
 
 	</div>
 </div>
-<script>
-	new Vue({
-		el:'#containassignment',
-		data:{
-			addform:false,
-		},
-		methods:{
-			addAssignmentFormToggle:function(){
-				this.addform=this.addform===true?false:true;
-			}
-		}
-	})
-</script>
 {% endblock %}

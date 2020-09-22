@@ -7,22 +7,24 @@
 
 	{% if pollform %}
 		<div style="display:flex;justify-content:center;">
-			<button id="addpollbtn" @click="showform" class="btn btn-primary mx-auto">Add a poll </button>
+			<button id="addpollbtn" @click="showform" class="btn btn-primary mx-auto">
+				Add a poll 
+			</button>
 		</div>
 
 		<div v-if="form" id="pollform">
-				<form style="width:80%;"method="POST">{% csrf_token %}
-					{{ pollform|crispy }}
-					<div v-for="i in p">
-						<input type="text" v-if="i==p" autocomplete="off"
-							placeholder="Mention more options..." @click="insert" name="check">
-						<input type="text" v-else autocomplete="off"
-							placeholder="Mention your option..." name="check">
-					</div>
+			<form style="width:80%;"method="POST">{% csrf_token %}
+				{{ pollform|crispy }}
+				<div v-for="i in p">
+					<input type="text" v-if="i==p" autocomplete="off"
+						placeholder="Mention more options..." @click="insert" name="check">
+					<input type="text" v-else autocomplete="off"
+						placeholder="Mention your option..." name="check">
+				</div>
 
-					<input type="datetime-local" autocomplete="off" required="required" name ='date'>
-					<input type="submit" class="btn btn-success"value="submit">
-				</form>
+				<input type="datetime-local" autocomplete="off" required="required" name ='date'>
+				<input type="submit" class="btn btn-success"value="submit">
+			</form>
 		</div>
 	{% endif %}
 
@@ -30,7 +32,9 @@
 	{% for poll in polls %}
 	<a href="/polls/{{classroom.unique_id}}/poll-page/{{ poll.id }}">
 		<div class="poll-list" class="alert">
-		 <div style="display:flex;justify-content: flex-start;margin-right:20px;">0{{ forloop.counter }}</div>
+		 <div style="display:flex;justify-content: flex-start;margin-right:20px;">
+		 	0{{ forloop.counter }}
+		 </div>
 		 {{ poll.poll_details }}
 		</div> 
 	</a>

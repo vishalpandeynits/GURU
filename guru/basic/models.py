@@ -47,7 +47,7 @@ class Announcement(models.Model):
 	issued_on = models.DateTimeField(auto_now_add= True)
 	subject = models.CharField(max_length=100)
 	description = models.TextField(null=True,blank=True)
-	file = models.FileField(upload_to='media/announcement/',null=True,)
+	file = models.FileField(upload_to='media/announcement/',null=True,blank=True)
 	announced_by = models.ForeignKey(User,on_delete=models.CASCADE)
 
 	def __str__(self):

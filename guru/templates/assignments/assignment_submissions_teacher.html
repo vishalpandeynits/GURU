@@ -1,6 +1,6 @@
 {% load crispy_forms_tags %}
 <div id="assignment-container" class="text-align-center">
-	<div class="dropdown mb-4">
+	<div class="dropdown my-2">
 	  <button class="btn btn-primary ">Submissions</button>
 	  <div class="dropdown-content">
 			<button class="btn btn-primary d-block w-100 m-1" @click="show_all_submissions">
@@ -19,63 +19,79 @@
 	</div>
  
 	<span v-if="all_submissions">
-		{% for submission in all_submissions %}
-			<div class="alert alert-info">
-				<a href="{{submission}}" download>
-					Download {{ submission.file }}
-				</a>
-				submitted_by 
-				<a href="/profile/{{ submission.submitted_by.username}}">
-					{{ submission.submitted_by.first_name }} {{ submission.submitted_by.last_name }}
-				</a>
-				 at
-				{{ submission.submitted_on }}. 
-				<form method="POST">{% csrf_token %}
-				 	<input type="hidden" name="id" value="{{submission.id}}">
-				 	<input name="marks_assigned" placeholder="Assign Marks" type="number" 
-				 	value = "{{submission.marks_assigned}}" max="{{assignment.full_marks}}">
-				 	<input type="submit" class="btn btn-primary" id="assignMarks" onclick="fun" value="Assign marks">
-				</form>
-			</div>
-		{% endfor %}
+	{% for submission in all_submissions %}
+		<div class="alert alert-info">
+			<a href="{{submission}}" download>
+				Download {{ submission.file }}
+			</a>
+			submitted_by 
+			<a href="/profile/{{ submission.submitted_by.username}}">
+				{{ submission.submitted_by.first_name }} {{ submission.submitted_by.last_name }}
+			</a>
+			 at
+			{{ submission.submitted_on }}. 
+			<form method="POST">{% csrf_token %}
+			 	<input type="hidden" name="id" value="{{submission.id}}">
+			 	<input name="marks_assigned" placeholder="Assign/Reconsider Marks" type="number" 
+			 	value = "{{submission.marks_assigned}}" max="{{assignment.full_marks}}">
+			 	<input type="submit" class="btn btn-primary" id="assignMarks" 
+			 		onclick="fun" value="Assign marks">
+			</form>
+		</div>
+	{% endfor %}
 	</span>
 
-	<span v-if="ontime_submissions">
-		{% for submission in ontime_submissions %}
-			<div class="alert alert-light p-2" style="box-shadow: 2px 4px 8px grey;border-radius:10px;">
-				<a href="{{submission}}" download>
-					{{ submission.file }} 
-				</a>
-				submitted_by {{ submission.submitted_by }} at
-				 {{ submission.submitted_on }}.
-			</div>
-		{% endfor %}
+	<span id="ontime" v-if="ontime_submissions">
+	{% for submission in ontime_submissions %}
+	<div class="alert alert-light p-2" 
+		style="box-shadow: 2px 4px 8px grey;border-radius:10px;">
+		<a href="{{submission}}" download>
+			{{ submission.file }} 
+		</a>
+		submitted_by {{ submission.submitted_by }} at
+		 {{ submission.submitted_on }}.
+	</div>
+	{% endfor %}
 	</span>
 
 	<span v-if="late_submissions">
-		{% for submission in late_submissions %}
-			<div class="alert alert-danger p-2" style="box-shadow: 2px 4px 8px grey;border-radius:10px;">
-				<a href="{{submission}}" download>
-					{{ submission.file }} 
-				</a>
-				submitted_by {{ submission.submitted_by }} at
-				 {{ submission.submitted_on }}.
-			</div>
-		{% endfor %}
+	{% for submission in late_submissions %}
+		<div class="alert alert-danger p-2" 
+			style="box-shadow: 2px 4px 8px grey;border-radius:10px;">
+			<a href="{{submission}}" download>
+				{{ submission.file }} 
+			</a>
+			submitted_by 
+			<a href="/profile/{{ submission.submitted_by }}">
+				{{ submission.submitted_by }}
+			</a> at
+			{{ submission.submitted_on }}.
+		</div>
+	{% endfor %}
 	</span>
 
 	<span v-if="not_submitted"><br>
-		<form method="POST">{% csrf_token %}
-			<input type="hidden" name="send_reminder" value="1">
-			<input type="submit" value="Send Reminder" class="btn btn-dark float-right">
-		</form><br><br><br>
-		{% for student in not_submitted %}
-			<div class="alert alert-info p-2">
-				<a href="/profile/{{student.username}}">
-					{{ student.username }}
-				</a>
-			</div>
-		{% endfor %}
+		{% if not_submitted %}
+			<form method="POST">{% csrf_token %}
+				<input type="hidden" name="send_reminder" value="1">
+				<input type="submit" value="Send Reminder" class="btn btn-dark float-right">
+			</form><br><br>
+			{% for student in not_submitted %}
+				<div class="alert alert-light p-2" 
+					style="box-shadow: 2px 4px 8px grey;border-radius:10px;">
+					<a href="/profile/{{student.username}}">
+						<img src="{{student.profile.profile_pic.url }}" 
+							style="height:60px;width:70px;border-radius:10px"> 
+						<span style="font-size: 1.3em;"> 
+							{{ student.username|title }} 
+						</span>
+					</a>
+				</div>
+			{% endfor %}
+		{% else %}
+			<p style="font-size:1.3em;color:green;"> 
+				Everyone have submitted their assignment.
+			</p>
+		{% endif %}
 	</span>
-
 </div>

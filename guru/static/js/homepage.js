@@ -101,7 +101,7 @@ methods:{
 			ontime_submissions:false,
 			late_submissions:false,
 			submitted:false,
-			not_submitted:true,
+			not_submitted:false,
 		},
 
 		methods:{
@@ -193,3 +193,44 @@ new Vue({
 			}
 		}
 	})
+
+// Announcement page JS
+new Vue({
+	el:'#containannouncement',
+	data:{
+		addform:false,
+	},
+	methods:{
+		addAnnouncementFormToggle:function(){
+			this.addform=this.addform===true?false:true;
+		}
+	}
+})
+
+new Vue({
+	el:'#contain',
+	data:{
+		updateform:false,
+	},
+	methods:{
+		updateFormToggle:function(){
+			this.updateform=this.updateform===true?false:true;
+		}
+	}
+})
+// Anouncement page JS ends
+
+// Assignment page JS
+new Vue({
+	el:'#containassignment',
+	data:{
+		addform:false,
+	},
+	methods:{
+		addAssignmentFormToggle:function(){
+			this.addform=this.addform===true?false:true;
+		}
+	}
+})
+
+// Assignment page JS ends

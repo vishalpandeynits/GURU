@@ -12,21 +12,19 @@
 	      	 	<i class="fas fa-search"></i>
 	      	</button>
 		</form>
-
 	
 		{% if form %}
-	      	 <button @click = "addAssignmentFormToggle" type="button" 
-	      	 	class="btn add-btn float-left mt-4">
-	      	 	Add <i class="fa fa-plus" aria-hidden="true"></i>
-			</button><br>
-		{% endif %}<br><br>
-
-		{% if form %}
-		    <form method="POST" v-if="addform" class="addForm" enctype="multipart/form-data">{% csrf_token %}
-				{{ form|crispy}}
-				Submit before * <br><input type="datetime-local" required name="submission_date">
-				<input type="submit" class="submit-button"value="submit">
-			</form>
+      	<button @click = "addAssignmentFormToggle" type="button" 
+      	 	class="btn add-btn float-left mt-4">
+      	 	Add <i class="fa fa-plus" aria-hidden="true"></i>
+		</button><br><br><br>
+	    <form method="POST" v-if="addform" class="addForm" 
+	    	enctype="multipart/form-data">{% csrf_token %}
+			{{ form|crispy}}
+			Submit before * <br>
+			<input type="datetime-local" required name="submission_date">
+			<input type="submit" class="submit-button"value="submit">
+		</form>
 		{% endif %}
 	</div>
 
@@ -35,31 +33,18 @@
 		<div style="min-height: 500px;">
 			{% for assignment in assignments %}
 			<a class="link" href="{% url 'assignment_page' classroom.unique_id subject.id assignment.id %}">
-			<div class="content">
-				0{{ forloop.counter}} {{ assignment.topic }}<br>
-				<div class="time">
-					 Submit Before <nobr>{{ assignment.submission_date }}</nobr>
-				</div><br>
-			</div>
+				<div class="content">
+					0{{ forloop.counter}} {{ assignment.topic }}<br>
+					<div class="time">
+						 Submit Before <nobr>{{ assignment.submission_date }}</nobr>
+					</div><br>
+				</div>
 			</a>
 			{% endfor %}
 		</div><br>
 		{% include 'paginations.html' %}
 	{% else %}
-		<h2> No assignments found !!!</h2>
+		<h2 style="text-align:center;color:green;font-weight: bolder;"> No assignments found !!!</h2>
 	{% endif %} 
 </div>
-<script>
-	new Vue({
-		el:'#containassignment',
-		data:{
-			addform:false,
-		},
-		methods:{
-			addAssignmentFormToggle:function(){
-				this.addform=this.addform===true?false:true;
-			}
-		}
-	})
-</script>
 {% endblock %}

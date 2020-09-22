@@ -28,7 +28,7 @@
 			<a href="{% url 'subjects' classroom.unique_id %}" onclick="closeNav()"> 
 				<i class="fas fa-book mr-2"></i> Subjects 
 			</a>
-			<a href="{% url 'profile' user.username %}" onclick="closeNav()"> 
+			<a href="/profile/{{user.username}}/" onclick="closeNav()"> 
 				<i class="fas fa-user mr-2"></i> {{ user.username|title }} 
 			</a>
 		</div>

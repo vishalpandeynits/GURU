@@ -1,10 +1,13 @@
 from django.contrib.auth.backends import ModelBackend, UserModel
 from django.db.models import Q
-
+from django.core.exceptions import ValidationError, MultipleObjectsReturned
 class EmailBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try: #to allow authentication through phone number or any other field, modify the below statement
             user = UserModel.objects.get(Q(username__iexact=username) | Q(email__iexact=username))
+            if user.is_active==False:
+                raise ValidationError('Your email account is not verified yet.')
+                return redirect('login')
         except UserModel.DoesNotExist:
             UserModel().set_password(password)
         except MultipleObjectsReturned:

@@ -6,13 +6,13 @@ from django.http import Http404
 from django.contrib import messages
 from django.db.models import Q
 from random import choice,randint
-
 from .forms import *
 from .models import *
 import string
 from .email import email_marks,send_reminder
 from .delete_notify import *
 #--------------------------------------------helper functions-----------------------------------
+
 def unique_id():
     characters = string.ascii_letters + string.digits
     return  "".join(choice(characters) for x in range(randint(8,12)))
@@ -40,7 +40,6 @@ def pagination(request,object):
         page_range = list(paginator.page_range)[start_index:end_index]
         return query,page_range
 
-
 #--------------------------------------------helper functions end ------------------------------
 def home(request):
     if request.user.is_authenticated:
@@ -52,7 +51,8 @@ def join(request,key):
     classroom = Classroom.objects.get(unique_id=key)
     if classroom.need_permission==True:
         classroom.pending_members.add(request.user)
-        messages.add_message(request,message.INFO,"Your request is pending, you can access when someone let's you in.")
+        messages.add_message(request,message.INFO,"Your request is pending,\
+         you can access when someone let's you in.")
         return('/homepage/')
     else:
         classroom.members.add(request.user)
@@ -77,12 +77,12 @@ def homepage(request):
         if checking:
             classroom.pending_members.add(request.user)
             messages.add_message(request, messages.SUCCESS,"Your request is sent.\
-             You can acsess classroom when someone lets you in.")
+             You can access classroom material when someone lets you in.")
             return redirect(f'/homepage/')
         else:
             classroom.members.add(request.user)
             notify = Classroom_activity(classroom=classroom,actor=request.user)
-            notify.action = "A new member "+str(request.user.username)+ "Have joined your classroom."
+            notify.action = "A new member "+ str(request.user.username)+ "Have joined your classroom."
             notify.save()
     
     #create classroom
@@ -116,7 +116,8 @@ def admin_status(request,unique_id,username):
         check = classroom.special_permissions.filter(username = username).exists()
         if check:
             if classroom.created_by == User.objects.get(username=username):
-                messages.add_message(request,messages.WARNING,"This user have created this class. He can't be dropped")
+                messages.add_message(request,messages.WARNING,"This user have created\
+                 this class. He can't be dropped")
                 return redirect(f'/classroom/{unique_id}/')
             classroom.special_permissions.remove(User.objects.get(username=username))
             return redirect(f'/classroom/{unique_id}')
@@ -180,7 +181,8 @@ def subjects(request, unique_id, form = None):
                     try:
                         teacher = User.objects.get(username=request.POST.get('teacher'))
                         if not teacher and not members.filter(username=teacher.username).exists():
-                            messages.add_message(request,messages.WARNING,"This user is not a member of this class. Tell him to join this classroom first.")
+                            messages.add_message(request,messages.WARNING,"This user is not a\
+                             member of this class. Tell him to join this classroom first.")
                         else:
                             subject.teacher = teacher
                             subject.save()
@@ -201,17 +203,6 @@ def subjects(request, unique_id, form = None):
             'classes':classes
             }
         return render(request,'subjects.html',params)
-
-@login_required
-def subject_page(request,unique_id,subject_id):
-    classroom = Classroom.objects.get(unique_id=unique_id)
-    if member_check(request.user,classroom):
-        subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-        params = {
-            'subject':subject,
-            'classroom':classroom,
-        }   
-        return render(request,'subject_page.html',params)
 
 @login_required
 def resource(request,unique_id,subject_id,form = None):
@@ -389,7 +380,8 @@ def assignment_page(request,unique_id,subject_id,id):
         submission_object = None
         #submitting assignment
         if not is_teacher:
-            submission_object = Submission.objects.filter(Q(submitted_by=request.user) & Q(assignment=assignment)).first()
+            submission_object = Submission.objects.filter(Q(submitted_by=request.user)\
+             & Q(assignment=assignment)).first()
             if request.method=="POST":
                 form = SubmitAssignmentForm(request.POST, request.FILES,instance=submission_object)
                 if form.is_valid():
@@ -470,9 +462,9 @@ def announcement(request, unique_id, subject_id):
                     announcement.subject_name = subject
                     announcement.announced_by = request.user
                     announcement.save()
+                    return redirect(f'/{unique_id}/{subject_id}/announcement/')
             else:
                 form= AnnouncementForm()
-
         params={
                 'form':form,
                 'subject':subject,
@@ -489,7 +481,6 @@ def announcement_page(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     form = None
     if member_check(request.user, classroom):
-
         #queryset
         subject = Subject.objects.get(id=subject_id)
         announcements = Announcement.objects.all().filter(subject_name=subject).order_by('issued_on','-id')
@@ -564,7 +555,7 @@ def this_subject(request,unique_id, subject_id):
             'page':query,
             'page_range':page_range,
             'form':form
-                    }
+         }
         return render(request,'thissubject.html',params)
 
 @login_required
@@ -631,4 +622,3 @@ def manage_upload_permission(request,unique_id,subject_id,username):
         else:
             subject.upload_permission.add(user)
             return redirect(f'/{unique_id}/{subject_id}/this_subject')
-

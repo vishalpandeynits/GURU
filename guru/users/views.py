@@ -1,24 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
-from django.core.mail import EmailMessage,send_mail
+from django.core.mail import send_mail
 from django.contrib.auth.models import User
-from django.http import HttpResponse
-from basic.models import *
 from .token import account_activation_token
 from .forms import SignUpForm, ProfileUpdateForm
 from .models import Profile
+from django.contrib import messages
 
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            # user.is_active = False
+            user.is_active = False
             user.save()
             current_site = get_current_site(request)
             message = render_to_string('emails/acc_active_email.html', {
@@ -29,9 +26,11 @@ def signup(request):
             mail_subject = 'Activate your account.'
             to_email = form.cleaned_data.get('email')
             email = send_mail(mail_subject, message,'vishalpandeynits@gmail.com',[to_email])
-            if email==0:
-                return HttpResponse('Error in sending confirmation email')
-            return render(request, 'emails/acc_activate_sent.html')
+            if email==1:
+                messages.add_message(request,messages.SUCCESS,'An Activation link is sent to your registrated email id. \
+                    Please visit your email and activate your account.')
+                return redirect('home')
+            return redirect('home')
     else:
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'signupform': form})
@@ -46,9 +45,12 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        messages.add_message(request,messages.SUCCESS,'Thank you for your email confirmation.\
+         Now you can login your account.')
+        return redirect('home')
     else:
-        return HttpResponse('Activation link is invalid!')
+        messages.add_message(request,messages.WARNING,'Activation link is invalid.')
+        return redirect('home')
 
 def profiles(request, username):
     p_user = get_object_or_404(User, username=username)
@@ -68,7 +70,4 @@ def profiles(request, username):
     	'p_form' : p_form,
     	'profile' : profile,
     }
-    if request.user.is_authenticated:
-        my_classes = Classroom.objects.all().filter(members = request.user)
-        context['classes']=my_classes
     return render (request, 'users/profile.html', context)

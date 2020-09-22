@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% load humanize %}
 {% block subject_content %}
-<div class="container">
+<div class="container"> 
 
 	<form class="float-right mt-4">
       	<input class="search-input" autocomplete="off" type="text"
@@ -11,47 +11,43 @@
       	 	<i class="fas fa-search"></i>
       	</button>
 	</form>
+
 	<div id="containannouncement">
-	{% if form %}
-      	 <button @click = "addAnnouncementFormToggle" type="button" 
-      	 	class="btn add-btn float-left mt-4">
-      	 	Add <i class="fa fa-plus" aria-hidden="true"></i>
-		</button><br><br><br>
-		<form method="POST" v-if="addform" class="addForm" enctype="multipart/form-data">{% csrf_token %}
-			{{ form|crispy}}
-			<input type="submit" class="submit-button"value="submit">
-		</form>
-    {% endif %}
+		{% if form %}
+	      	 <button @click="addAnnouncementFormToggle" type="button" 
+	      	 	class="btn add-btn float-left my-4">
+	      	 	Add <i class="fa fa-plus" aria-hidden="true"></i>
+			</button><br><br><br>
+
+			<form method="POST" v-if="addform" class="addForm" 
+				enctype="multipart/form-data">{% csrf_token %}
+				{{ form|crispy}}
+				<input type="submit" class="submit-button"value="submit">
+			</form>
+	    {% endif %}
 	</div>
 
 	{% if announcements %}
 		<div style="min-height:500px;">
 			{% for announcement in announcements %}
-			<a class="link" href="{% url 'announcement_page' classroom.unique_id  subject.id announcement.id %}">
-				<div class="content" style="padding:5px;">
-					0{{ forloop.counter}} {{ announcement.subject }}<br><br>
-					<div class="time">
-						 <span style="float:right;">Announced <nobr>{{announcement.issued_on|naturaltime }} </nobr></span>
-					</div><br>
-				</div>
-			</a>
+				<a class="link" href="{% url 'announcement_page' classroom.unique_id subject.id announcement.id %}">
+					<div class="content" style="padding:5px;">
+						0{{ forloop.counter}} {{ announcement.subject }}<br><br>
+						<div class="time">
+							<span style="float:right;">
+								Announced <nobr>{{announcement.issued_on|naturaltime }} </nobr>
+							</span>
+						</div><br>
+					</div>
+				</a>
 			{% endfor %}<br>
-			{% include 'paginations.html' %}
+		{% include 'paginations.html' %}
+		</div>
 	{% else %}
-		<h2> No announcements made yet. </h2>
+		<h2 style="text-align:center;color:green;font-weight: bolder;">
+			No announcements made yet. 
+		</h2>
 	{% endif %}
+
 </div>
-<script>
-	new Vue({
-		el:'#containannouncement',
-		data:{
-			addform:false,
-		},
-		methods:{
-			addAnnouncementFormToggle:function(){
-				this.addform=this.addform===true?false:true;
-			}
-		}
-	})
-</script>
 {% endblock %}

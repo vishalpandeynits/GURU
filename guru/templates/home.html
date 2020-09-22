@@ -2,6 +2,13 @@
 {% load static %}
 {% block title %} Home view {% endblock %}
 {% block content %}
+{% if messages %}
+	<div class="messages container">
+	    {% for message in messages %}
+	    <div class='alert alert-{{ message.tags }}'>{{ message }} </div>
+	    {% endfor %}
+	</div>
+{% endif %}
 <div id="home-btn-container">
 	<h1 id="intro"> 
 		Online classes made easy<br> by your own GURU.
@@ -14,6 +21,5 @@
 	<a href="{% url 'login' %}"  class = 'btn btn-home'>
 	 LOG IN 
 	</a>
-	
 </div>
 {% endblock %}

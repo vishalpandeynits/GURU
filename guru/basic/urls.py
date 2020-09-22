@@ -3,18 +3,16 @@ from .views import *
 
 urlpatterns = [
     path('',home,name="home"),
-    path('guru/join/<unique_id>/',join,name="join"),
     path('homepage/',homepage,name="homepage"),
+    path('guru/join/<unique_id>/',join,name="join"),
     path('classroom/<unique_id>/',classroom_page,name="classroom_page"),
     path('guru/<unique_id>/',subjects,name="subjects"),
+    path('<unique_id>/<int:subject_id>/delete/',delete_subject,name="delete_subject"),
     path('<unique_id>/<username>/Classadmin/',admin_status,name="class_admin"),
 
     path('subjects/<str:unique_id>/<str:username>/removeMember/',remove_member, name="remove_member"),
     path('subjects/<str:unique_id>/<str:username>/acceptRequest/',accept_request, name="accept_request"),
     path('subjects/<str:unique_id>/<str:username>/deleteRequest/',delete_request, name="delete_request"),
-
-    path('<unique_id>/<int:subject_id>/',subject_page,name="subject_page"),
-    path('<unique_id>/<int:subject_id>/delete/',delete_subject,name="delete_subject"),
 
     path('<unique_id>/<subject_id>/resource/',resource,name="resources"),
     path('<unique_id>/<subject_id>/<id>/read/',read_note,name="read_note"),
