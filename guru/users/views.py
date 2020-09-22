@@ -31,7 +31,7 @@ def signup(request):
             email = send_mail(mail_subject, message,'vishalpandeynits@gmail.com',[to_email])
             if email==0:
                 return HttpResponse('Error in sending confirmation email')
-            return render(request, 'acc_activate_sent.html')
+            return render(request, 'emails/acc_activate_sent.html')
     else:
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'signupform': form})

@@ -1,0 +1,23 @@
+{% load crispy_forms_tags %}
+<style>
+	#submissionform{
+		background:white;
+		border-radius:20px;
+		padding:20px;
+		width:100%;
+	}
+	#submissionform input[type="file"]{
+		width:100%;
+	}
+	#submissionform input[type="submit"]{
+		width:60%;
+	}
+</style>
+<h2 style="text-align: center;color:grey;font-weight:bolder;"> Submit your assignment </h2>
+<center>
+	<form method="POST" id="submissionform" enctype="multipart/form-data">{% csrf_token %}
+	    {{form}}<br>
+	    <input type="hidden" name="id" value="{{submission.id }}"><br>
+		<input type="submit" class="btn btn-primary" value="Hand in">
+	</form><br>
+</center>

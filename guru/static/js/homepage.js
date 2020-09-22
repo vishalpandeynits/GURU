@@ -101,7 +101,7 @@ methods:{
 			ontime_submissions:false,
 			late_submissions:false,
 			submitted:false,
-			not_submitted:false,
+			not_submitted:true,
 		},
 
 		methods:{

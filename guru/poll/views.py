@@ -59,16 +59,16 @@ def poll_page(request,unique_id, poll_id):
 		if poll.voters.filter(username=request.user.username).exists():
 			message = 'You have already voted !!!!'
 			choices = choices.order_by('-votes')
-			winner = Choice.objects.aggregate(Max('votes'))
-			my_classes = Classroom.objects.all().filter(members=request.user)
+
 		params = {
 			'details':poll.poll_details,
 			'choices' : choices,
 			'poll':poll,
 			'classroom':classroom,
-			'classes':my_classes
-
 		}
+		if poll.voters.filter(username=request.user.username).exists():
+			params['classes'] = Classroom.objects.all().filter(members=request.user)
+
 		return render(request,'poll/poll_page.html',params)
 
 def voting(request,unique_id,poll_id,choice_id):

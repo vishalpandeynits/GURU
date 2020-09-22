@@ -56,49 +56,50 @@
 	</span>
 
 		<!-- Subjects -->
+		{% if pending_members %}
+			<center><h1 style="color:green">Pending members</h1></center>
+		{% endif %}
 
-	<div  style="display:flex;justify-content: center;"v-if="members">
-
+		<div style="display:flex;justify-content: center;">
 		{% if is_admin %}
-			{% if pending_members %}
-				<center><h1 style="color:green">Pending members</h1></center>
-			{% endif %}
-
-			<div style="display: flex;" class="row">
+			<div style="width:65%" class="row ">
 			{% for member in pending_members %}
-			<div style="position:relative;" class="member-card">
+				<div style="position:relative;" class="member-card p-4">
 
-				<div style="display:flex;position:relative;top:-15px;">
+					<div style="display:flex;position:relative;top:-15px;">
 
-					<div style="justify-content: flex-start;">
-						<img height="70" width="70" style="border-radius:10px;margin-right:20px;"
-						src="{{member.profile.profile_pic.url}}">
+						<div style="justify-content: flex-start;">
+							<img height="70" width="70" style="border-radius:10px;margin-right:20px;"
+							src="{{member.profile.profile_pic.url}}">
+						</div>
+						<div style="justify-content: flex-end;">
+							<div class="member-container">
+								<h4>{{ member.username }} &nbsp; &nbsp;</h4>
+								<p>{{member.profile.bio}}</p>
+							</div>
+						</div>
 					</div>
 
-					<div class="member-container">
-						<h4><b>{{ member.username }} &nbsp; &nbsp;</b></h4>
-						<p>{{member.profile.bio}}</p>
+					<div style="position:absolute;top:5px;right:10px;"class="btn-group dropleft float-right">
+						  <button type="button" class="btn dropdown-toggle bg-transparent btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
+						  <div class="dropdown-menu dropdown-content">
+								<a href="{% url 'delete_request' classroom.unique_id member.username %}">
+									Delete request
+								</a>
+								<a href="{% url 'accept_request' classroom.unique_id member.username %}">
+									Accept request
+								</a>
+						  </div>
 					</div>
-				</div>
-
-				<div style="position:absolute;top:5px;right:10px;"class="btn-group dropleft float-right">
-					  <button type="button" class="btn dropdown-toggle bg-transparent btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
-					  <div class="dropdown-menu dropdown-content">
-							<a href="{% url 'delete_request' classroom.unique_id member.username %}">
-								Delete request
-							</a>
-							<a href="{% url 'accept_request' classroom.unique_id member.username %}">
-								Accept request
-							</a>
-					  </div>
-				</div>
 
 				</div>
 			{% endfor %}
 		</div>
 		{% endif %}
+		</div>
 
-		<div class="row" style="width:65%;">
+		<div class="row mx-auto" style="width:65%;">
+			<h1 style="margin:auto;		"> Members </h1>
 		{% for teacher in teachers %}
 			<div style="position:relative;" class="member-card"><br/>
 

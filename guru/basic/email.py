@@ -40,3 +40,10 @@ def email_marks(request,submission,assignment):
 	to_email = submission.submitted_by.email
 	send_mail(mail_subject, message,'vishalpandeynits@gmail.com',[to_email])	
 
+def send_reminder(request,assignment,emails):
+	message = render_to_string('emails/send_reminder.html',{
+			'user':request.user,
+			'assignment':assignment,
+		})
+	mail_subject = 'reminder for your not submitted assignment '+ assignment.topic
+	send_mail(mail_subject,message,'vishalpandeynits@gmail.com',emails)

@@ -22,7 +22,7 @@ from django.urls import reverse
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('basic.urls')),
-    path('account/',include('django.contrib.auth.urls')),
+    path('accounts/',include('django.contrib.auth.urls')),
     path('polls/',include('poll.urls')),
     path('profile/',include('users.urls')),
     path('comments/', include('django_comments.urls')),

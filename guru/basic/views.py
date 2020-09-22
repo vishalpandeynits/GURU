@@ -10,7 +10,7 @@ from random import choice,randint
 from .forms import *
 from .models import *
 import string
-from .email import email_marks
+from .email import email_marks,send_reminder
 from .delete_notify import *
 #--------------------------------------------helper functions-----------------------------------
 def unique_id():
@@ -386,24 +386,22 @@ def assignment_page(request,unique_id,subject_id,id):
                 email_marks(request,submission,assignment)
 
                 return redirect(f'/{unique_id}/{subject_id}/{assignment.id}/assignment/')
-
+        submission_object = None
         #submitting assignment
         if not is_teacher:
+            submission_object = Submission.objects.filter(Q(submitted_by=request.user) & Q(assignment=assignment)).first()
             if request.method=="POST":
-                form = SubmitAssignmentForm(request.POST, request.FILES)
+                form = SubmitAssignmentForm(request.POST, request.FILES,instance=submission_object)
                 if form.is_valid():
                     data=form.save(commit=False)
                     data.submitted_by=request.user
-                    if Submission.objects.filter(Q(submitted_by=request.user) & Q(assignment=assignment)).exists():
-                        messages.add_mesage(request,message.WARNING,'You have already submitted') 
-                        return redirect(f'/{unique_id}/{subject_id}/{assignment.id}/assignment/')
                     data.assignment= assignment
                     data.current_status = True
                     data.save()
                     assignment.submitted_by.add(request.user)
                     return redirect(f'/{unique_id}/{subject_id}/{assignment.id}/assignment/')
             else:
-                form = SubmitAssignmentForm()
+                form = SubmitAssignmentForm(instance=submission_object)
 
         params={
             'assignment':assignment,
@@ -417,6 +415,7 @@ def assignment_page(request,unique_id,subject_id,id):
             'late_submissions':late_submissions,
             'ontime_submissions':ontime_submissions,
             'is_teacher':is_teacher,
+            'submission_object':submission_object
             }
         #list of submitted and not_submitted_students
         if is_teacher:          
@@ -427,7 +426,8 @@ def assignment_page(request,unique_id,subject_id,id):
             not_submitted = students.difference(submitted)
             params['submitted']=submitted
             params['not_submitted']=not_submitted
-
+            if request.POST.get('send_reminder')=='1':
+                send_reminder(request,assignment,not_submitted.values_list('email', flat=True))
         return render(request,'assignments/assignment_page.html',params)
 
 @login_required

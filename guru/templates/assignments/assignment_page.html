@@ -6,8 +6,7 @@
 {% block subject_content %}
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-sm-12 col-md-7">
-
+		<div class="col-sm-12 col-md-8">
 			<!-- Update assignment logic start -->
 			{% if is_teacher %}
 			<div id="containassignment">
@@ -41,136 +40,18 @@
 					<pre>{{ assignment.description }}</pre>
 				</div><br>
 			<!-- Assignment details ends -->
+
 			{% include 'comments/assignmentcomment.html' %}
 		</div>
 		
-		<div class="col"style="float:right;">
-			<!-- Submission shown to teacher -->
+		<div class="col-sm-12 col-md-4">
 			{% if is_teacher %}
-			<div id="assignment-container" class="text-align-center">
-				<div class="dropdown">
-				  <button class="btn btn-primary ">Submissions</button>
-				  <div class="dropdown-content">
-						<button class="btn btn-primary d-block w-100 m-1" @click="show_all_submissions">
-							All Submissions
-						</button>
-
-						<button class="btn btn-success w-100 m-1 " @click='show_ontime_submissions'>
-							Ontime Submissions 
-						</button>
-
-						<button class="btn btn-danger w-100 m-1" @click="show_late_submissions"> 
-							Late Submissions 
-						</button>
-
-						<button class="btn btn-primary w-100 m-1 " @click="show_submitted">
-							Submitted  
-						</button>
-						<button class="btn btn-primary w-100 m-1" @click="show_not_submitted">
-							Not submitted
-						</button>
-				  </div>
-				</div>
-				<span v-if="all_submissions">
-					{% for submission in all_submissions %}
-						<div class="alert alert-info">
-							<a href="{{submission}}" download>
-								{{ submission.file }} 
-							</a>
-							submitted_by {{ submission.submitted_by }} at
-							{{ submission.submitted_on }}. 
-							 <form method="POST">{% csrf_token %}
-							 	<input type="hidden" name="id" value = "{{submission.id}}">
-							 	<input name="marks_assigned" type="number" value = "{{submission.marks_assigned}}" max="100">
-							 	<input type="submit" id="assignMarks" onclick="fun" value = "Submit">
-							</form>
-						</div>
-					{% endfor %}
-				</span>
-
-				<span v-if="ontime_submissions">
-					{% for submission in ontime_submissions %}
-						<div class="alert alert-success">
-								<a href="{{submission}}" download>
-									{{ submission.file }} 
-								</a>
-								submitted_by {{ submission.submitted_by }} at
-								 {{ submission.submitted_on }}.
-						</div>
-					{% endfor %}
-				</span>
-
-				<span v-if="late_submissions">
-				{% for submission in late_submissions %}
-					<div class="alert alert-danger">
-							<a href="{{submission}}" download>
-								{{ submission.file }} 
-							</a>
-							submitted_by {{ submission.submitted_by }} at 
-							{{ submission.submitted_on }}. 
-					</div>
-				{% endfor %}
-				</span>
-
-				<span v-if="submitted">
-				{% for student in submitted %}
-					<div class="alert">
-							<a href="/profile/{{student.username}}">
-								{{student.username}} 
-							</a>
-					</div>
-				{% endfor %}
-				</span>
-
-				<span v-if="not_submitted">
-				{% for student in not_submitted %}
-					<div class="alert">
-							<a href="/profile/{{student.username}}">
-								{{student.username}}
-							 </a>
-					</div>
-				{% endfor %}
-				</span>
-
-			</div>
-
+				{% include 'assignments/assignment_submissions_teacher.html' %}
 			{% else %}
-				<!-- Submission form for students  -->
-				{% if not is_teacher %}
-				
-					{% if messages %}
-					<div class="messages">
-					    {% for message in messages %}
-					    <div class='alert alert-{{ message.tags }}'>{{ message }} </div>
-					    {% endfor %}
-					</div>
-					{% endif %}
-
-					Submit your assignment:
-					<form method="POST" enctype="multipart/form-data">{% csrf_token %}
-						{{ submissionform|crispy }}
-						<input type="submit" style="width:150px;float:right;"
-						 class="btn btn-primary" value="submit">
-					</form>
-				{% endif %}
-
-				{% if not submission %}
-					<h2 style="color:red;"> 
-						You have not submitted your assignment yet!!! 
-					</h2>
-				{% else %}
-					{% for data in submission %}
-						<h2 style="color:green;">
-							You have submitted your assignment!!! 
-							<a href="{{submission}}" download>
-								Download
-							</a>
-						</h2>
-					{% endfor %}
-				{% endif %}
-
+				{% include 'assignments/assignment_submissions_student.html' %}
 			{% endif %}
 		</div>
+
 	</div>
 </div>
 <script>
