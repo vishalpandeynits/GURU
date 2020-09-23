@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'registration_base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
 {% load socialaccount %}
@@ -6,11 +6,10 @@
 <style>
 	li{
 		list-style: none;
-		color:red;
 	}
 </style>
 {% include 'navigation.html' %}
-<div class="container-fluid">
+<div class="container-fluid mb-4">
 	<form method="POST" class="login-form">{% csrf_token %}
 		<h1 id="login-heading"> LOG IN</h1>
 		{{ form|crispy }}

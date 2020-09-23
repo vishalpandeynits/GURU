@@ -22,8 +22,8 @@
 	    	enctype="multipart/form-data">{% csrf_token %}
 			{{ form|crispy}}
 			Submit before * <br>
-			<input type="datetime-local" required name="submission_date">
-			<input type="submit" class="submit-button"value="submit">
+			<input type="datetime-local" required name="submission_date"><br>
+			<input type="submit" class="submit-button mt-4"value="submit">
 		</form>
 		{% endif %}
 	</div>

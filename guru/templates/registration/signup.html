@@ -1,21 +1,17 @@
-{% extends 'base.html' %}
+{% extends 'registration_base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div class="container" id="sign-up-form">
-<div class="row">
-	<div class="col-md-6">
-		<img src ="/media/bga.jpg" style="height:100%;width:100%;">
-	</div>
-	<div class="col p-4">
-		<form id="#signupform"method="POST">{% csrf_token %}
-			{{ signupform|crispy }}
-			<input type="submit" value="Register" class="btn btn-primary">
-			Already have an account?
-			<a href="{% url 'login' %}"> Login</a>
-		</form>
-    </div>
-
-</div>
+{% include 'navigation.html' %}
+<div class="container-fluid mb-4">
+	<form method="POST" class="login-form">{% csrf_token %}
+		<h1 id="login-heading"> SIGN UP</h1>
+		{{ signupform|crispy }}
+		<button type="submit" class="submit-btn">Create My Account.</button>
+		<a style="position:absolute;right:10px;font-weight: bolder;" 
+			href="{%url 'login' %}">
+			Already have an account? Log In
+		</a><br>
+	</form>
 </div>
 {% endblock %}

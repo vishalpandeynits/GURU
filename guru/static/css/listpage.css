@@ -32,6 +32,13 @@
 	margin:auto;
 	width:300px;
 	border-radius:20px;
+	transition:background 0.3s,width 0.3s;
+}
+.addForm input[type="submit"]:hover{
+	background: white;
+	border-bottom:4px solid green;
+	color:black;
+	width:80%;
 }
 .addForm input:focus,textarea{
 	border-bottom:1px solid black;

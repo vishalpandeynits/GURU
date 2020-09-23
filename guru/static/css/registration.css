@@ -9,16 +9,12 @@ strong{
 
 /*Sign up*/
 #sign-up-form{
-	margin-top:8%;
-	background-color: black;
-	width:65%;
-  	color:white;
+	display:flex;
+	justify-content: center;
+	align-items: center;
 }
 #sign-up-form ul {
 	color:red;
-}
-#signupform input{
-  width:100%;
 }
 /*Sign up ends*/
 
@@ -236,7 +232,7 @@ strong{
 /*Password change form*/
 .password-change-form{
 	background:white;
-	border:1px solid black;
+	border:1px solid black;  
 	padding:15px;
 	border-radius:10px;
 }
