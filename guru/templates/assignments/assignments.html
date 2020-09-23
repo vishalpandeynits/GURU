@@ -28,7 +28,6 @@
 		{% endif %}
 	</div>
 
-
 	{% if assignments %}
 		<div style="min-height: 500px;">
 			{% for assignment in assignments %}
@@ -44,7 +43,9 @@
 		</div><br>
 		{% include 'paginations.html' %}
 	{% else %}
-		<h2 style="text-align:center;color:green;font-weight: bolder;"> No assignments found !!!</h2>
+		<h2 style="text-align:center;color:green;font-weight: bolder;"> 
+			No assignments found !!!
+		</h2>
 	{% endif %} 
 </div>
 {% endblock %}

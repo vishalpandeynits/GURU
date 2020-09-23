@@ -21,14 +21,16 @@ function createclassform(){
 }
 
 function joinform(){
-if (document.getElementById('joinform').style.display=='none'){
-document.getElementById('classform').style.display='none'
-document.getElementById('joinform').style.display='block';		
+	display==document.getElementById('joinform').style.display
+	if (display=='none'){
+		document.getElementById('classform').style.display='none'
+		document.getElementById('joinform').style.display='block';		
+		}
+	else{
+		document.getElementById('joinform').style.display='none';
+	}
 }
-else{
-	document.getElementById('joinform').style.display='none';
-}
-}
+
 
 // SUBJECTS JAVASCRIPT
 new Vue({
@@ -91,60 +93,66 @@ methods:{
   }
 }
 })
+function on() {
+  document.getElementById("overlay").style.display = "block";
+}
+
+function off() {
+  document.getElementById("overlay").style.display = "none";
+}
  //HOMEPAGE JAVASCRIPT ENDS
 
- // ASSIGNMENT PAGE JAVASCRIPT
- 	new Vue({
-		el:'#assignment-container',
-		data:{
-			all_submissions:true,
-			ontime_submissions:false,
-			late_submissions:false,
-			submitted:false,
-			not_submitted:false,
+// ASSIGNMENT PAGE JAVASCRIPT
+new Vue({
+	el:'#assignment-container',
+	data:{
+		all_submissions:true,
+		ontime_submissions:false,
+		late_submissions:false,
+		not_submitted:false,
+	},
+
+	methods:{
+		show_all_submissions:function(){
+			this.all_submissions=true;
+			this.ontime_submissions=false;
+			this.late_submissions=false;
+			this.not_submitted = false
 		},
 
-		methods:{
-			show_all_submissions:function(){
-				this.all_submissions=true;
-				this.ontime_submissions=false;
-				this.late_submissions=false;
-				this.submitted = false;
-				this.not_submitted = false
-			},
+		show_ontime_submissions:function(){
+			this.all_submissions=false,
+			this.ontime_submissions=true,
+			this.late_submissions=false;
+			this.not_submitted = false
+		},
 
-			show_ontime_submissions:function(){
-				this.all_submissions=false,
-				this.ontime_submissions=true,
-				this.late_submissions=false;
-				this.submitted = false;
-				this.not_submitted = false
-			},
+		show_late_submissions:function(){
+			this.all_submissions=false,
+			this.ontime_submissions=false,
+			this.late_submissions=true
+			this.not_submitted = false
+		},
+		show_not_submitted:function(){
+			this.all_submissions=false;
+			this.ontime_submissions=false;
+			this.late_submissions=false;
+			this.not_submitted = true;
+		},
+	}
+})
 
-			show_late_submissions:function(){
-				this.all_submissions=false,
-				this.ontime_submissions=false,
-				this.late_submissions=true
-				this.submitted = false;
-				this.not_submitted = false
-			},
-			show_submitted:function(){
-				this.all_submissions=false;
-				this.ontime_submissions=false;
-				this.late_submissions=false;
-				this.submitted = true;
-				this.not_submitted = false;
-				console.log('submitted')
-			},
-			show_not_submitted:function(){
-				this.all_submissions=false;
-				this.ontime_submissions=false;
-				this.late_submissions=false;
-				this.submitted = false;
-				this.not_submitted = true;
-			},
+new Vue({
+	el:'#containassignment',
+	data:{
+		addform:false,
+	},
+	methods:{
+		addAssignmentFormToggle:function(){
+			this.addform=this.addform===true?false:true;
 		}
-	})
+	}
+})
  // ASSIGNMENT PAGE JAVASCRIPT ENDS 
 
  // PROFILE PAGE JS
@@ -181,18 +189,17 @@ new Vue({
 })
 // POLL PAGE ENDS 
 
-	new Vue({
-		el:'#update-form',
-		data:{
-			updateForm:false
-		},
-		methods:{
-			classUpdateForm:function(){
-				this.updateForm=this.updateForm===true?false:true;
-				console.log('div')
-			}
+new Vue({
+	el:'#update-form',
+	data:{
+		updateForm:false
+	},
+	methods:{
+		classUpdateForm:function(){
+			this.updateForm=this.updateForm===true?false:true;
 		}
-	})
+	}
+})
 
 // Announcement page JS
 new Vue({
@@ -220,17 +227,52 @@ new Vue({
 })
 // Anouncement page JS ends
 
-// Assignment page JS
+// This subject JS
 new Vue({
-	el:'#containassignment',
+	el:'#subject',
 	data:{
-		addform:false,
+		'members':false,
+		'activity':true,
+		'editForm':false,
 	},
 	methods:{
-		addAssignmentFormToggle:function(){
-			this.addform=this.addform===true?false:true;
+		toggleMembers:function(){
+			this.members=true;
+			this.activity=false;
+		},
+		toggleActivity:function(){
+			this.members=false;
+			this.activity=true;
+		},
+		toggleEditForm:function(){
+			this.editForm=this.editForm===true?false:true;
 		}
 	}
 })
 
-// Assignment page JS ends
+// This subject JS ends
+
+// Resources JS
+new Vue({
+	el:'#resource-contain',
+	data:{
+		addform:false,
+	},
+	methods:{
+		addFormToggle:function(){
+			this.addform=this.addform===true?false:true;
+		}
+	}
+})
+new Vue({
+	el:'#note-contain',
+	data:{
+		showUpdateForm:false,
+	},
+	methods:{
+		formToggle:function(){
+			this.showUpdateForm = this.showUpdateForm === true?false:true;
+		}
+	}
+})
+// Resource page ends

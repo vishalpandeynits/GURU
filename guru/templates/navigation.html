@@ -1,65 +1,72 @@
 <div class="row" >
-    <div class="col-2">
-        <div style="float:right;" id="mySidenav" class="sidenav">
-          <button class="closebtn" onclick="closeNav()">
-            &times;
-          </button >
-          <a href="{% url 'homepage' %}" onclick="closeNav()">
-            <i class="fas fa-home mr-2"></i> Home
-          </a> 
-          {% if classroom %}
-             <a href="{% url 'polls' classroom.unique_id %}"><i class="fas fa-vote-yea mr-2"></i> Polls</a>
-             <a href="/classroom/{{classroom.unique_id}}/"><i class="fas fa-chalkboard-teacher mr-2"></i>
-              Classroom
-              {% if pending_members %}
-                {{pending_members|length}}
-               {% endif %}
-             </a>
-          {% endif %}
-          {% if classes %}
-            <h4 style="text-align:center;font-weight: bolder;"> Switch classroom </h4>
-          {% endif %}
-          {% for class in classes %}
-            <a href="{% url 'subjects' class.unique_id %}" onclick="closeNav()">
-              <i class="fas fa-chalkboard-teacher mr-2"></i> {{ class.class_name }}
-            </a>
-          {% endfor %}
-        </div>
+  <div class="col-2">
+    <div style="float:right;" id="mySidenav" class="sidenav">
+      <button class="closebtn" onclick="closeNav()">
+        &times;
+      </button >
+      <a href="{% url 'homepage' %}" onclick="closeNav()">
+        <i class="fas fa-home mr-2"></i> Home
+      </a> 
+      
+      {% if classroom %}
+        <a href="{% url 'polls' classroom.unique_id %}"><i class="fas fa-vote-yea mr-2"></i> Polls</a>
+        <a href="/classroom/{{classroom.unique_id}}/"><i class="fas fa-chalkboard-teacher mr-2"></i>
+          Classroom
+            {% if pending_members %}
+              {{pending_members|length}}
+            {% endif %}
+        </a>
+      {% endif %}
+
+      {% if classes %}
+        <h4 style="text-align:center;font-weight: bolder;"> Switch classroom </h4>
+      {% endif %}
+      {% for class in classes %}
+        <a href="{% url 'subjects' class.unique_id %}" onclick="closeNav()">
+          <i class="fas fa-chalkboard-teacher mr-2"></i> {{ class.class_name }}
+        </a>
+      {% endfor %}
     </div>
+  </div>
 
-    <div class="col-12">
-      <div style="background:black;height:70px;" class="p-1">
-        <span class="pl-1 ml-2" id="openNav" onclick="openNav()">
-          &#9776; 
-        </span>
-        {% if classroom %}
-        <span style="font-size:2.5em;color:white;">
-          &nbsp; {{ classroom.class_name }}
-        </span>
-        {% endif %}
+  <div class="col-12">
+    <div style="background:black;height:70px;" class="p-1">
+      <span class="pl-1 ml-2" id="openNav" onclick="openNav()">
+        &#9776; 
+      </span>
+      {% if classroom %}
+      <span style="font-size:2.5em;color:white;">
+        &nbsp; {{ classroom.class_name }}
+      </span>
+      {% endif %}
 
-        {% if user.is_authenticated %}
-        <div style="color:white;"  class="float-right mx-2 mt-2"> 
-          <div class="btn-group">
-            <div class="btn-group dropleft" role="group">
-              <button type="button" style="border:none;outline:none;" class="btn btn-secondary bg-transparent dropdown-toggle bg-transparent dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="sr-only">Toggle Dropleft</span>
-              </button>
-              <div class="dropdown-menu-lg-right bg-dark text-light dropdown-menu p-0">
-                  <a style="margin:10px;display:block;" class="text-light" href="{% url 'logout' %}">
-                    Log Out
-                  </a>
-                  <a style="margin:10px;display:block;" class="text-light" href="{% url 'password_change' %}">
-                    Change Password
-                  </a>
-              </div>
+      {% if user.is_authenticated %}
+      <div style="color:white;"  class="float-right mx-2 mt-2"> 
+        <div class="btn-group">
+          <div class="btn-group dropleft" role="group">
+            <button type="button" style="border:none;outline:none;" data-toggle="dropdown" aria-haspopup="true"
+                  class="btn btn-secondary bg-transparent dropdown-toggle bg-transparent dropdown-toggle-split" 
+                  aria-expanded="false">
+              <span class="sr-only">Toggle Dropleft</span>
+            </button>
+            <div class="dropdown-menu-lg-right bg-dark text-light dropdown-menu p-0">
+                <a style="margin:10px;display:block;" class="text-light" 
+                  href="{% url 'logout' %}">
+                  Log Out
+                </a>
+                <a style="margin:10px;display:block;" class="text-light"
+                  href="{% url 'password_change' %}">
+                  Change Password
+                </a>
             </div>
-            <a style="color:white;font-size:2.3em;"  class="float-right mx-2 mt-2" href="{% url 'profile' user.username %}"> 
-              <i class="fas fa-user mr-2"></i>
-            </a>
           </div>
+          <a style="color:white;font-size:2.3em;" class="float-right mx-2 mt-2" 
+              href="{% url 'profile' user.username %}"> 
+            <i class="fas fa-user mr-2"></i>
+          </a>
         </div>
-        {% endif %}
+      </div>
+      {% endif %}
       </div>
     </div>
 </div>

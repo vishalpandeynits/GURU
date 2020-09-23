@@ -1,24 +1,12 @@
 {% load humanize %}
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-	<style>
-		pre {
-			overflow-x: auto;
-			white-space: pre-wrap;
-			white-space: -moz-pre-wrap;
-			white-space: -pre-wrap;
-			white-space: -o-pre-wrap;
-			word-wrap: break-word;
-			font-family: verdana;
-		}
-		body{
-			background: lightblue;
-		}
-	</style>
+	<link href="{% static 'css/email.css' %}" rel="stylesheet">
 </head>
 <body>
-<h1 style="text-align: center;font-weight:bolder;"> GURU </h1> 
+<h1 class="reg-title"> GURU </h1> 
 <pre>Hi {{ user.username }}, A new assignment on <q>{{assignment.topic }}</q> is uploaded by vishalpandeynits, in {{ assignment.subject_name }} subject. Submit it before {{ assignment.submission_date|naturaltime }}
 click the link below to read more about this assignment:
 <a href="http://127.0.0.1:8000{% url 'assignment_page' classroom.unique_id assignment.subject_name.id assignment.id %}"> Visit </a>

@@ -1,28 +1,3 @@
-.search-input{
-	width:120px;
-	transition: width 0.2s;
-	padding:10px;
-	border-radius:10px;
-	height:40px;
-	border:none;
-}
-.search-input:focus{
-	width:300px;
-	outline-width:0px;
-	border-radius:10px;
-}
-.search-icon{
-	border-radius:20%;
-	position:relative;
-	right:40px;
-	width:35px;
-	cursor: pointer;
-	border-radius:10px;
-	background: black;
-	color:white;
-	z-index:1;
-	height:35px;
-}
 .add-btn {
 	color:white;
 	background:black;
@@ -84,18 +59,4 @@ a:link{
 	.time{
 		float:right;
 	}
-}
-.comment-box{
-	border-radius:10px;
-	box-shadow: 3px 5px 6px black;
-	background:#FFFEEB;
-	margin-bottom: 20px;
-}
-pre {
-	overflow-x: auto;
-	white-space: pre-wrap;
-	white-space: -moz-pre-wrap;
-	white-space: -pre-wrap;
-	white-space: -o-pre-wrap;
-	word-wrap: break-word;
 }

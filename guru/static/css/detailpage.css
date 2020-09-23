@@ -1,3 +1,10 @@
+.comment-box{
+	border-radius:10px;
+	box-shadow: 3px 5px 6px black;
+	background:#FFFEEB;
+	margin-bottom: 20px;
+}
+
 /*Annoucement css*/
 #announcement-content{
 	background:white;
@@ -37,3 +44,14 @@
   display: block;
 }
 /*Assignment css ends */
+
+/*Resource detail css*/
+#note-content{
+	background:white;
+	box-shadow: 3px 6px 6px black;
+	color:black;
+	padding:20px;
+	border-radius:15px;
+	margin:0 0 10px 0px;
+}
+/*Resource detail css ends*/

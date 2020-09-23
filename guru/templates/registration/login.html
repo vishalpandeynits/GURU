@@ -5,17 +5,24 @@
 {% block content %}
 <style>
 	li{
-		list-style-type: none;
+		list-style: none;
 		color:red;
 	}
 </style>
+{% include 'navigation.html' %}
 <div class="container-fluid">
 	<form method="POST" class="login-form">{% csrf_token %}
-		<h1 style="text-align: center;font-weight: bolder;padding:10px 0px;color:white;background:black;"> LOG IN</h1>
+		<h1 id="login-heading"> LOG IN</h1>
 		{{ form|crispy }}
 		<button type="submit" class="submit-btn">Log In</button>
-		<a style="position:absolute;left:10px;font-weight: bolder;" href="{%url 'password_reset' %}">Forgot Password? </a>
-		<a style="position:absolute;right:10px;font-weight: bolder;" href="{%url 'signup' %}">Create a new account</a>
+		<a style="position:absolute;left:10px;font-weight: bolder;" 
+			href="{%url 'password_reset' %}">
+			Forgot Password? 
+		</a>
+		<a style="position:absolute;right:10px;font-weight: bolder;" 
+			href="{%url 'signup' %}">
+			Create a new account
+		</a>
 		<br><br>
 		<div class="login-box" style="margin:auto;width:100%;">
 			<a href="#" class="social-button" id="facebook-connect">

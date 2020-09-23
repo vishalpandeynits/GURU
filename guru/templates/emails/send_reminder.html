@@ -1,20 +1,8 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-	pre {
-		overflow-x: auto;
-		white-space: pre-wrap;
-		white-space: -moz-pre-wrap;
-		white-space: -pre-wrap;
-		white-space: -o-pre-wrap;
-		word-wrap: break-word;
-		font-family: verdana;
-	}
-	body{
-		background: lightblue;
-	}
-</style>
+	<link href="{% static 'css/email.css' %}" rel="stylesheet">
 </head>
 <body>
 {% autoescape off %}

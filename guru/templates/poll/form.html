@@ -30,14 +30,14 @@
 
 	<h2 style="text-align:center;"> List of Polls.</h2>
 	{% for poll in polls %}
-	<a href="/polls/{{classroom.unique_id}}/poll-page/{{ poll.id }}">
-		<div class="poll-list" class="alert">
-		 <div style="display:flex;justify-content: flex-start;margin-right:20px;">
-		 	0{{ forloop.counter }}
-		 </div>
-		 {{ poll.poll_details }}
-		</div> 
-	</a>
+		<a href="/polls/{{classroom.unique_id}}/poll-page/{{ poll.id }}">
+			<div class="poll-list" class="alert">
+			 <div style="display:flex;justify-content: flex-start;margin-right:20px;">
+			 	0{{ forloop.counter }}
+			 </div>
+			 {{ poll.poll_details }}
+			</div> 
+		</a>
 	{% endfor %}
 
 </div>

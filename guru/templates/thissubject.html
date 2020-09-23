@@ -23,9 +23,12 @@
 	<div class="d-flex justify-content-center w-75 m-auto">
 		<button style="position:relative; top:8px;" @click="toggleMembers" 
 			class ="btn btn-primary btn-block h-100 mx-2 "> Members </button>
-		<button @click="toggleActivity" class ="btn btn-primary btn-block h-100 mx-2"> Activities </button>
+		<button @click="toggleActivity" class ="btn btn-primary btn-block h-100 mx-2"> 
+			Activities 
+		</button>
 		{% if user == teacher  or user in admins %}
-			<a class ="btn btn-danger btn-block mx-2 h-100" href=""> Delete</a>
+			<a class ="btn btn-danger btn-block mx-2 h-100" 
+			href="{% url 'delete_subject' classroom.unique_id subject.id %}"> Delete</a>
 		{% endif %}
 	</div>
 
@@ -39,10 +42,10 @@
 				src="{{member.profile.profile_pic.url}}">
 			</div>
 			<div class="member-container">
-				<h4><b>
+				<h4>
 					{{ member.username }} &nbsp; &nbsp;<br>
 					{% if member in admins %}Admin {% endif %}
-				</b></h4>
+				</h4>
 				<p>{{member.profile.bio}}</p>
 				{% if member in upload_permissions %}
 					Can upload resources
@@ -51,21 +54,21 @@
 		</div>
 
 		<div style="position:absolute;top:5px;right:10px;" class="btn-group dropleft float-right">
-			  <button type="button" class="btn dropdown-toggle btn-lg bg-light" data-toggle="dropdown" 
-			  	aria-haspopup="true" aria-expanded="false"> </button>
-				{% if user == teacher  or user in admins %}
-					<div class="dropdown-content dropdown-menu">
-						{% if member in upload_permissions %}
-							<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
-								Take upload permssion
-							</a>
-						{% else %}
-							<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
-								Give upload permissions
-							</a>
-						{% endif %}
-					</div>
-				{% endif %}
+			<button type="button" class="btn dropdown-toggle btn-lg bg-light" data-toggle="dropdown" 
+			aria-haspopup="true" aria-expanded="false"> </button>
+			{% if user == teacher  or user in admins %}
+				<div class="dropdown-content dropdown-menu">
+					{% if member in upload_permissions %}
+						<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
+							Take upload permssion
+						</a>
+					{% else %}
+						<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
+							Give upload permissions
+						</a>
+					{% endif %}
+				</div>
+			{% endif %}
 		</div>
 	</div><br>
 	{% endfor %}
@@ -84,27 +87,4 @@
 		{% include 'paginations.html' %}
 	</div>
 </div>
-<script>
-	new Vue({
-		el:'#subject',
-		data:{
-			'members':false,
-			'activity':true,
-			'editForm':false,
-		},
-		methods:{
-			toggleMembers:function(){
-				this.members=this.members===true?false:true;
-				this.activity=this.activity===true?false:true;
-			},
-			toggleActivity:function(){
-				this.members=this.members===true?false:true;
-				this.activity=this.activity===true?false:true;
-			},
-			toggleEditForm:function(){
-				this.editForm=this.editForm===true?false:true;
-			}
-		}
-	})
-</script>
 {% endblock %}

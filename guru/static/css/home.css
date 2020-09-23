@@ -2,156 +2,30 @@
     contentIndex 
 
     1. basic css
-    2. signup form
-    3. login page
-    4. date time picker
-    5. search icon
-    6. profile page
-*/
+    2. Homepage css
+    3. Side nav css
+    3. search css
+    4. Classroom page css
 
+*/
 html * {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Bitter', serif;
     scroll-behavior: smooth;
+    box-sizing: border-box;
 }
 text-area{
   white-space: pre-wrap;
   resize:none;
   width:100%;
 }
-.dark-mode{
-  background-color: black;
-  color:white;
+pre {
+  overflow-x: auto;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
 }
-#home-btn-container{
-	margin:3% 5%;
-}
-.btn-home{
-	border-radius: 20px;
-	width:180px;
-	color:white;
-	background-color: black;
-  margin-bottom:10px;
-}
-.btn-home:hover{
-  color:black;
-  background-color: white;
-}
-
-#intro{
-	color:black;
-	font-size:5vw;
-}
-
-/*Signup form*/
-#sign-up-form{
-	font-size:120%;
-	margin-top:8%;
-	background-color: black;
-	width:65%;
-  color:white;
-}
-#sign-up-form ul {
-	color:red;
-}
-/*Signup form*/
-
-/*login page */
-.login-box {
-    background: #fff;
-    padding: 20px;
-    max-width: 480px;
-    text-align: center;
-    letter-spacing: 1px;
-    position: relative;
-}
-
-.login-box h2 {
-    margin: 20px 0 20px;
-    padding: 0;
-    text-transform: uppercase;
-    color: #4688F1;
-}
-
-.social-button {
-	  background-position: 25px 0px;
-    box-sizing: border-box;
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-    display: inline-block;
-    height: 50px;
-	  line-height: 50px;
-    text-align: left;
-    text-decoration: none;
-    text-transform: uppercase;
-    vertical-align: middle;
-    width: 100%;
-	  border-radius: 3px;
-    margin: 10px auto;
-    outline: rgb(255, 255, 255) none 0px;
-    padding-left: 20%;
-    transition: all 0.2s cubic-bezier(0.72, 0.01, 0.56, 1) 0s;
-    transition: all .3s ease;
-}
-
-#facebook-connect {
-    background: rgb(255, 255, 255) url('https://raw.githubusercontent.com/eswarasai/social-login/master/img/facebook.svg?sanitize=true') no-repeat scroll 5px 0px / 30px 50px padding-box border-box;
-    border: 1px solid rgb(60, 90, 154);
-}
-
-#facebook-connect:hover {
-	border-color: rgb(60, 90, 154);
-	background: rgb(60, 90, 154) url('https://raw.githubusercontent.com/eswarasai/social-login/master/img/facebook-white.svg?sanitize=true') no-repeat scroll 5px 0px / 30px 50px padding-box border-box;
-  transition: all .3s ease-out;
-  text-decoration: none;
-}
-
-#facebook-connect span {
-	  box-sizing: border-box;
-    color: rgb(60, 90, 154);
-    cursor: pointer;
-    text-align: center;
-    text-transform: uppercase;
-    border: 0px none rgb(255, 255, 255);
-    outline: rgb(255, 255, 255) none 0px;
-    transition: all .3s ease;
-}
-
-#facebook-connect:hover span {
-	  color: #FFF;
-    transition: all .3s ease;
-    text-decoration: none;
-}
-
-#google-connect {
-    background: rgb(255, 255, 255) url('https://raw.githubusercontent.com/eswarasai/social-login/master/img/google-plus.png') no-repeat scroll 5px 0px / 50px 50px padding-box border-box;
-    border: 1px solid rgb(220, 74, 61);
-}
-
-#google-connect:hover {
-	  border-color: rgb(220, 74, 61);
-	  background: rgb(220, 74, 61) url('https://raw.githubusercontent.com/eswarasai/social-login/master/img/google-plus-white.png') no-repeat scroll 5px 0px / 50px 50px padding-box border-box;
-    transition: all .3s ease-out;
-    text-decoration: none;
-}
-
-#google-connect span {
-	box-sizing: border-box;
-    color: rgb(220, 74, 61);
-    cursor: pointer;
-    text-align: center;
-    text-transform: uppercase;
-    border: 0px none rgb(220, 74, 61);
-    outline: rgb(255, 255, 255) none 0px;
-    transition: all .3s ease;
-}
-
-#google-connect:hover span {
-	color: #FFF;
-    transition: all .3s ease;
-    text-decoration: none;
-}
-
-/*login-page */
 
 /*Sidenav*/
 #openNav{
@@ -211,7 +85,6 @@ text-area{
   color:white;
   
 }
-
 .sidenav .closebtn {
   position: absolute;
   top: 0px;
@@ -227,44 +100,66 @@ text-area{
 }
 /*Sidenav*/
 
-#class-link{
-  min-width: 15rem;opacity:0.7;height:300px;text-decoration:none;
-}
-#card{
-  height:300px;border:2px solid white; margin:20px;
-}
 /* search button */
-.search_input{
-  width:250px;
-  height:50px;
-  color:white;
-  background:rgb(75, 128, 214);
-  border-radius:40px;
+.search-input{
+  width:120px;
+  transition: width 0.2s;
   padding:10px;
+  border-radius:10px;
+  height:40px;
+  border:none;
 }
-
-.search_icon{
-  color:white;
+.search-input:focus{
+  width:300px;
+  outline-width:0px;
+  border-radius:10px;
+}
+.search-icon{
+  border-radius:20%;
   position:relative;
-  left:-50px;
-  top:10px;
-  background:black;
-  border:0;
-  height:30px;
+  right:40px;
+  width:35px;
+  cursor: pointer;
+  border-radius:10px;
+  background: black;
+  color:white;
+  z-index:1;
+  height:35px;
 }
-.search_icon:hover 
 /* search button */
 
-#subject-name{
-  color:red;
-  font-weight:bold;
-  font-size:200%;
-  display:flex;
-  justify-content:center; 
-  align-items:center;
+/*Classroom page css*/
+#classroom-updateForm{
+  padding:10px;
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:5px 5px 10px grey;
+}
+#classroom-updateForm input,textarea{
+  width:100%;
+  padding:10px;
+  border:1px solid black;
+  border-radius:12px;
+}
+#classroom-updateForm input:focus,textarea:focus{
+  background:aliceblue;
+}
+#classroom-updateForm input[type="submit"]{
+  background:black;
+  color:white;
+  width:75%;
+  margin:0 auto;
+  border:none;
+  border-radius:0;
+  transition: background 0.2s, color 0.2s, width 0.2s;
+}
+#classroom-updateForm input[type="submit"]:hover{
+  background:green;
+  color:white;
+  width:100%;
 }
 
-/* home-page */
 #homepage-btn-group button{
   color:white;
   background-color: black;
@@ -280,10 +175,12 @@ text-area{
   border:0;
   border-bottom:4px solid green;
 }
-
-.opts {
-  cursor: pointer;
-  font-size: 35px;
+.invite-link{
+  display:block;
+  padding:5px;
+}
+.invite-link:hover{
+  background:  #ddd;
 }
 .member-card {
   margin:10px;
@@ -292,6 +189,10 @@ text-area{
   padding:10px;
   border-radius:10px;
   box-shadow: 10px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+.opts {
+  cursor: pointer;
+  font-size: 35px;
 }
 .dropdown-content {
   font-size: 15px;
@@ -311,95 +212,4 @@ text-area{
 .dropdown-content a:hover {
   background-color: #ddd;
 }
-
-#signupform input{
-  width:100%;
-}
-#social-container a{
-  font-size:2em;
-  background:#2b2b52;
-  border-radius:25%;
-  width:70px;
-  margin:10px;
-  text-decoration:none;
-}
-#social-container a i{
-  display:flex;
-  justify-content: center;
-  padding: 5px;
-}
-#social-container{
-  display:flex;
-  justify-content: center;
-  align-items:center;
-  flex-wrap: wrap;
-}
-#profile{
-  margin-top:50px;
-}
-#profileupdateform{
-  padding:50px;
-}
-
-#profileupdateform input{
-  padding:8px;
-  width:100%;
-  border-radius:10px;
-  background-color: #a2d5f2;
-}
-#profileupdateform textarea{
-  padding:8px;
-  width:100%;
-}
-
-#profileupdateform button{
-  margin-top:20px;
-  width:100%;
-  color:white;
-  border-radius: 0;
-  background-color: black;
-}
-.modal-body input,textarea{
-  width:100%;
-}
-.modal-content{
-  background:aqua;
-}
-
-#updateForm{
-  padding:10px;
-  background:white;
-  padding:20px;
-  border-radius:10px;
-  box-shadow:5px 5px 10px grey;
-}
-#updateForm input,textarea{
-  width:100%;
-  padding:10px;
-  border:1px solid black;
-  border-radius:12px;
-}
-#updateForm input:focus,textarea:focus{
-  background:aliceblue;
-}
-#updateForm input[type="submit"]{
-  background:black;
-  color:white;
-  width:75%;
-  margin:0 auto;
-  border:none;
-  border-radius:0;
-  transition: background 0.2s, color 0.2s, width 0.2s;
-}
-#updateForm input[type="submit"]:hover{
-  background:green;
-  color:white;
-  width:100%;
-}
-.invite-link{
-  display:block;
-  padding:5px;
-}
-.invite-link:hover{
-  background:  #ddd;
-}
+/*Classroom page css ends*/

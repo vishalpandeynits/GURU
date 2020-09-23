@@ -3,18 +3,7 @@
 {% block subject_content %}
 {% load humanize %}
 {% load comments %}
-<style>
-	#note-content{
-		background:white;
-		box-shadow: 3px 6px 6px black;
-		color:black;
-		padding:20px;
-		border-radius:15px;
-		margin:0 0 10px 0px;
-	}
-</style>
 <div class="container">
-
 	<div id="note-contain">
 		{% if is_teacher %}
 			<a class="btn btn-danger m-2 float-right" 
@@ -22,12 +11,14 @@
 				href="{% url 'delete_resource' classroom.unique_id subject.id note.id %}">
 				Delete <i class="fa fa-trash" aria-hidden="true"></i>
 			</a>
+
 			<a class="btn btn-dark m-2 float-right" 
 				style="border:none;color:white;padding: 7px;" href="/profile/{{note.uploaded_by}}">
 					Contact <i class="fas fa-phone-volume"></i>
 			</a>
+
 			<a @click="formToggle" style="border:none;color:white;background:black;padding: 7px;"
-			 class="btn m-2 float-right">Update <i class="fas fa-edit"></i>
+			 	class="btn m-2 float-right">Update <i class="fas fa-edit"></i>
 			</a><br><br>
 
 		    <form method="POST" v-if="showUpdateForm" class="addForm" 
@@ -50,19 +41,5 @@
 		<pre>{{ note.description }}</pre>
 	</div><br>
 	{% include 'comments/read_notecomment.html' %}
-
 </div>
-<script>
-	new Vue({
-		el:'#note-contain',
-		data:{
-			showUpdateForm:false,
-		},
-		methods:{
-			formToggle:function(){
-				this.showUpdateForm = this.showUpdateForm === true?false:true;
-			}
-		}
-	})
-</script>
 {% endblock %}

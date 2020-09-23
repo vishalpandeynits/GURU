@@ -15,16 +15,18 @@
 	<div id="vue-container" class="container-fluid">
 		{% if form %}
 		<div style="display:flex;justify-content: center;">
-			<center> <button @click="addSubject" id="add-subject-btn"> Add a subject</button><center><br>
+			<center> 
+				<button @click="addSubject" id="add-subject-btn"> Add a subject</button>
+			<center><br>
 			<div v-if="addform" id="subject-add-form">
-			<form  action="/guru/{{classroom.unique_id}}/" 
-				method="POST" enctype="multipart/form-data">
-				{% csrf_token %}
-				<input type="text" name="subject_name" placeholder="Add a subject."
-					 maxlength="50" required id="id_subject_name"><br>
-				<input type="text" name="teacher" placeholder="username of teacher."><br>
-				<button class="btn btn-block btn-primary" type="submit">Add </button>
-			</form>
+				<form  action="/guru/{{classroom.unique_id}}/" 
+					method="POST" enctype="multipart/form-data">
+					{% csrf_token %}
+					<input type="text" name="subject_name" placeholder="Add a subject."
+						 maxlength="50" required id="id_subject_name"><br>
+					<input type="text" name="teacher" placeholder="username of teacher."><br>
+					<button class="btn btn-block btn-primary" type="submit">Add </button>
+				</form>
 			</div>
 		</div>
 		{% endif %}
@@ -35,7 +37,7 @@
 			{% for subject in subjects %}
 			<div class="col-xs-12 col-md-6 col-lg-4">
 				<a class="text-center" style="color:white;"
-								href="{% url 'resources' classroom.unique_id subject.id  %}">
+					href="{% url 'resources' classroom.unique_id subject.id  %}">
 				<div class="subject-container">
 				  <img src="{{subject.subject_pic.url}}" alt="Notebook" style="width:100%;height:350px;">
 				  <div class="content">
@@ -49,9 +51,13 @@
 		</div>
 		{% else %}
 			{% if is_teacher  %}
-				<h1 style="text-align:center;color:red;"> No subject is added yet. Kindly add a subject so your students can study. </h1>
+				<h1 style="text-align:center;color:red;"> 
+					No subject is added yet. Kindly add a subject so your students can study. 
+				</h1>
 			{% else %}
-				<h1 style="text-align:center;color:red;"> No subject is added yet. Kindly ask your admin to add a subject. </h1>
+				<h1 style="text-align:center;color:red;"> 
+					No subject is added yet. Kindly ask your admin to add a subject. 
+				</h1>
 			{% endif %}
 		{% endif %}
 
