@@ -529,15 +529,17 @@ def this_subject(request,unique_id, subject_id):
         subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
         admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
         upload_permission = subject.upload_permission.all()
-        members = classroom.members.all()
-        admins = classroom.special_permissions.all()
-        teachers = classroom.teacher.all()
-        subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+        members = classroom.members.all().order_by('username')
+        admins = classroom.special_permissions.all().order_by('username')
+        teachers = classroom.teacher.all().order_by('username')
         teacher = subject.teacher
-        members = admins.distinct() | members.difference(teachers).distinct()
+        members = list(admins.distinct() | members.difference(teachers).distinct())
+        if teacher not in members:
+            members.append(teacher)
         activities = Subject_activity.objects.filter(subject=subject).order_by('-id')
         query,page_range = pagination(request,activities)
         activities=query.object_list
+
         if request.method=='POST':
             form = SubjectEditForm(request.POST , request.FILES,instance=subject)
             if form.is_valid():

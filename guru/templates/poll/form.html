@@ -14,7 +14,7 @@
 
 		<div v-if="form" id="pollform">
 			<form style="width:80%;"method="POST">{% csrf_token %}
-				{{ pollform|crispy }}
+				{{ pollform|crispy }}<br>
 				<div v-for="i in p">
 					<input type="text" v-if="i==p" autocomplete="off"
 						placeholder="Mention more options..." @click="insert" name="check">
@@ -27,19 +27,18 @@
 			</form>
 		</div>
 	{% endif %}
-
+	{% if polls %}
 	<h2 style="text-align:center;"> List of Polls.</h2>
-	{% for poll in polls %}
-		<a href="/polls/{{classroom.unique_id}}/poll-page/{{ poll.id }}">
-			<div class="poll-list" class="alert">
-			 <div style="display:flex;justify-content: flex-start;margin-right:20px;">
-			 	0{{ forloop.counter }}
-			 </div>
-			 {{ poll.poll_details }}
-			</div> 
-		</a>
-	{% endfor %}
-
+		{% for poll in polls reversed %}
+			<a href="/polls/{{classroom.unique_id}}/poll-page/{{ poll.id }}">
+				<div class="poll-list" class="alert">
+				 	0{{ forloop.counter }} {{ poll.poll_details }}
+				 	{{poll.who_can_vote}}
+				</div>
+			</a>
+		{% endfor %}<br><br>
+		{% include 'paginations.html' %}
+	{% endif %}
 </div>
 </div>
 {% endblock %}

@@ -20,6 +20,7 @@
 	</form>
 	{% endif %}
 	<!-- Members list -->
+
 	<div class="d-flex justify-content-center w-75 m-auto">
 		<button style="position:relative; top:8px;" @click="toggleMembers" 
 			class ="btn btn-primary btn-block h-100 mx-2 "> Members </button>
@@ -34,6 +35,8 @@
 
 	<div v-if="members" class="w-75 m-auto">
 		<br><h1 style="text-align:center;"> Members </h1>
+
+
 	{% for member in members %}
 	<div style="position:relative;" class="member-card bg-light m-auto">
 		<div style="display:flex;">
@@ -43,8 +46,9 @@
 			</div>
 			<div class="member-container">
 				<h4>
-					{{ member.username }} &nbsp; &nbsp;<br>
+					<a href="/profile/{{ member.username }}">{{ member.username }} </a><br>
 					{% if member in admins %}Admin {% endif %}
+					{% if member == teacher %}Teacher {% endif %}
 				</h4>
 				<p>{{member.profile.bio}}</p>
 				{% if member in upload_permissions %}
@@ -54,17 +58,17 @@
 		</div>
 
 		<div style="position:absolute;top:5px;right:10px;" class="btn-group dropleft float-right">
+			{% if user == teacher  or user in admins and member != teacher and member not in admins %}
 			<button type="button" class="btn dropdown-toggle btn-lg bg-light" data-toggle="dropdown" 
 			aria-haspopup="true" aria-expanded="false"> </button>
-			{% if user == teacher  or user in admins %}
 				<div class="dropdown-content dropdown-menu">
 					{% if member in upload_permissions %}
 						<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
-							Take upload permssion
+							<nobr>Take upload permssion</nobr>
 						</a>
 					{% else %}
 						<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
-							Give upload permissions
+							<nobr>Give upload permissions</nobr>
 						</a>
 					{% endif %}
 				</div>
