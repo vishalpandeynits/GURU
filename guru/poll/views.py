@@ -7,9 +7,10 @@ from django.db.models import *
 from django.contrib import messages
 
 from basic.models import *
-from basic.views import member_check
+from basic.views import member_check,pagination
 from .forms import *
 from .models import *
+from django.utils import timezone
 
 def filter_fun(key):
 	return key!=""
@@ -38,33 +39,39 @@ def home(request,unique_id):
 					choice.poll = Poll.objects.get(id=form.id)
 					choice.choice_text = i
 					choice.save()
-				return redirect(reverse('home'))
+				return redirect(f'/polls/{unique_id}')
 		else:
 			form = QuestionForm()
+		query,page_range = pagination(request,polls)
+		polls=query.object_list
+
 		params = {
 			'pollform':form,
 			'polls':polls,
 			'classroom':classroom,
 			'classes':my_classes,
+			'query':query,
+			'page_range':page_range
 			}
 		return render(request,'poll/form.html',params)
 
 def poll_page(request,unique_id, poll_id):
 	classroom = Classroom.objects.get(unique_id = unique_id)
 	if member_check(request.user,classroom):
-
+		now = timezone.now()
 		#poll list and voting page.
 		poll = Poll.objects.get(id=poll_id)
 		choices = Choice.objects.all().filter(poll=poll)
-		if poll.voters.filter(username=request.user.username).exists():
-			message = 'You have already voted !!!!'
+		if now >= poll.announce_at:
 			choices = choices.order_by('-votes')
-
+		voters = poll.voters.count()
 		params = {
 			'details':poll.poll_details,
 			'choices' : choices,
 			'poll':poll,
 			'classroom':classroom,
+			'show_result': now >= poll.announce_at,
+			'voters_length':voters
 		}
 		if poll.voters.filter(username=request.user.username).exists():
 			params['classes'] = Classroom.objects.all().filter(members=request.user)
@@ -77,21 +84,30 @@ def voting(request,unique_id,poll_id,choice_id):
 		message = None
 		poll=Poll.objects.get(id=poll_id)
 		choice = Choice.objects.all().filter(poll=poll)
-		if not poll.voters.filter(username=request.user.username).exists():
-			choice=Choice.objects.get(id=choice_id)
-			choice.votes += 1
-			poll.voters.add(request.user)
-			choice.save()
-			return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
-		else:
-			messages.add_message(request,messages.INFO,"You have already voted.")
-			return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
-		params = {
-			'poll':poll,
-			'choices' : choice,
-			'classroom':classroom
-		}
-		return render(request,'poll/poll_page.html',params)
+		who_can_vote = poll.who_can_vote
 
+		if who_can_vote=='Students':
+			members = classroom.members.all()
+			teachers = classroom.teacher.all()
+			students = members.difference(teachers)
+			if request.user not in students:
+				messages.add_message(request,messages.INFO,f'Only Students are allowed to Vote.')
+				return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
+
+		now = timezone.now()
+		can_vote_now = now <= poll.announce_at
+		if can_vote_now:
+			if not poll.voters.filter(username=request.user.username).exists():
+				choice=Choice.objects.get(id=choice_id)
+				choice.votes += 1
+				poll.voters.add(request.user)
+				choice.save()
+				return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
+			else:
+				messages.add_message(request,messages.INFO,"You have already voted.")
+				return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
+		else:
+			messages.add_message(request,messages.INFO,"Time's up for voting")
+			return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
 
 

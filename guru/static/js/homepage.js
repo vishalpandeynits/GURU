@@ -231,8 +231,8 @@ new Vue({
 new Vue({
 	el:'#subject',
 	data:{
-		'members':false,
-		'activity':true,
+		'members':true,
+		'activity':false,
 		'editForm':false,
 	},
 	methods:{
