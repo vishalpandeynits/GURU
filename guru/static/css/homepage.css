@@ -12,7 +12,24 @@
   z-index: 2;
   cursor: pointer;
 }
-
+#home-btn-container{
+  box-sizing: content-box;
+  margin-bottom:20px;
+}
+.btn-home{
+  border-radius: 20px;
+  width:180px;
+  color:white;
+  background-color: black;
+  margin-bottom:20px;
+  transition: background 0.6s;
+}
+.btn-home:hover{
+  color:black;
+  background-color: white;
+  border:2px solid green;
+  
+}
 #classform{
   position: absolute;
   top: 50%;
@@ -47,6 +64,10 @@
 	transition:opacity 0.4s,
   transform 0.4s;
 }
+#home-btn-container{
+  box-sizing: content-box;
+  margin-bottom:3% 5%;
+}
 .subject-container img:hover {
 	opacity:1;
 	transform:scale(1.04,1.04);
@@ -59,26 +80,6 @@
   width: 100%;
   padding: 5px;
   font-weight: bolder;
-}
-
-#home-btn-container{
-  margin:3% 5%;
-}
-.btn-home{
-  border-radius: 20px;
-  width:180px;
-  color:white;
-  background-color: black;
-  margin-bottom:10px;
-}
-.btn-home:hover{
-  color:black;
-  background-color: white;
-}
-#intro{
-  color:black;
-  font-size:5vw;
-  font-weight:bolder;
 }
 /*Classroom list and form ends*/
 
