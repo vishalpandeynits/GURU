@@ -17,7 +17,7 @@ def filter_fun(key):
 	return key!=""
 
 @login_required
-def home(request,unique_id):
+def polls(request,unique_id):
 	classroom = Classroom.objects.get(unique_id=unique_id)
 	if member_check(request.user,classroom):
 		polls = Poll.objects.all()
@@ -43,16 +43,18 @@ def home(request,unique_id):
 				return redirect(f'/polls/{unique_id}')
 		else:
 			form = QuestionForm()
+
 		query,page_range = pagination(request,polls)
 		polls=query.object_list
-
+		classes = Classroom.objects.filter(members=request.user)
 		params = {
 			'pollform':form,
 			'polls':polls,
 			'classroom':classroom,
 			'classes':my_classes,
 			'query':query,
-			'page_range':page_range
+			'page_range':page_range,
+			'classes':classes
 			}
 		return render(request,'poll/form.html',params)
 
@@ -66,19 +68,37 @@ def poll_page(request,unique_id, poll_id):
 		if now >= poll.announce_at:
 			choices = choices.order_by('-votes')
 		voters = poll.voters.count()
+		my_classes = Classroom.objects.all().filter(members=request.user)
+
+		if request.method=='POST':
+			form = QuestionForm(request.POST or None,request.FILES,instance=poll)
+
+			if form.is_valid():
+				form = form.save(commit=False)
+				form.announce_at = request.POST.get('date')
+				form.save()
+				return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
+		else:
+			form = QuestionForm(instance=poll)
+		members_email = classroom.members.values_list('email', flat=True)
+		teachers_email = classroom.teacher.values_list('email', flat=True)
 		params = {
 			'details':poll.poll_details,
 			'choices' : choices,
 			'poll':poll,
 			'classroom':classroom,
 			'show_result': now >= poll.announce_at,
-			'voters_length':voters
+			'voters_length':voters,
+			'classes':my_classes,
+			'updateform':form,
+			'emails':members_email,
+			'members_email':members_email,
+			'teachers_email':teachers_email
 		}
 		if poll.voters.filter(username=request.user.username).exists():
 			params['classes'] = Classroom.objects.all().filter(members=request.user)
 		if poll.file:
 			params['extension']=extension_type(poll.file)
-
 
 		return render(request,'poll/poll_page.html',params)
 
@@ -113,5 +133,14 @@ def voting(request,unique_id,poll_id,choice_id):
 		else:
 			messages.add_message(request,messages.INFO,"Time's up for voting")
 			return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
+
+def delete_poll(request,unique_id, poll_id):
+	poll = Poll.objects.get(id=poll_id)
+	if request.user == poll.created_by:
+		poll.delete()
+		return redirect(f'/polls/{unique_id}')
+	else:
+		raise Http404()
+
 
 
