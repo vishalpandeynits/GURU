@@ -81,6 +81,15 @@ li{
 	<a class="btn mx-2" href="#feature">Features </a>
 	<a class="btn mx-2" href="#contactus">Contact us </a>
 </div><br><br>
+
+{% if messages %}
+	<div class="messages container">
+	    {% for message in messages %}
+	    <div class='alert alert-{{ message.tags }}'>{{ message }} </div>
+	    {% endfor %}
+	</div>
+{% endif %}
+
 <div class="container-fluid mt-4 p-4">
 	<div style="margin:auto;"class="row">
 		<div class="col-md-1"></div>

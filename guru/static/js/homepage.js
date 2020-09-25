@@ -21,8 +21,7 @@ function createclassform(){
 }
 
 function joinform(){
-	display==document.getElementById('joinform').style.display
-	if (display=='none'){
+	if (display==document.getElementById('joinform').style.display=='none'){
 		document.getElementById('classform').style.display='none'
 		document.getElementById('joinform').style.display='block';		
 		}
@@ -80,19 +79,14 @@ var homepage = new Vue({
 el:'#vuecontainer',
 data:{
   joinform:false,
-  createclassform:false,
 },
 methods:{
-  create:function(){
-    this.createclassform=true;
-    this.joinform=false;
-  },
   join:function(){
-    this.createclassform=false;
-    this.joinform=true;
+    this.joinform=this.joinform===true?false:true;
   }
 }
 })
+
 function on() {
   document.getElementById("overlay").style.display = "block";
 }

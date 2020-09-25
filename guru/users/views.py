@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.auth import authenticate, login
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
@@ -34,7 +35,7 @@ def signup(request):
     return render(request, 'registration/signup.html', {'signupform': form})
 
 
-def activate(request, uidb64, token):
+def activate(request, uidb64, token,backend='django.contrib.auth.backends.ModelBackend'):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -43,11 +44,12 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        messages.add_message(request,messages.SUCCESS,'Thank you for your email confirmation.\
-         Now you can login your account.')
+        messages.add_message(request,messages.SUCCESS,'Thank you for your email confirmation.')
         messages.add_message(request,messages.SUCCESS,'We request you to kindly update your \
             contact details so other users can contact you in case of any need.')
-        return redirect(f'/profile/{request.user.username}')
+        if user is not None:
+            login(request, user,backend='django.contrib.auth.backends.ModelBackend')
+        return redirect(f'/profile/{user.username}')
     else:
         messages.add_message(request,messages.WARNING,'Activation link is invalid.')
         return redirect('home')
@@ -66,7 +68,8 @@ def profiles(request, username):
     		instance = request.user.profile
     		instance.bio = instance.bio
     		p_form = ProfileUpdateForm(instance=request.user.profile)
-    my_classes = Classroom.objects.all().filter(members=request.user)
+    if request.user.is_authenticated:
+        my_classes = Classroom.objects.all().filter(members=request.user)
     context = {		
     	'p_form' : p_form,
     	'profile' : profile,
