@@ -38,9 +38,23 @@
 				{{announcement.subject}}
 			</p>
 			{% if announcement.file %}
-				<a href="{{announcement.file.url}}" download> 
-					Download file {{ announcement.file  }} 
-				</a><br>
+				{% if extension == 'image' %}
+					<center>
+						<a href="{{announcement.file.url}}">
+							<img src="{{announcement.file.url}}" height="500" width="500">
+						</a>
+					</center> 
+				{% elif extension == 'video' %}
+					<center> 
+						<video height="300" width="500" style="border:0;outline:0;" controls>
+						  <source src="{{announcement.file.url}}">
+						Your browser does not support the video tag.
+						</video><br>
+					<a href="{{announcement.file.url}}" download> Download file</a>
+					</center>
+				{% else %}
+					<a href="{{announcement.file.url}}" download> Download file</a>
+				{% endif %}
 			{% endif %}
 			<pre>{{ announcement.description }}</pre>
 		</div><br>

@@ -8,12 +8,12 @@
 	{% if pollform %}
 		<div style="display:flex;justify-content:center;">
 			<button id="addpollbtn" @click="showform" class="btn btn-primary mx-auto">
-				Add a poll 
+				Add a poll
 			</button>
 		</div>
 
 		<div v-if="form" id="pollform">
-			<form style="width:80%;"method="POST">{% csrf_token %}
+			<form style="width:80%;"method="POST" enctype="multipart/form-data">{% csrf_token %}
 				{{ pollform|crispy }}<br>
 				<div v-for="i in p">
 					<input type="text" v-if="i==p" autocomplete="off"
@@ -27,18 +27,25 @@
 			</form>
 		</div>
 	{% endif %}
-	{% if polls %}
-	<h2 style="text-align:center;"> List of Polls.</h2>
-		{% for poll in polls reversed %}
-			<a href="/polls/{{classroom.unique_id}}/poll-page/{{ poll.id }}">
-				<div class="poll-list" class="alert">
-				 	0{{ forloop.counter }} {{ poll.poll_details }}
-				 	{{poll.who_can_vote}}
-				</div>
-			</a>
-		{% endfor %}<br><br>
-		{% include 'paginations.html' %}
-	{% endif %}
+	</div>
+	<div class="container">
+		{% if polls %}
+		<h2 style="text-align:center;"> List of Polls.</h2>
+			{% for poll in polls reversed %}
+				<a href="/polls/{{classroom.unique_id}}/poll-page/{{ poll.id }}">
+					<div class="poll-list" class="alert">
+					 	0{{ forloop.counter }} {{ poll.poll_details }}
+					 	{{poll.who_can_vote}}
+					</div>
+				</a>
+			{% endfor %}<br><br>
+			{% include 'paginations.html' %}
+		{% else %}	
+			<h2 style="text-align:center;color:green;font-weight: bolder;"> 
+				No Polls added yet.
+			</h2>
+		{% endif %}
+	</div>
 </div>
 </div>
 {% endblock %}

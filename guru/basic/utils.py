@@ -1,76 +1,35 @@
-# import datetime
-# from django.core.exceptions import ObjectDoesNotExist
-# from django.http import HttpResponse
-# import xlwt
-# def pretty_name(name):
-#     """Converts 'first_name' to 'First name'"""
-#     if not name:
-#         return ''
-#     return name.replace('_', ' ').capitalize()
+import string
+from random import choice,randint
+from django.core.paginator import Paginator
 
-# HEADER_STYLE = xlwt.easyxf('font: bold on')
-# DEFAULT_STYLE = xlwt.easyxf()
-# CELL_STYLE_MAP = (
-#     (datetime.date, xlwt.easyxf(num_format_str='DD/MM/YYYY')),
-#     (datetime.time, xlwt.easyxf(num_format_str='HH:MM')),
-#     (bool,          xlwt.easyxf(num_format_str='BOOLEAN')),
-# )
+def extension_type(file_name):
+	videos = ['WEBM','MPG', 'MP2', 'MPEG','MPE', 'MPV', 'OGG', 'MP4', 'M4P' , 'M4V', 'AVI', 'WMV', 'MOV', 'QT','FLV', 'SWF']
+	images = ["JPG","PNG","GIF","PSD","RAW","BMP","SVG","AI","EPS"]
+	
+	file_extension = str(file_name).split('.')[-1].upper()
+	if file_extension in videos:
+		return 'video'
+	if file_extension in images:
+		return 'image'
+	return 'other'
 
-# def multi_getattr(obj, attr, default=None):
-#     attributes = attr.split(".")
-#     for i in attributes:
-#         try:
-#             obj = getattr(obj, i)
-#         except AttributeError:
-#             if default:
-#                 return default
-#             else:
-#                 raise
-#     return obj
+def proper_pagination(object,index):
+    start_index,end_index = 0,10
+    if object.number>index:
+        start_index = object.number-index
+        end_index = start_index + end_index
+    return (start_index,end_index)
 
-# def get_column_head(obj, name):
-#     name = name.rsplit('.', 1)[-1]
-#     return pretty_name(name)
+def pagination(request,object):
+        paginator = Paginator(object,6)
+        page_num=1
+        if request.GET.get('page'):
+            page_num = request.GET.get('page')
+        query = paginator.page(page_num)
+        start_index,end_index = proper_pagination(query,index=4)
+        page_range = list(paginator.page_range)[start_index:end_index]
+        return query,page_range
 
-# def get_column_cell(obj, name):
-#     try:
-#         attr = multi_getattr(obj, name)
-#     except ObjectDoesNotExist:
-#         return None
-#     if hasattr(attr, '_meta'):
-#         # A Django Model (related object)                                                                                                                                                                          
-#         return unicode(attr).strip()
-#     elif hasattr(attr, 'all'):
-#         # A Django queryset (ManyRelatedManager)                                                                                                                                                                   
-#         return ', '.join(unicode(x).strip() for x in attr.all())
-#     return attr
-
-# def queryset_to_workbook(queryset, columns, header_style=None,
-#                          default_style=None, cell_style_map=None):
-#     workbook = xlwt.Workbook()
-#     report_date = datetime.date.today()
-#     sheet_name = 'Export {0}'.format(report_date.strftime('%Y-%m-%d'))
-#     sheet = workbook.add_sheet(sheet_name)
-
-#     if not header_style:
-#         header_style = HEADER_STYLE
-#     if not default_style:
-#         default_style = DEFAULT_STYLE
-#     if not cell_style_map:
-#         cell_style_map = CELL_STYLE_MAP
-
-#     obj = queryset.first()
-#     for y, column in enumerate(columns):
-#         value = get_column_head(obj, column)
-#         sheet.write(0, y, value, header_style)
-
-#     for x, obj in enumerate(queryset, start=1):
-#         for y, column in enumerate(columns):
-#             value = get_column_cell(obj, column)
-#             style = default_style
-#             for value_type, cell_style in cell_style_map:
-#                 if isinstance(value, value_type):
-#                     style = cell_style
-#             sheet.write(x, y, value, style)
-
-#     return workbook
+def unique_id():
+    characters = string.ascii_letters + string.digits
+    return  "".join(choice(characters) for x in range(randint(7,15)))

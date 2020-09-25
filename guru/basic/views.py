@@ -1,44 +1,22 @@
-from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.http import Http404
 from django.contrib import messages
 from django.db.models import Q
-from random import choice,randint
 from .forms import *
 from .models import *
-import string
-from .email import email_marks,send_reminder
+from .email import *
 from .delete_notify import *
+from .utils import unique_id, proper_pagination, pagination, extension_type
+from django.core.paginator import Paginator
 #--------------------------------------------helper functions-----------------------------------
-
-def unique_id():
-    characters = string.ascii_letters + string.digits
-    return  "".join(choice(characters) for x in range(randint(8,12)))
 
 def member_check(user,classroom):
     member = classroom.members.all().filter(username=user.username)
     if member:
         return True
     raise Http404()
-
-def proper_pagination(object,index):
-    start_index,end_index = 0,10
-    if object.number>index:
-        start_index = object.number-index
-        end_index = start_index + end_index
-    return (start_index,end_index)
-
-def pagination(request,object):
-        paginator = Paginator(object,6)
-        page_num=1
-        if request.GET.get('page'):
-            page_num = request.GET.get('page')
-        query = paginator.page(page_num)
-        start_index,end_index = proper_pagination(query,index=4)
-        page_range = list(paginator.page_range)[start_index:end_index]
-        return query,page_range
 
 #--------------------------------------------helper functions end ------------------------------
 def home(request):
@@ -104,7 +82,7 @@ def homepage(request):
     my_classes = Classroom.objects.all().filter(members=request.user)
     params={
         'createclassform':createclassform,
-        'my_classes':my_classes
+        'classes':my_classes
         }
     return render(request,'homepage.html',params)
 
@@ -200,7 +178,7 @@ def subjects(request, unique_id, form = None):
             'form':form,
             'classroom':classroom,
             'is_teacher':is_teacher,
-            'classes':classes
+            'classes':classes,
             }
         return render(request,'subjects.html',params)
 
@@ -266,7 +244,7 @@ def read_note(request, unique_id, subject_id, id, form = None):
                     return redirect(f'/{unique_id}/{subject_id}/{id}/read/')
             else:
                 form= NoteForm(instance=note)
-
+        print(extension_type(note.file))
         params={
                 'notes':notes,
                 'subject':subject,
@@ -274,6 +252,7 @@ def read_note(request, unique_id, subject_id, id, form = None):
                 'note':note,
                 'classroom':classroom,
                 'is_teacher': is_teacher,
+                'extension':extension_type(note.file)
             }
         return render(request,'resources/read_note.html',params)
 
@@ -397,6 +376,7 @@ def assignment_page(request,unique_id,subject_id,id):
 
         params={
             'assignment':assignment,
+            'extension':extension_type(assignment.file),
             'subject':subject,
             'form':form,
             'updateform':updateform,
@@ -501,6 +481,7 @@ def announcement_page(request,unique_id,subject_id,id):
                 form= AnnouncementForm(instance=announcement)
         params={
             'announcement':announcement,
+            'extension':extension_type(announcement.file),
             'subject':subject,
             'updateform':form,
             'classroom':classroom,

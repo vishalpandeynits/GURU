@@ -11,6 +11,7 @@ from .forms import SignUpForm, ProfileUpdateForm
 from .models import Profile
 from django.contrib import messages
 from basic.models import Classroom
+
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)

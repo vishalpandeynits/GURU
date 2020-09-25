@@ -39,12 +39,12 @@
 				</form>
 			</div> <br>
 
-			{% if my_classes %} 
+			{% if classes %} 
 				<h4 style="font-weight:bolder;color:grey;"> 
 					The list of classes you are member of:
 				</h4>
 				<div class="row">
-					{% for class in my_classes %}
+					{% for class in classes %}
 					<div class="col-xs-12 col-md-6 col-lg-4">
 						<a class="text-center" style="color:white;"
 							href="{% url 'subjects' class.unique_id %}">
@@ -60,6 +60,8 @@
 					</div>
 					{% endfor %}
 				</div>
+			{% else %}
+			<h1 style="text-align:center;"> You are not a member of any class. </h1>
 			{% endif %}
 		</div>
 	</div>

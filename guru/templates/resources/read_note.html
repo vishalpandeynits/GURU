@@ -34,10 +34,26 @@
 			{{note.topic}}
 		</p>
 		{% if note.file %}
-			<a href="{{note.file.url}}" download> 
-				Download file {{ note.file  }} 
-			</a><br>
+			{% if extension == 'image' %}
+				<center>
+					<a href="{{note.file.url}}">
+						<img src="{{note.file.url}}" height="500" width="500">
+					</a>
+				</center> 
+			{% elif extension == 'video' %}
+				<center> 
+					<video height="300" width="500" style="border:0;outline:0;" controls>
+					  <source src="{{note.file.url}}" type="video/mp4">
+					  <source src="{{note.file.url}}" type="video/ogg">
+					Your browser does not support the video tag.
+					</video><br>
+				<a href="{{note.file.url}}" download> Download file</a>
+				</center>
+			{% else %}
+				<a href="{{note.file.url}}" download> Download file</a>
+			{% endif %}
 		{% endif %}
+		
 		<pre>{{ note.description }}</pre>
 	</div><br>
 	{% include 'comments/read_notecomment.html' %}

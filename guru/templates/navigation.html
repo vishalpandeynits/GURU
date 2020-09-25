@@ -31,12 +31,12 @@
 
   <div class="col-12">
     <div style="background:black;height:70px;" class="p-1">
-      <span class="pl-1 ml-2" id="openNav" onclick="openNav()">
+      <span class="pl-1 mr-4" id="openNav" onclick="openNav()">
         &#9776; 
       </span>
       {% if classroom %}
-      <span style="font-size:2.5em;color:white;">
-        &nbsp; {{ classroom.class_name }}
+      <span  style="font-size:2.5em;color:white;">
+        &nbsp; <span class="pt-4">{{ classroom.class_name }}</span>
       </span>
       {% endif %}
 

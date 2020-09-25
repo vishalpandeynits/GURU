@@ -7,7 +7,8 @@ from django.db.models import *
 from django.contrib import messages
 
 from basic.models import *
-from basic.views import member_check,pagination
+from basic.views import member_check
+from basic.utils import *
 from .forms import *
 from .models import *
 from django.utils import timezone
@@ -23,7 +24,7 @@ def home(request,unique_id):
 		my_classes = Classroom.objects.all().filter(members=request.user)
 		#handling forms of poll and its choice
 		if request.method=='POST':
-			form = QuestionForm(request.POST or None)
+			form = QuestionForm(request.POST or None,request.FILES)
 			choice_list = request.POST.getlist('check')
 			choice_list = list(filter(filter_fun,choice_list))
 
@@ -75,6 +76,9 @@ def poll_page(request,unique_id, poll_id):
 		}
 		if poll.voters.filter(username=request.user.username).exists():
 			params['classes'] = Classroom.objects.all().filter(members=request.user)
+		if poll.file:
+			params['extension']=extension_type(poll.file)
+
 
 		return render(request,'poll/poll_page.html',params)
 
