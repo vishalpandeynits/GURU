@@ -1,36 +1,32 @@
-{% extends 'registration_base.html' %}
-{% load static %}
-{% load crispy_forms_tags %}
-{% load socialaccount %}
-{% block content %}
+{% extends 'registration_base.html' %} {% load static %} {% load crispy_forms_tags %} {% load socialaccount %} {% block content %}
 <style>
-	li{
-		list-style: none;
-	}
+    .login-form li {
+        list-style: none;
+        color: red;
+    }
 </style>
-{% include 'navigation.html' %}
 <div class="container-fluid mb-4">
-	<form method="POST" class="login-form">{% csrf_token %}
-		<h1 id="login-heading"> LOG IN</h1>
-		{{ form|crispy }}
-		<button type="submit" class="submit-btn">Log In</button>
-		<a style="position:absolute;left:10px;font-weight: bolder;" 
-			href="{%url 'password_reset' %}">
+    <form method="POST" class="login-form">{% csrf_token %}
+        <h1 id="login-heading"> LOG IN</h1>
+        {{ form|crispy }}
+
+        <a style="float:right;font-weight: bolder;display:block;" href="{%url 'password_reset' %}">
 			Forgot Password? 
-		</a>
-		<a style="position:absolute;right:10px;font-weight: bolder;" 
-			href="{%url 'signup' %}">
+		</a><br>
+        <button type="submit" class="submit-btn">Log In</button>
+
+        <a style="font-weight: bolder;" href="{%url 'signup' %}">
 			Create a new account
 		</a>
-		<br><br>
-		<div class="login-box" style="margin:auto;width:100%;">
-			<a href="#" class="social-button" id="facebook-connect">
-				<span>Connect with Facebook</span>
-			</a>
-			<a href="{% provider_login_url 'google' %}" class="social-button" id="google-connect">
-				<span>Connect with Google</span>
-			</a>
-		</div>
-	</form>
+        <br><br>
+        <div class="login-box" style="margin:auto;widdth:100%;">
+            <a style="text-align: center;" href="#" class="social-button" id="facebook-connect">
+                <span>Facebook </span>
+            </a>
+            <a style="text-align: center;" href="{% provider_login_url 'google' %}" class="social-button" id="google-connect">
+                <span>Google</span>
+            </a>
+        </div>
+    </form>
 </div>
 {% endblock %}

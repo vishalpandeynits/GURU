@@ -10,6 +10,7 @@ from .email import *
 from .delete_notify import *
 from .utils import unique_id, proper_pagination, pagination, extension_type
 from django.core.paginator import Paginator
+from django.views.decorators.csrf import csrf_exempt
 #--------------------------------------------helper functions-----------------------------------
 
 def member_check(user,classroom):
@@ -244,7 +245,7 @@ def read_note(request, unique_id, subject_id, id, form = None):
                     return redirect(f'/{unique_id}/{subject_id}/{id}/read/')
             else:
                 form= NoteForm(instance=note)
-        print(extension_type(note.file))
+        print(note.file)
         params={
                 'notes':notes,
                 'subject':subject,
@@ -272,6 +273,7 @@ def resource_delete(request,unique_id,subject_id,id):
         raise Http404()
 
 @login_required
+@csrf_exempt
 def assignment(request ,unique_id, subject_id, form=None):
     classroom = Classroom.objects.get(unique_id=unique_id)
     if member_check(request.user,classroom):

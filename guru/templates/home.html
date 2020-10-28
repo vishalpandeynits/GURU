@@ -1,182 +1,155 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} 
+{% load static %} 
 {% block content %}
-<style>
-*{
-	scroll-behavior: smooth;
-}
-#home-btn-container{
-  box-sizing: content-box;
-  margin-bottom:20px;
-}
-.btn-home{
-  border-radius: 20px;
-  width:180px;
-  color:white;
-  background-color: black;
-  margin-bottom:20px;
-  transition: background 0.6s;
-}
-.btn-home:hover{
-  color:black;
-  background-color: white;
-  border:2px solid green;
-  
-}
-#intro{
-  color:black;
-  font-size:3em;
-  font-weight: bold;
-}
-#why-guru{
-	font-size: 1.2em;
-}
-#navbar{
-	position: fixed;
-	top:0;	
-	z-index:1;
-	display:flex;
-	justify-content: flex-end;
-	width:100%;
-	background:aqua;
-	padding:20px;
-	margin-bottom: 30px;
-
-}
-#navbar a{
-	font-size:1.2em;
-	color:black;
-	transition:0.6s;
-
-}
-#navbar a:hover{
-	background:white;
-	color:green;
-	padding:5px 20px;
-}
-@media screen and (max-width: 800px){
-	#navbar{
-	display:flex;
-	justify-content: center;
-	}
-	#navbar a{
-	font-size:1em;
-}
-}
-li{
-	font-size: 1.3em;
-}
-.heading1{
-	text-align: center;
-	border-bottom:2px solid grey;
-	padding-bottom: 10px;
-	font-size:2em;
-
-	font-weight:bold;
-}
-</style>
 
 <div id='navbar' class="mb-4">
-	<a class="btn mx-2" href="#">Intro </a>
-	<a class="btn mx-2" href="#feature">Features </a>
-	<a class="btn mx-2" href="#contactus">Contact us </a>
-</div><br><br>
+    <a class="btn mx-2" href="#">Intro </a>
+    <a class="btn mx-2" href="#feature">Features </a>
+    <a class="btn mx-2" href="#contactus">Contact us </a>
+</div><br><br> <br><br> 
+
 
 {% if messages %}
-	<div class="messages container">
-	    {% for message in messages %}
-	    <div class='alert alert-{{ message.tags }}'>{{ message }} </div>
-	    {% endfor %}
-	</div>
+    <div class="messages container">
+        {% for message in messages %}
+        <div class='alert alert-{{ message.tags }}'>{{ message }} </div>
+        {% endfor %}
+    </div>
 {% endif %}
 
+
+
 <div class="container-fluid mt-4 p-4">
-	<div style="margin:auto;"class="row">
-		<div class="col-md-1"></div>
-		<div class="col-md-6 align-self-center col-sm-12">
-			<h1  id="intro"> 
-				Learning will now,<br> Indeed be in air.
-			</h1>
-			<div id="home-btn-container">
-				<a class="btn mx-2 btn-home"  href="{% url 'signup' %}">Sign Up</a>
-				<a class="btn mx-2 btn-home"  href="{% url 'login' %}" >Log In</a>
-			</div>
-		</div>
-		<div class="col-md-4 col-sm-12 align-self-center">
-			<img src="{% static '4.png' %}" >
-		</div>
-	</div>
 
-	<div class="row my-4 p-4">
+    <div style="margin:auto;" class="row">
+        <div class="col-md-1"></div>
 
-		<div class="col-md-4 mx-auto">
-			<img src="{% static '3.png' %}" style="height:100%;width:100%;border-radius: 25px;">
-		</div>
+        <div class="col-md-6 align-self-center col-sm-12">
 
-		<div class="col-md-6 mx-auto">
-			<h2 class="heading1"> Why Guru </h2>
+            <h1 id="intro">
+                Learning will now,<br> Indeed be in air.
+            </h1>
 
-			<h2> Less 'teching', more 'teaching'. </h2>
-			<p> GURU is designed to be extremely simple, inituitive and easy to use. You can get started with it 
-				in the blink of an eye. So as a teacher, rather than getting distracted by technicalities. 
-				You can focus on what you love:teaching.
-			</p><hr>
+            <div id="home-btn-container">
+                <a class="btn mx-2 btn-home" href="{% url 'signup' %}">Sign Up</a>
+                <a class="btn mx-2 btn-home" href="{% url 'login' %}">Log In</a>
+            </div>
 
-			<h3> Handing out notes is as easy as sending an email </h3>
-			<p> Send out handouts, notes, and even textbooks to as many students you want, 
-				just with press of one button.
-			</p><hr>
+        </div>
 
-			<h3> Know how every student is doing at a glance.</h3>
-			<p> Easily keep track of every student who is in your classroom. You can grade their assignments,
-			 contact them directly from within the website, post comments. Providing a personalizing touch to
-			  the process of academic instruction may no longer remain a dream. 
-			</p><hr  id="feature">
+        <div class="col-md-4 col-sm-12 align-self-center">
+            <img src="{% static '4.png' %}">
+        </div>
 
-		</div>
+    </div>
 
-	</div>
+    <div class="row my-4 p-4">
+        <div class="col-md-4 mx-auto">
+            <img src="{% static '3.png' %}" 
+                style="height:100%;width:100%;border-radius: 15px;">
+        </div>
 
-	<div  class="row my-4 p-4">
+        <div class="col-md-6 mx-auto">
+            <h2 class="heading1"> Why Guru </h2>
 
-		<div class="col-md-6 mx-auto col-sm-12">
-			<ul style="list-style: none;"><h2 class="heading1">For Teachers </h2> 
-				<li>&#x276F; You can create classroom with unique entry protocols
-					 that you can then distribute amongst your students who want to join.</li>
-				<li>&#x276F; You can provide assignment and set deadlines.</li>
-				<li>&#x276F; You can view students who had submitted on time,
-					 Who couldn't, who did and who didn't.</li>
-				<li>&#x276F; You can add resources in classroom and also resource hub.</li>
-				<li> &#x276F; You can authorize students to post in classroom. </li>
-				<li> &#x276F; You can contact students directly from the webapp. </li>
-				<li> &#x276F; You can add as many students as you want in classroom. </li>
-				<li> &#x276F; You can create polls and authorize who can participate in polls </li>
-			</ul>
-		</div>
-		<div class="col-md-6 mx-auto">
-			<img src="{% static 'teacher.jpg' %}" style="height:100%;width:100%;border-radius: 25px;">
-		</div>
-	</div>
+            <h2> Less 'teching', more 'teaching'. </h2>
+            <p> 
+                GURU is designed to be extremely simple, inituitive and easy to use.
+                You can get started with it in the blink of an eye. So as a teacher, 
+                rather than getting distracted by technicalities. You can focus on 
+                what you love:teaching.
+            </p>
+            <hr>
 
-	<div class="row my-4 p-4">
-		<div class="col-md-6 mx-auto col-sm-12">
-			<center>
-				<img src="{% static 'student.jpg' %}" style="height:40%;width:80%;border-radius: 25px;">
-			</center>
-		</div>
-		<div class="col-md-6 col-sm-12">
-			<ul style="list-style: none;">
-				<h2 class="heading1">For Students </h2> 
-				<li> &#x276F; You can join in any classroom with the unique classroom code provided.</li>
-				<li>&#x276F; You can submit your assignments and classwork without breaking a sweat.</li>
-				<li>&#x276F; You can contact your teachers directly from the webapp.</li>
-				<li>&#x276F; Switching between classroom and subjects is seamless.</li>
-			</ul>
-		</div>
-	</div>
-	</div>
-	</div>
+            <h3> Handing out notes is as easy as sending an email </h3>
+
+            <p> Send out handouts, notes, and even textbooks to as many
+                 students you want, just with press of one button.
+            </p>
+            <hr>
+
+            <h3> Know how every student is doing at a glance.</h3>
+            <p> Easily keep track of every student who is in your classroom. 
+                You can grade their assignments, contact them directly 
+                from within the website, post comments. Providing a 
+                personalizing touch to the process of academic instruction
+                may no longer remain a dream.
+            </p>
+            <hr id="feature">
+        </div>
+    </div>
+
+    <div class="row my-4 p-4">
+
+        <div class="col-md-6 mx-auto col-sm-12">
+            <ul style="list-style: none;">
+                <h2 class="heading1">For Teachers </h2>
+                <li>
+                    &#x276F; You can create classroom with unique entry protocols 
+                    that you can then distribute amongst your students who want to join.
+                </li>
+
+                <li>
+                    &#x276F; You can provide assignment and set deadlines.
+                </li>
+
+                <li>
+                    &#x276F; You can view students who had submitted on time, Who couldn't, who did and who didn't.
+                </li>
+
+                <li>
+                    &#x276F; You can add resources in classroom and also resource hub.
+                </li>
+
+                <li> 
+                    &#x276F; You can authorize students to post in classroom. 
+                </li>
+
+                <li> 
+                    &#x276F; You can contact students directly from the webapp. 
+                </li>
+
+                <li> 
+                    &#x276F; You can add as many students as you want in classroom. 
+                </li>
+
+                <li> 
+                    &#x276F; You can create polls and authorize who can participate in polls 
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="col-md-6 mx-auto">
+
+            <img src="{% static 'teacher.jpg' %}" 
+            style="height:100%;width:100%;border-radius: 25px;">
+
+        </div>
+    </div>
+
+    <div class="row my-4 p-4">
+
+        <div class="col-md-6 mx-auto col-sm-12">
+            <center>
+                <img src="{% static 'student.jpg' %}" style="height:40%;width:80%;border-radius: 25px;">
+            </center>
+        </div>
+
+        <div class="col-md-6 col-sm-12">
+            <ul style="list-style: none;">
+                <h2 class="heading1">For Students </h2>
+                <li> &#x276F; You can join in any classroom with the unique classroom code provided.</li>
+                <li>&#x276F; You can submit your assignments and classwork without breaking a sweat.</li>
+                <li>&#x276F; You can contact your teachers directly from the webapp.</li>
+                <li>&#x276F; Switching between classroom and subjects is seamless.</li>
+            </ul>
+        </div>
+        
+    </div>
 </div>
-{% include 'testimonials.html' %}
-{% include 'footer.html' %}
+</div>
+</div>
+{% include 'testimonials.html' %} 
+{% include 'footer.html' %} 
 {% endblock %}

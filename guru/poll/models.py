@@ -1,9 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-import datetime
-x = datetime.time()
 from basic.models import Classroom
-
 # Create your models here.
 class Poll(models.Model):
 	choices = [('All Members',"All Members"),('Students','Students')]

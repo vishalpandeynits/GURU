@@ -1,72 +1,104 @@
-<div class="row" >
-  <div class="col-2">
-    <div style="float:right;" id="mySidenav" class="sidenav">
-      <button class="closebtn" onclick="closeNav()">
-        &times;
-      </button >
-      <a href="{% url 'home' %}" onclick="closeNav()">
-        <i class="fas fa-home mr-2"></i> Home
-      </a> 
+<div style="box-shadow:5px 5px 5px rgb(179, 174, 174);width:100%;"
+     class="row bg-light">
+
+    <div class="col-2">
+
+      <div style="float:right;" id="mySidenav" class="sidenav">
+
+            <button class="closebtn" onclick="closeNav()">
+              &times;
+            </button >
+
+            <a href="{% url 'home' %}" onclick="closeNav()">
+              <i class="fas fa-home mr-2"></i> Home
+            </a> 
       
-      {% if classroom %}
-        <a href="{% url 'polls' classroom.unique_id %}"><i class="fas fa-vote-yea mr-2"></i> Polls</a>
-        <a href="/classroom/{{classroom.unique_id}}/"><i class="fas fa-chalkboard-teacher mr-2"></i>
-          Classroom
-            {% if pending_members %}
-              {{pending_members|length}}
+            {% if classroom %}
+
+                <a href="{% url 'polls' classroom.unique_id %}">
+                    <i class="fas fa-vote-yea mr-2"></i> Polls
+                </a>
+
+                <a href="/classroom/{{classroom.unique_id}}/">
+                  <i class="fas fa-chalkboard-teacher mr-2"></i>
+                Classroom
+                </a>
+
             {% endif %}
-        </a>
-      {% endif %}
 
-      {% if classes %}
-        <h4 style="text-align:center;font-weight: bolder;"> Switch classroom </h4>
-      {% endif %}
-      {% for class in classes %}
-        <a href="{% url 'subjects' class.unique_id %}" onclick="closeNav()">
-          <i class="fas fa-chalkboard-teacher mr-2"></i> {{ class.class_name }}
-        </a>
-      {% endfor %}
-    </div>
-  </div>
+            {% if classes %}
+                <h4 style="text-align:center;font-weight: bolder;"> 
+                    Switch classroom 
+                </h4>
+            
+                {% for class in classes %}
 
-  <div class="col-12">
-    <div style="background:black;height:70px;" class="p-1">
-      <span class="pl-1 mr-4" id="openNav" onclick="openNav()">
-        &#9776; 
-      </span>
-      {% if classroom %}
-      <span  style="font-size:2.5em;color:white;">
-        &nbsp; <span class="pt-4">{{ classroom.class_name }}</span>
-      </span>
-      {% endif %}
+                    <a href="{% url 'subjects' class.unique_id %}" onclick="closeNav()">
+                      <i class="fas fa-chalkboard-teacher mr-2"></i> {{ class.class_name }}
+                    </a>
 
-      {% if user.is_authenticated %}
-      <div style="color:white;"  class="float-right mx-2 mt-2"> 
-        <div class="btn-group">
-          <div class="btn-group dropleft" role="group">
-            <button type="button" style="border:none;outline:none;" data-toggle="dropdown" aria-haspopup="true"
-                  class="btn btn-secondary bg-transparent dropdown-toggle bg-transparent dropdown-toggle-split" 
-                  aria-expanded="false">
-              <span class="sr-only">Toggle Dropleft</span>
-            </button>
-            <div class="dropdown-menu-lg-right bg-dark text-light dropdown-menu p-0">
-                <a style="margin:10px;display:block;" class="text-light" 
-                  href="{% url 'logout' %}">
-                  Log Out
-                </a>
-                <a style="margin:10px;display:block;" class="text-light"
-                  href="{% url 'password_change' %}">
-                  Change Password
-                </a>
-            </div>
-          </div>
-          <a style="color:white;font-size:2.3em;" class="float-right mx-2 mt-2" 
-              href="{% url 'profile' user.username %}"> 
-            <i class="fas fa-user mr-2"></i>
-          </a>
+                {% endfor %}
+
+            {% endif %}
+
         </div>
-      </div>
-      {% endif %}
-      </div>
+    </div>
+
+    <div class="col-12">
+
+        <div style="height:70px;color:black;" class="p-1">
+
+            <span class="pl-1 mr-4" id="openNav" onclick="openNav()" 
+                style="background:black;color:white;">
+                &#9776; 
+            </span>
+
+            {% if classroom %}
+                <span  style="font-size:2.5em;">
+                    &nbsp; 
+
+                    <span class="pt-4">
+                        {{ classroom.class_name }}
+                    </span>
+
+                </span>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+
+            <div  class="float-right mx-2 mt-2"> 
+                <div class="btn-group">
+
+                    <div class="btn-group dropleft" role="group">
+
+                        <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                              class="btn btn-secondary btn-lg dropdown-toggle bg-transparent dropdown-toggle-split">
+                        </button>
+
+                        <div class="dropdown-menu-lg-right bg-dark text-light dropdown-menu p-0">
+
+                            <a style="margin:10px;display:block;" 
+                                class="text-light" href="{% url 'logout' %}">
+                              Log Out
+                            </a>
+
+                            <a class="text-light" href="{% url 'password_change' %}"
+                                style="margin:10px;display:block;" >
+                              Change Password
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    <a style="color:black;font-size:2.3em;" class="float-right mx-2 mt-2" 
+                        href="{% url 'profile' user.username %}">
+                        <i class="fas fa-user mr-2"></i>
+                    </a>
+                </div>
+            </div>
+            
+            {% endif %}
+        </div>
     </div>
 </div>

@@ -1,82 +1,95 @@
-.reg-title{
-	color:grey;
-	font-weight:bolder;
-	text-align: center;
+.reg-title {
+    color: grey;
+    font-weight: bolder;
+    font-size: 1.4em;
+    text-align: center;
 }
-strong{
-  color:red;
+
+strong {
+    color: red;
 }
+
 
 /*Sign up*/
-#sign-up-form{
-	display:flex;
-	justify-content: center;
-	align-items: center;
+
+#sign-up-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 #sign-up-form ul {
-	color:red;
+    color: red;
 }
+
+
 /*Sign up ends*/
 
+
 /*Login page css*/
-.login-form{
-	padding:20px;
-	background: white;
-	width:40%;
-	margin:10px auto;
-	box-shadow:2px 4px 8px grey;
-	position:relative;
-	font-size:1.3em;
-	color:bolder;
 
-}
-.login-form input{
-	width:100%;
-	padding:10px;
-	margin:10px 0px;
-	height:45px;
-	border-radius:10px;
-	outline: none;
-}
-.submit-btn{
-	background:black;
-	color:white;
-	width:50%;
-	border-radius:20px;
-	margin:10px auto;
-	padding:5px;
-	transition:width 0.3s;
-	display: block;
-	cursor: pointer;
+.login-form {
+    padding: 20px;
+    background: white;
+    width: 40%;
+    margin: 10px auto;
+    box-shadow: 2px 4px 8px grey;
+    position: relative;
+    font-size: 1.3em;
+    color: bolder;
 }
 
-.submit-btn:hover{
-	width:100%;
-	box-shadow: 2px 4px 5px grey;
+.login-form input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0px;
+    height: 45px;
+    border-radius: 10px;
+    outline: none;
 }
-@media screen and (max-width: 600px){
-	.login-form{
-	width:95%;
-	}
+
+.submit-btn {
+    background: black;
+    color: white;
+    width: 50%;
+    border-radius: 20px;
+    margin: 10px auto;
+    padding: 5px;
+    transition: width 0.3s;
+    display: block;
+    cursor: pointer;
 }
-@media screen and (max-width: 1200px){
-.login-form{
-	width:75%;
-	}
+
+.submit-btn:hover {
+    width: 100%;
+    box-shadow: 2px 4px 5px grey;
 }
-#login-heading{
-	text-align: center;
-	font-weight: bolder;
-	padding:10px 0px;
-	color:white;
-	background:black;
+
+@media screen and (max-width: 500px) {
+    .login-form {
+        width: 100%;
+    }
 }
+
+@media screen and (min-width: 501px) and (max-width: 1200px) {
+    .login-form {
+        width: 75%;
+    }
+}
+
+#login-heading {
+    text-align: center;
+    font-weight: bolder;
+    padding: 10px 0px;
+    color: white;
+    background: black;
+}
+
 .login-box {
     background: #fff;
     padding: 20px;
-    max-width: 480px;
+    width: 300px;
     text-align: center;
-    letter-spacing: 1px;
     position: relative;
 }
 
@@ -88,19 +101,19 @@ strong{
 }
 
 .social-button {
-	background-position: 25px 0px;
+    background-position: 25px 0px;
     box-sizing: border-box;
     color: rgb(255, 255, 255);
     cursor: pointer;
     display: inline-block;
     height: 50px;
-	line-height: 50px;
+    line-height: 50px;
     text-align: left;
     text-decoration: none;
     text-transform: uppercase;
     vertical-align: middle;
     width: 100%;
-	border-radius: 3px;
+    border-radius: 3px;
     margin: 10px auto;
     outline: rgb(255, 255, 255) none 0px;
     padding-left: 20%;
@@ -114,14 +127,14 @@ strong{
 }
 
 #facebook-connect:hover {
-	border-color: rgb(60, 90, 154);
-	background: rgb(60, 90, 154) url('https://raw.githubusercontent.com/eswarasai/social-login/master/img/facebook-white.svg?sanitize=true') no-repeat scroll 5px 0px / 30px 50px padding-box border-box;
-  	transition: all .3s ease-out;
-  	text-decoration: none;
+    border-color: rgb(60, 90, 154);
+    background: rgb(60, 90, 154) url('https://raw.githubusercontent.com/eswarasai/social-login/master/img/facebook-white.svg?sanitize=true') no-repeat scroll 5px 0px / 30px 50px padding-box border-box;
+    transition: all .3s ease-out;
+    text-decoration: none;
 }
 
 #facebook-connect span {
-	box-sizing: border-box;
+    box-sizing: border-box;
     color: rgb(60, 90, 154);
     cursor: pointer;
     text-align: center;
@@ -132,7 +145,7 @@ strong{
 }
 
 #facebook-connect:hover span {
-	color: #FFF;
+    color: #FFF;
     transition: all .3s ease;
     text-decoration: none;
 }
@@ -143,14 +156,14 @@ strong{
 }
 
 #google-connect:hover {
-	border-color: rgb(220, 74, 61);
-	background: rgb(220, 74, 61) url('https://raw.githubusercontent.com/eswarasai/social-login/master/img/google-plus-white.png') no-repeat scroll 5px 0px / 50px 50px padding-box border-box;
+    border-color: rgb(220, 74, 61);
+    background: rgb(220, 74, 61) url('https://raw.githubusercontent.com/eswarasai/social-login/master/img/google-plus-white.png') no-repeat scroll 5px 0px / 50px 50px padding-box border-box;
     transition: all .3s ease-out;
     text-decoration: none;
 }
 
 #google-connect span {
-	box-sizing: border-box;
+    box-sizing: border-box;
     color: rgb(220, 74, 61);
     cursor: pointer;
     text-align: center;
@@ -161,100 +174,132 @@ strong{
 }
 
 #google-connect:hover span {
-	color: #FFF;
+    color: #FFF;
     transition: all .3s ease;
     text-decoration: none;
 }
+
+
 /*Log in page ends*/
 
-/*Reset form css starts*/	
-#resetform-container{
-	background:white;
-	padding:10px;
-	border-radius:10px;
+
+/*Reset form css starts*/
+
+#resetform-container {
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
 }
-#resetform-container input[type="email"]{
-	width:95%;
-	margin:auto;
-	padding:8px;
-	border-radius:5px;
+
+#resetform-container input[type="email"] {
+    width: 95%;
+    margin: auto;
+    padding: 8px;
+    border-radius: 5px;
 }
-.links{
-	color:white;
-	font-size:2em;
-	margin-left:10px;
+
+.links {
+    color: white;
+    font-size: 2em;
+    margin-left: 10px;
 }
-.links:hover{
-	color:black;
-	background:white;
-	border-bottom:5px solid green;
-	padding:5px;
-	border-radius:10px;
-	font-weight: bolder;
+
+.links:hover {
+    color: black;
+    background: white;
+    border-bottom: 5px solid green;
+    padding: 5px;
+    border-radius: 10px;
+    font-weight: bolder;
 }
-/*Reset form css ends*/	
+
+
+/*Reset form css ends*/
+
 
 /*Password reset done*/
-#content{
-	color:black;
-	font-size: 1.4em;
-	background:white;
-	padding:20px;
-	border-radius:10px;	
+
+#content {
+    color: black;
+    font-size: 1.4em;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
 }
+
+
 /*Password reset done ends*/
 
+
 /*Password reset confirm*/
-.form-contain{
-  background:white;
-  padding:20px;
-  border-radius:10px;
+
+.form-contain {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
 }
-#password-reset-form{
-  padding:20px;
-  margin:auto;
-  background:white;
-  border-radius:10px;
-  position:relative;
+
+#password-reset-form {
+    padding: 20px;
+    margin: auto;
+    background: white;
+    border-radius: 10px;
+    position: relative;
 }
-#password-reset-form input{
-  width:95%;
-  margin:auto;
-  padding:5px;
-  border-radius: 4px;
+
+#password-reset-form input {
+    width: 95%;
+    margin: auto;
+    padding: 5px;
+    border-radius: 4px;
 }
-#submit-btn{
-  text-align: center;
-  margin:auto;
+
+.submit-btn {
+    text-align: center;
+    margin: auto;
+    width: 250px;
 }
+
+
 /*Password reset confirm ends */
 
+
 /*Password change form*/
-.password-change-form{
-	background:white;
-	border:1px solid black;  
-	padding:15px;
-	border-radius:10px;
+
+.password-change-form {
+    background: white;
+    border: 1px solid black;
+    padding: 15px;
+    border-radius: 10px;
 }
-.password-change-form input[type="password"]{
-	width:95%;
-	padding: 5px;
-	border-radius:10px;
-	border:1px solid grey;
+
+.password-change-form input[type="password"] {
+    width: 95%;
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid grey;
 }
-.password-change-form input[type="password"]:focus{
-	outline:none;
+
+.password-change-form input[type="password"]:focus {
+    outline: none;
 }
+
+
 /*Password change form ends*/
 
+
 /*Password change done start*/
+
 #message {
-	text-align:center;
-	font-size:1.3em;
+    text-align: center;
+    font-size: 1.3em;
 }
-.message-container{
-	padding:10px;
-	background:white;
-	border-radius:10px;	
+
+.message-container {
+    padding: 10px;
+    background: white;
+    border-radius: 10px;
 }
+
+
 /*Password change done end*/

@@ -1,106 +1,168 @@
-{% extends '../base.html' %}
-{% load crispy_forms_tags %}
+{% extends 'base.html' %} 
+{% load crispy_forms_tags %} 
 {% block content %}
 <div>
-	{% include 'navigation.html' %}
-	<div class="container"><br>
-		{% if messages %}
-		<div class="messages">
-		    {% for message in messages %}
-		    <div class='alert alert-dismissible alert-danger'>
-		    	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		    		<span aria-hidden="true">&times;</span>
-	  			</button>
-		   		 {{ message }}
-		     </div>
-		    {% endfor %}
-		</div>
-		{% endif %}
+    {% include 'navigation.html' %}
 
-		<div class="row ">
-			<div id="poll-container" class="col-sm-12  mx-auto my-4 col-md-6">
-					<a class="btn btn-danger m-2 float-right" 
-						style="border:none;color:white;background:red;padding: 7px;" 
-						href="{% url 'delete_poll' classroom.unique_id poll.id %}">
+    <div class="container-fluid ">
+        {% if messages %}
+            <div class="messages container">
+                {% for message in messages %}
+                    <div class='alert alert-dismissible alert-danger'>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        		    		<span aria-hidden="true">&times;</span>
+        	  			</button> 
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="row ">
+
+            <div id="poll-container" class="col-sm-12  mx-auto my-4 col-md-6">
+
+                <a 
+                    class="btn btn-danger m-1 float-right" 
+                    style="color:white;background:red;padding: 7px;" 
+                    href="{% url 'delete_poll' classroom.unique_id poll.id %}">
+
 						Delete <i class="fa fa-trash" aria-hidden="true"></i>
-					</a>
 
-					<a class="btn btn-dark m-2 float-right" 
-						style="border:none;color:white;padding: 7px;" href="/profile/{{poll.created_by.username}}">
-							Contact <i class="fas fa-phone-volume"></i>
-					</a>
-					<a @click="showform" style="border:none;color:white;background:black;padding: 7px;"
-					 	class="btn m-2 float-right">Update <i class="fas fa-edit"></i>
-					</a><br><br>
-				<div v-if="form" id="pollform">
-					<form style="width:100%;padding:20px;"method="POST" enctype="multipart/form-data">{% csrf_token %}
-						{{ updateform|crispy }}<br>
-						<input type="datetime-local" value="{{ poll.announce_at|date:'c' }}"autocomplete="off" required="required" name ='date'>
-						<input type="submit" class="btn btn-success"value="submit">
-					</form><br>
-				</div>
-				<div style="border-radius:10px;"class=" bg-light mt-4 p-4">
+				</a>
 
-					{% if poll.file %}
-						{% if extension == 'image' %}
-							<center>
-								<a href="{{poll.file.url}}">
-									<img src="{{poll.file.url}}" height="500" width="500">
-								</a>
-							</center> 
-						{% elif extension == 'video' %}
-							<center> 
-								<video height="300" width="500" style="border:0;outline:0;" controls>
-								  <source src="{{poll.file.url}}">
-								Your browser does not support the video tag.
-								</video><br>
-							<a href="{{poll.file.url}}" download> Download file</a>
-							</center>
-						{% else %}
-							<a href="{{poll.file.url}}" download> Download file</a>
-						{% endif %}
-					{% endif %}
+                <a 
+                    class="btn btn-dark m-1 float-right" 
+                    style="border:none;color:white;padding: 7px;" 
+                    href="/profile/{{poll.created_by.username}}">
 
-					<pre style="font-size: 1.2em;">{{ details }}</pre>
-					<p> {{ poll.who_can_vote }} can participate in this poll.</p>
-					<p style="float:right;"> Vote before {{ poll.announce_at }} </p>
-					<p> {{ voters_length}} Votes.</p>
+						Contact <i class="fas fa-phone-volume"></i>
 
-					<div class="float-right ">
-				    	<a style="text-decoration: none;" target="_blank"	
-							href="https://api.whatsapp.com/send?text=Click on
+				</a>
+
+                <a 
+                    class="btn m-1 float-right"
+                    @click="showform" 
+                    style="border:none;color:white;background:black;padding: 7px;" >
+
+                        Update <i class="fas fa-edit"></i>
+
+				</a>
+                <br><br>
+
+
+                <div v-if="form" id="pollform">
+
+                    <form 
+                        style="width:100%;padding:20px;" 
+                        method="POST" 
+                        enctype="multipart/form-data">{% csrf_token %} 
+
+                        {{ updateform|crispy }}<br>
+
+                        <input 
+                            type="datetime-local" 
+                            value="{{ poll.announce_at|date:'c' }}" 
+                            autocomplete="off" 
+                            required="required" 
+                            name='date'>
+
+                        <input type="submit" class="btn btn-success" value="submit">
+                    </form><br>
+
+                </div>
+
+                <div style="border-radius:10px;" class=" bg-light mt-4 p-4">
+
+                    {% if poll.file %} 
+
+                        {% if extension == 'image' %}
+
+                            <center>
+                                <a href="{{poll.file.url}}">
+                                    <img src="{{poll.file.url}}" height="500" width="500">
+                                </a>
+                            </center>
+
+                        {% elif extension == 'video' %}
+
+                            <center>
+                                <video height="300" width="500" controls>
+
+        							<source src="{{poll.file.url}}">
+        								Your browser does not support the video tag.
+        						</video><br>
+
+                                <a href="{{poll.file.url}}" download> Download file</a>
+                            </center>
+
+                        {% else %}
+
+                            <a href="{{poll.file.url}}" download> Download file</a> 
+
+                        {% endif %}
+
+                    {% endif %}
+
+                    <pre style="font-size: 1.2em;">{{ details }}</pre>
+
+                    <p> {{ poll.who_can_vote }} can participate in this poll.</p>
+
+                    <p style="float:right;"> Vote before {{ poll.announce_at }} </p>
+
+                    <p> {{ voters_length}} Votes.</p>
+
+
+                    <div class="float-right ">
+
+                        <a 
+                            style="text-decoration: none;" 
+                            target="_blank" 
+                            href="https://api.whatsapp.com/send?text=Click on
 						 	this link http://127.0.0.1:8000/polls/{{classroom.unique_id}}/poll-page/{{poll.id}}/ 
 						 	to participate in poll {{ details}}/)">
-						 	<i class="fab fa-whatsapp fa-2x m-2" aria-hidden="true"></i>
-						</a>
-						<a style="text-decoration: none;" target="_blank"
-							href="mailto:{{members_email}}?subject= Invitation for participation in a poll. 
+
+                            <i class="fab fa-whatsapp fa-2x m-2" aria-hidden="true"></i>
+
+                        </a>
+
+                        <a 
+                            style="text-decoration: none;" 
+                            target="_blank" 
+
+                            href="mailto:{{members_email}}?subject= Invitation for participation in a poll. 
 							&body=Click on this link http://127.0.0.1:8000/polls/{{classroom.unique_id}}/poll-page/{{poll.id}}/
 						 	participate in {{details}}">
-							<i class="fas fa-envelope fa-2x m-2"></i>
-						</a>
-				 	</div><br>
-				</div>{{ members_email}}
-				
-				<p style="color:red;text-align: center;">
-					Note: You can choose only one option and You can't change once you have voted.
-				</p>
+                            <i class="fas fa-envelope fa-2x m-2"></i>
+                        </a>
 
-				{% for choice in choices %}
-					<a href="/polls/{{classroom.unique_id}}/voting/{{poll.id}}/{{choice.id}}">
-						<div class="alert choice">{{ choice.choice_text}} 
-							{% if show_result %}
-							<span class="text-success float-right">
-								{{ choice.votes }} Votes
-							</span>
-							{% endif %}
-						</div>
-					</a>
-				{% endfor %}
-				
-			</div>
-		</div>
-	</div>
+                    </div><br><br>
+
+                </div>
+
+                <p style="color:red;text-align: center;">
+
+                    Note: You can choose only one option and You can't change once you have voted.
+
+                </p>
+
+                {% for choice in choices %}
+
+                    <a href="/polls/{{classroom.unique_id}}/voting/{{poll.id}}/{{choice.id}}">
+                        <div class="alert choice">{{ choice.choice_text}} 
+                            {% if show_result %}
+                                <span class="text-success float-right">
+        							{{ choice.votes }} Votes
+        						</span> 
+                            {% endif %}
+                        </div>
+                    </a>
+
+                {% endfor %}
+
+            </div>
+            
+        </div>
+    </div>
 </div>
 {% endblock %}
-

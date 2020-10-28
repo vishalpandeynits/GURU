@@ -13,58 +13,92 @@
 	{% endif %}
 	
 	<div id="profile" class="container">
-	<div class="row">
-		<div id="info" class="mx-auto">
-			<img style="width:100%;height: 300px;" class="img-fluid" 
-				src="{{ profile.profile_pic.url }}"><br><br>
-			<h3 style="text-align:center;">{{ profile.user.username }}</h3>
-			<pre style="text-align:center;">{{ profile.bio }}</pre>
 
-			<div id="social-container"  style="display:flex; justify-content: center;">
-				{% if profile.facebook %}
-				<a style="background:#3b5998"href="{{ profile.facebook }}" target="_blank" 
-					class="btn-floating btn-lg btn-fb">
-					<i class="fab fa-facebook-f"></i>
-				</a>
-				{% endif %}
-				<a href="mailto:{{profile.user.email}}" target="_blank" 
-					class="btn-floating btn-lg btn-gplus">
-					<i class="fas fa-envelope"></i>
-				</a>
-				{% if profile.whatsapp_number != None %}
-				<a target="_blank" class="btn-floating btn-lg btn-whatsapp" 
-					href="https://api.whatsapp.com/send?phone={{user.profile.whatsapp_number}}">
-					<i class="fab fa-whatsapp"></i>
-				</a>
-				{% endif %}
-				{% if profile.phone_number  != None %}
-				<a target="_blank" href="tel:{{user.profile.phone_number }}" 
-					class="btn-floating btn-lg">
-					<i style="transform: rotate(270deg)"class="fa fa-phone" aria-hidden="true"></i>
-				</a>
-				{% endif %}
+		<div class="row">
+
+			<div id="info" class="mx-auto">
+
+				<img style="width:100%;height: 300px;" class="img-fluid" 
+					src="{{ profile.profile_pic.url }}"><br><br>
+
+				<h3 style="text-align:center;">{{ profile.user.username }}</h3>
+
+				<pre style="text-align:center;">{{ profile.bio }}</pre>
+
+				<div id="social-container"  style="display:flex; justify-content: center;">
+
+					{% if profile.facebook %}
+
+						<a style="background:#3b5998"href="{{ profile.facebook }}" target="_blank" 
+							class="btn-floating btn-lg btn-fb">
+							<i class="fab fa-facebook-f"></i>
+							
+						</a>
+					{% endif %}
+
+					<a href="mailto:{{profile.user.email}}" target="_blank" 
+						class="btn-floating btn-lg btn-gplus">
+						<i class="fas fa-envelope"></i>
+					</a>
+
+					{% if profile.whatsapp_number != None %}
+
+						<a target="_blank" class="btn-floating btn-lg btn-whatsapp" 
+							href="https://api.whatsapp.com/send?phone={{user.profile.whatsapp_number}}">
+							<i class="fab fa-whatsapp"></i>
+						</a>
+
+					{% endif %}
+
+					{% if profile.phone_number  != None %}
+
+						<a target="_blank" href="tel:{{user.profile.phone_number }}" 
+							class="btn-floating btn-lg">
+							<i style="transform: rotate(270deg)"class="fa fa-phone" aria-hidden="true"></i>
+						</a>
+
+					{% endif %}
+				</div>
+
 			</div>
+
 		</div>
-	</div>
-	{% if profile.user.username == user.username %}
-	<center>
-		<button style="margin:10px;" @click="showUpdateForm"class="btn btn-info">
-			Edit profile
-		</button><br>
-		{% if user.username == profile.user.username %}
-			{% if not user.profile.whatsapp_number or not user.profile.facebook or not user.profile.phone_number %}
-				Please add your contact details so other users can contact you in case of any need.
-			{% endif %}
+
+		{% if profile.user.username == user.username %}
+
+			<center>
+
+				<button style="margin:10px;" @click="showUpdateForm"class="btn btn-info">
+					Edit profile
+				</button><br>
+
+				{% if user.username == profile.user.username %}
+
+					{% if not user.profile.whatsapp_number or not user.profile.facebook or not user.profile.phone_number %}
+
+						Please add your contact details so other users can contact you in case of any need.
+
+					{% endif %}
+
+				{% endif %}
+
+			</center>
+
+
+			<form 
+
+				style="width:100%; "method="POST" id="profileupdateform" 
+				v-if="updateForm" enctype="multipart/form-data"> 
+				{% csrf_token %}
+
+				{{ p_form|crispy }}
+
+				<button class="btn btn-primary" type="submit">Update</button>
+
+			</form>
+
 		{% endif %}
-	</center>
 
-
-	<form style="width:100%; "method="POST" id="profileupdateform" v-if="updateForm" 
-		enctype="multipart/form-data"> {% csrf_token %}
-		{{ p_form|crispy }}
-		<button class="btn btn-primary" type="submit">Update</button>
-	</form>
-	{% endif %}
 	</div>
 </div>
 {% endblock %}

@@ -2,35 +2,48 @@
 {% load crispy_forms_tags %}
 {% load humanize %}
 {% block subject_content %}
-<div class="container"> 
-
-	<form class="float-right mt-4">
-      	<input class="search-input" autocomplete="off" type="text"
-      	 placeholder="Search..."name="search">
-      	<button class="search-icon" type="submit">
-      	 	<i class="fas fa-search"></i>
-      	</button>
-	</form>
+<div style="width:100%;"class="container">
 
 	<div id="containannouncement">
-		{% if form %}
-	      	 <button @click="addAnnouncementFormToggle" type="button" 
-	      	 	class="btn add-btn float-left my-4">
-	      	 	Add <i class="fa fa-plus" aria-hidden="true"></i>
-			</button><br><br><br>
 
+		{% if is_teacher %}
+	      	 <button 
+	      	 	@click = "addAnnouncementFormToggle" 
+	      	 	type="button" 
+	      	 	class="btn add-btn float-left mt-4">
+
+	      	 	Add 
+	      	 	<i class="fa fa-plus" aria-hidden="true"></i>
+
+			</button><br>
+		{% endif %}
+
+		<form class="float-right search-container">
+	      	<input class="search-input" autocomplete="off" type="text"
+	      		 placeholder="Search..."name="search">
+	      	<button class="search-icon" type="submit">
+	      	 	<i class="fas fa-search"></i>
+	      	</button>
+		</form><br><br>
+
+	
+		{% if form %}
 			<form method="POST" v-if="addform" class="addForm" 
 				enctype="multipart/form-data">{% csrf_token %}
 				{{ form|crispy}}
 				<input type="submit" class="submit-button"value="submit">
 			</form>
 	    {% endif %}
+
 	</div>
 
 	{% if announcements %}
 		<div style="min-height:500px;">
 			{% for announcement in announcements %}
-				<a class="link" href="{% url 'announcement_page' classroom.unique_id subject.id announcement.id %}">
+
+				<a class="link" 
+					href="{% url 'announcement_page' classroom.unique_id subject.id announcement.id %}">
+
 					<div class="content" style="padding:5px;">
 						0{{ forloop.counter}} {{ announcement.subject }}<br><br>
 						<div class="time">
@@ -39,14 +52,21 @@
 							</span>
 						</div><br>
 					</div>
+
 				</a>
+				
 			{% endfor %}<br>
-		{% include 'paginations.html' %}
+
+			{% include 'paginations.html' %}
 		</div>
-	{% else %}
-		<h2 style="text-align:center;color:green;font-weight: bolder;">
+
+	{% else %}<br>
+
+		<h2 
+			style="text-align:center;margin-top:60px;color:green;font-weight: bolder;">
 			No announcements made yet. 
 		</h2>
+
 	{% endif %}
 
 </div>

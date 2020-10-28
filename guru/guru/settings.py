@@ -41,12 +41,14 @@ INSTALLED_APPS = [
     'basic.apps.BasicConfig',
     'users.apps.UsersConfig',
     'poll.apps.PollConfig',
+    'examination.apps.ExaminationConfig',
 
     #packages
     'crispy_forms',
     'django.contrib.humanize',
     'django.contrib.sites',
     'django_comments',
+    'django_cleanup.apps.CleanupConfig',
     # 'user_visit',
 
     #all auth
@@ -64,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
     # 'user_visit.middleware.UserVisitMiddleware',
 ]
 
@@ -141,10 +144,8 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static'),
-]
-STATIC_ROOT = 'statica'
+STATIC_ROOT = 'statics'
+STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 LOGIN_REDIRECT_URL ='/homepage/'
@@ -157,39 +158,36 @@ EMAIL_PORT= 587
 EMAIL_USE_TLS= True
 DEFAULT_FROM_EMAIL= 'vishalpandeynits@gmail.com'
 
-# CKEDITOR_UPLOAD_PATH = 'uploads/'
-# CKEDITOR_CONFIGS = {
-#         'default': {
-#         'skin': 'moono',
-#         'toolbar_Basic': [
-#             ['Source',  'Bold', 'Italic']
-#         ],
-#         'toolbar_YourCustomToolbarConfig': [
-#             {'name': 'editing', 'items': ['Find', 'Replace', 'SelectAll']},
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
+CKEDITOR_CONFIGS = {
+        'default': {
+        'skin': 'moono',
+        'toolbar_YourCustomToolbarConfig': [
 
-#             {'name': 'basicstyles',
-#              'items': ['Bold', 'Italic', 'Underline', 'Strike']},
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Strike']},
 
-#             {'name': 'insert',
-#              'items': ['Image',  'Table', 'Smiley', 'SpecialChar',]},
+            {'name': 'insert',
+             'items': [ 'Table', 'Smiley',]},
 
-#             {'name': 'paragraph',
-#              'items': ['NumberedList', 'BulletedList', 'Blockquote',
-#                        'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'BidiLtr', 'BidiRtl',]},
-#             {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList',
+                       'JustifyLeft', 'JustifyCenter', 'JustifyRight',]},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
 
-#             {'name': 'styles', 'items': [ 'Format', 'Font', 'FontSize']},
+            {'name': 'styles', 'items': ['Font', 'FontSize']},
 
-#             ],
-#         'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
-#         'height': 300,
-#         'width': '100%;',
-#         'filebrowserWindowHeight': 725,
-#         'filebrowserWindowWidth': 940,
-#         'toolbarCanCollapse': True,
-#         'tabSpaces': 4,
-#     }
-# }
+            ],
+        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+        'height': 300,
+        'width': '100%;',
+        'filebrowserWindowHeight': 725,
+        'filebrowserWindowWidth': 940,
+        'toolbarCanCollapse': True,
+        'tabSpaces': 4,
+    }
+}
 
 #all-auth registraion settings
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS =1

@@ -8,21 +8,23 @@
 	<div class="col">
 		{% if is_teacher %}
 		<div id="contain">
+
 			<a class="btn btn-danger m-2 float-right" 
-				style="border:none;color:white;background:red;padding: 7px;"
+				style="color:white;background:red;padding: 7px;"
 				href="{% url 'delete_announcement' classroom.unique_id subject.id announcement.id %}">
 				Delete <i class="fa fa-trash" aria-hidden="true"></i>
 			</a>
 
 			<a class="btn btn-dark m-2 float-right" 
-				style="border:none;color:white;padding: 7px;"
+				style="color:white;padding: 7px;"
 				href="/profile/{{announcement.announced_by}}">
 				Contact <i class="fas fa-phone-volume"></i>
 			</a>
 
-			<a @click="updateFormToggle" style="border:none;color:white;background:black;padding: 7px;"
-			 class="btn m-2 float-right">
-			 Update <i class="fas fa-edit"></i>
+			<a @click="updateFormToggle" 
+				style="color:white;background:black;padding: 7px;"
+			 	class="btn m-2 float-right">
+			 	Update <i class="fas fa-edit"></i>
 			</a><br><br>
 
 		  	<form method="POST" v-if="updateform"class="addForm" 
@@ -34,30 +36,40 @@
 		{% endif %}<br>
 		
 		<div id="announcement-content">
-			<p style="font-weight: bold;text-align: center;font-size:1.2em;">
+			<p 
+				style="font-weight: bold;text-align: center;font-size:1.2em;">
 				{{announcement.subject}}
 			</p>
-			{% if announcement.file %}
+
+			{% if announcement.file %} 
+
 				{% if extension == 'image' %}
-					<center>
-						<a href="{{announcement.file.url}}">
-							<img src="{{announcement.file.url}}" height="500" width="500">
-						</a>
-					</center> 
+					<a href="{{announcement.file.url}}">
+						<img src="{{announcement.file.url}}" id="media-container">
+					</a>
+
 				{% elif extension == 'video' %}
-					<center> 
-						<video height="300" width="500" style="border:0;outline:0;" controls>
-						  <source src="{{announcement.file.url}}">
+					<video height="300" width="500" id="media-container" controls>
+							<source src="{{announcement.file.url}}" type="video/mp4">
+							<source src="{{announcement.file.url}}" type="video/ogg">
 						Your browser does not support the video tag.
-						</video><br>
-					<a href="{{announcement.file.url}}" download> Download file</a>
-					</center>
+					</video><br>
+					<a href="{{announcement.file.url}}" style="text-align: center;" download>
+					 Download file
+					</a> 
+
 				{% else %}
-					<a href="{{announcement.file.url}}" download> Download file</a>
+					<a href="{{announcement.file.url}}" style="text-align: center;" download>
+					 Download file
+					</a> 
 				{% endif %}
-			{% endif %}
+
+			{% endif %}	
+			
 			<pre>{{ announcement.description }}</pre>
+
 		</div><br>
+
 		{% include 'comments/announcementcomment.html' %}
 	</div>
   </div>

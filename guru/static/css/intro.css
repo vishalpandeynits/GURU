@@ -1,0 +1,90 @@
+* {
+    scroll-behavior: smooth;
+}
+.x {
+    margin-bottom: 50px;
+}
+
+.foot {
+position: absolute;
+bottom: 0;
+left:0;
+right:0;
+height:10px;
+}
+#home-btn-container {
+    box-sizing: content-box;
+    margin-bottom: 20px;
+}
+
+.btn-home {
+    border-radius: 20px;
+    width: 180px;
+    color: white;
+    background-color: black;
+    margin-bottom: 20px;
+    transition: background 0.6s;
+}
+
+.btn-home:hover {
+    color: black;
+    background-color: white;
+    border: 2px solid green;
+}
+
+#intro {
+    color: black;
+    font-size: 3em;
+    font-weight: bold;
+}
+
+#why-guru {
+    font-size: 1.2em;
+}
+
+#navbar {
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    background: white;
+    box-shadow: 3px 3px 6px grey;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+#navbar a {
+    font-size: 1.2em;
+    color: black;
+    transition: 0.6s;
+    opacity: 1;
+}
+
+#navbar a:hover {
+    font-weight: bold;
+    box-shadow: 2px 2px 4px grey;
+}
+
+@media screen and (max-width: 800px) {
+    #navbar {
+        display: flex;
+        justify-content: center;
+    }
+    #navbar a {
+        font-size: 1em;
+    }
+}
+
+li {
+    font-size: 1.3em;
+}
+
+.heading1 {
+    text-align: center;
+    border-bottom: 2px solid grey;
+    padding-bottom: 10px;
+    font-size: 2em;
+    font-weight: bold;
+}

@@ -2,6 +2,7 @@
 {% load humanize %}
 <div id="con">
    {% get_comment_form for announcement as form %}
+
    <form action="{% comment_form_target %}" method="POST">{% csrf_token %}
         <textarea name="comment" style="width:100%;resize:none;" rows="4" 
             maxlength="300" v-model="comment" id="id_comment" required> 
@@ -16,6 +17,7 @@
             value="{% url 'announcement_page' classroom.unique_id subject.id announcement.id %}" />
         <input type="submit" style="width:130px;" class="btn btn-primary float-right"
           value="Add comment" id="id_submit" :disabled="disable"/>
+          
     </form>
 
     {% get_comment_count for announcement as comment_count %}

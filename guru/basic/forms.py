@@ -8,6 +8,7 @@ class CreateclassForm(forms.ModelForm):
 	class Meta:
 		model =  Classroom
 		fields = ['class_name','need_permission','description','classroom_pic']
+	
 
 class SubjectForm(forms.ModelForm):
 	class Meta:
@@ -22,20 +23,20 @@ class SubjectEditForm(forms.ModelForm):
 class NoteForm(forms.ModelForm):
 	class Meta:
 		model = Note
-		fields = ['topic','file','description']
+		fields = ['topic','description','file']
 
 class AssignmentForm(forms.ModelForm):
 	class Meta:
 		model = Assignment
-		fields = ['file','topic','description','full_marks']
+		fields = ['topic','description','full_marks','file']
 
 class AnnouncementForm(forms.ModelForm):
 	class Meta:
 		model = Announcement
-		fields = ['file','subject','description',]
+		fields = ['subject','description','file']
 
 class SubmitAssignmentForm(forms.ModelForm):
 	class Meta:
-		model= Submission
+		model = Submission
 		fields = ['file']
 

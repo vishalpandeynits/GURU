@@ -1,70 +1,108 @@
-{% extends 'base.html' %}
-{% load static %
-{% load crispy_forms_tags %}
+{% extends 'base.html' %} 
+{% load static %} 
+{% load crispy_forms_tags %} 
 {% block content %}
+
 <div class="row">
-		<div class="col-2">
-		<div style="float:right;" id="mySidenav" class="sidenav">
-			<button class="closebtn" onclick="closeNav()">
+    <div class="col-2">
+
+        <div style="float:right;" id="mySidenav" class="sidenav">
+
+            <button class="closebtn" onclick="closeNav()">
 				&times;
 			</button >
-			<a href="{% url 'resources' classroom.unique_id subject.id  %}" onclick="closeNav()">
+
+			<a  onclick="closeNav()"
+				href="{% url 'resources' classroom.unique_id subject.id  %}" >
 				<i class="fas fa-book-open mr-2"></i> Resources
 			</a>
-			<a href="{% url 'assignments' classroom.unique_id subject.id  %}" onclick="closeNav()">
+
+			<a onclick="closeNav()"
+				href="{% url 'assignments' classroom.unique_id subject.id  %}" >
 				<i class="fas fa-briefcase mr-2"></i> Assignment
 			</a>
-			<a href="{% url 'announcement' classroom.unique_id subject.id %}" onclick="closeNav()">
+
+			<a onclick="closeNav()"
+				href="{% url 'announcement' classroom.unique_id subject.id %}">
 				<i class="fas fa-bullhorn mr-2"></i> Announcement
 			</a>
-			<a style="border-bottom:5px solid black;" href="{% url 'this_subject' classroom.unique_id subject.id %}"
-				 onclick="closeNav()"> 
-				<i class="fas fa-chalkboard-teacher mr-2"></i> {{ subject.subject_name }}
+
+			<a style="border-bottom:5px solid black;" 
+			   href="{% url 'this_subject' classroom.unique_id subject.id %}"
+			   onclick="closeNav()"> 
+			   <i class="fas fa-chalkboard-teacher mr-2"></i> 
+			   {{ subject.subject_name }}
 			</a>
-			<a href="{% url 'homepage' %}" onclick="closeNav()">
+
+			<a 
+				href="{% url 'homepage' %}" onclick="closeNav()">
 				<i class="fas fa-home mr-2"></i> Home
 			</a>
-			<a href="{% url 'subjects' classroom.unique_id %}" onclick="closeNav()"> 
+
+			<a onclick="closeNav()"
+				href="{% url 'subjects' classroom.unique_id %}" > 
 				<i class="fas fa-book mr-2"></i> Subjects 
 			</a>
+
 			<a href="/profile/{{user.username}}/" onclick="closeNav()"> 
 				<i class="fas fa-user mr-2"></i> {{ user.username|title }} 
 			</a>
+
 		</div>
-		</div>
-		<div class="col-12" id="#main">
-			<div style="background:black;" class="p-2">
-				<span class="pl-1" id="openNav" onclick="openNav()">
-					&#9776;
-				</span>
-				<span style="font-size:2.5em;margin-left:20px;color:white;">
-					&nbsp; {{ subject.subject_name|title }}
-				</span>
-				<div style="color:white;"  class="float-right mx-2 mt-2"> 
-		          <div class="btn-group">
-		            <div class="btn-group dropleft" role="group">
-		              <button type="button" style="border:none;outline:none;" class="btn btn-secondary bg-transparent
-		               	dropdown-toggle bg-transparent dropdown-toggle-split" data-toggle="dropdown" 
-		               		aria-haspopup="true" aria-expanded="false">
-		                <span class="sr-only">Toggle Dropleft</span>
-		              </button>
-		              <div class="dropdown-menu-lg-right bg-dark text-light dropdown-menu p-0">
-		                  <a style="margin:10px;display:block;" class="text-light" href="{% url 'logout' %}">
-		                    Log Out
-		                  </a>
-		                  <a style="margin:10px;display:block;" class="text-light" href="{% url 'password_change' %}">
-		                    Change Password
-		                  </a>
-		              </div>
-		            </div>
-		            <a style="color:white;font-size:2.3em;"  class="float-right mx-2 mt-2" 
-		            	href="{% url 'profile' user.username %}"> 
-		              <i class="fas fa-user mr-2"></i>
-		            </a>
-		          </div>
-		    </div>
-		</div>
-		{% block subject_content %} {% endblock %}
+
 	</div>
+
+	<div class="col-12 ml-0" style="width:100%;margin:0;">
+
+		<div style="background:white;box-shadow:2px 4px 6px darkgrey;" class="p-2">
+
+			<span style="box-shadow:2px 4px 4px darkgrey;" class="pl-1" id="openNav" onclick="openNav()">
+				&#9776;
+			</span>
+
+			<span style="font-size:2.5em;margin-left:20px;color:white;">
+				&nbsp; {{ subject.subject_name|title }}
+			</span>
+
+			<div style="color:black;"  class="float-right mx-2 mt-2"> 
+				<div class="btn-group">
+
+					<div class="btn-group dropleft" role="group">
+
+						<button class="bg-transparent dropdown-toggle dropdown-toggle-split" 
+							data-toggle="dropdown" style="border:none;outline:none;cursor: pointer;"
+							aria-haspopup="true" aria-expanded="false">
+						</button>
+
+			            <div class="dropdown-menu-lg-right bg-dark text-light dropdown-menu p-0">
+
+			                <a style="margin:10px;display:block;" 
+			                	class="text-light" href="{% url 'logout' %}">
+								Log Out
+							</a>
+
+			                <a style="margin:10px;display:block;" class="text-light" 
+			                	href="{% url 'password_change' %}">
+								Change Password
+							</a>
+
+			            </div>
+
+	       			 </div>
+
+			         <a class="float-right mx-1 mt-1" href="{% url 'profile' user.username %}"
+			         	style="color:black;font-size:2.1em;" >
+			            <i class="fas fa-user mr-2"></i>
+			        </a>
+
+    			</div>
+			</div>
+
+		</div>
+
+		{% block subject_content %} {% endblock %}
+		
+	</div>
+
 </div>
 {% endblock %}

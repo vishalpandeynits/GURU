@@ -3,8 +3,8 @@ from random import choice,randint
 from django.core.paginator import Paginator
 
 def extension_type(file_name):
-	videos = ['WEBM','MPG', 'MP2', 'MPEG','MPE', 'MPV', 'OGG', 'MP4', 'M4P' , 'M4V', 'AVI', 'WMV', 'MOV', 'QT','FLV', 'SWF']
-	images = ["JPG","PNG","GIF","PSD","RAW","BMP","SVG","AI","EPS"]
+	videos = ['WEBM','MPG', 'MP2', 'MPEG','MPE', 'MPV', 'OGG', 'MP4', 'M4P' , 'M4V', 'AVI', 'WMV', 'MOV', 'QT','FLV', 'SWF','MKV']
+	images = ["JPG","PNG","GIF","PSD","RAW","BMP","SVG","AI","EPS","JPEG"]
 	
 	file_extension = str(file_name).split('.')[-1].upper()
 	if file_extension in videos:

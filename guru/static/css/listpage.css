@@ -1,69 +1,94 @@
 .add-btn {
-	color:white;
-	background:black;
-}
-.addForm{
-	width:80%;
-	display:block;
-	margin:auto;
-	padding:20px;
-	border-radius:40px;
-	background:#F5F5F5;
-	box-shadow:2px 4px 5px grey;
-}
-.addForm input,textarea{
-	border:none;
-	border-bottom:1px solid black;
-	width:100%;
-	outline-width:none;
-	overflow:hidden;
-	resize:none;
-	padding:5px 15px;
-	border-radius:10px;
-}
-.addForm input[type="submit"]{
-	background: black;
-	color:white;
-	cursor: pointer;
-	text-align:center;
-	padding: 5px;
-	font-size:1.2em;
-	display:block;
-	margin:auto;
-	width:300px;
-	border-radius:20px;
-	transition:background 0.3s,width 0.3s;
-}
-.addForm input[type="submit"]:hover{
-	background: white;
-	border-bottom:4px solid green;
-	color:black;
-	width:80%;
-}
-.addForm input:focus,textarea{
-	border-bottom:1px solid black;
-	outline:0px;
+    color: white;
+    background: black;
 }
 
-.content{
-	background:#F8F8FF;
-	margin-top:12px;
-	padding: 20px;
-	box-shadow: 2px 4px 5px grey;
-	border-radius: 10px;
+.addForm {
+    width: 100%;
+    display: block;
+    margin: auto;
+    padding: 20px;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 2px 4px 5px grey;
 }
-.link{
-	font-size:25px;
 
+.addForm input,
+textarea {
+    border: none;
+    border-bottom: 1px solid black;
+    width: 100%;
+    outline-width: none;
+    overflow: hidden;
+    resize: none;
+    padding: 5px 15px;
+    border-radius: 10px;
 }
-a:link{
-	text-decoration: none;
+
+.addForm input[type="submit"] {
+    background: black;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    padding: 5px;
+    font-size: 1.2em;
+    display: block;
+    margin: auto;
+    width: 250px;
+    border-radius: 20px;
+    transition: background 0.3s, width 0.3s;
 }
-@media screen and (min-width:770px){
-	.uploaded_by{
-		float:left;
-	}
-	.time{
-		float:right;
-	}
+
+.addForm input[type="submit"]:hover {
+    background: white;
+    border-bottom: 4px solid green;
+    color: black;
+    width: 80%;
+}
+
+.addForm input:focus,
+textarea {
+    border-bottom: 1px solid black;
+    outline: 0px;
+}
+
+@media screen and (min-width:600px) {
+    .add-form {
+        width: 80%;
+    }
+}
+
+.content {
+    background: #F8F8FF;
+    margin-top: 12px;
+    padding: 10px 20px;
+    box-shadow: 2px 4px 5px grey;
+    border-radius: 10px;
+    clear: both;
+}
+
+.link {
+    font-size: 20px;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+@media screen and (min-width:770px) {
+    .uploaded_by {
+        float: left;
+    }
+    .time {
+        float: right;
+    }
+    .content {
+        padding-bottom: 50px;
+    }
+}
+
+@media screen and (max-width:770px) {
+    .add-btn {
+        display: block;
+    }
 }

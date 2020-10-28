@@ -1,0 +1,7 @@
+1. Responsiveness of each page
+2. Progress bar for uploading and downloading files.
+3. Design of better home page.
+4. Rich text editor for notes, assignments and announcements.
+5. Sharing poll links to all sites.
+6. Designing of assignment page.
+7. Adding a preloader.

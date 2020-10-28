@@ -2,15 +2,20 @@
 {% load crispy_forms_tags %}
 {% load humanize %}
 {% block subject_content %}
+
 <div class="container" >
+
 	<div id="resource-contain">
+
 		{% if is_teacher %}
 	      	 <button @click = "addFormToggle" type="button" class="btn add-btn float-left mt-4">
+
 	      	 	Add <i class="fa fa-plus" aria-hidden="true"></i>
+
 			</button><br>
 		{% endif %}
 
-		<form class="float-right">
+		<form class="float-right search-container">
 	      	<input class="search-input" autocomplete="off" type="text"
 	      		 placeholder="Search..."name="search">
 	      	<button class="search-icon" type="submit">
@@ -18,31 +23,54 @@
 	      	</button>
 		</form><br><br>
 
-		{% if is_teacher %}
-		    <form method="POST" v-if="addform" class="addForm" enctype="multipart/form-data">{% csrf_token %}
+		{% if is_teacher %} 
+		    <form method="POST"  v-if="addform" class="addForm" enctype="multipart/form-data">
+		    	{% csrf_token %}
+
 				{{ form|crispy}}
+
 				<input type="submit" class="submit-button"value="submit">
 			</form>
-		{% endif %}
+		{% endif %}<br>
 	</div>
 
 	{% if page %}
+
+		<div style="min-height:550px;">
+
 		{% for note in page %}
+
 			<a href="{% url 'read_note' classroom.unique_id subject.id note.id %}">
+
 				<div style="font-size: 1.2em; word-wrap: break-word;" class="content">
+
 					0{{ forloop.counter}} {{ note.topic }}<br><br>
+
 					<div class="uploaded_by"> uploaded by: {{ note.uploaded_by }} </div>
+
 					<div class="time">
 						Uploaded {{ note.uploaded_on|naturaltime }}
-					</div><br><br>
+					</div>
+
 				</div>
+
 			</a>
-		{% endfor %}<br>
+
+		{% endfor %}
+
+		</div>
+
 		{% include 'paginations.html' %}	
+
 	{% else %}
+
 		<h2 style="text-align:center;color:green;margin:30px;font-weight: bolder;"> 
+
 			No material added yet.
+
 		</h2>
+
 	{% endif %}
 </div>
+
 {% endblock %}
