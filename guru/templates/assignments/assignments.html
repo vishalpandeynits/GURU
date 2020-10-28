@@ -25,7 +25,11 @@
                 id="upload_form" enctype="multipart/form-data">
 
                 {% csrf_token %}
+                {{ form|crispy }}<br>
+
+                Submit Before:
                 <input type="datetime-local" required name="submission_date"><br>
+
                 <input type="submit" class="submit-button mt-4" value="submit">
 
             </form>

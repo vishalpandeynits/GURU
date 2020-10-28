@@ -97,7 +97,7 @@
 
 				<p>{{member.profile.bio}}</p>
 
-				{% if member in upload_permissions and not in admins %}
+				{% if member in upload_permissions and member not in admins %}
 					Can upload resources
 				{% endif %}
 

@@ -35,7 +35,7 @@ def join(request,key):
         return('/homepage/')
     else:
         classroom.members.add(request.user)
-        messages.add_message(request,message.SUCCESS,"You have joined the classroom. Happy studing!!!")
+        messages.add_message(request,messages.SUCCESS,"You have joined the classroom. Happy studing!!!")
         return redirect(f'/classroom/{key}')
     
 
@@ -562,6 +562,11 @@ def delete_subject(request,unique_id, subject_id):
 def remove_member(request,unique_id,username):
     classroom = Classroom.objects.get(unique_id=unique_id)
     admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+    is_admin = classroom.special_permissions.filter(username = User.objects.get(username=username)).exists()
+    if is_admin:
+        messages.add_message(request,messages.WARNING,"You are admin, you can't be removed")
+        return redirect(f'/classroom/{unique_id}/')
+
     if admin_check or request.user==User.objects.get(username=username):
         classroom.members.remove(User.objects.get(username=username))
         if request.user==User.objects.get(username=username):

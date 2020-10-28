@@ -1,16 +1,12 @@
 * {
     scroll-behavior: smooth;
 }
-.x {
-    margin-bottom: 50px;
-}
-
 .foot {
-position: absolute;
-bottom: 0;
-left:0;
-right:0;
-height:10px;
+    position: absolute;
+    bottom: 0;
+    left:0;
+    right:0;
+    height:10px;
 }
 #home-btn-container {
     box-sizing: content-box;

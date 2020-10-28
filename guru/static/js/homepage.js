@@ -3,7 +3,7 @@ if (window.history.replaceState) {
 }
 
 function openNav() {
-    document.getElementById("mySidenav").style.width = "275px";
+    document.getElementById("mySidenav").style.width = "295px";
 }
 
 function closeNav() {

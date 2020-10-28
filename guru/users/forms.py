@@ -1,9 +1,9 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.core.exceptions import ValidationError
 from .models import Profile
-
+import django
 class SignUpForm(UserCreationForm):
 	email = forms.EmailField(label="E-mail")
 
@@ -13,7 +13,10 @@ class SignUpForm(UserCreationForm):
 
 	def __init__(self, *args, **kwargs):
 		super(SignUpForm, self).__init__(*args, **kwargs)
-		self.fields['password1'].help_text = "Passwords must be of minimum 8 characters"
+		self.fields['password1'].help_text = None
+		self.fields['username'].help_text = None
+		self.fields['password2'].help_text = None
+		self.fields['password2'].label = 'Confirm Password'
 		self.fields['email'].widget.attrs.update({'required': 'required'})
 		self.fields['first_name'].widget.attrs.update({'required': 'required'})
 		self.fields['last_name'].widget.attrs.update({'required': 'required'})
@@ -40,6 +43,13 @@ class SignUpForm(UserCreationForm):
 		else:
 		    raise forms.ValidationError('User already exists! Try different one!')
 		return cleaned_data
+
+
+class UserLoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(UserLoginForm, self).__init__(*args, **kwargs)
+        self.fields['username'].label = 'Username/Email:'
+			
 
 class ProfileUpdateForm(forms.ModelForm):
 	class Meta:

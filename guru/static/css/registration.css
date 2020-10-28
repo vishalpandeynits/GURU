@@ -12,16 +12,14 @@ strong {
 
 /*Sign up*/
 
-#sign-up-form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+#sign-up-form .controls{
+    margin:0;
+    padding:0;
 }
 
 #sign-up-form ul {
     color: red;
 }
-
 
 /*Sign up ends*/
 
@@ -31,7 +29,7 @@ strong {
 .login-form {
     padding: 20px;
     background: white;
-    width: 40%;
+    width: 35%;
     margin: 10px auto;
     box-shadow: 2px 4px 8px grey;
     position: relative;
@@ -42,26 +40,27 @@ strong {
 .login-form input {
     width: 100%;
     padding: 10px;
-    margin: 10px 0px;
-    height: 45px;
+    margin: 0px 0px 15px 0px;
+    height: 40px;
     border-radius: 10px;
-    outline: none;
+}
+.login-form label{
+    margin:0px;
 }
 
 .submit-btn {
     background: black;
     color: white;
-    width: 50%;
-    border-radius: 20px;
-    margin: 10px auto;
+    border-radius: 10px;
+    margin: 20px auto;
     padding: 5px;
-    transition: width 0.3s;
+    transition: 0.6s;
     display: block;
     cursor: pointer;
 }
 
 .submit-btn:hover {
-    width: 100%;
+    background:#0000e6;
     box-shadow: 2px 4px 5px grey;
 }
 
@@ -90,7 +89,6 @@ strong {
     padding: 20px;
     width: 300px;
     text-align: center;
-    position: relative;
 }
 
 .login-box h2 {
