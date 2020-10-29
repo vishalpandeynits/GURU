@@ -9,8 +9,7 @@
     height:10px;
 }
 #home-btn-container {
-    box-sizing: content-box;
-    margin-bottom: 20px;
+    margin-top: 30px;
 }
 
 .btn-home {
@@ -25,7 +24,7 @@
 .btn-home:hover {
     color: black;
     background-color: white;
-    border: 2px solid green;
+    border: 1px solid black;
 }
 
 #intro {
