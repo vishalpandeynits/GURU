@@ -3,27 +3,16 @@
 {% load crispy_forms_tags %} 
 {% load socialaccount %} 
 {% block content %}
-<style>
-    .login-form li {
-        list-style: none;
-        color: red;
-    }
-</style>
 <div class="container-fluid mb-4">
     <form method="POST" class="login-form">{% csrf_token %}
         <h1 id="login-heading"> LOG IN</h1>
         {{ form|crispy }}
 
-        <a style="float:right;font-weight: bolder;display:block;" href="{%url 'password_reset' %}">
+        <a style="float:right;display:block;" class="redirect" href="{%url 'password_reset' %}">
 			Forgot Password? 
 		</a><br>
         <button type="submit" class="submit-btn">Log In</button>
-
-        <a style="font-weight: bolder;" href="{%url 'signup' %}">
-			Create a new account
-		</a>
-        <br><br>
-        <div class="login-box" style="margin:auto;widdth:100%;">
+        <div class="login-box">
             <a style="text-align: center;" href="#" class="social-button" id="facebook-connect">
                 <span>Facebook </span>
             </a>
@@ -31,6 +20,11 @@
                 <span>Google</span>
             </a>
         </div>
+        <center><h4>OR</h4></center>
+        <a class="redirect" style="text-align:center;display: block;" href="{%url 'signup' %}">
+            Create a new account
+        </a>
     </form>
+
 </div>
 {% endblock %}
