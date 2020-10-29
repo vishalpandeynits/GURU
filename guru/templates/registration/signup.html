@@ -4,7 +4,7 @@
         <h1 id="login-heading"> SIGN UP</h1>
         {{ signupform|crispy }}
         <button type="submit" class="submit-btn">Create My Account.</button>
-        <a style="position:absolute;right:10px;font-weight: bolder;text-decoration:none;" href="{%url 'login' %}">
+        <a class="redirect" style="position:absolute;right:10px;" href="{%url 'login' %}">
 			Log In instead
 		</a><br>
     </form>

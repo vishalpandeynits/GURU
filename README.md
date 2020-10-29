@@ -1,5 +1,5 @@
 # GURU
-AN ONLINE CLASS PORTAL
+AN ONLINE CLASS PORTAL<br>
 This portal provides all functionalities for conduction of a smooth online classroom by school/College
 
 ## Please don't mess up with MASTER BRANCH
