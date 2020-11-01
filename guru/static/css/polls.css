@@ -2,22 +2,26 @@
 	display:flex;
 	justify-content:center;
 	background:white;
-	padding:10px;
+	padding:10 0px;
 	width:100%;
-	border-radius:20px;
+	border-radius:10px;
 	box-shadow:2px 4px 6px grey;
+	min-height: 25rem;
 }
-#pollform input,textarea{
-	border:0.5px solid black;
+#pollform input,textarea,.vLargeTextField,select{
 	border-radius:4px;
 	margin-bottom: 10px;
 	width:100%;	
 	padding: 10px;
 }
+.vLargeTextField{
+	height:25rem;	
+	margin-bottom: 3rem;	
+}
 #addpollbtn{
 	border:2px solid green;
 	color:white;
-	background-color: black;
+	background: black;
 	margin:10px;
 }
 #addpollbtn:hover{
@@ -27,10 +31,13 @@
 .poll-list{
 	background:white;
 	margin:10px 0px;
-	padding:10px;
+	padding:10px 40px;
+	border-radius:10px;
 	font-size:1.5em;
-	font-weight:bolder;
 	display:flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	box-shadow:2px 2px 7px grey;
 }
 .choice{
 	background:white;

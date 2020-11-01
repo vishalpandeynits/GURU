@@ -167,3 +167,25 @@ li {
     font-size: 2em;
     font-weight: bold;
 }
+.ql-syntax{
+  padding:10px;
+  display:block;
+}
+pre .ql-syntax{
+  color:black;
+}
+.django-quill-widget-container{
+ margin-bottom:50px;
+ height:25rem;
+}
+.ql-editor pre{
+  color:black !important;
+  height:20rem;
+}
+.ql-editor img{
+  height:25rem;
+  width:30rem;
+  display:block;
+  margin:auto;
+
+}

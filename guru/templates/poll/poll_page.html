@@ -1,9 +1,9 @@
 {% extends 'base.html' %} 
 {% load crispy_forms_tags %} 
+
 {% block content %}
 <div>
     {% include 'navigation.html' %}
-
     <div class="container-fluid ">
         {% if messages %}
             <div class="messages container">
@@ -20,7 +20,7 @@
 
         <div class="row ">
 
-            <div id="poll-container" class="col-sm-12  mx-auto my-4 col-md-6">
+             <div class="col-sm-12  mx-auto my-4 col-md-6">
 
                 <a 
                     class="btn btn-danger m-1 float-right" 
@@ -42,7 +42,7 @@
 
                 <a 
                     class="btn m-1 float-right"
-                    @click="showform" 
+                    onclick = 'toggleForm()'
                     style="border:none;color:white;background:black;padding: 7px;" >
 
                         Update <i class="fas fa-edit"></i>
@@ -51,7 +51,7 @@
                 <br><br>
 
 
-                <div v-if="form" id="pollform">
+                <div id="pollform">
 
                     <form 
                         style="width:100%;padding:20px;" 
@@ -72,7 +72,7 @@
 
                 </div>
 
-                <div style="border-radius:10px;" class=" bg-light mt-4 p-4">
+                <div  style="border-radius:10px;" class=" bg-light mt-4 p-4">
 
                     {% if poll.file %} 
 
@@ -103,9 +103,10 @@
                         {% endif %}
 
                     {% endif %}
-
-                    <pre style="font-size: 1.2em;">{{ details }}</pre>
-
+                    <div class="ql-editor">
+                        {{ details.html|safe }}
+                    </div>
+                    <div style="border-top:4px solid black;"></div>
                     <p> {{ poll.who_can_vote }} can participate in this poll.</p>
 
                     <p style="float:right;"> Vote before {{ poll.announce_at }} </p>

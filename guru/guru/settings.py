@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django_comments',
     'django_cleanup.apps.CleanupConfig',
+    'django_quill',
     # 'user_visit',
 
     #all auth
@@ -138,10 +139,30 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = False
+DATA_UPLOAD_MAX_MEMORY_SIZE = None
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
+QUILL_CONFIGS = {
+    'default':{
+        'theme': 'snow',
+        'modules': {
+            'syntax': True,
+            'toolbar': [
+                [
+                    {'font': []},
+                    {'header': []},
+                    {'align': []},
+                    {'image':[]},
+                    { 'header': 1 }, { 'header': 2 },
+                    'bold', 'italic', 'underline', 'strike', 'blockquote',
+                    {'color': []},
+                    {'background': []},
+                    { 'list': 'ordered'}, { 'list': 'bullet' }
+                ],
+                ['code-block', 'link','formula','image','video'],
+            ]
+        },
+    }
+}
 
 STATIC_URL = '/static/'
 STATIC_ROOT = 'statics'
@@ -157,37 +178,6 @@ EMAIL_HOST_PASSWORD= '!@#$%^&*()$%^&*%^&*^&'
 EMAIL_PORT= 587
 EMAIL_USE_TLS= True
 DEFAULT_FROM_EMAIL= 'vishalpandeynits@gmail.com'
-
-CKEDITOR_UPLOAD_PATH = 'uploads/'
-CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
-CKEDITOR_CONFIGS = {
-        'default': {
-        'skin': 'moono',
-        'toolbar_YourCustomToolbarConfig': [
-
-            {'name': 'basicstyles',
-             'items': ['Bold', 'Strike']},
-
-            {'name': 'insert',
-             'items': [ 'Table', 'Smiley',]},
-
-            {'name': 'paragraph',
-             'items': ['NumberedList', 'BulletedList',
-                       'JustifyLeft', 'JustifyCenter', 'JustifyRight',]},
-            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
-
-            {'name': 'styles', 'items': ['Font', 'FontSize']},
-
-            ],
-        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
-        'height': 300,
-        'width': '100%;',
-        'filebrowserWindowHeight': 725,
-        'filebrowserWindowWidth': 940,
-        'toolbarCanCollapse': True,
-        'tabSpaces': 4,
-    }
-}
 
 #all-auth registraion settings
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS =1

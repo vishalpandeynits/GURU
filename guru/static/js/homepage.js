@@ -28,7 +28,17 @@ function joinform() {
     }
 }
 
+// POLL JS
+function addInputField(){
+    document.getElementById('more-inputs').innerHTML += '<input type="text" autocomplete="off" class="new" placeholder="Mention your option..." name="check">'
+    new_inputs = document.getElementsByClassName('new')
+    new_inputs[new_inputs.length-1].focus()
 
+}
+function toggleForm(){
+    document.getElementById('pollform').style.display=document.getElementById('pollform').style.display=='none'?'flex':'none';
+}
+    
 // SUBJECTS JAVASCRIPT
 new Vue({
         el: '#vue-container',
@@ -169,25 +179,6 @@ new Vue({
     })
     // PROFILE PAGE JS ENDS
 
-// POLL PAGE STARTS
-new Vue({
-        delimeters: ['[[', ']]'],
-        el: '#poll-container',
-        data: {
-            message: 'hello',
-            p: 4,
-            form: false,
-        },
-        methods: {
-            insert: function() {
-                this.p = this.p + 1
-            },
-            showform: function() {
-                this.form = this.form === true ? false : true;
-            }
-        }
-    })
-    // POLL PAGE ENDS 
 
 new Vue({
     el: '#update-form',
