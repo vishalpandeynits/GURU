@@ -3,11 +3,10 @@
 {% load humanize %} 
 {% block subject_content %}
 <div class="container">
-
-    <div id="containassignment">
-
+    <div>
         {% if form %}
-            <button @click="addAssignmentFormToggle" type="button" class="btn add-btn float-left mt-4">
+            <button onclick="toggleBlockForm(document.getElementById('addform'))"
+                    type="button" class="btn add-btn float-left mt-4">
     	      	 	Add <i class="fa fa-plus" aria-hidden="true"></i>
     		</button><br> 
         {% endif %}
@@ -20,16 +19,13 @@
         </form><br><br> 
 
         {% if form %}
-            <form 
-                method="POST" v-if="addform" class="addForm" 
-                id="upload_form" enctype="multipart/form-data">
+            <form method="POST" id="addform" class="addForm" enctype="multipart/form-data">
 
                 {% csrf_token %}
                 {{ form|crispy }}<br>
 
                 Submit Before:
                 <input type="datetime-local" required name="submission_date"><br>
-
                 <input type="submit" class="submit-button mt-4" value="submit">
 
             </form>

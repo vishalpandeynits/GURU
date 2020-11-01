@@ -1,11 +1,11 @@
 .add-btn {
     color: white;
-    background: black;
+    background: black; 
 }
 
 .addForm {
     width: 100%;
-    display: block;
+    display: none;
     margin: auto;
     padding: 20px;
     border-radius: 20px;
@@ -15,14 +15,11 @@
 
 .addForm input,
 textarea {
-    border: none;
-    border-bottom: 1px solid black;
-    width: 100%;
-    outline-width: none;
-    overflow: hidden;
+    width: 100%; 
     resize: none;
     padding: 5px 15px;
-    border-radius: 10px;
+    border-radius: 5px;
+    border:1px solid black;
 }
 
 .addForm input[type="submit"] {
@@ -33,17 +30,16 @@ textarea {
     padding: 5px;
     font-size: 1.2em;
     display: block;
-    margin: auto;
-    width: 250px;
-    border-radius: 20px;
-    transition: background 0.3s, width 0.3s;
+    margin:30px auto;
+    width:30%;
+    border-radius: 201px;
+    transition: 0.3s;
 }
 
 .addForm input[type="submit"]:hover {
     background: white;
-    border-bottom: 4px solid green;
     color: black;
-    width: 80%;
+    width: 40%;
 }
 
 .addForm input:focus,

@@ -1,6 +1,6 @@
 {% load comments %}
 {% load humanize %}
-<div id="con">
+<div>
     
 {% get_comment_count for assignment as comment_count %}
     {{ comment_count }} Comments
@@ -8,9 +8,8 @@
     {% get_comment_form for assignment as form %}
    <form action="{% comment_form_target %}" method="POST">{% csrf_token %}
 
-        <textarea name="comment" style="width:100%;resize:none;" rows="4" 
-            maxlength="3000" v-model="comment" id="id_comment" required> 
-        </textarea>
+        <textarea name="comment" onkeyup="checkComment()" style="width:100%;resize:none;" rows="4" 
+            maxlength="300" id="id_comment" required></textarea>
 
         {% if form.name == "honeypot" %} style="display:none;" {% endif %}
         {{ form.content_type }}
@@ -22,7 +21,7 @@
             value="{% url 'assignment_page' classroom.unique_id subject.id assignment.id %}" />
 
         <input type="submit" style="width:130px;" class="btn btn-primary float-right"
-          value="Add comment" id="id_submit" :disabled="disable"/>
+          value="Add comment" id="id_submit" disabled/>
     </form><br><br>
 
 {% get_comment_list for assignment as comment_list %}

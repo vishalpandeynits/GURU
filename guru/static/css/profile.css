@@ -53,6 +53,7 @@
 }
 #profileupdateform{
   padding:50px;
+  display:none;
 }
 
 #profileupdateform input{

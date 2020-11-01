@@ -35,10 +35,44 @@ function addInputField(){
     new_inputs[new_inputs.length-1].focus()
 
 }
-function toggleForm(){
-    document.getElementById('pollform').style.display=document.getElementById('pollform').style.display=='none'?'flex':'none';
+
+function toggleFlexForm(x){
+    x.style.display=x.style.display=='none'?'flex':'none';
 }
-    
+
+function toggleBlockForm(x){
+    if (!x.style.display || x.style.display == "none") {
+        x.style.display = "block";
+    }
+    else {
+        x.style.display = "none";
+    }
+}  
+
+//EMPTY COMMENT ISSUE
+function checkComment(){
+    var value=document.getElementById('id_comment').value
+    value = value.trim()
+    if(value.length==0){
+        document.getElementById('id_submit').disabled=true;
+    }
+    else{
+        document.getElementById('id_submit').disabled=false;
+    }
+}
+
+//EMPTY COMMENT ISSUE ENDS
+
+//HOMEPAGE JAVASCRIPT
+function on() {
+    document.getElementById("overlay").style.display = "block";
+}
+
+function off() {
+    document.getElementById("overlay").style.display = "none";
+}
+//HOMEPAGE JAVASCRIPT ENDS
+
 // SUBJECTS JAVASCRIPT
 new Vue({
         el: '#vue-container',
@@ -63,46 +97,7 @@ new Vue({
             },
         }
     })
-    // SUBJECTS JAVASCRIPT
-
-//EMPTY COMMENT ISSUE
-new Vue({
-    el: '#con',
-    data: {
-        comment: "",
-    },
-    computed: {
-        disable: function() {
-            if (this.comment.trim() == "") {
-                return true
-            }
-        }
-    }
-})
-
-//EMPTY COMMENT ISSUE ENDS
-
-//HOMEPAGE JAVASCRIPT
-var homepage = new Vue({
-    el: '#vuecontainer',
-    data: {
-        joinform: false,
-    },
-    methods: {
-        join: function() {
-            this.joinform = this.joinform === true ? false : true;
-        }
-    }
-})
-
-function on() {
-    document.getElementById("overlay").style.display = "block";
-}
-
-function off() {
-    document.getElementById("overlay").style.display = "none";
-}
-//HOMEPAGE JAVASCRIPT ENDS
+// SUBJECTS JAVASCRIPT
 
 // ASSIGNMENT PAGE JAVASCRIPT
 new Vue({
@@ -151,72 +146,7 @@ new Vue({
         },
     }
 })
-
-new Vue({
-        el: '#containassignment',
-        data: {
-            addform: false,
-        },
-        methods: {
-            addAssignmentFormToggle: function() {
-                this.addform = this.addform === true ? false : true;
-            }
-        }
-    })
-    // ASSIGNMENT PAGE JAVASCRIPT ENDS 
-
-// PROFILE PAGE JS
-new Vue({
-        el: '#profile',
-        data: {
-            updateForm: false,
-        },
-        methods: {
-            showUpdateForm: function() {
-                this.updateForm = this.updateForm === true ? false : true;
-            }
-        }
-    })
-    // PROFILE PAGE JS ENDS
-
-
-new Vue({
-    el: '#update-form',
-    data: {
-        updateForm: false
-    },
-    methods: {
-        classUpdateForm: function() {
-            this.updateForm = this.updateForm === true ? false : true;
-        }
-    }
-})
-
-// Announcement page JS
-new Vue({
-    el: '#containannouncement',
-    data: {
-        addform: false,
-    },
-    methods: {
-        addAnnouncementFormToggle: function() {
-            this.addform = this.addform === true ? false : true;
-        }
-    }
-})
-
-new Vue({
-        el: '#contain',
-        data: {
-            updateform: false,
-        },
-        methods: {
-            updateFormToggle: function() {
-                this.updateform = this.updateform === true ? false : true;
-            }
-        }
-    })
-    // Anouncement page JS ends
+// ASSIGNMENT PAGE JAVASCRIPT ENDS 
 
 // This subject JS
 new Vue({
@@ -242,30 +172,3 @@ new Vue({
         }
     }
 })
-
-// This subject JS ends
-
-// Resources JS
-new Vue({
-    el: '#resource-contain',
-    data: {
-        addform: false,
-    },
-    methods: {
-        addFormToggle: function() {
-            this.addform = this.addform === true ? false : true;
-        }
-    }
-})
-new Vue({
-        el: '#note-contain',
-        data: {
-            showUpdateForm: false,
-        },
-        methods: {
-            formToggle: function() {
-                this.showUpdateForm = this.showUpdateForm === true ? false : true;
-            }
-        }
-    })
-    // Resource page ends

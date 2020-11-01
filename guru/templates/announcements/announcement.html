@@ -2,40 +2,35 @@
 {% load crispy_forms_tags %}
 {% load humanize %}
 {% block subject_content %}
-<div style="width:100%;"class="container">
+<div class="container">
 
-	<div id="containannouncement">
+	{% if is_teacher %}
+      	 <button 
+      	 	onclick = "toggleBlockForm(document.getElementById('addform'))"
+      	 	type="button" 
+      	 	class="btn add-btn float-left mt-4">
+      	 	Add 
+      	 	<i class="fa fa-plus" aria-hidden="true"></i>
 
-		{% if is_teacher %}
-	      	 <button 
-	      	 	@click = "addAnnouncementFormToggle" 
-	      	 	type="button" 
-	      	 	class="btn add-btn float-left mt-4">
+		</button><br>
+	{% endif %}
 
-	      	 	Add 
-	      	 	<i class="fa fa-plus" aria-hidden="true"></i>
+	<form class="float-right search-container">
+      	<input class="search-input" autocomplete="off" type="text"
+      		 placeholder="Search..."name="search">
+      	<button class="search-icon" type="submit">
+      	 	<i class="fas fa-search"></i>
+      	</button>
+	</form><br><br>
 
-			</button><br>
-		{% endif %}
 
-		<form class="float-right search-container">
-	      	<input class="search-input" autocomplete="off" type="text"
-	      		 placeholder="Search..."name="search">
-	      	<button class="search-icon" type="submit">
-	      	 	<i class="fas fa-search"></i>
-	      	</button>
-		</form><br><br>
-
-	
-		{% if form %}
-			<form method="POST" v-if="addform" class="addForm" 
-				enctype="multipart/form-data">{% csrf_token %}
-				{{ form|crispy}}
-				<input type="submit" class="submit-button"value="submit">
-			</form>
-	    {% endif %}
-
-	</div>
+	{% if form %}
+		<form method="POST" id="addform" class="addForm" 
+			enctype="multipart/form-data">{% csrf_token %}
+			{{ form|crispy}}
+			<input type="submit" class="submit-button"value="submit">
+		</form>
+    {% endif %}
 
 	{% if announcements %}
 		<div style="min-height:500px;">

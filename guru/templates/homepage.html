@@ -6,11 +6,9 @@
 	<div class="row">
 		{% include 'navigation.html' %}
 	</div>
-	<div class="row">
+	<div class="row container">
 
 		<div id="home-btn-container">
-
-			<div id="vuecontainer">
 
 				<h2 id="col-md-6" style="font-size:4vw;"> 
 					Online classes made easy by your own GURU.
@@ -29,24 +27,21 @@
 					 class
 				</button>
 
-				<button @click="join" class='btn btn-home'>
+				<button onclick="toggleBlockForm(document.getElementById('joinform'))" class='btn btn-home'>
 					Join a class 
 				</button> <br>
 
 
 				<div id="overlay" >
 					<form id="classform" method="POST"> {% csrf_token %}
-
 						<a onclick="off()" id="close"> &times;</a> 
-
 						{{ createclassform|crispy }}
 						<input type="submit" value="Create" class="btn btn-success m-2"> 
 
 					</form>
 				</div>
 
-				<form v-if="joinform" id="joinform" 
-					method="POST">{% csrf_token %} 
+				<form id="joinform" method="POST">{% csrf_token %} 
 					Unique id: <br>
 					<input type="text" placeholder="Unique ID"name="join_key"><br>
 					<input type="submit" value="Join" class="btn btn-success float-right m-2"><br><br>

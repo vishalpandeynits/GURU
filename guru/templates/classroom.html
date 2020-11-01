@@ -22,47 +22,47 @@
         </div>
     {% endif %}
 
-    <span id="update-form">
-		<span style="display:flex; align-items:center; justify-content:center;" id="homepage-btn-group">
-			<button @click="classUpdateForm">Update</button>
-			<span class="dropdown ">
-			  	<button class="btn btn-secondary dropdown-toggle mx-2 " type="button" 
-			  		id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			   		 Invitation link
-			  	</button>
+	<span style="display:flex; align-items:center; justify-content:center;" id="homepage-btn-group">
+		<button onclick="toggleBlockForm(document.getElementById('updateForm'))">
+            Update
+        </button>
+		<span class="dropdown ">
+		  	<button class="btn btn-secondary dropdown-toggle mx-2 " type="button" 
+		  		id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		   		 Invitation link
+		  	</button>
 
-			  	<div class="dropdown-menu bg-light" aria-labelledby="dropdownMenuButton">
+		  	<div class="dropdown-menu bg-light" aria-labelledby="dropdownMenuButton">
 
-			    	<a style="text-decoration: none;" target="_blank" class="invite-link" 
-						href="https://api.whatsapp.com/send?text=Click on
-					 	this link http://www.guru/join/{{classroom.unique_id}}/ 
-					 	to join classroom {{classroom}} created by 
-					 	{{classroom.created_by}}/)">
-					 	Invite by Whatsapp
-					</a>
+		    	<a style="text-decoration: none;" target="_blank" class="invite-link" 
+					href="https://api.whatsapp.com/send?text=Click on
+				 	this link http://www.guru/join/{{classroom.unique_id}}/ 
+				 	to join classroom {{classroom}} created by 
+				 	{{classroom.created_by}}/)">
+				 	Invite by Whatsapp
+				</a>
 
-					<a style="text-decoration: none;" target="_blank" class="invite-link" 
-						href="mailto:?subject= Invitation for {{classroom}} 
-						&body=Click on this link http://www.guru/join/{{classroom.unique_id}}/
-					 	to join classroom {{classroom}} created by {{classroom.created_by}}">
-						Invite by email
-					</a>
+				<a style="text-decoration: none;" target="_blank" class="invite-link" 
+					href="mailto:?subject= Invitation for {{classroom}} 
+					&body=Click on this link http://www.guru/join/{{classroom.unique_id}}/
+				 	to join classroom {{classroom}} created by {{classroom.created_by}}">
+					Invite by email
+				</a>
 
-			 	</div>
-			</span>
-        </span>
-
-        <div v-if="updateForm" class="container">
-
-            <form id="classroom-updateForm" method="POST" enctype="multipart/form-data">
-
-                {% csrf_token %} {{ form|crispy }}
-
-                <input type="Submit" value="Update" class="btn mt-4 btn-primary btn-block">
-            </form>
-
-        </div>
+		 	</div>
+		</span>
     </span>
+
+    <div id="updateForm" style="display: none;" class="container">
+
+        <form id="classroom-updateForm" method="POST" enctype="multipart/form-data">
+
+            {% csrf_token %} {{ form|crispy }}
+
+            <input type="Submit" value="Update" class="btn mt-4 btn-primary btn-block">
+        </form>
+
+    </div>
 
     <!-- Subjects -->
     {% if pending_members %}

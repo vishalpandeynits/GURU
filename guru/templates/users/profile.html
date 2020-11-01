@@ -68,7 +68,8 @@
 
 			<center>
 
-				<button style="margin:10px;" @click="showUpdateForm"class="btn btn-info">
+				<button style="margin:10px;"class="btn btn-info"
+					onclick="toggleBlockForm(document.getElementById('profileupdateform'))">
 					Edit profile
 				</button><br>
 
@@ -85,16 +86,11 @@
 			</center>
 
 
-			<form 
-
-				style="width:100%; "method="POST" id="profileupdateform" 
-				v-if="updateForm" enctype="multipart/form-data"> 
+			<form method="POST" id="profileupdateform"  enctype="multipart/form-data"> 
 				{% csrf_token %}
 
 				{{ p_form|crispy }}
-
 				<button class="btn btn-primary" type="submit">Update</button>
-
 			</form>
 
 		{% endif %}

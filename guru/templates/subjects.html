@@ -13,13 +13,13 @@
 		</div>
 	{% endif %}
 
-	<div id="vue-container" class="container-fluid">
+	<div class="container-fluid">
 		{% if form %}
 		<div style="display:flex;justify-content: center;">
 			<center> 
-				<button @click="addSubject" id="add-subject-btn"> Add a subject</button>
+				<button onclick="toggleBlockForm(document.getElementById('subject-add-form'))" id="add-subject-btn"> Add a subject</button>
 			<center><br>
-			<div v-if="addform" id="subject-add-form">
+			<div id="subject-add-form">
 				<form  action="/guru/{{classroom.unique_id}}/" 
 					method="POST" enctype="multipart/form-data">
 					{% csrf_token %}
@@ -33,7 +33,7 @@
 		{% endif %}
 
 		{% if subjects %}
-		<div v-if="subjects" class="row">
+		<div class="row">
 			{% for subject in subjects %}
 			<div class="col-xs-12 col-md-6 col-lg-4">
 				<a class="text-center" style="color:white;"

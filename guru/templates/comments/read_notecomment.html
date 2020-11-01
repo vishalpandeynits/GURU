@@ -3,9 +3,8 @@
 <div id="con">
    {% get_comment_form for note as form %}
    <form action="{% comment_form_target %}" method="POST">{% csrf_token %}
-        <textarea name="comment" style="width:100%;resize:none;" rows="4" 
-            maxlength="300" v-model="comment" id="id_comment" required> 
-        </textarea>
+        <textarea name="comment" onkeyup="checkComment()" style="width:100%;resize:none;" rows="4" 
+            maxlength="300" id="id_comment" required></textarea>
 
         {% if form.name == "honeypot" %} style="display:none;" {% endif %}
         {{ form.content_type }}
@@ -15,7 +14,7 @@
         <input type="hidden" name="next" 
             value="{% url 'read_note' classroom.unique_id subject.id note.id %}" />
         <input type="submit" style="width:130px;" class="btn btn-primary float-right"
-          value="Add comment" id="id_submit" :disabled="disable"/>
+          value="Add comment" id="id_submit" disabled/>
     </form>
 
     {% get_comment_count for note as comment_count %}

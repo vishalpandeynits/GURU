@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save,pre_delete
 from django.dispatch import receiver
 from .email import *
+from django_quill.fields import QuillField
 
 class Classroom(models.Model):
 	created_by = models.ForeignKey(User, on_delete = models.CASCADE,related_name='created_by')
@@ -36,7 +37,7 @@ class Note(models.Model):
 	uploaded_on = models.DateTimeField(auto_now_add= True)
 	file = models.FileField(upload_to='media/notes/',null=True,blank=True,)
 	topic = models.CharField(max_length=100,)
-	description = models.TextField(null=True,blank=True)
+	description = QuillField()
 	uploaded_by = models.ForeignKey(User,on_delete=models.CASCADE)
 
 	def __str__(self):
@@ -46,7 +47,7 @@ class Announcement(models.Model):
 	subject_name = models.ForeignKey(Subject, on_delete=models.CASCADE)
 	issued_on = models.DateTimeField(auto_now_add= True)
 	subject = models.CharField(max_length=100)
-	description = models.TextField(null=True,blank=True)
+	description = QuillField()
 	file = models.FileField(upload_to='media/announcement/',null=True,blank=True)
 	announced_by = models.ForeignKey(User,on_delete=models.CASCADE)
 
@@ -58,7 +59,7 @@ class Assignment(models.Model):
 	uploaded_on = models.DateTimeField(auto_now_add= True)
 	file = models.FileField(upload_to='media/',null=True,blank = True,)
 	topic = models.CharField(max_length=100,)
-	description = models.TextField(null=True,blank=True)
+	description = QuillField()
 	submission_date = models.DateTimeField() 
 	assigned_by = models.ForeignKey(User,on_delete=models.CASCADE)
 	submitted_by = models.ManyToManyField(User,related_name="Submissions")

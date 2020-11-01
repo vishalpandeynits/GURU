@@ -27,7 +27,7 @@
 		
 			<!-- Update assignment logic start -->
 			{% if is_teacher %}
-				<div id="containassignment">
+				<div>
 
 					<a class="btn btn-danger m-1 float-right" 
 						style="border:none;color:white;background:red;padding: 7px;" 
@@ -41,12 +41,13 @@
 						Contact <i class="fas fa-phone-volume"></i>
 					</a>
 
-					<a @click="addAssignmentFormToggle" class="btn m-1 float-right"
+					<a  onclick="toggleBlockForm(document.getElementById('updateform'))"
+						class="btn m-1 float-right"
 						style="border:none;color:white;background:black;padding: 7px;">
 					 	Update <i class="fas fa-edit"></i>
 					</a><br><br>
 
-					<form method="POST" v-if="addform" class="addForm" 
+					<form method="POST" id="updateform" class="addForm" 
 						enctype="multipart/form-data">{% csrf_token %}
 						{{ updateform|crispy }}
 						<input type="submit" class="submit-button" value="submit">
@@ -91,7 +92,7 @@
 
 				{% endif %}
 
-				<pre>{{ assignment.description }}</pre>
+				<div class="ql-editor">{{ assignment.description.html|safe }}</div>
 
 			</div><br>
 			

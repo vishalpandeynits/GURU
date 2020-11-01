@@ -21,13 +21,13 @@
 				Contact <i class="fas fa-phone-volume"></i>
 			</a>
 
-			<a @click="updateFormToggle" 
-				style="color:white;background:black;padding: 7px;"
-			 	class="btn m-2 float-right">
+			<button onclick="toggleBlockForm(document.getElementById('updateform'))"
+				style="color:white;background:black;padding: 7px;cursor:pointer;"
+			 	class="m-2 float-right">
 			 	Update <i class="fas fa-edit"></i>
-			</a><br><br>
+			</button><br><br>
 
-		  	<form method="POST" v-if="updateform"class="addForm" 
+		  	<form method="POST" id="updateform"class="addForm" 
 		  		enctype="multipart/form-data">{% csrf_token %}
 				{{ updateform|crispy }}
 				<input type="submit" class="submit-button" value="submit">
@@ -66,7 +66,7 @@
 
 			{% endif %}	
 			
-			<pre>{{ announcement.description }}</pre>
+			<div class="ql-editor">{{ announcement.description.html|safe }}</div>
 
 		</div><br>
 
