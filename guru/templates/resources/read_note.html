@@ -41,19 +41,21 @@
 			</a>
 
             <button 
-                onclick="toggleBlockForm(document.getElementById('updateform'))"
+                onclick="on(document.getElementsByClassName('overlay')[0])"
                 style="background:black;color:white;" 
                 class="btn my-2 mx-1 float-right buttons">
                     Update <i class="fas fa-edit"></i>
 			</button><br><br>
 
-            <form method="POST" id="updateform"
-                class="addForm" enctype="multipart/form-data">{% csrf_token %} 
-                <br>
-                {{ updateform|crispy }}
-                <input type="submit" class="submit-button" value="submit">
-
-            </form>
+            <div class="overlay">
+                <form method="POST" id="updateform"
+                    class="addForm overlayform" enctype="multipart/form-data">{% csrf_token %} 
+                    <br>
+                    <a onclick = "toggleBlockForm(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+                    {{ updateform|crispy }}
+                    <input type="submit" class="submit-button" value="submit">
+                </form>
+            </div>
         {% endif %}<br>
 
     <div id="note-content">

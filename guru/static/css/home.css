@@ -9,6 +9,8 @@
 
 */
 html,body{
+  margin:0;
+  padding:0;
 }
 html * {
     scroll-behavior: smooth;
@@ -18,7 +20,7 @@ html * {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: transparent;
+  background-color: white;
 
 }
 
@@ -52,6 +54,7 @@ pre {
   color:white;
   font-size:30px;
   cursor:pointer;
+  box-shadow:2px 4px 4px darkgrey;
   width:40px;
   border-radius:15px;
   border-color:white;
@@ -186,6 +189,7 @@ pre {
   width:140px;
   margin:20px 0px;
   height:40px;
+  display:flex; align-items:center; justify-content:center;
 }
 #homepage-btn-group button:hover{
   color:black;

@@ -5,8 +5,15 @@
 {% block content %}
 <div>	
 	{% include 'navigation.html' %}
-    {% if messages %}
-        <div class="messages container">
+
+    {% if  form %}
+        <div class="messages mt-4 container">
+    	    <center> 
+				<button onclick="on(document.getElementById('subject-add-form'))" id="add-subject-btn"> 
+					Add a subject
+				</button>
+			<center><br>
+
             {% for message in messages %}
                 <div class='alert alert-{{ message.tags }} alert-dismissible fade show'>
                     {{ message }} 
@@ -21,12 +28,11 @@
 	<div class="container-fluid">
 		{% if form %}
 		<div style="display:flex;justify-content: center;">
-			<center> 
-				<button onclick="toggleBlockForm(document.getElementById('subject-add-form'))" id="add-subject-btn"> Add a subject</button>
-			<center><br>
-			<div id="subject-add-form">
-				<form  action="/guru/{{classroom.unique_id}}/" 
+			<div class="overlay" id="subject-add-form">
+
+				<form class="overlayform" action="/guru/{{classroom.unique_id}}/" 
 					method="POST" enctype="multipart/form-data">
+					<a onclick="off(document.getElementById('subject-add-form'))" id="close"> &times;</a><br>
 					{% csrf_token %}
 					<input type="text" name="subject_name" placeholder="Add a subject."
 						 maxlength="50" required id="id_subject_name"><br>

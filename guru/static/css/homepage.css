@@ -1,7 +1,7 @@
 
 /*Classroom list and form*/
 
-#overlay {
+.overlay {
     position: fixed;
     display: none;
     width: 100%;
@@ -10,18 +10,30 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(255,255,255,0.5);
     z-index: 2;
     cursor: pointer;
 }
 
-#classform {
+.overlayform {
     position: absolute;
     top: 50%;
     left: 50%;
+    width:40%;
+    z-index:2;
     transform: translate(-50%, -50%);
+    background-color:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:7px 7px 10px grey;
 }
-
+.overlayform input[type="text"],input[type="file"],textarea{
+    width:100%;
+    display:block;
+}
+.overlayform input[type="checkbox"]{
+    display:inline-block;
+}
 #joinform{
     display:none;
     background: white;
@@ -36,8 +48,9 @@
 }
 
 #close {
-    float: right;
-    font-size: 1.5em;
+    position:absolute;
+    right:15px;top:5px;
+    font-size:2em !important;
     color: red;
     font-weight: bolder;
 }
@@ -150,6 +163,7 @@
 }
 
 #subjectedit {
+    width:60%;
     padding: 20px;
     background: white;
     border-radius: 15px;
@@ -387,6 +401,4 @@
     padding: 8px 12px;
 }
 
-
->>>>>>> 33942830083950124fb037ea4fb990036ac4ef6f
 /*This subject css ends */

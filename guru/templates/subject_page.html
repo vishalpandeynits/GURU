@@ -51,58 +51,54 @@
 		</div>
 
 	</div>
+</div>
 
-	<div class="col-12 ml-0" style="width:100%;margin:0;">
+<div style="background:white;box-shadow:2px 4px 6px darkgrey;" class="p-2">
 
-		<div style="background:white;box-shadow:2px 4px 6px darkgrey;" class="p-2">
+	<span class="pl-1" id="openNav" onclick="openNav()">
+		&#9776;
+	</span>
 
-			<span style="box-shadow:2px 4px 4px darkgrey;" class="pl-1" id="openNav" onclick="openNav()">
-				&#9776;
-			</span>
+<span style="font-size:2.5em;margin-left:20px;color:white;">
+	&nbsp; {{ subject.subject_name|title }}
+</span>
 
-			<span style="font-size:2.5em;margin-left:20px;color:white;">
-				&nbsp; {{ subject.subject_name|title }}
-			</span>
+<div style="color:black;"  class="float-right mx-2 mt-2"> 
+	<div class="btn-group">
 
-			<div style="color:black;"  class="float-right mx-2 mt-2"> 
-				<div class="btn-group">
+		<div class="btn-group dropleft" role="group">
 
-					<div class="btn-group dropleft" role="group">
+			<button class="bg-transparent dropdown-toggle dropdown-toggle-split" 
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			</button>
 
-						<button class="bg-transparent dropdown-toggle dropdown-toggle-split" 
-							data-toggle="dropdown" style="border:none;outline:none;cursor: pointer;"
-							aria-haspopup="true" aria-expanded="false">
-						</button>
+            <div class="dropdown-menu-lg-right bg-dark text-light dropdown-menu p-0">
 
-			            <div class="dropdown-menu-lg-right bg-dark text-light dropdown-menu p-0">
+                <a style="margin:10px;display:block;" 
+                	class="text-light" href="{% url 'logout' %}">
+					Log Out
+				</a>
 
-			                <a style="margin:10px;display:block;" 
-			                	class="text-light" href="{% url 'logout' %}">
-								Log Out
-							</a>
+                <a style="margin:10px;display:block;" class="text-light" 
+                	href="{% url 'password_change' %}">
+					Change Password
+				</a>
 
-			                <a style="margin:10px;display:block;" class="text-light" 
-			                	href="{% url 'password_change' %}">
-								Change Password
-							</a>
+            </div>
 
-			            </div>
+			 </div>
 
-	       			 </div>
+         <a class="float-right mx-1 mt-1" href="{% url 'profile' user.username %}"
+         	style="color:black;font-size:2.1em;" >
+            <i class="fas fa-user mr-2"></i>
+        </a>
 
-			         <a class="float-right mx-1 mt-1" href="{% url 'profile' user.username %}"
-			         	style="color:black;font-size:2.1em;" >
-			            <i class="fas fa-user mr-2"></i>
-			        </a>
+	</div>
+</div>
 
-    			</div>
-			</div>
-
-		</div>
+</div>
 
 		{% block subject_content %} {% endblock %}
-		
-	</div>
 
 </div>
 {% endblock %}

@@ -5,38 +5,36 @@
 
 <div class="container" >
 
-		{% if is_teacher %}
-	      	<button onclick="toggleBlockForm(document.getElementById('addform'))" type="button" class="btn add-btn float-left mt-4">
+	{% if is_teacher %}
+      	<button onclick="on(document.getElementsByClassName('overlay')[0])" 
+      			type="button" class="btn add-btn float-left mt-4">
+      	 		Add <i class="fa fa-plus" aria-hidden="true"></i>
+		</button><br>
+	{% endif %}
 
-	      	 	Add <i class="fa fa-plus" aria-hidden="true"></i>
+	<form class="float-right search-container">
+      	<input class="search-input" autocomplete="off" type="text"
+      		 placeholder="Search..."name="search">
+      	<button class="search-icon" type="submit">
+      	 	<i class="fas fa-search"></i>
+      	</button>
+	</form><br><br>
 
-			</button><br>
-		{% endif %}
-
-		<form class="float-right search-container">
-	      	<input class="search-input" autocomplete="off" type="text"
-	      		 placeholder="Search..."name="search">
-	      	<button class="search-icon" type="submit">
-	      	 	<i class="fas fa-search"></i>
-	      	</button>
-		</form><br><br>
-
-		{% if is_teacher %} 
-		    <form method="POST" id="addform" class="addForm" enctype="multipart/form-data">
+	{% if is_teacher %} 
+		<div class="overlay">
+		    <form method="POST" id="addform" class="overlayform addForm" enctype="multipart/form-data">
 		    	{% csrf_token %}
-
+		    	<a onclick = "toggleBlockForm(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
 				{{ form|crispy}}
-
 				<input type="submit" class="submit-button"value="submit">
 			</form>
-		{% endif %}<br>
+		</div>
+	{% endif %}<br>
 
 	{% if page %}
 
 		<div style="min-height:550px;">
-
 		{% for note in page %}
-
 			<a href="{% url 'read_note' classroom.unique_id subject.id note.id %}">
 
 				<div style="font-size: 1.2em; word-wrap: break-word;" class="content">
@@ -52,9 +50,7 @@
 				</div>
 
 			</a>
-
 		{% endfor %}
-
 		</div>
 
 		{% include 'paginations.html' %}	

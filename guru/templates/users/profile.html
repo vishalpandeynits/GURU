@@ -74,7 +74,7 @@
 			<center>
 
 				<button style="margin:10px;"class="btn btn-info"
-					onclick="toggleBlockForm(document.getElementById('profileupdateform'))">
+					onclick="on(document.getElementsByClassName('overlay')[0])">
 					Edit profile
 				</button><br>
 
@@ -90,13 +90,14 @@
 
 			</center>
 
-
-			<form method="POST" id="profileupdateform"  enctype="multipart/form-data"> 
-				{% csrf_token %}
-
-				{{ p_form|crispy }}
-				<button class="btn btn-primary" type="submit">Update</button>
-			</form>
+			<div class="overlay">
+				<form method="POST" id="profileupdateform" class=" overlayform" enctype="multipart/form-data"> 
+					{% csrf_token %}
+					<a onclick = "toggleBlockForm(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+					{{ p_form|crispy }}
+					<button class="btn btn-primary" type="submit">Update</button>
+				</form>
+			</div>
 
 		{% endif %}
 

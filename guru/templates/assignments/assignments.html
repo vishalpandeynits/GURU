@@ -5,10 +5,20 @@
 <div class="container">
     <div>
         {% if form %}
-            <button onclick="toggleBlockForm(document.getElementById('addform'))"
+            <button onclick="on(document.getElementsByClassName('overlay')[0])"
                     type="button" class="btn add-btn float-left mt-4">
     	      	 	Add <i class="fa fa-plus" aria-hidden="true"></i>
-    		</button><br> 
+    		</button><br>
+            <div class="overlay">
+                <form method="POST" id="addform" class="overlayform addform " enctype="multipart/form-data">
+                    <a onclick = "toggleBlockForm(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+                    {% csrf_token %}
+                    {{ form|crispy }}<br>
+                    Submit Before:
+                    <input type="datetime-local" required name="submission_date"><br>
+                    <input type="submit" class="submit-button mt-4" value="submit">
+                </form>
+            </div> 
         {% endif %}
 
         <form class="float-right search-container">
@@ -17,19 +27,6 @@
 	      	 	<i class="fas fa-search"></i>
 	      	</button>
         </form><br><br> 
-
-        {% if form %}
-            <form method="POST" id="addform" class="addForm" enctype="multipart/form-data">
-
-                {% csrf_token %}
-                {{ form|crispy }}<br>
-
-                Submit Before:
-                <input type="datetime-local" required name="submission_date"><br>
-                <input type="submit" class="submit-button mt-4" value="submit">
-
-            </form>
-        {% endif %}
 
     </div>
 

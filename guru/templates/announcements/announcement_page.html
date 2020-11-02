@@ -21,17 +21,20 @@
 				Contact <i class="fas fa-phone-volume"></i>
 			</a>
 
-			<button onclick="toggleBlockForm(document.getElementById('updateform'))"
+			<button onclick="on(document.getElementsByClassName('overlay')[0])"
 				style="color:white;background:black;padding: 7px;cursor:pointer;"
 			 	class="m-2 float-right">
 			 	Update <i class="fas fa-edit"></i>
 			</button><br><br>
 
-		  	<form method="POST" id="updateform"class="addForm" 
-		  		enctype="multipart/form-data">{% csrf_token %}
-				{{ updateform|crispy }}
-				<input type="submit" class="submit-button" value="submit">
-		  	</form>
+			<div class="overlay">
+			  	<form method="POST" id="updateform"class="addForm overlayform" 
+			  		enctype="multipart/form-data">{% csrf_token %}
+			  		<a onclick = "toggleBlockForm(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+					{{ updateform|crispy }}
+					<input type="submit" class="submit-button" value="submit">
+			  	</form>
+		  	</div>
 		</div>
 		{% endif %}<br>
 		
