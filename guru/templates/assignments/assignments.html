@@ -20,13 +20,15 @@
                 </form>
             </div> 
         {% endif %}
-
+        {% if assignments %}
         <form class="float-right search-container">
             <input class="search-input" autocomplete="off" type="text" placeholder="Search..." name="search">
             <button class="search-icon" type="submit">
 	      	 	<i class="fas fa-search"></i>
 	      	</button>
-        </form><br><br> 
+        </form>
+        {% endif %}
+        <br><br> 
 
     </div>
 

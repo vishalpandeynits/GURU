@@ -12,6 +12,7 @@
 		</button><br>
 	{% endif %}
 
+	{% if page %}
 	<form class="float-right search-container">
       	<input class="search-input" autocomplete="off" type="text"
       		 placeholder="Search..."name="search">
@@ -19,6 +20,7 @@
       	 	<i class="fas fa-search"></i>
       	</button>
 	</form><br><br>
+	{% endif %}
 
 	{% if is_teacher %} 
 		<div class="overlay">
