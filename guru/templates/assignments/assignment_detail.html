@@ -1,0 +1,99 @@
+{% extends 'subject_page.html' %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% load comments %}
+{% load static %}
+{% block subject_content %}
+<style>
+	@media screen and (min-width:414px){
+		#submission-date{
+			float:right;
+		}
+	}
+</style>
+<div class="container-fluid">
+	{% if is_teacher %}
+		<div class="overlay">
+			<form method="POST" id="updateform" class="addForm overlayform" 
+				enctype="multipart/form-data">{% csrf_token %}
+				<a onclick = "toggleBlockForm(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+				{% for field in updateform %}
+					{% if field.field.widget.input_type == 'file' %}
+					<input type="file" name="file" id="actual-btn" hidden/>
+					<label id="file-upload-label"for="actual-btn">Upload File<i class="fa mx-2 fa-upload" aria-hidden="true"></i></label>
+					{% else %}
+						{{ field.label_tag }}<br>
+						{{ field }}
+					{% endif %}
+				{% endfor %}
+				<center>
+					<input type="submit" class="submit-button"value="Submit">
+				</center>
+			</form>
+		</div>
+	{% endif %}
+
+	<div class="row">
+		<div class="col-sm-12 col-lg-4 order-lg-2">
+			{% if is_teacher %}
+				{% include 'assignments/assignment_submissions_teacher.html' %}
+			{% else %}
+				{% include 'assignments/assignment_submissions_student.html' %}
+			{% endif %}
+		</div>
+
+		<div class="col-sm-12 col-lg-8 order-lg-1">
+			<!-- Update assignment logic start -->
+				<div class="row d-flex justify-content-end ">
+
+					{% if is_teacher %}
+					<a  class="btn btn-danger mx-1 my-2 buttons" 
+						href="{% url 'delete_assignment' classroom.unique_id subject.id assignment.id %}"
+						style="background:red;">
+						Delete <i class="fa fa-trash" aria-hidden="true"></i>
+					</a>
+					<button 
+						onclick="on(document.getElementsByClassName('overlay')[0])"
+						style="background:black;color:white;" 
+						class="btn my-2 mx-1 buttons">
+							Update <i class="fas fa-edit"></i>
+					</button>
+					{% endif %}
+					<a class="btn btn-dark mx-1 my-2 bg-primary buttons" 
+						href="/profile/{{assignment.assigned_by}}">
+						Contact <i class="fas fa-phone-volume"></i>
+					</a>
+				</div>
+
+				<!-- Assignment details -->
+				<div id="detail-content">
+					<p id="detail-topic">
+						{{ assignment.topic }}
+					</p>
+					<b id="submission-date" >
+						Submit Before <nobr>{{ assignment.submission_date }}</nobr>
+					</b><br>
+					{% if assignment.file %} 
+						{% if extension == 'image' %}
+							<a href="{{assignment.file.url}}">
+								<img src="{{assignment.file.url}}" id="media-container">
+							</a>
+						{% elif extension == 'video' %}
+							<video height="300" width="500" id="media-container" controls>
+									<source src="{{assignment.file.url}}" type="video/mp4">
+									<source src="{{assignment.file.url}}" type="video/ogg">
+								Your browser does not support the video tag.
+								</video><br>
+							<a href="{{assignment.file.url}}" style="text-align: center;" download> Download file</a> 
+						{% else %}
+							<a href="{{assignment.file.url}}" style="text-align: center;" download> Download file</a> 
+						{% endif %} 
+					{% endif %}
+					<div class="ql-editor">{{ assignment.description.html|safe }}</div>
+				</div><br>
+				<!-- Assignment details ends -->
+				{% include 'comments/assignmentcomment.html' %}
+			</div>
+	</div>
+</div>
+{% endblock %}

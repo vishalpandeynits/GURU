@@ -1,0 +1,200 @@
+{% extends 'base.html' %} 
+{% load crispy_forms_tags %} 
+{% load static %} 
+{% block title %} Home view {% endblock %} 
+{% block content %}
+
+<div>
+    {% include 'navigation.html' %}
+
+    <div class="text-center m-auto mt-4 ">
+        <h2> {{ classroom.class_name }} </h2>
+        {% if classroom.description %}
+        <p> {{ classroom.description }} </p>
+        {% endif %}
+    </div>
+
+    {% if messages %}
+        <div class="messages container">
+            {% for message in messages %}
+                <div class='alert alert-{{ message.tags }} alert-dismissible fade show'>
+                    {{ message }} 
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="row d-flex justify-content-center">
+        <button class="btn btn-dark" onclick="on(document.getElementsByClassName('overlay')[0])">
+            Update
+        </button>
+		<span class="dropdown ">
+		  	<button class="btn btn-dark dropdown-toggle mx-2 " type="button" 
+		  		id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		   		 Invitation link
+		  	</button>
+		  	<div class="dropdown-menu bg-light" aria-labelledby="dropdownMenuButton">
+		    	<a style="text-decoration: none;" target="_blank" class="invite-link" 
+					href="https://api.whatsapp.com/send?text=Click on
+				 	this link http://www.guru/join/{{classroom.unique_id}}/ 
+				 	to join classroom {{classroom}} created by 
+				 	{{classroom.created_by}}/)">
+				 	Invite by Whatsapp
+				</a>
+				<a style="text-decoration: none;" target="_blank" class="invite-link" 
+					href="mailto:?subject= Invitation for {{classroom}} 
+					&body=Click on this link http://www.guru/join/{{classroom.unique_id}}/
+				 	to join classroom {{classroom}} created by {{classroom.created_by}}">
+					Invite by email 
+				</a>
+		 	</div>
+		</span>
+    </div>
+		
+
+    <div class="overlay">
+        <form method="POST"class="overlayform" style="display:block;"enctype="multipart/form-data">
+            {% csrf_token %}
+            <a onclick = "toggleBlockForm(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+                {% for field in form %}
+                    {% if field.field.widget.input_type == 'file' %}
+                    <input type="file" name="file" id="actual-btn" hidden/>
+                    <label id="file-upload-label" class="text-center"for="actual-btn">Upload Classroom Pic<i class="fa mx-2 fa-upload" aria-hidden="true"></i></label>
+                    {% elif field.field.widget.input_type == 'checkbox' %}
+                    <input type="checkbox" name="need_permission" id="id_need_permission" {% if classroom.need_permission %} checked {% endif %} > 
+                        <label for="id_need_permission" style="display:inline-block;" title="Joiners will need Permisson of admins to join this classroom">Need permission to join</label><br>
+                    {% else %}
+                        {{ field.label_tag }}<br>
+                        {{ field }}
+                    {% endif %}
+                {% endfor %}
+            <center>
+                <input type="submit" class=" submit-button"value="Submit">
+            </center>
+        </form>
+    </div>
+
+    {% if pending_members %}
+        <h1 style="color:green;text-align:center;">Pending members</h1>
+    {% endif %}
+    {% if is_admin %}
+        <div class="row mx-auto">
+            {% for member in pending_members %}
+            <div class="member-card bg-light p-4">
+                <div style="display:flex;">
+                    <div>
+                        <img height="70" width="70" src="{{member.profile.profile_pic.url}}">
+                    </div>
+                    <div>
+                       <h4>{{ member.username }} &nbsp; &nbsp;</h4>
+                        <p>{{member.profile.bio}}</p>
+                    </div>
+                </div>
+
+                <div style="position:absolute;top:5px;right:10px;" 
+                    class="btn-group dropleft">
+                    <button type="button" class="btn dropdown-toggle bg-transparent btn-lg" 
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                    </button>
+                    <div class="dropdown-menu dropdown-content">
+                        <a href="{% url 'delete_request' classroom.unique_id member.username %}">
+                            <nobr>Delete request</nobr>
+                        </a>
+                        <a href="{% url 'accept_request' classroom.unique_id member.username %}">
+                            <nobr>Accept request</nobr>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <h1 class="text-center"> Members </h1>
+    <div class="container mx-auto">
+        <div class="row">
+            <div class="col">
+                {% for teacher in teachers %}
+                <div class="member-card bg-light">
+                    <div>
+                        <img height="70" width="70" src="{{teacher.profile.profile_pic.url}}">
+                    </div>
+                    <div>
+                        <b>{{ teacher.username }} </b><br>
+                        {% if teacher in admins %}Admin{% endif %}
+                        <p>{{teacher.profile.bio}}</p>
+                    </div>
+                </div>
+        
+                <div style="position:absolute;top:5px;right:10px;" class="btn-group dropleft">
+                    <button type="button" class="btn dropdown-toggle bg-transparent btn-lg" 
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    </button>
+                    <div class="dropdown-menu dropdown-content">
+                        {% if user in admins %}
+                            <a href="{% url 'class_admin' classroom.unique_id teacher.username %}">
+                                {% if teacher in admins %}
+                                    <nobr>Dismiss as admin</nobr>
+                                {% else %}
+                                    <nobr>Give admin status</nobr>
+                                {% endif %}
+                            </a> 
+                        {% endif %}
+                        <a href="{% url 'remove_member' classroom.unique_id user.username %}">
+                            <nobr>
+                                {% if is_admin %} Remove from classroom {% else %} Leave classroom {% endif %}
+                            </nobr>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %} 
+            </div>
+        </div>
+    </div>
+
+        {% for student in students %}
+        <div class="member-card bg-light p-4"><br/>
+            <div style="display:flex;">
+                <div>
+                    <img src="{{student.profile.profile_pic.url}}" height="70" width="70">
+                </div>
+                <div>
+                    <b>{{ student.username }} </b><br> 
+                    {% if student in admins %}  Admin  {% endif %}
+                    <p>{{student.profile.bio}}</p>
+                </div>
+            </div>
+
+            <div style="position:absolute;top:5px;right:10px;" class="btn-group dropleft">
+                <button type="button" class="btn dropdown-toggle bg-transparent btn-lg" 
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                </button>
+                <div class="dropdown-menu dropdown-content">
+                    {% if user in admins %}
+                        <a href="{% url 'class_admin' classroom.unique_id student.username %}">
+    						{% if student in admins %}
+    							<nobr>Dismiss as admin</nobr>
+    						{% else %}
+    							<nobr>Give admin status</nobr>
+    						{% endif %}
+    					</a>
+                    {% endif %}
+                    <a href="{% url 'remove_member' classroom.unique_id user.username %}">
+                        <nobr>
+                            {% if is_admin %} 
+                                Remove from classroom 
+                            {% else %} 
+                                Leave classroom 
+                            {% endif %}
+                        </nobr>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
