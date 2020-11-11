@@ -65,7 +65,7 @@ class Announcement(models.Model):
 
 	def save(self, *args, **kwargs):
 		unique = unique_id()
-		self.slug = slugify(self.topic + unique[:5])
+		self.slug = slugify(self.subject + unique[:5])
 		super(Announcement, self).save(*args, **kwargs)
 
 class Assignment(models.Model):
