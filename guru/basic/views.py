@@ -23,7 +23,7 @@ def member_check(user,classroom):
 def home(request):
     if request.user.is_authenticated:
         return redirect('/homepage/')
-    return render(request,'home.html')
+    return render(request,'intro_page.html')
 
 @login_required
 def join(request,key):
@@ -38,7 +38,6 @@ def join(request,key):
         messages.add_message(request,messages.SUCCESS,"You have joined the classroom. Happy studing!!!")
         return redirect(f'/classroom/{key}')
     
-
 @login_required
 def homepage(request):
     #joining by key
@@ -136,7 +135,7 @@ def classroom_page(request,unique_id):
             'admins':admins,
             'classes':classes
         }
-        return render(request,'classroom.html',params)
+        return render(request,'classroom_settings.html',params)
 
 @login_required
 def subjects(request, unique_id, form = None):
@@ -158,7 +157,7 @@ def subjects(request, unique_id, form = None):
                     subject=form.save(commit=False)
                     subject.classroom=classroom
                     try:
-                        teacher = User.objects.get(username=request.POST.get('teacher'))
+                        teacher = User.objects.get(username=request.POST.get('teacher').lower())
                         if not teacher and not members.filter(username=teacher.username).exists():
                             messages.add_message(request,messages.WARNING,"This user is not a\
                              member of this class. Tell him to join this classroom first.")
@@ -181,10 +180,10 @@ def subjects(request, unique_id, form = None):
             'is_teacher':is_teacher,
             'classes':classes,
             }
-        return render(request,'subjects.html',params)
+        return render(request,'subjects_list.html',params)
 
 @login_required
-def resource(request,unique_id,subject_id,form = None):
+def notes_list(request,unique_id,subject_id,form = None):
     classroom = Classroom.objects.get(unique_id=unique_id)
     if member_check(request.user,classroom):
 
@@ -222,10 +221,10 @@ def resource(request,unique_id,subject_id,form = None):
             'page_range':page_range,
             'is_teacher':is_teacher,
             }
-        return render(request,'resources/resources.html',params)
+        return render(request,'notes/notes_list.html',params)
 
 @login_required
-def read_note(request, unique_id, subject_id, id, form = None):
+def note_details(request, unique_id, subject_id, id, form = None):
     classroom = Classroom.objects.get(unique_id=unique_id)
     if member_check(request.user,classroom):
         #queryset
@@ -240,12 +239,13 @@ def read_note(request, unique_id, subject_id, id, form = None):
         if is_teacher:
             if request.method=="POST": 
                 form = NoteForm(request.POST,request.FILES,instance=note)
+                print(request.POST.get('file'))
                 if form.is_valid():
+                    form.file = request.POST.get('file')
                     form.save()
                     return redirect(f'/{unique_id}/{subject_id}/{id}/read/')
             else:
                 form= NoteForm(instance=note)
-        print(note.file)
         params={
                 'notes':notes,
                 'subject':subject,
@@ -255,7 +255,7 @@ def read_note(request, unique_id, subject_id, id, form = None):
                 'is_teacher': is_teacher,
                 'extension':extension_type(note.file)
             }
-        return render(request,'resources/read_note.html',params)
+        return render(request,'notes/note_detail.html',params)
 
 @login_required
 def resource_delete(request,unique_id,subject_id,id):
@@ -274,7 +274,7 @@ def resource_delete(request,unique_id,subject_id,id):
 
 @login_required
 @csrf_exempt
-def assignment(request ,unique_id, subject_id, form=None):
+def assignments_list(request ,unique_id, subject_id, form=None):
     classroom = Classroom.objects.get(unique_id=unique_id)
     if member_check(request.user,classroom):
         subject = Subject.objects.get(id=subject_id)
@@ -311,10 +311,10 @@ def assignment(request ,unique_id, subject_id, form=None):
             'page':query,
             'page_range':page_range,
             }
-        return render(request,'assignments/assignments.html',params)
+        return render(request,'assignments/assignment_list.html',params)
 
 @login_required
-def assignment_page(request,unique_id,subject_id,id):
+def assignment_details(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     if member_check(request.user, classroom):
 
@@ -402,7 +402,7 @@ def assignment_page(request,unique_id,subject_id,id):
             params['not_submitted']=not_submitted
             if request.POST.get('send_reminder')=='1':
                 send_reminder(request,assignment,not_submitted.values_list('email', flat=True))
-        return render(request,'assignments/assignment_page.html',params)
+        return render(request,'assignments/assignment_detail.html',params)
 
 @login_required
 def assignment_delete(request,unique_id,subject_id,id):
@@ -419,7 +419,7 @@ def assignment_delete(request,unique_id,subject_id,id):
         raise Http404()
 
 @login_required
-def announcement(request, unique_id, subject_id):
+def announcements_list(request, unique_id, subject_id):
     form = None
     classroom = Classroom.objects.get(unique_id=unique_id)
     if member_check(request.user, classroom):
@@ -456,10 +456,10 @@ def announcement(request, unique_id, subject_id):
                 'page_range':page_range,
                 'is_teacher':is_teacher
             }
-        return render(request,'announcements/announcement.html',params)
+        return render(request,'announcements/announcement_list.html',params)
 
 @login_required
-def announcement_page(request,unique_id,subject_id,id):
+def announcement_details(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     form = None
     if member_check(request.user, classroom):
@@ -489,7 +489,7 @@ def announcement_page(request,unique_id,subject_id,id):
             'classroom':classroom,
             'is_teacher':is_teacher,
             }
-        return render(request,'announcements/announcement_page.html',params)
+        return render(request,'announcements/announcement_details.html',params)
 
 @login_required
 def announcement_delete(request,unique_id,subject_id,id):
@@ -506,7 +506,7 @@ def announcement_delete(request,unique_id,subject_id,id):
         raise Http404()
 
 @login_required
-def this_subject(request,unique_id, subject_id):
+def subject_details(request,unique_id, subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     if member_check(request.user, classroom):
         subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
@@ -541,7 +541,7 @@ def this_subject(request,unique_id, subject_id):
             'page_range':page_range,
             'form':form
          }
-        return render(request,'thissubject.html',params)
+        return render(request,'subject_details.html',params)
 
 @login_required
 def delete_subject(request,unique_id, subject_id):
@@ -608,7 +608,7 @@ def manage_upload_permission(request,unique_id,subject_id,username):
         check = subject.upload_permission.filter(username = user.username).exists()
         if check:
             subject.upload_permission.remove(user)
-            return redirect(f'/{unique_id}/{subject_id}/this_subject')
+            return redirect(f'/{unique_id}/{subject_id}/subject_details/')
         else:
             subject.upload_permission.add(user)
-            return redirect(f'/{unique_id}/{subject_id}/this_subject')
+            return redirect(f'/{unique_id}/{subject_id}/subject_details/')
