@@ -70,13 +70,48 @@ function checkComment(){
 //HOMEPAGE JAVASCRIPT
 function on(el) {
     el.style.display = "flex";
+    _('body').style.overflow='hidden';
 }
 
 function off(el) {
     el.style.display= "none";
 }
-function toggleMembersSubjects(){
-    console.log(_('members'))
+function toggleMembersSubjects(){  
     _('members').style.display = _('members').style.display==='block'?'none':'block';
     _('activity').style.display = _('members').style.display==='block'?'none':'block';
+}
+
+// Change Files icon css
+const actualBtn = _('actual-btn');
+const fileChosen = _('file-chosen');
+actualBtn.addEventListener('change', function(){
+    _('file-upload-label').textContent = this.files[0].name + " selected. Click again to change"
+})
+$(document).ready(function() {
+    $('#close-btn').click(function() {
+    $('#search-overlay').slideUp(200);
+    $('#search-btn').show();
+});
+$('#search-btn').click(function() {
+    $(this).hide();
+    $('#search-overlay').slideDown(200);
+});
+});
+//&& e.target !=
+$(document).on('click', function (e) {
+    if ($(e.target).closest("#search-overlay").length === 0  ) {
+        if(e.target!== _('search-btn' )){
+            $("#search-overlay").slideUp(200);
+            $('#search-btn').show();
+        }    
+    }
+});
+$(document).on('click', function (e) {
+    if ($(e.target).closest(".user-icon").length === 0  ) {
+        _('dropdown-container').style.display='none';
+    }
+})
+
+function alertDelete(what){
+    confirm('Are You sure want to delete? If', what, 'deleted once cannot be bring back.')
 }

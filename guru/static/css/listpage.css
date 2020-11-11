@@ -2,88 +2,69 @@
     color: white;
     background: black; 
 }
-
-.addForm {
-    width: 100%;
-    margin: auto;
-    padding: 20px;
-    border-radius: 20px;
-    background: #ffffff;
-    box-shadow: 2px 4px 5px grey;
-}
-
-.addForm input,
-textarea {
-    width: 100%; 
-    resize: none;
-    padding: 5px 15px;
-    border-radius: 5px;
-    border:1px solid black;
-}
-
-.addForm input[type="submit"] {
-    background: black;
-    color: white;
-    cursor: pointer;
-    text-align: center;
-    padding: 5px;
-    font-size: 1.2em;
-    display: block;
-    margin:30px auto;
-    width:30%;
-    border-radius: 201px;
-    transition: 0.3s;
-}
-
-.addForm input[type="submit"]:hover {
-    background: white;
-    color: black;
-    width: 40%;
-}
-
-.addForm input:focus,
-textarea {
-    border-bottom: 1px solid black;
-    outline: 0px;
-}
-
-@media screen and (min-width:600px) {
-    .add-form {
-        width: 80%;
-    }
-}
-
 .content {
     background: #F8F8FF;
-    margin-top: 12px;
-    padding: 10px 20px;
-    box-shadow: 2px 4px 5px grey;
+    margin: 6px 0px;
+    padding: 20px 20px;
     border-radius: 10px;
-    clear: both;
+    font-size: 1.4em;
+    color:black;
+    box-shadow: 2px 4px 6px grey;
+    word-wrap: break-word;
+    transition:all 0.4s;
+    text-decoration: none;
+    width:100%;
+    box-sizing: content-box;
+}
+.content a{
+    text-decoration: none;
+    color:black;
+    
+}
+.content:hover{
+    box-shadow: 0px 0px 16px black;
+    transform:scale(1.01,1.01)
 }
 
-.link {
-    font-size: 20px;
+.uploaded_by {
+    float: left;
+    text-align: center;
+}
+.time {
+    float: right;
+    text-align: center;
 }
 
-a:link {
+.no-items{
+    text-align:center;
+    color:green;
+    font-weight: bolder;
+    margin-top:100px;
+}
+a:link{
     text-decoration: none;
 }
-
-@media screen and (min-width:770px) {
+.django-quill-widget-container{
+margin-bottom:50px;
+height:25rem;
+}
+@media screen and (max-width:770px) {
     .uploaded_by {
-        float: left;
+        float: none;
+        text-align: center;
+        margin:0;
     }
     .time {
-        float: right;
+        float: none;
+        text-align: center;
+        margin:0;
     }
     .content {
         padding-bottom: 50px;
+        text-align: center;
+        height:7em;
     }
-}
-
-@media screen and (max-width:770px) {
-    .add-btn {
-        display: block;
+    .content {
+        font-size: 1em;
     }
 }

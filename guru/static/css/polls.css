@@ -1,5 +1,5 @@
 #pollform{
-	display:flex;
+	display:none;
 	justify-content:center;
 	background:white;
 	padding:10 0px;
@@ -8,15 +8,35 @@
 	box-shadow:2px 4px 6px grey;
 	min-height: 25rem;
 }
-#pollform input,textarea,.vLargeTextField,select{
+#pollform form{
+	width:100%;
+	padding:20px;
+}
+#pollform form input,textarea,.vLargeTextField,select{
 	border-radius:4px;
 	margin-bottom: 10px;
 	width:100%;	
 	padding: 10px;
 }
-.vLargeTextField{
+#pollform form  .vLargeTextField{
 	height:25rem;	
 	margin-bottom: 3rem;	
+}
+.divider{
+	border-top:4px solid black;
+}
+.side-buttons{
+	color:white !important;
+	padding: 7px;
+}
+#instruction{
+	color:red;
+	text-align: center;
+}
+.no-item{
+	text-align:center;
+	color:red;
+	font-weight: bolder;
 }
 #addpollbtn{
 	border:2px solid green;
