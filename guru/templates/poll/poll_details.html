@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %} 
 {% block content %}
 <div>
-    {% include 'navigation.html' %}
+    {% include 'snippets/navigation.html' %}
     <div class="container-fluid ">
         {% if messages %}
             <div class="messages container mt-4">
@@ -19,30 +19,45 @@
 
         <div class="row ">
             <div class="col-sm-12 mx-auto my-4 col-md-6">
-                <a  class="btn btn-danger m-1 side-buttons float-right" 
+                <button  class="btn btn-danger m-1 side-buttons float-right" 
                     style="background:red;" 
-                    href="{% url 'delete_poll' classroom.unique_id poll.id %}">
+                    data-entity="user" id="userDeleteButton"
+                    value="{% url 'delete_poll' classroom.unique_id poll.id %}"> 
 					Delete <i class="fa fa-trash" aria-hidden="true"></i>
-				</a>
-
+                </button>
+                {% include 'snippets/deleteconfirm.html' %}
                 <a  class="btn btn-dark m-1 side-buttons float-right" 
                     href="/profile/{{poll.created_by.username}}">
                     Contact <i class="fas fa-phone-volume"></i>
 				</a>
 
                 <a  class="btn m-1 side-buttons float-right" style="background:black;"
-                    onclick="toggleFlexForm(document.getElementById('pollform'))">
+                onclick="on(document.getElementsByClassName('overlay')[0])">
                     Update <i class="fas fa-edit"></i>
 				</a><br><br>
-
-                <div id="pollform">
-                    <form method="POST" enctype="multipart/form-data">
-                        {% csrf_token %} 
-                        {{ updateform|crispy }}<br>
-                        <input  type="datetime-local" value="{{ poll.announce_at|date:'c' }}" 
-                            autocomplete="off" required="required" name='date'>
-                        <input type="submit" class="btn btn-success" value="submit">
-                    </form><br>
+                <div class="overlay">
+                    <form method="POST" class="overlayform" enctype="multipart/form-data">{% csrf_token %}<br>
+                        <a onclick = "toggleBlockForm(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+                        {% for field in updateform %}
+                            {% if field.field.widget.input_type == 'file' %}
+                            <input type="file" name="file" id="actual-btn" hidden/>
+                            <label id="file-upload-label"for="actual-btn">
+                                {% if assignment.file %}
+                                    {{ assignment.file}}. Click to change
+                                {% else %}
+                                Upload File
+                                {% endif %}
+                                <i class="fa mx-2 fa-upload" aria-hidden="true"></i>
+                            </label>
+                            {% else %}
+                                {{ field.label_tag }}<br>
+                                {{ field }}
+                            {% endif %}
+                        {% endfor %}
+                        <center>
+                            <input type="submit" class="submit-button"value="Submit">
+                        </center>
+                    </form>
                 </div>
 
                 <div style="border-radius:10px;" class=" bg-light mt-4 p-4">

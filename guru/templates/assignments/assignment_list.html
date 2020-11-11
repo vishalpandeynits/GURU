@@ -1,4 +1,4 @@
-{% extends 'subject_page.html' %} 
+{% extends 'snippets/subject_page.html' %} 
 {% load crispy_forms_tags %} 
 {% load humanize %} 
 {% block subject_content %}
@@ -70,7 +70,7 @@
 				</div>
             {% endfor %}
         </div><br> 
-        {% include 'paginations.html' %} 
+        {% include 'snippets/paginations.html' %} 
     {% else %}
         <h2 class="no-items">No assignments found !!!</h2>
     {% endif %}

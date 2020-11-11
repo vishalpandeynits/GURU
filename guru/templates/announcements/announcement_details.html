@@ -1,4 +1,4 @@
-{% extends 'subject_page.html' %}
+{% extends 'snippets/subject_page.html' %}
 {% load crispy_forms_tags %}
 {% load comments %}
 {% load humanize %}
@@ -8,11 +8,13 @@
 	<div class="col">
 		{% if is_teacher %}
 		<div id="contain">
-			<a class="btn btn-danger m-2 float-right" 
+			<button class="btn btn-danger m-2 float-right" 
 				style="color:white;background:red;padding: 7px;"
-				href="{% url 'delete_announcement' classroom.unique_id subject.id announcement.id %}">
+				data-entity="user" id="userDeleteButton"
+				value="{% url 'delete_announcement' classroom.unique_id subject.id announcement.id %}">
 				Delete <i class="fa fa-trash" aria-hidden="true"></i>
-			</a>
+			</button>
+			{% include 'snippets/deleteconfirm.html' %}
 			<a class="btn btn-dark m-2 float-right" 
 				style="color:white;padding: 7px;"
 				href="/profile/{{announcement.announced_by}}">
@@ -29,7 +31,14 @@
 					{% for field in updateform %}
 						{% if field.field.widget.input_type == 'file' %}
 						<input type="file" name="file" id="actual-btn" hidden/>
-						<label id="file-upload-label"for="actual-btn">Upload File<i class="fa mx-2 fa-upload" aria-hidden="true"></i></label>
+						<label id="file-upload-label"for="actual-btn">
+							{% if announcement.file %}
+								{{ announcement.file }}. Click to change
+							{% else %}
+							Upload File
+							{% endif %}
+							<i class="fa mx-2 fa-upload" aria-hidden="true"></i>
+						</label>
 						{% else %}
 							{{ field.label_tag }}<br>
 							{{ field }}
@@ -68,7 +77,7 @@
 			{% endif %}	
 			<div class="ql-editor">{{ announcement.description.html|safe }}</div>
 		</div><br>
-		{% include 'comments/announcementcomment.html' %}
+		{% include 'snippets/comments/announcementcomment.html' %}
 	</div>
   </div>
 </div>

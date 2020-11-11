@@ -1,0 +1,37 @@
+{% load comments %}
+{% load humanize %}
+<div id="con">
+   {% get_comment_form for note as form %}
+   <form action="{% comment_form_target %}" method="POST">{% csrf_token %}
+        <textarea name="comment" onkeyup="checkComment()" style="width:100%;resize:none;" rows="4" 
+            maxlength="300" id="id_comment" required></textarea>
+
+        {% if form.name == "honeypot" %} style="display:none;" {% endif %}
+        {{ form.content_type }}
+        {{ form.object_pk }}
+        {{ form.timestamp }}
+        {{ form.security_hash }}
+        <input type="hidden" name="next" 
+            value="{% url 'read_note' classroom.unique_id subject.id note.id %}" />
+        <input type="submit" style="width:130px;" class="btn btn-primary float-right"
+          value="Add comment" id="id_submit" disabled/>
+    </form>
+
+    {% get_comment_count for note as comment_count %}
+        {{ comment_count }} Comment{{ comment_count|pluralize }}
+    <br><br><br>
+
+    {% get_comment_list for note as comment_list %}<br>
+    {% for comment in comment_list reversed %}
+        <div  style="width:100%;"class="comment-box p-2">
+            <a href="/profile/{{comment.user.username}}">
+              <img class="float-left mr-4"style="border-radius: 50%;"
+                src="{{comment.user.profile.profile_pic.url }}" height="60" width="60">
+            </a>
+            <b>{{ comment.user.username}}</b>
+            <pre>{{ comment.comment }}</pre>
+            <span style="float:right;">Commented {{ comment.submit_date|naturaltime }}</span><br>
+        </div>
+    {% endfor %}
+    
+</div>

@@ -5,7 +5,7 @@
 {% block content %}
 
 <div>
-    {% include 'navigation.html' %}
+    {% include 'snippets/navigation.html' %}
 
     <div class="text-center m-auto mt-4 ">
         <h2> {{ classroom.class_name }} </h2>
@@ -62,10 +62,18 @@
                 {% for field in form %}
                     {% if field.field.widget.input_type == 'file' %}
                     <input type="file" name="file" id="actual-btn" hidden/>
-                    <label id="file-upload-label" class="text-center"for="actual-btn">Upload Classroom Pic<i class="fa mx-2 fa-upload" aria-hidden="true"></i></label>
+                    <label id="file-upload-label" class="text-center"for="actual-btn">
+                        {% if classroom.classroom_pic %}
+						{{ classroom.classroom_pic }}. Click to change
+                        {% else %}
+                        Upload Classroom Pic
+                        {% endif %}
+                        <i class="fa mx-2 fa-upload" aria-hidden="true"></i>
+                    </label>
                     {% elif field.field.widget.input_type == 'checkbox' %}
                     <input type="checkbox" name="need_permission" id="id_need_permission" {% if classroom.need_permission %} checked {% endif %} > 
-                        <label for="id_need_permission" style="display:inline-block;" title="Joiners will need Permisson of admins to join this classroom">Need permission to join</label><br>
+                        <label for="id_need_permission" style="display:inline-block;" 
+                        title="Joiners will need Permisson of admins to join this classroom">Need permission to join</label><br>
                     {% else %}
                         {{ field.label_tag }}<br>
                         {{ field }}

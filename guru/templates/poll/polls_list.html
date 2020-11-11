@@ -1,7 +1,7 @@
 {% extends 'base.html' %} 
 {% block content %}
 <div>
-    {% include 'navigation.html' %}
+    {% include 'snippets/navigation.html' %}
     <div class="container">
         {% if pollform %}
             <center>
@@ -53,7 +53,7 @@
                 </div>
             {% endfor %}
             </div> <br><br> 
-            {% include 'paginations.html' %} 
+            {% include 'snippets/paginations.html' %} 
         {% else %}
             <h2 class="no-item">
                 No Polls added yet.

@@ -112,6 +112,35 @@ $(document).on('click', function (e) {
     }
 })
 
-function alertDelete(what){
-    confirm('Are You sure want to delete? If', what, 'deleted once cannot be bring back.')
+function deleteConfirm(entity, successCallback){
+    var modal = $('#genericDeleteModal');
+    modal.find('.modal-body .entityType').html(entity);
+    modal.modal('show')
+    $('#confirmDeleteButton').bind('click', function() 
+    {
+      var deleteTextInput = modal.find('#deleteConfirmText');
+      if(deleteTextInput.val() === 'Delete'){
+        modal.modal('hide');
+        successCallback();
+      }
+    })
+};
+
+$('#genericDeleteModal').on('hide.bs.modal',function(){
+    var modal = $(this);
+    var deleteTextInput = modal.find('#deleteConfirmText');
+    deleteTextInput.val('');
+});
+
+//Local delete button callback
+$('#userDeleteButton').on('click',function(){
+var entity = $('#SelectedUser').val();
+deleteConfirm(entity,myRandomSuccessCallBackFunction)
+});
+
+//local success callback after delete function
+function myRandomSuccessCallBackFunction()
+{
+    url =_('userDeleteButton').value
+    window.location.href = 'http://127.0.0.1:8000'+url
 }

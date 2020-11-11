@@ -1,4 +1,4 @@
-{% extends 'subject_page.html' %}
+{% extends 'snippets/subject_page.html' %}
 {% load crispy_forms_tags %}
 {% load humanize %}
 {% block subject_content %}
@@ -68,7 +68,7 @@
 			</div>
 		</div>
 		{% endfor %}
-		{% include 'paginations.html' %}
+		{% include 'snippets/paginations.html' %}
 	{% else %}
 		<h2 class="no-items">No announcements made yet.</h2>
 	{% endif %}
