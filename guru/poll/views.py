@@ -56,7 +56,7 @@ def polls(request,unique_id):
 			'page_range':page_range,
 			'classes':classes
 			}
-		return render(request,'poll/form.html',params)
+		return render(request,'poll/polls_list.html',params)
 
 def poll_page(request,unique_id, poll_id):
 	classroom = Classroom.objects.get(unique_id = unique_id)
@@ -100,7 +100,7 @@ def poll_page(request,unique_id, poll_id):
 		if poll.file:
 			params['extension']=extension_type(poll.file)
 
-		return render(request,'poll/poll_page.html',params)
+		return render(request,'poll/poll_details.html',params)
 
 def voting(request,unique_id,poll_id,choice_id):
 	classroom = Classroom.objects.get(unique_id = unique_id)
