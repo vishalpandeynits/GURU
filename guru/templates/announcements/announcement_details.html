@@ -1,9 +1,10 @@
 {% extends 'snippets/subject_page.html' %}
 {% load crispy_forms_tags %}
 {% load comments %}
+{% load filters %}
 {% load humanize %}
 {% block subject_content %}
-<div class="container">
+<div style="padding:3px;" class="container">
    <div class="row ">
 	<div class="col">
 		{% if is_teacher %}
@@ -33,7 +34,7 @@
 						<input type="file" name="file" id="actual-btn" hidden/>
 						<label id="file-upload-label"for="actual-btn">
 							{% if announcement.file %}
-								{{ announcement.file }}. Click to change
+								{{ announcement.file|filebasename }}. Click to change
 							{% else %}
 							Upload File
 							{% endif %}

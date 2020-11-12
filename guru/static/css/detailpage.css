@@ -49,6 +49,12 @@
     #media-container {
         width: 90%;
     }
+    #detail-content{
+        padding:0px;
+    }
+    .container{
+        padding: 0px !important;
+    }
 }
 .ql-editor img{
     width:300px !important;

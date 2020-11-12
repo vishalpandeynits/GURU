@@ -1,9 +1,10 @@
 {% extends 'base.html' %} 
+{% load filters %}
 {% load crispy_forms_tags %} 
 {% block content %}
 <div>
     {% include 'snippets/navigation.html' %}
-    <div class="container-fluid ">
+    <div style="padding:3px;" class="container-fluid ">
         {% if messages %}
             <div class="messages container mt-4">
                 {% for message in messages %}
@@ -42,8 +43,8 @@
                             {% if field.field.widget.input_type == 'file' %}
                             <input type="file" name="file" id="actual-btn" hidden/>
                             <label id="file-upload-label"for="actual-btn">
-                                {% if assignment.file %}
-                                    {{ assignment.file}}. Click to change
+                                {% if poll.file %}
+                                    {{ poll.file|filebasename }}. Click to change
                                 {% else %}
                                 Upload File
                                 {% endif %}

@@ -2,6 +2,7 @@
 {% load crispy_forms_tags %}
 {% load humanize %}
 {% load comments %}
+{% load filters %}
 {% load static %}
 {% block subject_content %}
 <style>
@@ -11,7 +12,7 @@
 		}
 	}
 </style>
-<div class="container-fluid">
+<div style="padding:3px;" class="container-fluid">
 	{% if is_teacher %}
 		<div class="overlay">
 			<form method="POST" id="updateform" class="addForm overlayform" 
@@ -22,7 +23,7 @@
 					<input type="file" name="file" id="actual-btn" hidden/>
 					<label id="file-upload-label"for="actual-btn">
 					{% if assignment.file %}
-						{{ assignment.file}}. Click to change
+						{{ assignment.file|filebasename }}. Click to change
 					{% else %}
 					Upload File
 					{% endif %}

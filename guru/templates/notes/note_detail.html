@@ -1,26 +1,18 @@
 {% extends 'snippets/subject_page.html' %} 
 {% load crispy_forms_tags %} 
 {% block subject_content %} 
+{% load filters %}
 {% load humanize %} 
+
 {% load comments %}
 <style>
-    #media-container {
-        display: block;
-        margin: auto;
-        width: 500px;
-    }
-    @media screen and (max-width: 600px) {
-        #media-container {
-            width: 100%;
-        }
-    }
     .buttons {
         border: none;
         color: white;
         padding: 7px;
     }
 </style>
-<div class="container">
+<div style="padding:3px;"class="container">
         <div class="row d-flex justify-content-end ">
             {% if is_teacher %}
                 <button  class="btn btn-danger mx-1 my-2 buttons" 
@@ -53,8 +45,8 @@
                         {% if field.field.widget.input_type == 'file' %}
                         <input type="file" name="file" id="actual-btn" hidden/>
                         <label id="file-upload-label"for="actual-btn">
-                            {% if assignment.file %}
-                                {{ assignment.file}}. Click to change
+                            {% if note.file %}
+                                {{ note.file|filebasename }}. Click to change
                             {% else %}
                             Upload File
                             {% endif %}
