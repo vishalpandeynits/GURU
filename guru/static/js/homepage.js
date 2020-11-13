@@ -40,19 +40,6 @@ function addInputField(){
 
 }
 
-function toggleFlexForm(x){
-    x.style.display=x.style.display=='none'?'flex':'none';
-}
-
-function toggleBlockForm(x){
-    if (!x.style.display || x.style.display == "none") {
-        x.style.display = "block";
-    }
-    else {
-        x.style.display = "none";
-    }
-}  
-
 //EMPTY COMMENT ISSUE
 function checkComment(){
     var value=_('id_comment').value
@@ -67,14 +54,31 @@ function checkComment(){
 
 //EMPTY COMMENT ISSUE ENDS
 
+// setInterval(() => {
+//     document.body.scrollTop = 0;
+//     document.documentElement.scrollTop = 0;
+// }, 10);
+
+function noscroll(event){
+    $('html, body').css({
+        overflow: 'hidden',
+        height: '100%'
+    });
+}
+
 //HOMEPAGE JAVASCRIPT
 function on(el) {
     el.style.display = "flex";
-    _('body').style.overflow='hidden';
+    document.addEventListener("scroll",noscroll);
 }
+
 
 function off(el) {
     el.style.display= "none";
+    $('html, body').css({
+        overflowY: 'auto',
+        height: '100%'
+    });
 }
 function toggleMembersSubjects(){  
     _('members').style.display = _('members').style.display==='block'?'none':'block';

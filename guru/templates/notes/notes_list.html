@@ -1,4 +1,4 @@
-{% extends 'snippets/subject_page.html' %}
+ {% extends 'snippets/subject_page.html' %}
 {% load crispy_forms_tags %}
 {% load humanize %}
 {% block subject_content %}
@@ -16,7 +16,6 @@
 </div>
 
 <div class="container" >
-
 	<div class="row m-2">
 		<div class="col-12 d-flex justify-content-between">
 			{% if is_teacher %}
@@ -35,7 +34,7 @@
 		<div class="overlay">
 		    <form method="POST"class="overlayform" enctype="multipart/form-data">
 		    	{% csrf_token %}
-				<a onclick = "toggleBlockForm(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+				<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
 					{% for field in form %}
 						{% if field.field.widget.input_type == 'file' %}
 						<input type="file" name="file" id="actual-btn" hidden/>

@@ -13,6 +13,7 @@
             <div class="overlay">
                 <form method="POST" class="overlayform mt-4"  enctype="multipart/form-data">
                     {% csrf_token %}
+                    <a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
                     {% for field in pollform %}
 					{% if field.field.widget.input_type == 'file' %}
 					<input type="file" name="file" id="actual-btn" hidden/>

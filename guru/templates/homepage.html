@@ -26,7 +26,7 @@
 	<div class="overlay">
         <form method="POST"class="overlayform" style="display:block;"enctype="multipart/form-data">
             {% csrf_token %}
-            <a onclick = "toggleBlockForm(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+            <a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
                 {% for field in createclassform %}
                     {% if field.field.widget.input_type == 'file' %}
                     <input type="file" name="file" id="actual-btn" hidden/>
@@ -45,7 +45,7 @@
         </form>
 	</div>
 	<div class="overlay">
-		<form class="overlayform" style="width:300px;top:25%;"method="POST">{% csrf_token %} 
+		<form class="overlayform" style="width:300px;"method="POST">{% csrf_token %} 
 			<a onclick="off(document.getElementsByClassName('overlay')[1])" id="close"> &times;</a><br>
 			Unique id: <br>
 			<input type="text" placeholder="Unique ID"name="join_key"><br>
