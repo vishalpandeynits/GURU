@@ -20,22 +20,26 @@
 
         <div class="row ">
             <div class="col-sm-12 mx-auto my-4 col-md-6">
-                <button  class="btn btn-danger m-1 side-buttons float-right" 
+                {% if is_admin %}
+                <a class="btn btn-danger m-1 side-buttons float-right" 
                     style="background:red;" 
                     data-entity="user" id="userDeleteButton"
-                    value="{% url 'delete_poll' classroom.unique_id poll.id %}"> 
+                    href="{% url 'delete_poll' classroom.unique_id poll.id %}"> 
 					Delete <i class="fa fa-trash" aria-hidden="true"></i>
-                </button>
+                 </a>
                 {% include 'snippets/deleteconfirm.html' %}
+                <a  class="btn m-1 side-buttons float-right" style="background:black;"
+                onclick="on(document.getElementsByClassName('overlay')[0])">
+                    Update <i class="fas fa-edit"></i>
+                </a>
+                {% endif %}
                 <a  class="btn btn-dark m-1 side-buttons float-right" 
                     href="/profile/{{poll.created_by.username}}">
                     Contact <i class="fas fa-phone-volume"></i>
 				</a>
 
-                <a  class="btn m-1 side-buttons float-right" style="background:black;"
-                onclick="on(document.getElementsByClassName('overlay')[0])">
-                    Update <i class="fas fa-edit"></i>
-				</a><br><br>
+                <br><br>
+                {% if is_admin %}
                 <div class="overlay">
                     <form method="POST" class="overlayform" enctype="multipart/form-data">{% csrf_token %}<br>
                         <a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
@@ -60,7 +64,7 @@
                         </center>
                     </form>
                 </div>
-
+                {% endif %}
                 <div style="border-radius:10px;" class=" bg-light mt-4 p-4">
                     {% if poll.file %} 
                         <center>

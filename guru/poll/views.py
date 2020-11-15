@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.db.models import *
 from django.contrib import messages
-
+from django.http import Http404
 from basic.models import *
 from basic.views import member_check
 from basic.utils import *
@@ -23,26 +23,29 @@ def polls(request,unique_id):
 		polls = Poll.objects.all()
 		my_classes = Classroom.objects.all().filter(members=request.user)
 		#handling forms of poll and its choice
-		if request.method=='POST':
-			form = QuestionForm(request.POST or None,request.FILES)
-			choice_list = request.POST.getlist('check')
-			choice_list = list(filter(filter_fun,choice_list))
+		admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+		form=None
+		if admin_check:
+			if request.method=='POST':
+				form = QuestionForm(request.POST or None,request.FILES)
+				choice_list = request.POST.getlist('check')
+				choice_list = list(filter(filter_fun,choice_list))
 
-			if form.is_valid():
-				form = form.save(commit=False)
-				form.classroom = classroom
-				form.announce_at = request.POST.get('date')
-				form.created_by = request.user
-				form.save()
+				if form.is_valid():
+					form = form.save(commit=False)
+					form.classroom = classroom
+					form.announce_at = request.POST.get('date')
+					form.created_by = request.user
+					form.save()
 
-				for i in choice_list:
-					choice=Choice()
-					choice.poll = Poll.objects.get(id=form.id)
-					choice.choice_text = i
-					choice.save()
-				return redirect(f'/polls/{unique_id}')
-		else:
-			form = QuestionForm()
+					for i in choice_list:
+						choice=Choice()
+						choice.poll = Poll.objects.get(id=form.id)
+						choice.choice_text = i
+						choice.save()
+					return redirect(f'/polls/{unique_id}')
+			else:
+				form = QuestionForm()
 
 		query,page_range = pagination(request,polls)
 		polls=query.object_list
@@ -54,7 +57,8 @@ def polls(request,unique_id):
 			'classes':my_classes,
 			'query':query,
 			'page_range':page_range,
-			'classes':classes
+			'classes':classes,
+			'is_admin':admin_check
 			}
 		return render(request,'poll/polls_list.html',params)
 
@@ -69,17 +73,18 @@ def poll_page(request,unique_id, poll_id):
 			choices = choices.order_by('-votes')
 		voters = poll.voters.count()
 		my_classes = Classroom.objects.all().filter(members=request.user)
+		admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+		form=None
+		if admin_check:
+			if request.method=='POST':
+				form = PollUpdateForm(request.POST or None,request.FILES,instance=poll)
+				if form.is_valid():
+					form = form.save(commit=False)
+					form.save()
+					return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
+			else:
+				form = PollUpdateForm(instance=poll)
 
-		if request.method=='POST':
-			form = QuestionForm(request.POST or None,request.FILES,instance=poll)
-
-			if form.is_valid():
-				form = form.save(commit=False)
-				form.announce_at = request.POST.get('date')
-				form.save()
-				return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
-		else:
-			form = QuestionForm(instance=poll)
 		members_email = classroom.members.values_list('email', flat=True)
 		teachers_email = classroom.teacher.values_list('email', flat=True)
 		params = {
@@ -87,13 +92,14 @@ def poll_page(request,unique_id, poll_id):
 			'choices' : choices,
 			'poll':poll,
 			'classroom':classroom,
-			'show_result': now >= poll.announce_at,
+			'show_result': now >= poll.announce_at or poll.voters.filter(username=request.user.username).exists(),
 			'voters_length':voters,
 			'classes':my_classes,
 			'updateform':form,
 			'emails':members_email,
 			'members_email':members_email,
-			'teachers_email':teachers_email
+			'teachers_email':teachers_email,
+			'is_admin':admin_check
 		}
 		if poll.voters.filter(username=request.user.username).exists():
 			params['classes'] = Classroom.objects.all().filter(members=request.user)

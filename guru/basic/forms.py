@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import Classroom, Subject, Note, Announcement, Assignment, Submission
 from django.contrib.auth.forms import UserCreationForm
-from django.forms.widgets import *
+from django.forms.widgets import DateInput,NumberInput
 
 class CreateclassForm(forms.ModelForm):
 	class Meta:

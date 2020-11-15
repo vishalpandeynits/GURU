@@ -1,15 +1,20 @@
 from django import forms
 from .models import Poll, Choice
+from django.forms.widgets import DateInput
 
 class QuestionForm(forms.ModelForm):
 	class Meta:
 		model = Poll
-		fields = ['file','topic','poll_details','who_can_vote']
+		fields = ['topic','poll_details','who_can_vote']
 
-	def __init__(self, *args, **kwargs):
-		super(QuestionForm, self).__init__(*args, **kwargs)
-		self.fields['poll_details'].widget.attrs.update({'id': 'textarea'})
 
+class PollUpdateForm(forms.ModelForm):
+	class Meta:
+		model = Poll
+		fields = ['topic','poll_details','announce_at']
+		widgets = {
+				'announce_at': DateInput(attrs={'type': 'datetime-local'}),
+			}
 
 class ChoiceForm(forms.ModelForm):
 	class Meta:
