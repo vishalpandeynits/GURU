@@ -1,0 +1,129 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block content %}
+<div id='navbar' class="mb-4">
+    <a class="btn mx-2" href="#">Home </a>
+    <a class="btn mx-2" href="#feature">Features </a>
+    <a class="btn mx-2" href="#contactus">Contact us </a>
+</div>
+
+<div class="intro-section">
+    <img src="{% static 'intro_image.jpg' %}">
+    {% if messages %}
+        <div class="messages container mt-4 pt-4">
+            {% for message in messages %}
+                <div class='alert alert-{{ message.tags }} alert-dismissible fade show'>
+                    {{ message }} 
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    <div id="button-containers">
+        <h1 id="intro">Learning will now,<br> Indeed be in air</h1>
+        <a class="btn mx-2 btn-home" href="{% url 'signup' %}">Sign Up</a>
+        <a class="btn mx-2 btn-home" href="{% url 'login' %}">Log In</a>
+    </div>
+</div>
+
+<div>
+    <h2 class="heading"> Why Guru </h2>
+    <div id="why-guru">
+        <div class="col-sm-10 col-md-3 col-lg-3"> 
+            <h2 class="text-center"> Less 'teching', more 'teaching'. </h2>
+            <p>
+                GURU is designed to be extremely simple, inituitive and easy to use.
+                You can get started with it in the blink of an eye. So as a teacher, 
+                rather than getting distracted by technicalities. You can focus on 
+                what you love:teaching.
+            </p>
+        </div>
+
+        <div class="col-sm-10 col-md-3 col-lg-3"> 
+            <h2 class="text-center"> Handing out notes is as easy as sending an email </h2>
+            <p> Send out handouts, notes, and even textbooks to as many
+                students you want, just with press of one button.
+            </p>
+        </div>
+
+        <div class="col-sm-10 col-md-3 col-lg-3">
+            <h2 class="text-center"> Know how every student is doing at a glance.</h2>
+            <p> Easily keep track of every student who is in your classroom. 
+                You can grade their assignments, contact them directly 
+                from within the website, post comments. Providing a 
+                personalizing touch to the process of academic instruction
+                may no longer remain a dream.
+            </p>
+        </div>
+    </div>
+
+    <h2 class="heading">For Teachers </h2>
+    <div id="for-teachers" class="mx-auto row">
+        <div class="col-sm-10 col-md-3 col-lg-3">
+            <h2 class="text-center"> Know how every student is doing at a glance.</h2>
+            You can create classroom with unique entry protocols 
+            that you can then distribute amongst your students who want to join.
+            Any number of student can join your classroom.
+        </div>
+        <div class="col-sm-10 col-md-3 col-lg-3">
+            <h2 class="text-center"> Know how every student is doing at a glance.</h2>
+            You can provide assignment and set deadlines and can view students who 
+            had submitted on time, Who couldn't,who did and who didn't.
+        </div>
+        <div class="col-sm-10 col-md-3 col-lg-3">
+            <h2 class="text-center"> Know how every student is doing at a glance.</h2>
+            You can add resources, announcements, assignments of any file type in your 
+            classroom. you can also auhorize who can add items in your classroom
+        </div>
+        <div class="col-sm-10 col-md-3 col-lg-3">
+            <h2 class="text-center"> Know how every student is doing at a glance.</h2>
+            You can contact students directly from the webapp.
+        </div>
+        <div class="col-sm-10 col-md-3 col-lg-3">
+            <h2 class="text-center"> Know how every student is doing at a glance.</h2>
+            You can create polls and authorize who can participate in polls
+        </div>
+    </div>
+
+    <h2 class="heading">For Students </h2>
+    <div id="for-teachers" class="mx-auto row">
+        <div class="col-sm-10 col-md-3 col-lg-3">
+            <h2 class="text-center"> Know how every student is doing at a glance.</h2>
+            You can join in any classroom with the unique classroom code provided.
+        </div>
+        <div class="col-sm-10 col-md-3 col-lg-3">
+            <h2 class="text-center"> Know how every student is doing at a glance.</h2>
+            You can submit your assignments and classwork without breaking a sweat.
+        </div>
+        <div class="col-sm-10 col-md-3 col-lg-3">
+            <h2 class="text-center"> Know how every student is doing at a glance.</h2>
+            You can contact your teachers directly from the webapp.
+        </div>
+        <div class="col-sm-10 col-md-3 col-lg-3">
+            <h2 class="text-center"> Know how every student is doing at a glance.</h2>
+            Switching between classroom and subjects is seamless.
+        </div>
+    </div>
+</div>
+{% include 'testimonials.html' %} 
+{% include 'footer.html' %}     
+<script>
+    function navbackground(){
+        var scroll = window.scrollY || window.scrollTop || document.getElementsByTagName("html")[0].scrollTop;
+        if (scroll > 600) {
+         _("navbar").style.background="white";
+         _("navbar").style.boxShadow="2px 4px 8px grey";
+          _("navbar").style.height="70px";
+        }
+        else{
+            _("navbar").style.background=""; 
+            _("navbar").style.boxShadow="";
+            _("navbar").style.height="50px";
+        }
+    }
+    setInterval(navbackground,100)
+</script>
+{% endblock %}

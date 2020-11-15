@@ -1,104 +1,61 @@
-{% extends 'subject_page.html' %} 
-{% load crispy_forms_tags %} 
-{% block subject_content %} 
-{% load humanize %} 
+{% extends 'subject_page.html' %}
+{% load crispy_forms_tags %}
+{% block subject_content %}
+{% load humanize %}
 {% load comments %}
-<style>
-    #media-container {
-        display: block;
-        margin: auto;
-        width: 500px;
-    }
-    
-    @media screen and (max-width: 600px) {
-        #media-container {
-            width: 100%;
-        }
-    }
-    
-    .buttons {
-        border: none;
-        color: white;
-        padding: 7px;
-    }
-</style>
-
 <div class="container">
-
-        {% if is_teacher %}
-            <a 
-                class="btn btn-danger mx-1 my-2 float-right buttons" 
-                href="{% url 'delete_resource' classroom.unique_id subject.id note.id %}"
-                style="background:red;">
+	<div id="note-contain">
+		{% if is_teacher %}
+			<a class="btn btn-danger m-2 float-right" 
+				style="border:none;color:white;background:red;padding: 7px;" 
+				href="{% url 'delete_resource' classroom.unique_id subject.id note.id %}">
 				Delete <i class="fa fa-trash" aria-hidden="true"></i>
 			</a>
 
-            <a 
-                class="btn btn-dark mx-1 my-2 bg-primary float-right buttons" 
-                href="/profile/{{note.uploaded_by}}">
-				Contact <i class="fas fa-phone-volume"></i>
-
+			<a class="btn btn-dark m-2 float-right" 
+				style="border:none;color:white;padding: 7px;" href="/profile/{{note.uploaded_by}}">
+					Contact <i class="fas fa-phone-volume"></i>
 			</a>
 
-            <button 
-                onclick="toggleBlockForm(document.getElementById('updateform'))"
-                style="background:black;color:white;" 
-                class="btn my-2 mx-1 float-right buttons">
-                    Update <i class="fas fa-edit"></i>
-			</button><br><br>
+			<a @click="formToggle" style="border:none;color:white;background:black;padding: 7px;"
+			 	class="btn m-2 float-right">Update <i class="fas fa-edit"></i>
+			</a><br><br>
 
-            <form method="POST" id="updateform"
-                class="addForm" enctype="multipart/form-data">{% csrf_token %} 
-                <br>
-                {{ updateform|crispy }}
-                <input type="submit" class="submit-button" value="submit">
+		    <form method="POST" v-if="showUpdateForm" class="addForm" 
+		    	 enctype="multipart/form-data">{% csrf_token %}
+				 {{ updateform|crispy }}
+				 <input type="submit" class="submit-button" value="submit">
+		    </form>
+		{% endif %}<br>
+	</div>
 
-            </form>
-        {% endif %}<br>
-
-    <div id="note-content">
-
-        <p style="font-weight: bold;text-align: center;font-size:1.2em;">
-
-            {{note.topic}}
-
-        </p>
-
-        {% if note.file %} 
-
-            {% if extension == 'image' %}
-                <a href="{{note.file.url}}">
-                    <img src="{{note.file.url}}" id="media-container">
-                </a>
-
-            {% elif extension == 'video' %}
-
-                <video 
-                    height="300" width="500" id="media-container" controls>
-        			<source src="{{note.file.url}}" type="video/mp4">
-        			<source src="{{note.file.url}}" type="video/ogg">
-        			Your browser does not support the video tag.
-        		</video><br>
-
-                <a href="{{note.file.url}}" style="text-align: center;" download> 
-                    Download file
-                </a> 
-
-            {% else %}
-
-                <a href="{{note.file.url}}" style="text-align: center;" download> 
-                    Download file
-                </a> 
-
-            {% endif %} 
-
-        {% endif %}
-        
-        <div class="ql-editor">{{ note.description.html|safe }}</div>
-
-    </div><br> 
-
-    {% include 'comments/read_notecomment.html' %}
-
+	<div id="note-content">
+		<p style="font-weight: bold;text-align: center;font-size:1.2em;">
+			{{note.topic}}
+		</p>
+		{% if note.file %}
+			{% if extension == 'image' %}
+				<center>
+					<a href="{{note.file.url}}">
+						<img src="{{note.file.url}}" height="500" width="500">
+					</a>
+				</center> 
+			{% elif extension == 'video' %}
+				<center> 
+					<video height="300" width="500" style="border:0;outline:0;" controls>
+					  <source src="{{note.file.url}}" type="video/mp4">
+					  <source src="{{note.file.url}}" type="video/ogg">
+					Your browser does not support the video tag.
+					</video><br>
+				<a href="{{note.file.url}}" download> Download file</a>
+				</center>
+			{% else %}
+				<a href="{{note.file.url}}" download> Download file</a>
+			{% endif %}
+		{% endif %}
+		
+		<pre>{{ note.description }}</pre>
+	</div><br>
+	{% include 'comments/read_notecomment.html' %}
 </div>
 {% endblock %}

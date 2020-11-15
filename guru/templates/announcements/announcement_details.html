@@ -1,0 +1,75 @@
+{% extends 'subject_page.html' %}
+{% load crispy_forms_tags %}
+{% load comments %}
+{% load humanize %}
+{% block subject_content %}
+<div class="container">
+   <div class="row ">
+	<div class="col">
+		{% if is_teacher %}
+		<div id="contain">
+			<a class="btn btn-danger m-2 float-right" 
+				style="color:white;background:red;padding: 7px;"
+				href="{% url 'delete_announcement' classroom.unique_id subject.id announcement.id %}">
+				Delete <i class="fa fa-trash" aria-hidden="true"></i>
+			</a>
+			<a class="btn btn-dark m-2 float-right" 
+				style="color:white;padding: 7px;"
+				href="/profile/{{announcement.announced_by}}">
+				Contact <i class="fas fa-phone-volume"></i>
+			</a>
+			<button onclick="on(document.getElementsByClassName('overlay')[0])"
+				style="color:white;background:black;padding: 7px;cursor:pointer;"
+			 	class="m-2 float-right">
+			 	Update <i class="fas fa-edit"></i>
+			</button><br><br>
+			<div class="overlay">
+			  	<form method="POST" class="overlayform" enctype="multipart/form-data">{% csrf_token %}
+					<a onclick = "toggleBlockForm(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+					{% for field in updateform %}
+						{% if field.field.widget.input_type == 'file' %}
+						<input type="file" name="file" id="actual-btn" hidden/>
+						<label id="file-upload-label"for="actual-btn">Upload File<i class="fa mx-2 fa-upload" aria-hidden="true"></i></label>
+						{% else %}
+							{{ field.label_tag }}<br>
+							{{ field }}
+						{% endif %}
+					{% endfor %}
+					<center>
+						<input type="submit" class="submit-button"value="Submit">
+					</center>
+			  	</form>
+		  	</div>
+		</div>
+		{% endif %}<br>
+		<div id="detail-content">
+			<p id="detail-topic">
+				{{announcement.subject}}
+			</p>
+			{% if announcement.file %} 
+				{% if extension == 'image' %}
+					<a href="{{announcement.file.url}}">
+						<img src="{{announcement.file.url}}" id="media-container">
+					</a>
+				{% elif extension == 'video' %}
+					<video height="300" width="500" id="media-container" controls>
+						<source src="{{announcement.file.url}}" type="video/mp4">
+						<source src="{{announcement.file.url}}" type="video/ogg">
+						Your browser does not support the video tag.
+					</video><br>
+					<a href="{{announcement.file.url}}" class="text-center" download>
+					 Download file
+					</a> 
+				{% else %}
+					<a href="{{announcement.file.url}}" class="text-center" download>
+					 Download file
+					</a> 
+				{% endif %}
+			{% endif %}	
+			<div class="ql-editor">{{ announcement.description.html|safe }}</div>
+		</div><br>
+		{% include 'comments/announcementcomment.html' %}
+	</div>
+  </div>
+</div>
+{% endblock %}

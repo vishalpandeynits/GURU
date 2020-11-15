@@ -152,13 +152,12 @@ QUILL_CONFIGS = {
                     {'header': []},
                     {'align': []},
                     {'image':[]},
-                    { 'header': 1 }, { 'header': 2 },
-                    'bold', 'italic', 'underline', 'strike', 'blockquote',
+                    { 'size': ['small', 'large', 'huge'] },
+                    'bold', 'italic', 'underline', 'strike','link','formula','image','blockquote','code-block',
                     {'color': []},
                     {'background': []},
-                    { 'list': 'ordered'}, { 'list': 'bullet' }
-                ],
-                ['code-block', 'link','formula','image','video'],
+                    { 'list': 'ordered'}, { 'list': 'bullet' },
+                ]
             ]
         },
     }

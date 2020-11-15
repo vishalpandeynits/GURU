@@ -1,36 +1,40 @@
+function _(el){
+    return document.getElementById(el)
+}
+
 if (window.history.replaceState) {
     window.history.replaceState(null, null, window.location.href);
 }
 
 function openNav() {
-    document.getElementById("mySidenav").style.width = "295px";
+    _("mySidenav").style.width = "295px";
 }
 
 function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
+    _("mySidenav").style.width = "0";
 }
 
 function createclassform() {
-    if (document.getElementById('classform').style.display == 'none') {
-        document.getElementById('joinform').style.display = 'none';
-        document.getElementById('classform').style.display = 'block';
+    if (_('classform').style.display == 'none') {
+        _('joinform').style.display = 'none';
+        _('classform').style.display = 'block';
     } else {
-        document.getElementById('classform').style.display = 'none'
+        _('classform').style.display = 'none'
     }
 }
 
 function joinform() {
-    if (display == document.getElementById('joinform').style.display == 'none') {
-        document.getElementById('classform').style.display = 'none'
-        document.getElementById('joinform').style.display = 'block';
+    if (display == _('joinform').style.display == 'none') {
+        _('classform').style.display = 'none'
+        _('joinform').style.display = 'block';
     } else {
-        document.getElementById('joinform').style.display = 'none';
+        _('joinform').style.display = 'none';
     }
 }
 
 // POLL JS
 function addInputField(){
-    document.getElementById('more-inputs').innerHTML += '<input type="text" autocomplete="off" class="new" placeholder="Mention your option..." name="check">'
+    _('more-inputs').innerHTML += '<input type="text" autocomplete="off" class="new" placeholder="Mention your option..." name="check">'
     new_inputs = document.getElementsByClassName('new')
     new_inputs[new_inputs.length-1].focus()
 
@@ -51,124 +55,63 @@ function toggleBlockForm(x){
 
 //EMPTY COMMENT ISSUE
 function checkComment(){
-    var value=document.getElementById('id_comment').value
+    var value=_('id_comment').value
     value = value.trim()
     if(value.length==0){
-        document.getElementById('id_submit').disabled=true;
+        _('id_submit').disabled=true;
     }
     else{
-        document.getElementById('id_submit').disabled=false;
+        _('id_submit').disabled=false;
     }
 }
 
 //EMPTY COMMENT ISSUE ENDS
 
 //HOMEPAGE JAVASCRIPT
-function on() {
-    document.getElementById("overlay").style.display = "block";
+function on(el) {
+    el.style.display = "flex";
+    _('body').style.overflow='hidden';
 }
 
-function off() {
-    document.getElementById("overlay").style.display = "none";
+function off(el) {
+    el.style.display= "none";
 }
-//HOMEPAGE JAVASCRIPT ENDS
+function toggleMembersSubjects(){  
+    _('members').style.display = _('members').style.display==='block'?'none':'block';
+    _('activity').style.display = _('members').style.display==='block'?'none':'block';
+}
 
-// SUBJECTS JAVASCRIPT
-new Vue({
-        el: '#vue-container',
-        data: {
-            subjects: true,
-            members: false,
-            addform: false,
-        },
-        methods: {
-            toggleSubjects: function() {
-                this.subjects = true;
-                this.addform = false;
-                this.members = false;
-            },
-            toggleMembers: function() {
-                this.members = this.members === true ? false : true;
-                this.subjects = false;
-                this.addform = false;
-            },
-            addSubject: function() {
-                this.addform = this.addform === true ? false : true;
-            },
-        }
-    })
-// SUBJECTS JAVASCRIPT
-
-// ASSIGNMENT PAGE JAVASCRIPT
-new Vue({
-    el: '#assignment-container',
-    data: {
-        all_submissions: false,
-        ontime_submissions: false,
-        late_submissions: false,
-        not_submitted: false,
-        clear: true,
-    },
-
-    methods: {
-        cleared: function() {
-            this.all_submissions = false;
-            this.ontime_submissions = false;
-            this.late_submissions = false;
-            this.not_submitted = false;
-            this.clear = true
-        },
-        show_all_submissions: function() {
-            this.all_submissions = true;
-            this.ontime_submissions = false;
-            this.late_submissions = false;
-            this.not_submitted = false
-        },
-
-        show_ontime_submissions: function() {
-            this.all_submissions = false,
-                this.ontime_submissions = true,
-                this.late_submissions = false;
-            this.not_submitted = false
-        },
-
-        show_late_submissions: function() {
-            this.all_submissions = false,
-                this.ontime_submissions = false,
-                this.late_submissions = true
-            this.not_submitted = false
-        },
-        show_not_submitted: function() {
-            this.all_submissions = false;
-            this.ontime_submissions = false;
-            this.late_submissions = false;
-            this.not_submitted = true;
-        },
+// Change Files icon css
+const actualBtn = _('actual-btn');
+const fileChosen = _('file-chosen');
+actualBtn.addEventListener('change', function(){
+    _('file-upload-label').textContent = this.files[0].name + " selected. Click again to change"
+})
+$(document).ready(function() {
+    $('#close-btn').click(function() {
+    $('#search-overlay').slideUp(200);
+    $('#search-btn').show();
+});
+$('#search-btn').click(function() {
+    $(this).hide();
+    $('#search-overlay').slideDown(200);
+});
+});
+//&& e.target !=
+$(document).on('click', function (e) {
+    if ($(e.target).closest("#search-overlay").length === 0  ) {
+        if(e.target!== _('search-btn' )){
+            $("#search-overlay").slideUp(200);
+            $('#search-btn').show();
+        }    
+    }
+});
+$(document).on('click', function (e) {
+    if ($(e.target).closest(".user-icon").length === 0  ) {
+        _('dropdown-container').style.display='none';
     }
 })
-// ASSIGNMENT PAGE JAVASCRIPT ENDS 
 
-// This subject JS
-new Vue({
-    el: '#subject',
-    data: {
-        'members': true,
-        'activity': false,
-        'editForm': false,
-    },
-    methods: {
-        toggleMembers: function() {
-            this.members = true;
-            this.activity = false;
-            this.editform = false;
-        },
-        toggleActivity: function() {
-            this.members = false;
-            this.editform = false;
-            this.activity = true;
-        },
-        toggleEditForm: function() {
-            this.editForm = this.editForm === true ? false : true;
-        }
-    }
-})
+function alertDelete(what){
+    confirm('Are You sure want to delete? If', what, 'deleted once cannot be bring back.')
+}

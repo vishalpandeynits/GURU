@@ -4,7 +4,8 @@ from django.db.models.signals import post_save,pre_delete
 from django.dispatch import receiver
 from .email import *
 from django_quill.fields import QuillField
-
+from django.utils.text import slugify
+from .utils import unique_id
 class Classroom(models.Model):
 	created_by = models.ForeignKey(User, on_delete = models.CASCADE,related_name='created_by')
 	members = models.ManyToManyField(User)
@@ -13,7 +14,7 @@ class Classroom(models.Model):
 	pending_members = models.ManyToManyField(User,related_name='pending_members')
 	classroom_pic = models.ImageField(default="classroom.jpg",upload_to="classrooms/",null=True)
 	class_name = models.CharField(max_length = 100)
-	description = models.TextField(null=True, blank=True)
+	description = models.TextField(null=True, blank=True,max_length=300)
 	created_on = models.DateTimeField(auto_now_add=True)
 	unique_id = models.CharField(max_length=16,unique=True)
 	need_permission = models.BooleanField(default=True)
@@ -27,7 +28,7 @@ class Subject(models.Model):
 	teacher = models.ForeignKey(User,on_delete=models.CASCADE,related_name="teacher")
 	upload_permission = models.ManyToManyField(User,related_name="upload_permitted")
 	subject_pic = models.ImageField(upload_to="subject_content/",default="book.jpg")
-	description = models.TextField(null=True,blank=True)
+	description = models.TextField(null=True,blank=True,max_length=500)
 
 	def __str__(self):
 		return self.subject_name
@@ -39,9 +40,16 @@ class Note(models.Model):
 	topic = models.CharField(max_length=100,)
 	description = QuillField()
 	uploaded_by = models.ForeignKey(User,on_delete=models.CASCADE)
+	slug = models.SlugField(unique=True)
 
 	def __str__(self):
 		return self.topic
+
+	def save(self, *args, **kwargs):
+		unique = unique_id()
+		self.slug = slugify(self.topic + unique[:5])
+		super(Note, self).save(*args, **kwargs)
+
 
 class Announcement(models.Model):
 	subject_name = models.ForeignKey(Subject, on_delete=models.CASCADE)
@@ -50,9 +58,15 @@ class Announcement(models.Model):
 	description = QuillField()
 	file = models.FileField(upload_to='media/announcement/',null=True,blank=True)
 	announced_by = models.ForeignKey(User,on_delete=models.CASCADE)
+	slug = models.SlugField(unique=True)
 
 	def __str__(self):
 		return self.subject
+
+	def save(self, *args, **kwargs):
+		unique = unique_id()
+		self.slug = slugify(self.topic + unique[:5])
+		super(Announcement, self).save(*args, **kwargs)
 
 class Assignment(models.Model):
 	subject_name = models.ForeignKey(Subject,on_delete=models.CASCADE)
@@ -64,9 +78,15 @@ class Assignment(models.Model):
 	assigned_by = models.ForeignKey(User,on_delete=models.CASCADE)
 	submitted_by = models.ManyToManyField(User,related_name="Submissions")
 	full_marks = models.IntegerField(default=100)
-	
+	slug = models.SlugField(unique=True)
+
 	def __str__(self):
 		return "Assignment on "+ self.topic
+
+	def save(self, *args, **kwargs):
+		unique = unique_id()
+		self.slug = slugify(self.topic + unique[:5])
+		super(Assignment, self).save(*args, **kwargs)
 
 class Submission(models.Model):
 	assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)

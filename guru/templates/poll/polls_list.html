@@ -1,0 +1,56 @@
+{% extends 'base.html' %} 
+{% load crispy_forms_tags %} 
+{% block content %}
+<div>
+    {% include 'navigation.html' %}
+    <div class="container">
+        {% if pollform %}
+            <center>
+                <button id="addpollbtn" class="btn btn-primary"
+                    onclick="toggleFlexForm(document.getElementById('pollform'))">
+    				Add a poll
+    			</button>
+            </center>
+            <div id="pollform">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ pollform|crispy }}<br>
+
+                    <input type="text" autocomplete="off" placeholder="Mention more option..." name="check">
+                    <input type="text" autocomplete="off" placeholder="Mention your option..." name="check">
+                    <div id="more-inputs"></div>
+                    <input type="text" autocomplete="off" onclick="addInputField()" placeholder="Mention your option..." name="check">
+                    <input type="datetime-local" autocomplete="off" required="required" name='date'>
+                    <input type="submit"  class="btn btn-success"  value="submit">
+                </form>
+            </div>   
+        {% endif %}
+    </div>
+
+    <div class="container">
+        {% if polls %}
+            <h2 class="text-center font-weight-bold text-success">List of Polls.</h2><br>
+            <div style="min-height:35rem;">
+            {% for poll in polls %}
+                <div class="poll-list">
+                    <div class="mb-3 font-weight-bold">
+                        0{{ forloop.counter }} 
+                        <a href="/polls/{{classroom.unique_id}}/poll-page/{{ poll.id }}"> {{ poll.topic}}</a>
+                    </div>
+                    <div>
+                        {{poll.who_can_vote}} can Vote.<br> 
+                        Voting will end at {{ poll.announce_at }}
+                    </div>
+                </div>
+            {% endfor %}
+            </div> <br><br> 
+            {% include 'paginations.html' %} 
+        {% else %}
+            <h2 class="no-item">
+                No Polls added yet.
+            </h2>
+        {% endif %}
+    </div>
+</div>
+</div>
+{% endblock %}

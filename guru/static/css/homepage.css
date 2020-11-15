@@ -1,46 +1,156 @@
-
-/*Classroom list and form*/
-
-#overlay {
+/*overlay form settings*/
+.overlay {
     position: fixed;
     display: none;
     width: 100%;
     height: 100%;
-    top: 0;
+    top: 0px;
     left: 0;
     right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    bottom: 0px;
+    background-color:rgb(0, 0, 0,0.4);
     z-index: 2;
-    cursor: pointer;
+    overflow-y: scroll !important;
 }
-
-#classform {
+.overlay .overlayform {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 55%;
+    left: 49%;
+    width:60%;
+    z-index:2;
     transform: translate(-50%, -50%);
+    background: rgb(255, 255, 255);
+    padding:1em;
+    margin:30px 0px;
+    border-radius:10px 10px 10px 10px;;
+    box-shadow:0px 0px 20px grey;
+    overflow-y: scroll !important;
+    overflow-x: hidden;
+    box-sizing: content-box;
+}
+.overlay .overlayform input,textarea{
+    padding: 5px;
+    display:block;
+    width:100%;
+    border:2px solid #aedfed;
+    border:1.5px solid black;
+    outline: none;
+}
+.django-quill-widget-container{
+    width:100%;
+    padding:0;
+    margin-bottom:50px;
+}
+.overlay .overlayform input[type="checkbox"]{
+    margin:0;
+    width:  20px;
+    display:inline;
+}
+.overlay .overlayform input[type="file"]{
+    width:100%;
+    height:80px !important;
+}
+.overlay .overlayform input[type="submit"]{
+    width: 100px;
+    color:white;
+    border-radius:5px;
+    height:40px;
+    margin:0;
+    border:none;
+    background-color:black;
+    cursor:pointer;
+    text-align: center;
+    transition:all 0.2s ease-in-out;
+}
+.overlay .overlayform input[type="submit"]:hover{
+    width:200px;
+    box-shadow:0 0 32px black;
+
+
+}
+.overlay #close {
+    position:absolute;
+    right:1px;
+    top:-15px;
+    margin-bottom:10px;
+    display:inline-block;
+    margin-bottom: 20px;
+    font-size: 3em !important;
+    color: red;
+    font-weight: bolder;
+    border-radius:50%;
+    padding:0px 10px;
+    cursor:pointer;
+}
+#file-upload-label {
+    background-color: black;;
+    color: white;
+    text-align:center;
+    padding-top: 0.8rem;
+    width:100%;
+    height:50px;
+    vertical-align: middle;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+  
+#file-chosen{
+    margin-left: 0.3rem;
+    font-family: sans-serif;
 }
 
+@media screen and (max-width:1000px){
+    .overlay .overlayform {
+        width:85%;
+    }
+    .overlay .overlayform input[type="submit"]{
+        margin-top:40px;
+    }
+    .django-quill-widget-container{
+        margin-bottom:80px;
+    }
+}
+.overlayform .ql-editor,.ql-toolbar{
+    border:1.5px solid black;
+    
+}
+.ql-toolbar{
+    border:1.5px solid black !important;
+    border-bottom: none !important;
+    box-sizing: border-box;;
+}
+/* Overlay form settings ends*/
+
+/* Classroom list page */
+#home-btn-container {
+    margin: 1% 5%;
+    display: flex;
+    justify-content: center;
+}
+#home-btn-container .btn-home {
+    border-radius: 10px;
+    width: 180px;
+    color: white;
+    background-color: black;
+    margin: 10px;
+}
+#home-btn-container .btn-home:hover {
+    color: black;
+    background-color: white;
+}
 #joinform{
     display:none;
     background: white;
     padding: 20px;
     border-radius: 15px;
 }
-
 #joinform input[type="text"] {
     width: 100%;
     outline: none;
     border-bottom: 1px solid black;
 }
-
-#close {
-    float: right;
-    font-size: 1.5em;
-    color: red;
-    font-weight: bolder;
-}
+/* Classroom list page ends*/
 
 .subject-container {
     position: relative;
@@ -48,18 +158,15 @@
     margin: 10px auto;
     line-height: 5px;
 }
-
 .subject-container img {
     vertical-align: middle;
     opacity: 0.8;
     transition: opacity 0.4s, transform 0.4s;
 }
-
 .subject-container img:hover {
     opacity: 1;
     transform: scale(1.04, 1.04);
 }
-
 .subject-container .content {
     position: absolute;
     bottom: 0;
@@ -69,48 +176,6 @@
     padding: 5px;
     font-weight: bolder;
 }
-
-/* #home-btn-container {
-    margin: 3% 5%;
-} */
-
-.btn-home {
-    border-radius: 20px;
-    width: 180px;
-    color: white;
-    background-color: black;
-    margin-bottom: 10px;
-}
-
-.btn-home:hover {
-    color: black;
-    background-color: white;
-}
-
-#intro {
-    color: black;
-    font-size: 5vw;
-    font-weight: bolder;
-}
-
-
-/*Classroom list and form ends*/
-
-
-/*Subject page css*/
-
-#subject-add-form {
-    display:none;
-    padding: 10px;
-    box-shadow: 2px 4px 8px grey;
-}
-
-#subject-add-form input {
-    padding: 10px;
-    background: white;
-    margin: 5px 4px;
-}
-
 #add-subject-btn {
     width: 150px;
     color: white;
@@ -121,67 +186,58 @@
     padding: 5px 10px;
     margin: 10px 0px;
 }
-
-
-/*Subject container css is inherited from just above */
-
-
-/*Subject page css ends*/
-
-
-/*This subject css */
-
 .subject-intro {
     color: black;
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    margin: 40px auto;
-    font-size: 2em;
+    background: white; 
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 7px;
     text-align: center;
-    box-shadow: 1px 2px 3px grey;
+    margin: 20px auto;
+    
+    box-shadow: 0px 0px 23px grey;
 }
-
+.subject-intro #subject-name{
+    font-size: 1.72em;
+    font-weight: bolder;
+}
+.subject-intro #subject-teacher{
+    font-size: 1.32em;
+    font-weight:normal
+}
+.subject-intro #subject-description{
+    font-size:1em;
+}
+#members{
+    display:none;
+}
+.member-card{
+    padding:10px;
+    border-radius:15px;
+    box-shadow: 0px 0px 16px black;
+    box-sizing: content-box;
+    display: flex;
+    justify-content: flex-start;
+    position:relative;
+}
+.member-card img{
+    margin-right: 20px;
+    border-radius:10px;
+    height:80px;
+    width:80px;
+}
 .activity-container {
-    padding: 15px;
-    border-radius: 10px;
+    padding: 10px;
+    border-radius: 7px;
     font-size: 1.2em;
-    box-shadow: 1px 2px 3px grey;
+    margin:10px 0px;
+    box-shadow: 0px 0px 13px black;
+    transition:all 0.31s;
 }
-
-#subjectedit {
-    padding: 20px;
-    background: white;
-    border-radius: 15px;
-    margin: 30px 0px;
-}
-
-@media screen and (min-width:600px) {
-    #subjectedit {
-        width: 100%;
-    }
-}
-
-#subjectedit input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    border-bottom: 1px solid black;
-    outline: none;
-}
-
-#subjectedit input[type="submit"] {
-    width: 75%;
-    display: block;
-    margin: auto;
-    color: white;
-    background: black;
-    border-radius: 8px;
-    padding: 5px;
-    transition: width 0.6s;
-}
-
-#subjectedit input[type="submit"]:hover {
-    width: 100%;
+.activity-container:hover{
+    transform:scaleX(1.02)
 }
 
 #edit {
@@ -196,7 +252,6 @@
 
 
 /*Classroom list and form*/
-
 #overlay {
     position: fixed;
     display: none;
@@ -210,183 +265,12 @@
     z-index: 2;
     cursor: pointer;
 }
-
+#overlay + body{
+    overflow:hidden;
+}
 #classform {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
-
-#vuecontainer form {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-}
-
-#vuecontainer input[type="text"] {
-    width: 100%;
-    outline: none;
-    border-bottom: 1px solid black;
-}
-
-#close {
-    float: right;
-    font-size: 1.5em;
-    color: red;
-    font-weight: bolder;
-}
-
-.subject-container {
-    position: relative;
-    max-width: 800px;
-    margin: 10px auto;
-    line-height: 5px;
-}
-
-.subject-container img {
-    vertical-align: middle;
-    opacity: 0.8;
-    transition: opacity 0.4s, transform 0.4s;
-}
-
-.subject-container img:hover {
-    opacity: 1;
-    transform: scale(1.04, 1.04);
-}
-
-.subject-container .content {
-    position: absolute;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    color: #f1f1f1;
-    width: 100%;
-    padding: 5px;
-    font-weight: bolder;
-}
-
-/* #home-btn-container {
-    margin: 3% 5%;
-} */
-
-.btn-home {
-    border-radius: 20px;
-    width: 180px;
-    color: white;
-    background-color: black;
-    margin-bottom: 10px;
-}
-
-.btn-home:hover {
-    color: black;
-    background-color: white;
-}
-
-#intro {
-    color: black;
-    font-size: 5vw;
-    font-weight: bolder;
-}
-
-
-/*Classroom list and form ends*/
-
-
-/*Subject page css*/
-
-#subject-add-form {
-    padding: 10px;
-    box-shadow: 2px 4px 8px grey;
-}
-
-#subject-add-form input {
-    padding: 10px;
-    background: white;
-    margin: 5px 4px;
-}
-
-#add-subject-btn {
-    width: 150px;
-    color: white;
-    border-radius: 5px;
-    background: black;
-    text-align: center;
-    padding: 5px 10px;
-    margin: 10px 0px;
-}
-
-
-/*Subject container css is inherited from just above */
-
-
-/*Subject page css ends*/
-
-
-/*This subject css */
-
-.subject-intro {
-    color: black;
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    margin: 40px auto;
-    font-size: 2em;
-    text-align: center;
-    box-shadow: 1px 2px 3px grey;
-}
-
-.activity-container {
-    padding: 15px;
-    border-radius: 10px;
-    font-size: 1.2em;
-    box-shadow: 1px 2px 3px grey;
-}
-
-#subjectedit {
-    padding: 20px;
-    background: white;
-    border-radius: 15px;
-    margin: 30px 0px;
-}
-
-@media screen and (min-width:600px) {
-    #subjectedit {
-        width: 100%;
-    }
-}
-
-#subjectedit input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    border-bottom: 1px solid black;
-    outline: none;
-}
-
-#subjectedit input[type="submit"] {
-    width: 75%;
-    display: block;
-    margin: auto;
-    color: white;
-    background: black;
-    border-radius: 8px;
-    padding: 5px;
-    transition: width 0.6s;
-}
-
-#subjectedit input[type="submit"]:hover {
-    width: 100%;
-}
-
-#edit {
-    display: block;
-    margin: auto;
-    background: black;
-    color: white;
-    width: 100px;
-    border-radius: 10px;
-    padding: 8px 12px;
-}
-
-
->>>>>>> 33942830083950124fb037ea4fb990036ac4ef6f
-/*This subject css ends */

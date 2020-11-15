@@ -23,17 +23,22 @@ class SubjectEditForm(forms.ModelForm):
 class NoteForm(forms.ModelForm):
 	class Meta:
 		model = Note
-		fields = ['topic','description','file']
+		fields = ['topic','file','description']
+
 
 class AssignmentForm(forms.ModelForm):
 	class Meta:
 		model = Assignment
-		fields = ['topic','description','full_marks','file']
+		fields = ['topic','full_marks','submission_date','file','description']
+		widgets = {
+				'submission_date': DateInput(attrs={'type': 'datetime-local'}),
+				'full_marks':NumberInput(attrs={'max-value': '100'})
+			}
 
 class AnnouncementForm(forms.ModelForm):
 	class Meta:
 		model = Announcement
-		fields = ['subject','description','file']
+		fields = ['subject','file','description']
 
 class SubmitAssignmentForm(forms.ModelForm):
 	class Meta:

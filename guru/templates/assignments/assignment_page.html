@@ -4,18 +4,74 @@
 {% load comments %}
 {% load static %}
 {% block subject_content %}
-<style>
-	@media screen and (min-width:414px){
-		#submission-date{
-			float:right;
-		}
-	}
-</style>
-
 <div class="container-fluid">
 	<div class="row">
+		<div class="col-sm-12 col-md-8">
+			<!-- Update assignment logic start -->
+			{% if is_teacher %}
+			<div id="containassignment">
+				<a class="btn btn-danger m-2 float-right" 
+					style="border:none;color:white;background:red;padding: 7px;" 
+					href="{% url 'delete_assignment' classroom.unique_id subject.id assignment.id %}">
+					Delete <i class="fa fa-trash" aria-hidden="true"></i>
+				</a>
 
-		<div class="col-sm-12 col-lg-4 order-lg-2">
+				<a class="btn btn-dark m-2 float-right" 
+					style="border:none;color:white;padding: 7px;" 
+					href="/profile/{{assignment.assigned_by}}">
+					Contact <i class="fas fa-phone-volume"></i>
+				</a>
+
+				<a @click="addAssignmentFormToggle" class="btn m-2 float-right"
+					style="border:none;color:white;background:black;padding: 7px;">
+				 	Update <i class="fas fa-edit"></i>
+				</a><br><br>
+
+				<form method="POST" v-if="addform" class="addForm" 
+					enctype="multipart/form-data">{% csrf_token %}
+					{{ updateform|crispy }}
+					<input type="submit" class="submit-button" value="submit">
+				</form>
+			 </div>
+			{% endif %}<br>
+			<!-- Update assignment logic ends -->
+
+			<!-- Assignment details -->
+			<div id="assignment-content">
+				<p style="font-weight: bold;text-align: center;font-size:1.2em;">
+					{{ assignment.topic }}
+				</p>
+				<b style="float:right;">
+				 	Submit Before <nobr>{{ assignment.submission_date }}</nobr>
+				</b><br>
+				{% if assignment.file %}
+					{% if extension == 'image' %}
+						<center>
+							<a href="{{assignment.file.url}}">
+								<img src="{{assignment.file.url}}" height="500" width="500">
+							</a>
+						</center> 
+					{% elif extension == 'video' %}
+						<center> 
+							<video height="300" width="500" style="border:0;outline:0;" controls>
+							  <source src="{{assignment.file.url}}" type="video/mp4">
+							  <source src="{{assignment.file.url}}" type="video/ogg">
+							Your browser does not support the video tag.
+							</video><br>
+						<a href="{{assignment.file.url}}" download> Download file</a>
+						</center>
+					{% else %}
+						<a href="{{assignment.file.url}}" download> Download file</a>
+					{% endif %}
+				{% endif %}
+
+				<pre>{{ assignment.description }}</pre>
+			</div><br>
+			<!-- Assignment details ends -->
+			{% include 'comments/assignmentcomment.html' %}
+		</div>
+		
+		<div class="col-sm-12 col-md-4">
 			{% if is_teacher %}
 				{% include 'assignments/assignment_submissions_teacher.html' %}
 			{% else %}
@@ -23,82 +79,6 @@
 			{% endif %}
 		</div>
 
-		<div class="col-sm-12 col-lg-8 order-lg-1">
-		
-			<!-- Update assignment logic start -->
-			{% if is_teacher %}
-				<div>
-
-					<a class="btn btn-danger m-1 float-right" 
-						style="border:none;color:white;background:red;padding: 7px;" 
-						href="{% url 'delete_assignment' classroom.unique_id subject.id assignment.id %}">
-						Delete <i class="fa fa-trash" aria-hidden="true"></i>
-					</a>
-
-					<a class="btn btn-dark m-1 float-right" 
-						style="border:none;color:white;padding: 7px;" 
-						href="/profile/{{assignment.assigned_by}}">
-						Contact <i class="fas fa-phone-volume"></i>
-					</a>
-
-					<a  onclick="toggleBlockForm(document.getElementById('updateform'))"
-						class="btn m-1 float-right"
-						style="border:none;color:white;background:black;padding: 7px;">
-					 	Update <i class="fas fa-edit"></i>
-					</a><br><br>
-
-					<form method="POST" id="updateform" class="addForm" 
-						enctype="multipart/form-data">{% csrf_token %}
-						{{ updateform|crispy }}
-						<input type="submit" class="submit-button" value="submit">
-					</form>
-				 </div>
-			{% endif %}<br>
-			<!-- Update assignment logic ends -->
-
-			<!-- Assignment details -->
-			<div id="assignment-content">
-
-				<p style="font-weight: bold;text-align: center;font-size:1.2em;">
-					{{ assignment.topic }}
-				</p>
-
-				<b id="submission-date" >
-				 	Submit Before <nobr>{{ assignment.submission_date }}</nobr>
-				</b><br>
-
-				{% if assignment.file %} 
-
-					{% if extension == 'image' %}
-
-						<a href="{{assignment.file.url}}">
-							<img src="{{assignment.file.url}}" id="media-container">
-						</a>
-
-					{% elif extension == 'video' %}
-
-						<video height="300" width="500" id="media-container" controls>
-								<source src="{{assignment.file.url}}" type="video/mp4">
-								<source src="{{assignment.file.url}}" type="video/ogg">
-							Your browser does not support the video tag.
-							</video><br>
-						<a href="{{assignment.file.url}}" style="text-align: center;" download> Download file</a> 
-
-					{% else %}
-
-						<a href="{{assignment.file.url}}" style="text-align: center;" download> Download file</a> 
-
-					{% endif %} 
-
-				{% endif %}
-
-				<div class="ql-editor">{{ assignment.description.html|safe }}</div>
-
-			</div><br>
-			
-			<!-- Assignment details ends -->
-			{% include 'comments/assignmentcomment.html' %}
-		</div>
 	</div>
 </div>
 {% endblock %}

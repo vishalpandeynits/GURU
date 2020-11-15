@@ -1,94 +1,78 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-{% load crispy_forms_tags %}
 <div>
-	<div class="row">
-		{% include 'navigation.html' %}
-	</div>
-	<div class="row container">
-
-		<div id="home-btn-container">
-
-				<h2 id="col-md-6" style="font-size:4vw;"> 
-					Online classes made easy by your own GURU.
-				</h2>
-
-				{% if messages %}
-					<div class="messages">
-					    {% for message in messages %}
-					    	<div class='alert alert-{{ message.tags }}'>{{ message }} </div>
-					    {% endfor %}
-					</div>
-				{% endif %}
-
-				<button onclick="on()" class="btn btn-home">
-					Create a
-					 class
-				</button>
-
-				<button onclick="toggleBlockForm(document.getElementById('joinform'))" class='btn btn-home'>
-					Join a class 
-				</button> <br>
-
-
-				<div id="overlay" >
-					<form id="classform" method="POST"> {% csrf_token %}
-						<a onclick="off()" id="close"> &times;</a> 
-						{{ createclassform|crispy }}
-						<input type="submit" value="Create" class="btn btn-success m-2"> 
-
-					</form>
+	{% include 'navigation.html' %}
+	{% if messages %}
+		<div class="messages container">
+			{% for message in messages %}
+				<div class='alert alert-{{ message.tags }} alert-dismissible fade show'>
+					{{ message }} 
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
 				</div>
-
-				<form id="joinform" method="POST">{% csrf_token %} 
-					Unique id: <br>
-					<input type="text" placeholder="Unique ID"name="join_key"><br>
-					<input type="submit" value="Join" class="btn btn-success float-right m-2"><br><br>
-				</form>
-
-			</div> <br>
-
-			{% if classes %} 
-
-				<div class="row">
-					{% for class in classes %}
-
-						<div class="col-xs-12 col-md-6 col-lg-4">
-
-							<a class="text-center" style="color:white;"
-								href="{% url 'subjects' class.unique_id %}">
-
-								<div class="subject-container">
-
-								  <img src="{{class.classroom_pic.url }}" 
-								  	style="width:100%;height:350px;">
-
-								  <div class="content">
-									    <h1>{{ class|upper }} </h1>
-									    <p>by {{ class.created_by }}</p>
-								  </div>
-
-								</div>
-
-							</a>
-
-						</div>
-
-					{% endfor %}
-				</div>
-
-			{% else %}
-
-			<h1 style="text-align:center;">
-
-				 You are not a member of any class. 
-
-			</h1>
-
-			{% endif %}
-
+			{% endfor %}
 		</div>
+	{% endif %}
+	<div id="home-btn-container">
+		<button onclick="on(document.getElementsByClassName('overlay')[0])" class="btn btn-home">
+			Create a class
+		</button>
+		<button onclick="on(document.getElementsByClassName('overlay')[1])" class='btn btn-home'>
+			Join a class 
+		</button>
+	</div>
+	<div class="overlay">
+        <form method="POST"class="overlayform" style="display:block;"enctype="multipart/form-data">
+            {% csrf_token %}
+            <a onclick = "toggleBlockForm(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+                {% for field in createclassform %}
+                    {% if field.field.widget.input_type == 'file' %}
+                    <input type="file" name="file" id="actual-btn" hidden/>
+                    <label id="file-upload-label" class="text-center"for="actual-btn">Upload Classroom Pic<i class="fa mx-2 fa-upload" aria-hidden="true"></i></label>
+                    {% elif field.field.widget.input_type == 'checkbox' %}
+                    <input type="checkbox" name="need_permission" id="id_need_permission" checked> 
+                        <label for="id_need_permission" style="display:inline-block;" title="Joiners will need Permisson of admins to join this classroom">Need permission to join</label><br>
+                    {% else %}
+                        {{ field.label_tag }}<br>
+                        {{ field }}
+                    {% endif %}
+                {% endfor %}
+            <center>
+                <input type="submit" class=" submit-button"value="Submit">
+            </center>
+        </form>
+	</div>
+	<div class="overlay">
+		<form class="overlayform" style="width:300px;top:25%;"method="POST">{% csrf_token %} 
+			<a onclick="off(document.getElementsByClassName('overlay')[1])" id="close"> &times;</a><br>
+			Unique id: <br>
+			<input type="text" placeholder="Unique ID"name="join_key"><br>
+			<center>
+				<input type="submit" value="Join">
+			</center>
+		</form>
+	</div>
+	{% if classes %} 
+		<div class="row px-4">
+			{% for class in classes reversed %}
+				<div class="col-xs-12 col-md-6 col-lg-4">
+					<a class="text-center"href="{% url 'subjects' class.unique_id %}">
+						<div class="subject-container">
+							<img src="{{class.classroom_pic.url }}" style="width:100%;height:350px;">
+							<div class="content">
+								<h1>{{ class|upper }} </h1>
+								<p>by {{ class.created_by }}</p>
+							</div>
+						</div>
+					</a>
+				</div>
+			{% endfor %}
+		</div>
+	{% else %}
+		<h1 class="text-center">You are not a member of any class.</h1>
+	{% endif %}
 	</div>
 </div>
 {% endblock %} 

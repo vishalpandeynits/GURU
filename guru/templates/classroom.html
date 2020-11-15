@@ -1,247 +1,178 @@
-{% extends 'base.html' %} 
-{% load crispy_forms_tags %} 
-{% load static %} 
-{% block title %} Home view {% endblock %} 
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Home view {% endblock %}
 {% block content %}
-
+{% load crispy_forms_tags %}
 <div>
-    {% include 'navigation.html' %}
+	{% include 'navigation.html' %}
+	<div class="text-center w-50 m-auto mt-4 ">
+		<h2> {{ classroom.class_name }} </h2>
+		{% if classroom.description %}
+			 <p> {{ classroom.description }} </p>
+		{% endif %}
+	</div>
 
-    <div class="text-center w-50 m-auto mt-4 ">
-        <h2> {{ classroom.class_name }} </h2>
-        {% if classroom.description %}
-        <p> {{ classroom.description }} </p>
-        {% endif %}
-    </div>
+	{% if messages %}
+	<div class="messages container">
+	    {% for message in messages %}
+	    <div class='alert alert-{{ message.tags }}'>{{ message }} </div>
+	    {% endfor %}
+	</div>
+	{% endif %}
 
-    {% if messages %}
-        <div class="messages container">
-            {% for message in messages %}
-                <div class='alert alert-{{ message.tags }} alert-dismissible fade show'>
-                    {{ message }} 
-                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+	<span id="update-form">
+		<span style="display:flex; align-items:center; justify-content:center;" id="homepage-btn-group">
+			<button @click="classUpdateForm">Update</button>
+			<span class="dropdown ">
+			  	<button class="btn btn-secondary dropdown-toggle mx-2 " type="button" 
+			  		id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			   		 Invitation link
+			  	</button>
 
-	<span style="display:flex; align-items:center; justify-content:center;" id="homepage-btn-group">
-		<button onclick="toggleBlockForm(document.getElementById('updateForm'))">
-            Update
-        </button>
-		<span class="dropdown ">
-		  	<button class="btn btn-secondary dropdown-toggle mx-2 " type="button" 
-		  		id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		   		 Invitation link
-		  	</button>
+			  	<div class="dropdown-menu bg-light" aria-labelledby="dropdownMenuButton">
+			    	<a style="text-decoration: none;" target="_blank" class="invite-link" 
+						href="https://api.whatsapp.com/send?text=Click on
+					 	this link http://www.guru/join/{{classroom.unique_id}}/ 
+					 	to join classroom {{classroom}} created by 
+					 	{{classroom.created_by}}/)">
+					 	Invite by Whatsapp
+					</a>
+					<a style="text-decoration: none;" target="_blank" class="invite-link" 
+						href="mailto:?subject= Invitation for {{classroom}} 
+						&body=Click on this link http://www.guru/join/{{classroom.unique_id}}/
+					 	to join classroom {{classroom}} created by {{classroom.created_by}}">
+						Invite by email
+					</a>
+			 	</div>
+			</span>
+		</span>	
 
-		  	<div class="dropdown-menu bg-light" aria-labelledby="dropdownMenuButton">
+		<div  v-if="updateForm" class="container">
+			<form id="classroom-updateForm" method="POST" enctype="multipart/form-data">{% csrf_token %}
+				{{ form|crispy }}
+				<input type="Submit" value="Update" class="btn mt-4 btn-primary btn-block">
+			</form>
+		</div>
+	</span>
 
-		    	<a style="text-decoration: none;" target="_blank" class="invite-link" 
-					href="https://api.whatsapp.com/send?text=Click on
-				 	this link http://www.guru/join/{{classroom.unique_id}}/ 
-				 	to join classroom {{classroom}} created by 
-				 	{{classroom.created_by}}/)">
-				 	Invite by Whatsapp
-				</a>
+		<!-- Subjects -->
+	{% if pending_members %}
+		<center><h1 style="color:green">Pending members</h1></center>
+	{% endif %}
 
-				<a style="text-decoration: none;" target="_blank" class="invite-link" 
-					href="mailto:?subject= Invitation for {{classroom}} 
-					&body=Click on this link http://www.guru/join/{{classroom.unique_id}}/
-				 	to join classroom {{classroom}} created by {{classroom.created_by}}">
-					Invite by email
-				</a>
+	<div style="display:flex;justify-content: center;">
+	{% if is_admin %}
+		<div style="width:65%" class="row ">
+		{% for member in pending_members %}
+			<div style="position:relative;" class="member-card bg-light p-4">
+				<div style="display:flex;position:relative;top:-15px;">
+					<div style="justify-content: flex-start;">
+						<img height="70" width="70" style="border-radius:10px;margin-right:20px;"
+						src="{{member.profile.profile_pic.url}}">
+					</div>
+					<div style="justify-content: flex-end;">
+						<div class="member-container">
+							<h4>{{ member.username }} &nbsp; &nbsp;</h4>
+							<p>{{member.profile.bio}}</p>
+						</div>
+					</div>
+				</div>
 
-		 	</div>
-		</span>
-    </span>
+				<div style="position:absolute;top:5px;right:10px;"class="btn-group dropleft float-right">
+					<button type="button" class="btn dropdown-toggle bg-transparent btn-lg" 
+					  	data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> </button>
+					<div class="dropdown-menu dropdown-content">
+						<a href="{% url 'delete_request' classroom.unique_id member.username %}">
+							<nobr>Delete request</nobr>
+						</a>
+						<a href="{% url 'accept_request' classroom.unique_id member.username %}">
+							<nobr>Accept request</nobr>
+						</a>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+		</div>
+	{% endif %}
+	</div>
 
-    <div id="updateForm" style="display: none;" class="container">
+	<div class="row mx-auto" style="width:65%;">
+		<h1 style="margin:auto;"> Members </h1>
+		{% for teacher in teachers %}
+			<div style="position:relative;" class="member-card bg-light"><br/>
+				<div style="display:flex;position:relative;top:-15px;">
+					<div style="justify-content: flex-start;">
+						<img height="70" width="70" style="border-radius:10px;margin-right:20px;"
+						src="{{teacher.profile.profile_pic.url}}">
+					</div>
+					<div style="justify-content: flex-end;">
+						<div class="member-container">
+							<b>{{ teacher.username }} </b><br>
+								{% if teacher in admins %}Admin{% endif %} 
+							<p>{{teacher.profile.bio}}</p>
+						</div>
+					</div>
+				</div>
 
-        <form id="classroom-updateForm" method="POST" enctype="multipart/form-data">
+				<div style="position:absolute;top:5px;right:10px;"class="btn-group dropleft float-right">
+				  	<button type="button" class="btn dropdown-toggle bg-transparent btn-lg" 
+				  		data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+				  	<div class="dropdown-menu dropdown-content">
+					  	{% if user in admins %} 
+							<a href="{% url 'class_admin' classroom.unique_id teacher.username %}">
+								{% if teacher in admins %}
+									<nobr>Dismiss as admin</nobr>
+								{% else %}
+									<nobr>Give admin status</nobr>
+								{% endif %}
+							</a>
+						{% endif %}
+						<a href="{% url 'remove_member' classroom.unique_id user.username %}">
+						 	<nobr>
+						 		{% if is_admin %} Remove from classroom {% else %} Leave classroom {% endif %}
+						 	</nobr>
+						</a>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
 
-            {% csrf_token %} {{ form|crispy }}
+		{% for student in students %}
+			<div style="position:relative;" class="member-card bg-light"><br/>
+				<div style="display:flex;position:relative;top:-15px;">
+					<div style="justify-content: flex-start;">
+						<img height="70" width="70" style="border-radius:10px;margin-right:20px;"
+							src="{{student.profile.profile_pic.url}}">
+					</div>
+					<div style="justify-content: flex-end;">
+						<div class="member-container">
+							<b>{{ student.username }} </b><br>
+								{% if student in admins %}Admin{% endif %} 
+							<p>{{student.profile.bio}}</p>
+						</div>
+					</div>
+				</div>
 
-            <input type="Submit" value="Update" class="btn mt-4 btn-primary btn-block">
-        </form>
-
-    </div>
-
-    <!-- Subjects -->
-    {% if pending_members %}
-        <h1 style="color:green;text-align:center;">Pending members</h1>
-    {% endif %}
-
-    <div style="display:flex;justify-content: center;">
-
-        {% if is_admin %}
-        <div style="width:65%" class="row ">
-
-            {% for member in pending_members %}
-            <div style="position:relative;" class="member-card bg-light p-4">
-
-                <div style="display:flex;position:relative;top:-15px;">
-
-                    <div style="justify-content: flex-start;">
-                        <img height="70" width="70" style="border-radius:10px;margin-right:20px;" src="{{member.profile.profile_pic.url}}">
-                    </div>
-
-                    <div style="justify-content: flex-end;">
-                        <div class="member-container">
-                            <h4>{{ member.username }} &nbsp; &nbsp;</h4>
-                            <p>{{member.profile.bio}}</p>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div style="position:absolute;top:5px;right:10px;" class="btn-group dropleft float-right">
-
-                    <button type="button" class="btn dropdown-toggle bg-transparent btn-lg" 
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-                    </button>
-
-                    <div class="dropdown-menu dropdown-content">
-                        <a href="{% url 'delete_request' classroom.unique_id member.username %}">
-                            <nobr>Delete request</nobr>
-                        </a>
-                        <a href="{% url 'accept_request' classroom.unique_id member.username %}">
-                            <nobr>Accept request</nobr>
-                        </a>
-                    </div>
-
-                </div>
-
-            </div>
-            {% endfor %}
-
-        </div>
-        {% endif %}
-
-    </div>
-
-    <div class="row mx-auto" style="width:65%;display:flex;justify-content: center;">
-
-        <h1 style="margin:auto;"> Members </h1>
-
-        {% for teacher in teachers %}
-        <div style="position:relative;" class="member-card bg-light"><br/>
-
-            <div style="display:flex;position:relative;top:-15px;">
-
-                <div style="justify-content: flex-start;">
-                    <img height="70" width="70" style="border-radius:10px;margin-right:20px;" 
-                        src="{{teacher.profile.profile_pic.url}}">
-                </div>
-
-                <div style="justify-content: flex-end;">
-                    <div class="member-container">
-                        <b>{{ teacher.username }} </b><br>
-
-                        {% if teacher in admins %}Admin{% endif %}
-
-                        <p>{{teacher.profile.bio}}</p>
-                    </div>
-                </div>
-
-            </div>
-
-            <div style="position:absolute;top:5px;right:10px;" 
-                class="btn-group dropleft float-right">
-
-                <button type="button" class="btn dropdown-toggle bg-transparent btn-lg" 
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                </button>
-
-                <div class="dropdown-menu dropdown-content">
-
-                    {% if user in admins %}
-                        <a href="{% url 'class_admin' classroom.unique_id teacher.username %}">
-							{% if teacher in admins %}
+				<div style="position:absolute;top:5px;right:10px;"class="btn-group dropleft float-right">
+				  	<button type="button" class="btn dropdown-toggle bg-transparent btn-lg" data-toggle="dropdown" 
+				  		aria-haspopup="true" aria-expanded="false"> </button>
+				  	<div class="dropdown-menu dropdown-content">
+					  	{% if user in admins %} 
+							<a href="{% url 'class_admin' classroom.unique_id student.username %}">
+							{% if student in admins %}
 								<nobr>Dismiss as admin</nobr>
 							{% else %}
 								<nobr>Give admin status</nobr>
 							{% endif %}
-    					</a> 
-                    {% endif %}
-
-                    <a href="{% url 'remove_member' classroom.unique_id user.username %}">
-                        <nobr>
-                            {% if is_admin %} 
-                                Remove from classroom 
-                            {% else %} 
-                                Leave classroom 
-                            {% endif %}
-                        </nobr>
-                    </a>
-
-                </div>
-
-            </div>
-        </div>
-        {% endfor %} 
-
-        {% for student in students %}
-        <div style="position:relative;" class="member-card bg-light"><br/>
-
-            <div style="display:flex;position:relative;top:-15px;">
-
-                <div style="justify-content: flex-start;">
-                    <img src="{{student.profile.profile_pic.url}}"
-                        height="70" width="70" style="border-radius:10px;margin-right:20px;" >
-                </div>
-
-                <div style="justify-content: flex-end;">
-
-                    <div class="member-container">
-                        <b>{{ student.username }} </b><br> 
-
-                        {% if student in admins %}  Admin  {% endif %}
-
-                        <p>{{student.profile.bio}}</p>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div style="position:absolute;top:5px;right:10px;" class="btn-group dropleft float-right">
-
-                <button type="button" class="btn dropdown-toggle bg-transparent btn-lg" 
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-                </button>
-
-                <div class="dropdown-menu dropdown-content">
-
-                    {% if user in admins %}
-                        <a href="{% url 'class_admin' classroom.unique_id student.username %}">
-    						{% if student in admins %}
-    							<nobr>Dismiss as admin</nobr>
-    						{% else %}
-    							<nobr>Give admin status</nobr>
-    						{% endif %}
-    					</a>
-                    {% endif %}
-
-                    <a href="{% url 'remove_member' classroom.unique_id user.username %}">
-                        <nobr>
-                            {% if is_admin %} 
-                                Remove from classroom 
-                            {% else %} 
-                                Leave classroom 
-                            {% endif %}
-                        </nobr>
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-        {% endfor %}
-
-    </div>
+							</a>
+						{% endif %}
+						<a href="{% url 'remove_member' classroom.unique_id user.username %}">
+						 	{% if is_admin %} Remove from classroom {% else %} Leave classroom {% endif %}
+						</a>
+				  	</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
 </div>
 {% endblock %}

@@ -1,3 +1,42 @@
+<style>
+    
+    #navbar {
+        position: fixed;
+        top: 0;
+        z-index: 1;
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        background: white;
+        box-shadow: 3px 3px 6px grey;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+    
+    #navbar a {
+        font-size: 1.2em;
+        color: black;
+        transition: 0.6s;
+        opacity: 1;
+    }
+    
+    #navbar a:hover {
+        font-weight: bold;
+        box-shadow: 2px 2px 4px grey;
+    }
+    
+    @media screen and (max-width: 800px) {
+        #navbar {
+            display: flex;
+            justify-content: center;
+        }
+        #navbar a {
+            font-size: 1em;
+        }
+    }
+
+</style>
+
 <div id='navbar' class="mb-4">
     <a class="btn mx-2" href="/">Home</a>
     <a class="btn mx-2" href="#contactus">Contact us </a>

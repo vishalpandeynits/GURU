@@ -4,166 +4,91 @@
 {% load humanize %}
 {% block subject_content %}
 <div class="container" id="subject">
-
-	<div class="subject-intro w-sm-100">
-
+	<div class="subject-intro w-sm-100" style="display:block;">
 		Subject: {{ subject.subject_name }} <br>
-
 		Teacher: {{ subject.teacher }}<br>
-
 		{% if subject.description %}
-
-			{{ subject.description }}<br>
-
+		Description: {{ subject.description }}<br>
 		{% endif %}
-
-	</div>
-
-	<!-- Members list -->
-
-	<div style="display:flex; justify-content:center;" class="m-auto">
-
-		<button 
-			@click="toggleMembers" 
-			class ="btn btn-primary h-100 m-2 "> 
-			Members 
-		</button>
-
-		<button 
-			@click="toggleActivity" 
-			class ="btn btn-primary h-100 m-2">   
-			Activities 
-		</button>
-
-		{% if user == teacher  or user in admins %}
-
-			<button @click="toggleEditForm" class="btn btn-primary m-2 "> 
-				Edit Subject 
-			</button>
-
-			<a 
-				class ="btn btn-danger m-2 h-100" 
-				href="{% url 'delete_subject' classroom.unique_id subject.id %}"> 
-				Delete
-			</a>
-
-		{% endif %}
-
 	</div>
 
 	{% if user == teacher  or user in admins %}
-
-		<form 
-			id="subjectedit" v-if="editForm" 
-			method="POST" enctype="multipart/form-data">
-
-			{% csrf_token %}
-			{{ form|crispy }}
-
-			<input type="submit" value="Edit ">
-
-		</form>
-
+	<button @click="toggleEditForm" id="edit"> Edit </button>
+	<form id="subjectedit" v-if="editForm" method="POST" enctype="multipart/form-data">{% csrf_token %}
+		{{ form|crispy }}
+		<input type="submit" value="Edit">
+	</form>
 	{% endif %}
+	<!-- Members list -->
 
-	<div v-if="members" class="m-auto">
+	<div class="d-flex justify-content-center w-75 m-auto">
+		<button style="position:relative; top:8px;" @click="toggleMembers" 
+			class ="btn btn-primary btn-block h-100 mx-2 "> Members </button>
+		<button @click="toggleActivity" class ="btn btn-primary btn-block h-100 mx-2"> 
+			Activities 
+		</button>
+		{% if user == teacher  or user in admins %}
+			<a class ="btn btn-danger btn-block mx-2 h-100" 
+			href="{% url 'delete_subject' classroom.unique_id subject.id %}"> Delete</a>
+		{% endif %}
+	</div>
 
-	<br> <h1 style="text-align:center;"> Members </h1>
+	<div v-if="members" class="w-75 m-auto">
+		<br><h1 style="text-align:center;"> Members </h1>
+
 
 	{% for member in members %}
 	<div style="position:relative;" class="member-card bg-light m-auto">
 		<div style="display:flex;">
-
 			<div style="display:flex;position:relative;top:-15px;">
 				<img height="70" width="70" style="border-radius:10px;margin:30px 10px; "
 				src="{{member.profile.profile_pic.url}}">
 			</div>
-
 			<div class="member-container">
-				<h5>
-					<a href="/profile/{{ member.username }}">
-						{{ member.username }} 
-					</a><br>
-
-					{% if member in admins %}
-						Admin 
-					{% endif %}
-
-					{% if member == teacher %}
-						Teacher 
-					{% endif %}
-
-				</h5>
-
+				<h4>
+					<a href="/profile/{{ member.username }}">{{ member.username }} </a><br>
+					{% if member in admins %}Admin {% endif %}
+					{% if member == teacher %}Teacher {% endif %}
+				</h4>
 				<p>{{member.profile.bio}}</p>
-
-				{% if member in upload_permissions and member not in admins %}
+				{% if member in upload_permissions %}
 					Can upload resources
 				{% endif %}
-
 			</div>
-
 		</div>
 
-		{% if user == teacher  or user in admins and member != teacher and member not in admins %}
-
-			<div 
-				style="position:absolute;top:5px;right:10px;" 
-				class="btn-group dropleft float-right">
-				
-				<button 
-					class="btn dropdown-toggle btn-lg bg-transparent" 
-					data-toggle="dropdown" type="button" 
-					aria-haspopup="true" aria-expanded="false"> 
-				</button>
-
+		<div style="position:absolute;top:5px;right:10px;" class="btn-group dropleft float-right">
+			{% if user == teacher  or user in admins and member != teacher and member not in admins %}
+			<button type="button" class="btn dropdown-toggle btn-lg bg-light" data-toggle="dropdown" 
+			aria-haspopup="true" aria-expanded="false"> </button>
 				<div class="dropdown-content dropdown-menu">
-
 					{% if member in upload_permissions %}
 						<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
-
 							<nobr>Take upload permssion</nobr>
-
 						</a>
 					{% else %}
-
 						<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
-
 							<nobr>Give upload permissions</nobr>
-
 						</a>
 					{% endif %}
 				</div>
-
-			</div>
-		{% endif %}
-
+			{% endif %}
+		</div>
 	</div><br>
 	{% endfor %}
-
 	</div>
+
 	<!-- Members list end -->
-
-	<div v-if="activity" class="m-auto">
-
+	<div v-if="activity" class="w-75 m-auto">
 		<br><h1 style="text-align:center;"> Activities </h1>
-
 		{% for activity in page %}
-
 			<div class="row activity-container mx-auto bg-light my-2">
-
 				{{ activity.action }}<br>
-
 				{{ activity.actor }}<br>
-
 				{{ activity.time|naturaltime }}<br>
-				
 			</div>
-
 		{% endfor %}
-
 		{% include 'paginations.html' %}
 	</div>
-
 </div>
 {% endblock %}

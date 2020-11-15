@@ -70,33 +70,42 @@
 		</div>
 
 		{% if profile.user.username == user.username %}
-
-			<center>
-
-				<button style="margin:10px;"class="btn btn-info"
-					onclick="toggleBlockForm(document.getElementById('profileupdateform'))">
+			
+				<div style="display:flex;justify-content:center">
+					<button style="margin:10px;"class="btn btn-info"
+					onclick="on(document.getElementsByClassName('overlay')[0])">
 					Edit profile
-				</button><br>
+					</button>
+					<a style="margin:10px;"class="btn btn-info" href="{% url 'password_change' %}">
+					Change Password
+					</a>
+				</div>
 
+				<center>
 				{% if user.username == profile.user.username %}
-
 					{% if not user.profile.whatsapp_number or not user.profile.facebook or not user.profile.phone_number %}
-
 						Please add your contact details so other users can contact you in case of any need.
-
 					{% endif %}
-
 				{% endif %}
-
 			</center>
-
-
-			<form method="POST" id="profileupdateform"  enctype="multipart/form-data"> 
-				{% csrf_token %}
-
-				{{ p_form|crispy }}
-				<button class="btn btn-primary" type="submit">Update</button>
-			</form>
+			<div class="overlay">
+				<form method="POST"class="overlayform" enctype="multipart/form-data">
+					{% csrf_token %}
+					<a onclick = "toggleBlockForm(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+						{% for field in p_form %}
+							{% if field.field.widget.input_type == 'file' %}
+							<input type="file" name="file" id="actual-btn" hidden/>
+							<label id="file-upload-label" class="text-center"for="actual-btn">Upload Profile pic<i class="fa mx-2 fa-upload" aria-hidden="true"></i></label>
+							{% else %}
+								{{ field.label_tag }}<br>
+								{{ field }}
+							{% endif %}
+						{% endfor %}
+					<center>
+						<input type="submit" class=" submit-button"value="Submit">
+					</center>
+				</form>
+			</div>
 
 		{% endif %}
 

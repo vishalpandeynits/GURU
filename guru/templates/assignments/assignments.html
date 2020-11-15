@@ -1,71 +1,51 @@
-{% extends 'subject_page.html' %} 
-{% load crispy_forms_tags %} 
-{% load humanize %} 
+{% extends 'subject_page.html' %}
+{% load crispy_forms_tags %}
+{% load humanize %}
 {% block subject_content %}
 <div class="container">
-    <div>
-        {% if form %}
-            <button onclick="toggleBlockForm(document.getElementById('addform'))"
-                    type="button" class="btn add-btn float-left mt-4">
-    	      	 	Add <i class="fa fa-plus" aria-hidden="true"></i>
-    		</button><br> 
-        {% endif %}
 
-        <form class="float-right search-container">
-            <input class="search-input" autocomplete="off" type="text" placeholder="Search..." name="search">
-            <button class="search-icon" type="submit">
+	<div id="containassignment">
+		<form class="float-right mt-4">
+	      	<input class="search-input" autocomplete="off" type="text"
+	      	 placeholder="Search..."name="search">
+	      	<button class="search-icon" type="submit">
 	      	 	<i class="fas fa-search"></i>
 	      	</button>
-        </form><br><br> 
+		</form>
+	
+		{% if form %}
+      	<button @click = "addAssignmentFormToggle" type="button" 
+      	 	class="btn add-btn float-left mt-4">
+      	 	Add <i class="fa fa-plus" aria-hidden="true"></i>
+		</button><br><br><br>
+	    <form method="POST" v-if="addform" class="addForm" 
+	    	enctype="multipart/form-data">{% csrf_token %}
+			{{ form|crispy}}
+			Submit before * <br>
+			<input type="datetime-local" required name="submission_date"><br>
+			<input type="submit" class="submit-button mt-4"value="submit">
+		</form>
+		{% endif %}
+	</div>
 
-        {% if form %}
-            <form method="POST" id="addform" class="addForm" enctype="multipart/form-data">
-
-                {% csrf_token %}
-                {{ form|crispy }}<br>
-
-                Submit Before:
-                <input type="datetime-local" required name="submission_date"><br>
-                <input type="submit" class="submit-button mt-4" value="submit">
-
-            </form>
-        {% endif %}
-
-    </div>
-
-    {% if assignments %}
-
-        <div style="min-height: 500px;">
-
-            {% for assignment in assignments %}
-                <a class="link" 
-                    href="{% url 'assignment_page' classroom.unique_id subject.id assignment.id %}">
-
-                    <div class="content">
-
-                        0{{ forloop.counter}} {{ assignment.topic }}<br>
-
-                        <div class="time">
-                            Submit Before
-                            <nobr>{{ assignment.submission_date }}</nobr>
-                            
-                        </div><br>
-
-                    </div>
-
-                </a>
-            {% endfor %}
-
-        </div><br> 
-        {% include 'paginations.html' %} 
-
-    {% else %}
-
-        <h2 style="text-align:center;color:green;font-weight: bolder;">
-            No assignments found !!!
-        </h2>
-
-    {% endif %}
+	{% if assignments %}
+		<div style="min-height: 500px;">
+			{% for assignment in assignments %}
+			<a class="link" href="{% url 'assignment_page' classroom.unique_id subject.id assignment.id %}">
+				<div class="content">
+					0{{ forloop.counter}} {{ assignment.topic }}<br>
+					<div class="time">
+						 Submit Before <nobr>{{ assignment.submission_date }}</nobr>
+					</div><br>
+				</div>
+			</a>
+			{% endfor %}
+		</div><br>
+		{% include 'paginations.html' %}
+	{% else %}
+		<h2 style="text-align:center;color:green;font-weight: bolder;"> 
+			No assignments found !!!
+		</h2>
+	{% endif %} 
 </div>
-
 {% endblock %}

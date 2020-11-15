@@ -8,35 +8,99 @@
     right:0;
     height:10px;
 }
-#home-btn-container {
-    margin-top: 30px;
-}
-
 .btn-home {
     border-radius: 20px;
     width: 180px;
     color: white;
     background-color: black;
-    margin-bottom: 20px;
     transition: background 0.6s;
 }
-
 .btn-home:hover {
     color: black;
     background-color: white;
     border: 1px solid black;
 }
 
-#intro {
+#intro-image{
+    z-index:-1;
+}
+.intro-section{
+    position: relative;
+    width:100%;
+
+}
+.intro-section img{
+    width:100%;
+    height:850px;
+}
+.intro-section #button-containers{ 
+    position: absolute;
+    top: 40%;
+    left: 10%;
+    transform: translate(-10%, -50%);
+}
+.intro-section #intro {
     color: black;
+    text-shadow: 5px 5px 15px white;
     font-size: 3em;
     font-weight: bold;
 }
-
-#why-guru {
-    font-size: 1.2em;
+.intro-section div{
+    position:absolute;
+    top:20px;
 }
-
+.heading{
+    text-align:center;
+    font-weight:bolder;
+    margin:30px 0px;
+    color:black;
+    font-size:3em;
+    letter-spacing: 7px;
+}
+#why-guru{
+    display:flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 100%;
+}
+#why-guru div{
+    padding:20px;
+    height:22em;
+    color:white;
+    background:#1ebea5;
+    outline-width:20px;
+    outline:20px solid #16a596;
+}
+#why-guru div h2{
+    color:#14274e;
+    height:5rem;
+}
+#why-guru div p{
+    font-size:1.3em;
+}
+#for-teachers{
+    display:flex;
+    justify-content:space-around;
+    flex-wrap: wrap;
+}
+#for-teachers div{
+    height:15em;
+    width:15em;
+    margin:25px 10px;
+    color:white;
+    padding:10px;
+    background:#1ebea5;
+    outline-width:20px;
+    outline:20px solid #16a596;
+    font-size: 1.3em;
+}
+#for-teachers div h2{
+    color:#14274e;
+    height:5rem;
+}
+#for-teachers div p{
+    font-size:1.3em;
+}
 #navbar {
     position: fixed;
     top: 0;
@@ -45,106 +109,24 @@
     justify-content: flex-end;
     align-items: center;
     width: 100%;
-    background: white;
-    box-shadow: 3px 3px 6px grey;
     padding: 20px;
     margin-bottom: 30px;
     height: 65px;
 }
 
 #navbar a {
-    font-size: 1.4em;
+    font-size: 1.6em;
     color: black;
-    transition: 0.6s;
-    opacity: 1;
-}
-
-
-
-@media screen and (max-width: 800px) {
-    #navbar {
-        display: flex;
-        justify-content: center;
-    }
-    #navbar a {
-        font-size: 1em;
-    }
-}
-
-li {
-    font-size: 1.3em;
-}
-
-.heading1 {
-    text-align: center;
-    border-bottom: 2px solid grey;
-    padding-bottom: 10px;
-    font-size: 2em;
+    transition:0.5s;
     font-weight: bold;
-* {
-    scroll-behavior: smooth;
+    color:#14274e;
 }
-.foot {
-    position: absolute;
-    bottom: 0;
-    left:0;
-    right:0;
-    height:10px;
-}
-#home-btn-container {
-    box-sizing: content-box;
-    margin-bottom: 20px;
-}
-
-.btn-home {
-    border-radius: 20px;
-    width: 180px;
-    color: white;
-    background-color: black;
-    margin-bottom: 20px;
-    transition: background 0.6s;
-}
-
-.btn-home:hover {
-    color: black;
-    background-color: white;
-    border: 2px solid green;
-}
-
-#intro {
-    color: black;
-    font-size: 3em;
-    font-weight: bold;
-}
-
-#why-guru {
-    font-size: 1.2em;
-}
-
-#navbar {
-    position: fixed;
-    top: 0;
-    z-index: 1;
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    background: white;
-    box-shadow: 3px 3px 6px grey;
-    padding: 20px;
-    margin-bottom: 30px;
-}
-
-#navbar a {
-    font-size: 1.2em;
-    color: black;
-    transition: 0.6s;
-    opacity: 1;
-}
-
 #navbar a:hover {
-    font-weight: bold;
-    box-shadow: 2px 2px 4px grey;
+    border-bottom: 3px solid #14274e;
+    background: black;
+    color:white;
 }
+
 
 @media screen and (max-width: 800px) {
     #navbar {
@@ -166,26 +148,4 @@ li {
     padding-bottom: 10px;
     font-size: 2em;
     font-weight: bold;
-}
-.ql-syntax{
-  padding:10px;
-  display:block;
-}
-pre .ql-syntax{
-  color:black;
-}
-.django-quill-widget-container{
- margin-bottom:50px;
- height:25rem;
-}
-.ql-editor pre{
-  color:black !important;
-  height:20rem;
-}
-.ql-editor img{
-  height:25rem;
-  width:30rem;
-  display:block;
-  margin:auto;
-
 }
