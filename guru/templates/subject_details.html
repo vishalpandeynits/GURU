@@ -112,10 +112,11 @@
 	{% endfor %}
 	</div>
 	<!-- Members list end -->
-
+	{% if page %}
 	<div id="activity" class="m-auto">
 		<h1 class="text-center"> Activities </h1>
-		{% for activity in page %}
+		<span style="min-height:500px;">
+			{% for activity in page %}
 			<div class="row activity-container mx-auto bg-light">
 				{{ activity.action }}<br>
 				{{ activity.actor }}<br>
@@ -123,6 +124,8 @@
 			</div>
 		{% endfor %}
 		{% include 'snippets/paginations.html' %}
+		</span>
 	</div>
+	{% endif %}
 </div>
 {% endblock %}

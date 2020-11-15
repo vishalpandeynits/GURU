@@ -62,17 +62,21 @@ def profiles(request, username):
     p_form = my_classes=None
     if p_user == request.user:
         if request.method == "POST":
-            p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
-            print(request.FILES)
+            p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile,)
             if p_form.is_valid():
                 k=p_form.save(commit=False)
-                k.profile_pic=request.FILES['file']
+                if request.FILES:
+                    k.profile_pic=request.FILES['file']
                 k.save()
                 return redirect(f'/profile/{username}/')
         else:
             instance = request.user.profile
             instance.bio = instance.bio
-            p_form = ProfileUpdateForm(instance=request.user.profile)
+            p_form = ProfileUpdateForm(instance=request.user.profile,initial={
+                'phone_number':'+91',
+                'whatsapp_number':'+91',
+                'facebook':'https://www.facebook.com/',
+            })
     if request.user.is_authenticated:
         my_classes = Classroom.objects.all().filter(members=request.user)
     context = {		

@@ -116,7 +116,7 @@ def classroom_page(request,unique_id):
         pending_members = classroom.pending_members.all()
         admins = classroom.special_permissions.all()
         classes = Classroom.objects.all().filter(members=request.user)
-        is_admin = classroom.created_by == request.user
+        is_admin = classroom.special_permissions.filter(username = request.user.username).exists()
         #classroom_update
         if request.method=="POST":
             form = CreateclassForm(request.POST,request.FILES,instance=classroom)
@@ -151,7 +151,7 @@ def subjects(request, unique_id, form = None):
         subject_teacher_check = Classroom.objects.filter(teacher=request.user).exists()
         admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
         classes = Classroom.objects.all().filter(members=request.user)
-        is_teacher = subject_teacher_check or admin_check
+        is_teacher = admin_check
 
         # Admins can add a subject with its teacher
         if admin_check:
@@ -181,7 +181,7 @@ def subjects(request, unique_id, form = None):
             'subjects':subjects,
             'form':form,
             'classroom':classroom,
-            'is_teacher':is_teacher,
+            'is_admin':is_teacher,
             'classes':classes,
             }
         return render(request,'subjects_list.html',params)

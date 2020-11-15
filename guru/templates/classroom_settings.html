@@ -10,6 +10,11 @@
 
     <div class="text-center m-auto mt-4 ">
         <h2> {{ classroom.class_name }} </h2>
+        <span id="select_txt">{{ classroom.unique_id }}</span> 
+        <button type="button" onclick="copy_data(select_txt)" style="background:none;border:none;">
+            &nbsp; &nbsp;<i class="fas fa-2x fa-clipboard"></i>
+        </button>
+        
         {% if classroom.description %}
         <p> {{ classroom.description }} </p>
         {% endif %}
