@@ -76,10 +76,20 @@ pre {
   height: 100%;
   vertical-align: middle;
   margin-right: 0;
-  /* Adjusts for spacing */
-  /* For visualization 
-  background: #808080; width: 5px;
-  */
+}
+.vcenter {
+  display: inline-block;
+  vertical-align: middle;
+  float: none;
+}
+.close{
+  float:right !important
+}
+
+.deleteDialogEntityType {
+font-weight:bold; 
+padding-left: 2px; 
+padding-right: 2px;  
 }
 
 .centered {

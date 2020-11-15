@@ -121,6 +121,7 @@
                         <img height="70" width="70" src="{{member.profile.profile_pic.url}}">
                     </div>
                     <div>
+                        <h5> {{member.first_name }} {{member.last_name }}</h5>
                         <h4>{{ member.username }} &nbsp; &nbsp;</h4>
                          <p>{{member.profile.bio}}</p>
                      </div>
@@ -139,6 +140,7 @@
                     <img height="70" width="70" src="{{teacher.profile.profile_pic.url}}">
                 </div>
                 <div>
+                    <h5>  {{teacher.first_name }} {{teacher.last_name }} </h5>
                     <b>{{ teacher.username }} </b><br>
                     {% if teacher in admins %}Admin{% endif %}
                     <p>{{teacher.profile.bio}}</p>
@@ -177,6 +179,7 @@
                     <img src="{{student.profile.profile_pic.url}}" height="70" width="70">
                 </div>
                 <div>
+                    <h5>  {{student.first_name }} {{student.last_name }} </h5>
                     <b>{{ student.username }} </b><br> 
                     {% if student in admins %}  Admin  {% endif %}
                     <p>{{student.profile.bio}}</p>

@@ -72,10 +72,12 @@ def profiles(request, username):
         else:
             instance = request.user.profile
             instance.bio = instance.bio
-            p_form = ProfileUpdateForm(instance=request.user.profile,initial={
-                'phone_number':'+91',
-                'whatsapp_number':'+91',
-                'facebook':'https://www.facebook.com/',
+            p_form = ProfileUpdateForm(initial={
+                'phone_number':request.user.profile.phone_number or '+91',
+                'whatsapp_number':request.user.profile.whatsapp_number or '+91',
+                'facebook':request.user.profile.facebook or 'https://www.facebook.com/',
+                'profile_pic':request.user.profile.profile_pic,
+                'bio':request.user.profile.bio
             })
     if request.user.is_authenticated:
         my_classes = Classroom.objects.all().filter(members=request.user)

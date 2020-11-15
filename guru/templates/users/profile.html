@@ -28,28 +28,28 @@
 					src="{{ profile.profile_pic.url }}"><br><br>
 
 				<h3 style="text-align:center;">{{ profile.user.username }}</h3>
-
+				<h4 style="text-align:center;"> {{user.first_name }} {{user.last_name }}</h4>
 				<pre style="text-align:center;">{{ profile.bio }}</pre>
 
 				<div id="social-container"  style="display:flex; justify-content: center;">
 
 					{% if profile.facebook %}
 
-						<a style="background:#3b5998"href="{{ profile.facebook }}" target="_blank" 
+						<a style="background:#3b5998;color:white;" href="{{ profile.facebook }}" target="_blank" 
 							class="btn-floating btn-lg btn-fb">
 							<i class="fab fa-facebook-f"></i>
 							
 						</a>
 					{% endif %}
 
-					<a href="mailto:{{profile.user.email}}" target="_blank" 
+					<a style="background:#EA4335;color:white;"href="mailto:{{profile.user.email}}" target="_blank" 
 						class="btn-floating btn-lg btn-gplus">
 						<i class="fas fa-envelope"></i>
 					</a>
 
 					{% if profile.whatsapp_number != None %}
 
-						<a target="_blank" class="btn-floating btn-lg btn-whatsapp" 
+						<a target="_blank" style="background:#1eae9d;color:white;"class="btn-floating btn-lg btn-whatsapp" 
 							href="https://api.whatsapp.com/send?phone={{user.profile.whatsapp_number}}">
 							<i class="fab fa-whatsapp"></i>
 						</a>
@@ -58,7 +58,7 @@
 
 					{% if profile.phone_number  != None %}
 
-						<a target="_blank" href="tel:{{user.profile.phone_number }}" 
+						<a style="color:white;"target="_blank" href="tel:{{user.profile.phone_number }}" 
 							class="btn-floating btn-lg">
 							<i style="transform: rotate(270deg)"class="fa fa-phone" aria-hidden="true"></i>
 						</a>

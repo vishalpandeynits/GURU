@@ -409,6 +409,23 @@ def assignment_details(request,unique_id,subject_id,id):
         return render(request,'assignments/assignment_detail.html',params)
 
 @login_required
+def assignment_handle(request,unique_id,subject_id,id):
+    classroom = Classroom.objects.get(unique_id=unique_id)
+    is_admin = classroom.special_permissions.filter(username = request.user.username).exists()
+    is_teacher = request.user==subject.teacher
+    if admin_check or is_teacher:
+        if request.POST.get('marks_assigned'):
+            id  = request.POST.get('id')
+            submission = Submission.objects.get(id=id)
+            marks = request.POST.get('marks_assigned')
+            submission.marks_assigned = marks
+            submission.save()
+            email_marks(request,submission,assignment)
+            return redirect(f'/{unique_id}/{subject_id}/{assignment.id}/assignment/')
+    else:
+        raise Http404()
+
+@login_required
 def assignment_delete(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
@@ -569,7 +586,7 @@ def remove_member(request,unique_id,username):
     remove_this_user = User.objects.get(username=username)
     if admin_check or request.user==remove_this_user:
         if remove_this_user==classroom.created_by:
-            messages.add_message(request,messages.ERROR,"You can't remove the user, He have created this classroom")
+            messages.add_message(request,messages.WARNING,"You can't remove the user, He have created this classroom")
             return redirect(f'/classroom/{unique_id}/')
         classroom.members.remove(remove_this_user)
 
@@ -589,9 +606,9 @@ def accept_request(request,unique_id,username):
         user = User.objects.get(username=username)
         classroom.members.add(user)
         classroom.pending_members.remove(user)
-        notify = Classroom_activity(classroom=classroom,actor=request.user)
-        notify.action = "A new member "+ str(user.username) + "have joined your classroom."
-        notify.save()
+        # notify = Classroom_activity(classroom=classroom,actor=request.user)
+        # notify.action = "A new member "+ str(user.username) + "have joined your classroom."
+        # notify.save()
         return redirect(f'/classroom/{unique_id}/')
 
 @login_required

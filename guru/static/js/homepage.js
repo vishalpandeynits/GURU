@@ -97,7 +97,7 @@ $('#search-btn').click(function() {
     $('#search-overlay').slideDown(200);
 });
 });
-//&& e.target !=
+
 $(document).on('click', function (e) {
     if ($(e.target).closest("#search-overlay").length === 0  ) {
         if(e.target!== _('search-btn' )){
@@ -106,11 +106,11 @@ $(document).on('click', function (e) {
         }    
     }
 });
-$(document).on('click', function (e) {
-    if ($(e.target).closest(".user-icon").length === 0  ) {
-        _('dropdown-container').style.display='none';
-    }
-})
+// $(document).on('click', function (e) {
+//     if ($(e.target).closest(".user-icon").length === 0  ) {
+//         _('dropdown-container').style.display='none';
+//     }
+// })
 
 function deleteConfirm(entity, successCallback){
     var modal = $('#genericDeleteModal');
@@ -183,5 +183,11 @@ function copy_data(containerid) {
     window.getSelection().addRange(range); 
     document.execCommand("copy");
     window.getSelection().removeAllRanges();
-    alert("data copied");
+    alert("Classroom code copied");
     }
+
+    document.body.addEventListener('click',(e)=>{
+        if(e.target != document.getElementById('co') && e.target != document.getElementById('left') && e.target != document.getElementById('icon')){
+            document.getElementById('dropdown-container').style.display=null;
+        }
+    })
