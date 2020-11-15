@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'subject_page.html' %}
 {% load crispy_forms_tags %}
 {% load humanize %}
@@ -73,4 +74,81 @@
 		<h2 class="no-items">No announcements made yet.</h2>
 	{% endif %}
 </div>
+=======
+{% extends 'snippets/subject_page.html' %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block subject_content %}
+<div id="search-overlay" class="block">		
+	<div class="centered">
+	  <div id='search-box'>
+		<i id="close-btn" class="fa fa-times fa-2x"></i>
+		<form  id='search-form' >
+		  <input id='search-text' name='search' placeholder='Search' type='text' />
+			<button id='search-button' type='submit'><span><i class="fas fa-search"></i></span>
+			</button>
+		</form>
+	  </div>
+	</div>
+</div>
+<div class="container">
+	<div class="row m-2">
+		<div class="col-12 d-flex justify-content-between">
+			{% if is_teacher %}
+				<button onclick="on(document.getElementsByClassName('overlay')[0])" 
+					type="button" class="btn add-btn float-left">
+					Add <i class="fa fa-plus" aria-hidden="true"></i>
+				</button>
+			{% endif %}
+			<div>
+				<i id="search-btn" class="fa fa-search fa-2x"></i>
+			</div>
+		</div>
+	</div>
+	{% if is_teacher %} 
+		<div class="overlay">
+		    <form method="POST" class="overlayform" enctype="multipart/form-data">
+		    	{% csrf_token %}
+				<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+				{% for field in form %}
+					{% if field.field.widget.input_type == 'file' %}
+					<input type="file" name="file" id="actual-btn" hidden/>
+					<label id="file-upload-label"for="actual-btn">Upload File<i class="fa mx-2 fa-upload" aria-hidden="true"></i></label>
+					{% elif field.label == 'Submission date:' %}
+						if field.field
+					{% else %}
+						{{ field.label_tag }}<br>
+						{{ field }}
+					{% endif %}
+				{% endfor %}
+				<center>
+					<input type="submit" class="submit-button"value="Submit">
+				</center>
+			</form>
+		</div>
+	{% endif %}
+	{% if announcements %}
+		{% for announcement in announcements %}
+		<div class="row">
+			<div class="col-12">
+				<a class="link" href="{% url 'announcement_page' classroom.unique_id subject.id announcement.id %}">
+					<div class="content">
+						<div class="topic">
+							<i class="fas fa-bullhorn mr-2"></i>{{ announcement.subject }}
+						</div>
+						<div class="uploaded_by">Announced by {{announcement.announced_by}}</div>
+						<div class="time">
+							Announced <nobr>{{announcement.issued_on|naturaltime }} </nobr>
+						</div><br>
+					</div>
+				</a>
+			</div>
+		</div>
+		{% endfor %}
+		{% include 'snippets/paginations.html' %}
+	{% else %}
+		<h2 class="no-items">No announcements made yet.</h2>
+	{% endif %}
+</div>
+>>>>>>> 4b763268a6eeee79518a5345e6db9a18bdabecfc
 {% endblock %}

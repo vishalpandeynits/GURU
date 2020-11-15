@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'base.html' %} 
 {% load crispy_forms_tags %} 
 {% block content %}
@@ -53,4 +54,71 @@
     </div>
 </div>
 </div>
+=======
+{% extends 'base.html' %} 
+{% block content %}
+<div>
+    {% include 'snippets/navigation.html' %}
+    <div class="container">
+        {% if pollform %}
+            <center>
+                <button id="addpollbtn" class="btn btn-primary"
+                    onclick="on(document.getElementsByClassName('overlay')[0])">
+    				Add a poll
+    			</button>
+            </center>
+            <div class="overlay">
+                <form method="POST" class="overlayform mt-4"  enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+                    {% for field in pollform %}
+					{% if field.field.widget.input_type == 'file' %}
+					<input type="file" name="file" id="actual-btn" hidden/>
+					<label id="file-upload-label" class="text-center"for="actual-btn">Upload File<i class="fa mx-2 fa-upload" aria-hidden="true"></i></label>
+					{% else %}
+						{{ field.label_tag }}<br>
+						{{ field }}
+					{% endif %}
+                    {% endfor %}
+                
+                    <input type="text" class="mb-2" autocomplete="off" placeholder="Mention more option..." name="check">
+                    <input type="text" class="mb-2" autocomplete="off" placeholder="Mention your option..." name="check">
+                    <div id="more-inputs"></div>
+                    <input type="text" class="mb-2" autocomplete="off" onclick="addInputField()" placeholder="Mention your option..." name="check">
+                    <input type="datetime-local" class="mb-2" autocomplete="off" required="required" name='date'>
+                    <center>
+                        <input type="submit" class=" submit-button"value="Submit">
+                    </center>
+                </form>
+            </div>   
+        {% endif %}
+    </div>
+
+    <div class="container">
+        {% if polls %}
+            <h2 class="text-center font-weight-bold text-success">List of Polls.</h2><br>
+            <div style="min-height:35rem;">
+            {% for poll in polls %}
+                <div class="poll-list">
+                    <div class="mb-3 font-weight-bold">
+                        0{{ forloop.counter }} 
+                        <a href="/polls/{{classroom.unique_id}}/poll-page/{{ poll.id }}"> {{ poll.topic}}</a>
+                    </div>
+                    <div>
+                        {{poll.who_can_vote}} can Vote.<br> 
+                        Voting will end at {{ poll.announce_at }}
+                    </div>
+                </div>
+            {% endfor %}
+            </div> <br><br> 
+            {% include 'snippets/paginations.html' %} 
+        {% else %}
+            <h2 class="no-item">
+                No Polls added yet.
+            </h2>
+        {% endif %}
+    </div>
+</div>
+</div>
+>>>>>>> 4b763268a6eeee79518a5345e6db9a18bdabecfc
 {% endblock %}

@@ -40,19 +40,6 @@ function addInputField(){
 
 }
 
-function toggleFlexForm(x){
-    x.style.display=x.style.display=='none'?'flex':'none';
-}
-
-function toggleBlockForm(x){
-    if (!x.style.display || x.style.display == "none") {
-        x.style.display = "block";
-    }
-    else {
-        x.style.display = "none";
-    }
-}  
-
 //EMPTY COMMENT ISSUE
 function checkComment(){
     var value=_('id_comment').value
@@ -67,9 +54,22 @@ function checkComment(){
 
 //EMPTY COMMENT ISSUE ENDS
 
+// setInterval(() => {
+//     document.body.scrollTop = 0;
+//     document.documentElement.scrollTop = 0;
+// }, 10);
+
+function noscroll(event){
+    $('html, body').css({
+        overflow: 'hidden',
+        height: '100%'
+    });
+}
+
 //HOMEPAGE JAVASCRIPT
 function on(el) {
     el.style.display = "flex";
+<<<<<<< HEAD
     _('body').style.overflow='hidden';
 }
 
@@ -80,12 +80,30 @@ function toggleMembersSubjects(){
     _('members').style.display = _('members').style.display==='block'?'none':'block';
     _('activity').style.display = _('members').style.display==='block'?'none':'block';
 }
+=======
+    document.addEventListener("scroll",noscroll);
+}
+
+
+function off(el) {
+    el.style.display= "none";
+    $('html, body').css({
+        overflowY: 'auto',
+        height: '100%'
+    });
+}
+function toggleMembersSubjects(){  
+    _('members').style.display = _('members').style.display==='block'?'none':'block';
+    _('activity').style.display = _('members').style.display==='block'?'none':'block';
+}
+>>>>>>> 4b763268a6eeee79518a5345e6db9a18bdabecfc
 
 // Change Files icon css
 const actualBtn = _('actual-btn');
 const fileChosen = _('file-chosen');
 actualBtn.addEventListener('change', function(){
     _('file-upload-label').textContent = this.files[0].name + " selected. Click again to change"
+<<<<<<< HEAD
 })
 $(document).ready(function() {
     $('#close-btn').click(function() {
@@ -115,3 +133,63 @@ $(document).on('click', function (e) {
 function alertDelete(what){
     confirm('Are You sure want to delete? If', what, 'deleted once cannot be bring back.')
 }
+=======
+})
+$(document).ready(function() {
+    $('#close-btn').click(function() {
+    $('#search-overlay').slideUp(200);
+    $('#search-btn').show();
+});
+$('#search-btn').click(function() {
+    $(this).hide();
+    $('#search-overlay').slideDown(200);
+});
+});
+//&& e.target !=
+$(document).on('click', function (e) {
+    if ($(e.target).closest("#search-overlay").length === 0  ) {
+        if(e.target!== _('search-btn' )){
+            $("#search-overlay").slideUp(200);
+            $('#search-btn').show();
+        }    
+    }
+});
+$(document).on('click', function (e) {
+    if ($(e.target).closest(".user-icon").length === 0  ) {
+        _('dropdown-container').style.display='none';
+    }
+})
+
+function deleteConfirm(entity, successCallback){
+    var modal = $('#genericDeleteModal');
+    modal.find('.modal-body .entityType').html(entity);
+    modal.modal('show')
+    $('#confirmDeleteButton').bind('click', function() 
+    {
+      var deleteTextInput = modal.find('#deleteConfirmText');
+      if(deleteTextInput.val() === 'Delete'){
+        modal.modal('hide');
+        successCallback();
+      }
+    })
+};
+
+$('#genericDeleteModal').on('hide.bs.modal',function(){
+    var modal = $(this);
+    var deleteTextInput = modal.find('#deleteConfirmText');
+    deleteTextInput.val('');
+});
+
+//Local delete button callback
+$('#userDeleteButton').on('click',function(){
+var entity = $('#SelectedUser').val();
+deleteConfirm(entity,myRandomSuccessCallBackFunction)
+});
+
+//local success callback after delete function
+function myRandomSuccessCallBackFunction()
+{
+    url =_('userDeleteButton').value
+    window.location.href = 'http://127.0.0.1:8000'+url
+}
+>>>>>>> 4b763268a6eeee79518a5345e6db9a18bdabecfc

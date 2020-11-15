@@ -172,11 +172,11 @@ LOGIN_REDIRECT_URL ='/homepage/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST= "smtp.gmail.com"
-EMAIL_HOST_USER= 'vishalpandeynits@gmail.com'
-EMAIL_HOST_PASSWORD= '!@#$%^&*()$%^&*%^&*^&'
+EMAIL_HOST_USER= 'vishalpandeyviptsk@gmail.com'
+EMAIL_HOST_PASSWORD= 'weeeeeeeeeeeeeeeeedsvds14352131231!@#$%^&!@#$%^&'
 EMAIL_PORT= 587
 EMAIL_USE_TLS= True
-DEFAULT_FROM_EMAIL= 'vishalpandeynits@gmail.com'
+DEFAULT_FROM_EMAIL= 'vishalpandeyviptsk@gmail.com'
 
 #all-auth registraion settings
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS =1

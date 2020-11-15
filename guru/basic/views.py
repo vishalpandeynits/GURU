@@ -116,12 +116,17 @@ def classroom_page(request,unique_id):
         pending_members = classroom.pending_members.all()
         admins = classroom.special_permissions.all()
         classes = Classroom.objects.all().filter(members=request.user)
+        print(request.FILES)
         is_admin = classroom.created_by == request.user
         #classroom_update
         if request.method=="POST":
             form = CreateclassForm(request.POST,request.FILES,instance=classroom)
+            
             if form.is_valid():
-                form.save()
+                classroom=form.save(commit=False)
+                classroom.classroom_pic = request.FILES['file']
+                classroom.save()
+                print("Form saved ")
                 return redirect(f'/classroom/{unique_id}/')
         else:
             form = CreateclassForm(instance=classroom)

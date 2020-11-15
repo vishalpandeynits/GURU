@@ -2,7 +2,11 @@
 {% load static %}
 {% block content %}
 <div>
+<<<<<<< HEAD
 	{% include 'navigation.html' %}
+=======
+	{% include 'snippets/navigation.html' %}
+>>>>>>> 4b763268a6eeee79518a5345e6db9a18bdabecfc
 	{% if messages %}
 		<div class="messages container">
 			{% for message in messages %}
@@ -26,7 +30,11 @@
 	<div class="overlay">
         <form method="POST"class="overlayform" style="display:block;"enctype="multipart/form-data">
             {% csrf_token %}
+<<<<<<< HEAD
             <a onclick = "toggleBlockForm(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+=======
+            <a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+>>>>>>> 4b763268a6eeee79518a5345e6db9a18bdabecfc
                 {% for field in createclassform %}
                     {% if field.field.widget.input_type == 'file' %}
                     <input type="file" name="file" id="actual-btn" hidden/>
@@ -45,7 +53,11 @@
         </form>
 	</div>
 	<div class="overlay">
+<<<<<<< HEAD
 		<form class="overlayform" style="width:300px;top:25%;"method="POST">{% csrf_token %} 
+=======
+		<form class="overlayform" style="width:300px;"method="POST">{% csrf_token %} 
+>>>>>>> 4b763268a6eeee79518a5345e6db9a18bdabecfc
 			<a onclick="off(document.getElementsByClassName('overlay')[1])" id="close"> &times;</a><br>
 			Unique id: <br>
 			<input type="text" placeholder="Unique ID"name="join_key"><br>
