@@ -2,19 +2,21 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
+          <h4 style="text-align:center;" class="modal-title" id="exampleModalLabel">Are you sure?</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="exampleModalLabel">Are you sure?</h4>
         </div>
         <div class="modal-body">
-          <p>You are about to delete <span class="entityType bg-danger deleteDialogEntityType"></span> and all of its contents.
+          <p>You are about to delete the selected item.
             </br>
             <span style="font-weight:bold">This operation is permanent and cannot be undone.</span>
           </p>
   
-          <form class="form-inline text-center">
+          <form class=" text-center">
             <div class="form-group">
-              <label style="font-weight:normal">Type "Delete" to confirm</label>
-              <input type="text" class="form-control" id="deleteConfirmText">
+              <label style="font-weight:normal;display:block;">Type "Delete" to confirm</label>
+              <center>
+                <input type="text" style="width:50%;border:1px solid black;" class="form-control" id="deleteConfirmText">
+              </center>
             </div>
           </form>
         </div>

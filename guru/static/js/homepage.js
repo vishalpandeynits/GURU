@@ -34,10 +34,13 @@ function joinform() {
 
 // POLL JS
 function addInputField(){
-    _('more-inputs').innerHTML += '<input type="text" autocomplete="off" class="new" placeholder="Mention your option..." name="check">'
-    new_inputs = document.getElementsByClassName('new')
-    new_inputs[new_inputs.length-1].focus()
-
+    var container = document.getElementById("more-inputs");
+    var input = document.createElement("input");
+    input.type = "text";
+    input.name = "check";
+    input.placeholder = "Mention your option."
+    container.appendChild(input)
+    input.focus();
 }
 
 //EMPTY COMMENT ISSUE
@@ -51,13 +54,7 @@ function checkComment(){
         _('id_submit').disabled=false;
     }
 }
-
 //EMPTY COMMENT ISSUE ENDS
-
-// setInterval(() => {
-//     document.body.scrollTop = 0;
-//     document.documentElement.scrollTop = 0;
-// }, 10);
 
 function noscroll(event){
     $('html, body').css({
@@ -71,7 +68,6 @@ function on(el) {
     el.style.display = "flex";
     document.addEventListener("scroll",noscroll);
 }
-
 
 function off(el) {
     el.style.display= "none";
@@ -147,4 +143,35 @@ function myRandomSuccessCallBackFunction()
 {
     url =_('userDeleteButton').value
     window.location.href = 'http://127.0.0.1:8000'+url
+}
+
+function show_all_submissions(){
+    $('#all_submissions').show()
+    $('#ontime').hide()
+    $('#late_submissions').hide()
+    $('#not_submitted').hide()
+}
+function show_ontime_submissions(){
+    $('#all_submissions').hide()
+    $('#ontime').show()
+    $('#late_submissions').hide()
+    $('#not_submitted').hide()
+}
+function show_late_submissions(){
+    $('#all_submissions').hide()
+    $('#ontime').hide()
+    $('#late_submissions').show()        
+    $('#not_submitted').hide()
+}
+function show_not_submitted(){
+    $('#all_submissions').hide()
+    $('#ontime').hide()
+    $('#late_submissions').hide()
+    $('#not_submitted').show()
+}
+function cl(){
+    $('#all_submissions').hide()
+    $('#ontime').hide()
+    $('#late_submissions').hide()
+    $('#not_submitted').hide()
 }

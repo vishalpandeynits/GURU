@@ -2,6 +2,7 @@
 {% load crispy_forms_tags %}
 {% load humanize %}
 {% block subject_content %}
+{% if announcements %}
 <div id="search-overlay" class="block">		
 	<div class="centered">
 	  <div id='search-box'>
@@ -14,6 +15,7 @@
 	  </div>
 	</div>
 </div>
+{% endif %}
 <div class="container">
 	<div class="row m-2">
 		<div class="col-12 d-flex justify-content-between">
@@ -22,10 +24,14 @@
 					type="button" class="btn add-btn float-left">
 					Add <i class="fa fa-plus" aria-hidden="true"></i>
 				</button>
+			{% else %}
+			<div></div>
 			{% endif %}
-			<div>
+			{% if announcements %}
+			<div style="align-self: flex-end;">
 				<i id="search-btn" class="fa fa-search fa-2x"></i>
 			</div>
+			{% endif %}
 		</div>
 	</div>
 	{% if is_teacher %} 
@@ -51,23 +57,25 @@
 		</div>
 	{% endif %}
 	{% if announcements %}
-		{% for announcement in announcements %}
-		<div class="row">
-			<div class="col-12">
-				<a class="link" href="{% url 'announcement_page' classroom.unique_id subject.id announcement.id %}">
-					<div class="content">
-						<div class="topic">
-							<i class="fas fa-bullhorn mr-2"></i>{{ announcement.subject }}
+		<div style="min-height:600px;" >
+			{% for announcement in announcements %}
+			<div class="row">
+				<div class="col-12">
+					<a class="link" href="{% url 'announcement_page' classroom.unique_id subject.id announcement.id %}">
+						<div class="content">
+							<div class="topic">
+								<i class="fas fa-bullhorn mr-2"></i>{{ announcement.subject }}
+							</div>
+							<div class="uploaded_by">Announced by {{announcement.announced_by}}</div>
+							<div class="time">
+								Announced <nobr>{{announcement.issued_on|naturaltime }} </nobr>
+							</div><br>
 						</div>
-						<div class="uploaded_by">Announced by {{announcement.announced_by}}</div>
-						<div class="time">
-							Announced <nobr>{{announcement.issued_on|naturaltime }} </nobr>
-						</div><br>
-					</div>
-				</a>
+					</a>
+				</div>
 			</div>
+			{% endfor %}
 		</div>
-		{% endfor %}
 		{% include 'snippets/paginations.html' %}
 	{% else %}
 		<h2 class="no-items">No announcements made yet.</h2>

@@ -1,5 +1,10 @@
 {% extends 'base.html' %} 
 {% block content %}
+<style>
+    .overlayform input[type="text"]{
+        margin:10px 0px;
+    }
+</style>
 <div>
     {% include 'snippets/navigation.html' %}
     <div class="container">
@@ -10,8 +15,9 @@
     				Add a poll
     			</button>
             </center>
+
             <div class="overlay">
-                <form method="POST" class="overlayform mt-4"  enctype="multipart/form-data">
+                <form method="POST" style="align-items:center;height:700px;"class="overlayform"  enctype="multipart/form-data">
                     {% csrf_token %}
                     <a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
                     {% for field in pollform %}
@@ -23,7 +29,7 @@
 						{{ field }}
 					{% endif %}
                     {% endfor %}
-                
+        
                     <input type="text" class="mb-2" autocomplete="off" placeholder="Mention more option..." name="check">
                     <input type="text" class="mb-2" autocomplete="off" placeholder="Mention your option..." name="check">
                     <div id="more-inputs"></div>

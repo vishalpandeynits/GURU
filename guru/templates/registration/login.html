@@ -4,7 +4,7 @@
 {% load socialaccount %} 
 {% block content %}
 <div class="container-fluid mb-4">
-    <form method="POST" class="login-form">{% csrf_token %}
+    <form method="POST" id="sign-up-form" class="login-form">{% csrf_token %}
         <h1 id="login-heading"> LOG IN</h1>
         {{ form|crispy }}
 

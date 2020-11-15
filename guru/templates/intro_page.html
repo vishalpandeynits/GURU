@@ -7,23 +7,24 @@
     <a class="btn mx-2" href="#contactus">Contact us </a>
 </div>
 
+{% if messages %}
+<center style="display:flex;justify-content: center;">
+    <div style="z-index:5;position:absolute;"class="messages container mt-4 pt-4">
+        {% for message in messages %}
+            <div class='alert alert-primary alert-{{ message.tags }} mt-4 alert-dismissible fade show'>
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    </div>
+</center>
+{% endif %}
+
 <div class="intro-section">
-    <img src="{% static 'intro_image.jpg' %}">
-    {% if messages %}
-        <div class="messages container mt-4 pt-4">
-            {% for message in messages %}
-                <div class='alert alert-{{ message.tags }} mt-4 alert-dismissible fade show'>
-                    {{ message }} 
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-    
     <div id="button-containers">
-        <h1 id="intro">Learning will now,<br> Indeed be in air</h1>
+        <h1 id="intro">Learning will now, Indeed be in air</h1>
         <a class="btn mx-2 btn-home" href="{% url 'signup' %}">Sign Up</a>
         <a class="btn mx-2 btn-home" href="{% url 'login' %}">Log In</a>
     </div>
@@ -91,19 +92,19 @@
     <h2 class="heading">For Students </h2>
     <div id="for-teachers" class="mx-auto row">
         <div class="col-sm-10 col-md-3 col-lg-3">
-            <h2 class="text-center"> Know how every student is doing at a glance.</h2>
+                <h2 class="text-center"> Know how every student is doing at a glance.</h2><br>
             You can join in any classroom with the unique classroom code provided.
         </div>
         <div class="col-sm-10 col-md-3 col-lg-3">
-            <h2 class="text-center"> Know how every student is doing at a glance.</h2>
+            <h2 class="text-center"> Know how every student is doing at a glance.</h2><br>
             You can submit your assignments and classwork without breaking a sweat.
         </div>
         <div class="col-sm-10 col-md-3 col-lg-3">
-            <h2 class="text-center"> Know how every student is doing at a glance.</h2>
+            <h2 class="text-center"> Know how every student is doing at a glance.</h2><br>
             You can contact your teachers directly from the webapp.
         </div>
         <div class="col-sm-10 col-md-3 col-lg-3">
-            <h2 class="text-center"> Know how every student is doing at a glance.</h2>
+            <h2 class="text-center"> Know how every student is doing at a glance.</h2><br>
             Switching between classroom and subjects is seamless.
         </div>
     </div>
@@ -113,7 +114,7 @@
 <script>
     function navbackground(){
         var scroll = window.scrollY || window.scrollTop || document.getElementsByTagName("html")[0].scrollTop;
-        if (scroll > 400) {
+        if (scroll > 100) {
          _("navbar").style.background="white";
          _("navbar").style.boxShadow="2px 4px 8px grey";
           _("navbar").style.height="70px";
@@ -125,5 +126,6 @@
         }
     }
     setInterval(navbackground,100)
+    document.getElementsByClassName('intro-section')[0].style.height=document.height
 </script>
 {% endblock %}

@@ -23,7 +23,7 @@ class SignUpForm(UserCreationForm):
 
 	def clean(self):
 		cleaned_data = self.cleaned_data
-
+		cleaned_data['username']=cleaned_data['username'].lower()
 		# checking Email unique
 		try:
 		    User.objects.get(email=cleaned_data['email'])

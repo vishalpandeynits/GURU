@@ -7,8 +7,9 @@
 <div style="padding:3px;" class="container">
    <div class="row ">
 	<div class="col">
-		{% if is_teacher %}
+		
 		<div id="contain">
+			{% if is_teacher %}
 			<button class="btn btn-danger m-2 float-right" 
 				style="color:white;background:red;padding: 7px;"
 				data-entity="user" id="userDeleteButton"
@@ -16,16 +17,19 @@
 				Delete <i class="fa fa-trash" aria-hidden="true"></i>
 			</button>
 			{% include 'snippets/deleteconfirm.html' %}
-			<a class="btn btn-dark m-2 float-right" 
-				style="color:white;padding: 7px;"
-				href="/profile/{{announcement.announced_by}}">
-				Contact <i class="fas fa-phone-volume"></i>
-			</a>
 			<button onclick="on(document.getElementsByClassName('overlay')[0])"
-				style="color:white;background:black;padding: 7px;cursor:pointer;"
-			 	class="m-2 float-right">
-			 	Update <i class="fas fa-edit"></i>
-			</button><br><br>
+			style="color:white;background:black;padding: 7px;cursor:pointer;"
+			 class="m-2 float-right">
+			 Update <i class="fas fa-edit"></i>
+		</button>
+			{% endif %}
+			<a class="btn btn-primary m-2 float-right" 
+			style="color:white;padding: 7px;"
+			href="/profile/{{announcement.announced_by}}">
+			Contact <i class="fas fa-phone-volume"></i>
+		</a><br><br>
+
+			{% if is_teacher %}
 			<div class="overlay">
 			  	<form method="POST" class="overlayform" enctype="multipart/form-data">{% csrf_token %}
 					<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 

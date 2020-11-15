@@ -1,3 +1,6 @@
+body{
+    overflow-x:hidden !important;
+}
 .reg-title {
     color: grey;
     font-weight: bolder;
@@ -77,15 +80,10 @@ strong {
     box-shadow: 2px 4px 10px white;
 }
 
-@media screen and (max-width: 500px) {
-    .login-form {
-        width: 100%;
-    }
-}
-
-@media screen and (min-width: 501px) and (max-width: 1200px) {
-    .login-form {
-        width: 75%;
+@media screen and (max-width: 600px) {
+    #sign-up-form {
+        width: 97%;
+        margin:0;
     }
 }
 

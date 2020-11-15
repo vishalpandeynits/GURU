@@ -116,15 +116,14 @@ def classroom_page(request,unique_id):
         pending_members = classroom.pending_members.all()
         admins = classroom.special_permissions.all()
         classes = Classroom.objects.all().filter(members=request.user)
-        print(request.FILES)
         is_admin = classroom.created_by == request.user
         #classroom_update
         if request.method=="POST":
             form = CreateclassForm(request.POST,request.FILES,instance=classroom)
-            
             if form.is_valid():
                 classroom=form.save(commit=False)
-                classroom.classroom_pic = request.FILES['file']
+                if request.FILES:
+                    classroom.classroom_pic = request.FILES['file']
                 classroom.save()
                 print("Form saved ")
                 return redirect(f'/classroom/{unique_id}/')
@@ -567,14 +566,14 @@ def delete_subject(request,unique_id, subject_id):
 def remove_member(request,unique_id,username):
     classroom = Classroom.objects.get(unique_id=unique_id)
     admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
-    is_admin = classroom.special_permissions.filter(username = User.objects.get(username=username)).exists()
-    if is_admin:
-        messages.add_message(request,messages.WARNING,"You are admin, you can't be removed")
-        return redirect(f'/classroom/{unique_id}/')
+    remove_this_user = User.objects.get(username=username)
+    if admin_check or request.user==remove_this_user:
+        if remove_this_user==classroom.created_by:
+            messages.add_message(request,messages.ERROR,"You can't remove the user, He have created this classroom")
+            return redirect(f'/classroom/{unique_id}/')
+        classroom.members.remove(remove_this_user)
 
-    if admin_check or request.user==User.objects.get(username=username):
-        classroom.members.remove(User.objects.get(username=username))
-        if request.user==User.objects.get(username=username):
+        if request.user==remove_this_user:
             return redirect('/homepage/')  
         else:
             return redirect(f'/classroom/{unique_id}/')

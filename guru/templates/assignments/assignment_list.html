@@ -2,6 +2,8 @@
 {% load crispy_forms_tags %} 
 {% load humanize %} 
 {% block subject_content %}
+
+{% if assignments %}
 <div id="search-overlay" class="block">		
 	<div class="centered">
 	  <div id='search-box'>
@@ -14,6 +16,7 @@
 	  </div>
 	</div>
 </div>
+{% endif %}
 
 <div class="container">
 	<div class="row m-2">
@@ -23,13 +26,17 @@
 					type="button" class="btn add-btn float-left">
 					Add <i class="fa fa-plus" aria-hidden="true"></i>
 				</button>
+			{% else %}
+			<div></div>
 			{% endif %}
+			{% if assignments %}
 			<div>
 				<i id="search-btn" class="fa fa-search fa-2x"></i>
 			</div>
+			{% endif %}
 		</div>
 	</div>
-
+ 
 	{% if form %} 
 		<div class="overlay">
 		    <form method="POST" class="overlayform" enctype="multipart/form-data">
@@ -51,25 +58,27 @@
 		</div>
 	{% endif %}
 
-    {% if assignments %}
+	{% if assignments %}
+		<div style="min-height:400px;" > 
 			{% for assignment in assignments %}
-				<div class="container row">
-					<div class="col-12">
-						<a href="{% url 'assignment_page' classroom.unique_id subject.id assignment.id %}">
-					
-							<div class="content">
-								<div class="topic font-weight-bold">
-									<i class="fas fa-briefcase mr-2"></i>{{ assignment.topic }}<br>
-								</div>
-								<div class="uploaded_by"> Uploaded by: {{ assignment.assigned_by }} </div>
-								<div class="time">Submit Before <nobr>{{ assignment.submission_date }}</nobr>
-								</div><br>
+			<div class="container row">
+				<div class="col-12">
+					<a href="{% url 'assignment_page' classroom.unique_id subject.id assignment.id %}">
+				
+						<div class="content">
+							<div class="topic font-weight-bold">
+								<i class="fas fa-briefcase mr-2"></i>{{ assignment.topic }}<br>
 							</div>
-						</a>
-					</div>
+							<div class="uploaded_by"> Uploaded by: {{ assignment.assigned_by }} </div>
+							<div class="time">Submit Before <nobr>{{ assignment.submission_date }}</nobr>
+							</div><br>
+						</div>
+					</a>
 				</div>
-            {% endfor %}
-        </div><br> 
+			</div>
+		{% endfor %}
+	</div><br> 
+		</div>
         {% include 'snippets/paginations.html' %} 
     {% else %}
         <h2 class="no-items">No assignments found !!!</h2>

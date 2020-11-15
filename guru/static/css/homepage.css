@@ -14,10 +14,11 @@
 }
 .overlay .overlayform {
     width:60%;
-    z-index:2;
+    z-index:10000;
     position:relative;
     background: rgb(255, 255, 255);
     padding:1em;
+    max-height:700px;
     overflow:auto;
     border-radius:10px;
 }

@@ -29,9 +29,11 @@
     {% endif %}
 
     <div class="row d-flex justify-content-center">
+        {% if is_admin %}
         <button class="btn btn-dark" onclick="on(document.getElementsByClassName('overlay')[0])">
             Update
         </button>
+        {% endif %}
 		<span class="dropdown ">
 		  	<button class="btn btn-dark dropdown-toggle mx-2 " type="button" 
 		  		id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -55,11 +57,11 @@
 		</span>
     </div>
 		
-
+    {% if is_admin %}
     <div class="overlay">
         <form method="POST"class="overlayform" style="display:block;"enctype="multipart/form-data">
             {% csrf_token %}
-            <a onclick = "toggleBlockForm(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+            <a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
                 {% for field in form %}
                     {% if field.field.widget.input_type == 'file' %}
                     <input type="file" name="file" id="actual-btn" hidden/>
@@ -85,26 +87,18 @@
             </center>
         </form>
     </div>
+    {% endif %}
 
     {% if pending_members %}
-        <h1 style="color:green;text-align:center;">Pending members</h1>
+        <h1 style="text-align:center;">Pending members</h1>
     {% endif %}
-    {% if is_admin %}
-        <div class="row mx-auto">
-            {% for member in pending_members %}
-            <div class="member-card bg-light p-4">
-                <div style="display:flex;">
-                    <div>
-                        <img height="70" width="70" src="{{member.profile.profile_pic.url}}">
-                    </div>
-                    <div>
-                       <h4>{{ member.username }} &nbsp; &nbsp;</h4>
-                        <p>{{member.profile.bio}}</p>
-                    </div>
-                </div>
 
-                <div style="position:absolute;top:5px;right:10px;" 
-                    class="btn-group dropleft">
+    {% if is_admin %}
+    <div class="container mx-auto">
+        <div class="row">
+            <div style="position:relative;"class="col mb-4">
+                {% for member in pending_members %}
+                <div  style="position:absolute;right:10px;;z-index:5;float:right;"class="btn-group dropleft float-right">
                     <button type="button" class="btn dropdown-toggle bg-transparent btn-lg" 
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
                     </button>
@@ -116,56 +110,63 @@
                             <nobr>Accept request</nobr>
                         </a>
                     </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    <h1 class="text-center"> Members </h1>
-    <div class="container mx-auto">
-        <div class="row">
-            <div class="col">
-                {% for teacher in teachers %}
+                 </div>
                 <div class="member-card bg-light">
                     <div>
-                        <img height="70" width="70" src="{{teacher.profile.profile_pic.url}}">
+                        <img height="70" width="70" src="{{member.profile.profile_pic.url}}">
                     </div>
                     <div>
-                        <b>{{ teacher.username }} </b><br>
-                        {% if teacher in admins %}Admin{% endif %}
-                        <p>{{teacher.profile.bio}}</p>
-                    </div>
-                </div>
-        
-                <div style="position:absolute;top:5px;right:10px;" class="btn-group dropleft">
-                    <button type="button" class="btn dropdown-toggle bg-transparent btn-lg" 
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    </button>
-                    <div class="dropdown-menu dropdown-content">
-                        {% if user in admins %}
-                            <a href="{% url 'class_admin' classroom.unique_id teacher.username %}">
-                                {% if teacher in admins %}
-                                    <nobr>Dismiss as admin</nobr>
-                                {% else %}
-                                    <nobr>Give admin status</nobr>
-                                {% endif %}
-                            </a> 
-                        {% endif %}
-                        <a href="{% url 'remove_member' classroom.unique_id user.username %}">
-                            <nobr>
-                                {% if is_admin %} Remove from classroom {% else %} Leave classroom {% endif %}
-                            </nobr>
-                        </a>
-                    </div>
-                </div>
-                {% endfor %} 
+                        <h4>{{ member.username }} &nbsp; &nbsp;</h4>
+                         <p>{{member.profile.bio}}</p>
+                     </div>
+                </div><br>
+            {% endfor %}
             </div>
         </div>
     </div>
+    {% endif %}
+
+    <h1 class="text-center"> Members </h1>
+    {% for teacher in teachers  %}
+        <div class=" container member-card bg-light"><br>
+            <div style="display:flex;">
+                <div>
+                    <img height="70" width="70" src="{{teacher.profile.profile_pic.url}}">
+                </div>
+                <div>
+                    <b>{{ teacher.username }} </b><br>
+                    {% if teacher in admins %}Admin{% endif %}
+                    <p>{{teacher.profile.bio}}</p>
+                </div>
+            </div>
+            {% if is_admin or teacher == user %}
+            <div style="position:absolute;top:5px;right:10px;" class="btn-group dropleft">
+                <button type="button" class="btn dropdown-toggle bg-transparent btn-lg" 
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </button>
+                <div class="dropdown-menu dropdown-content">
+                    {% if user in admins %}
+                        <a href="{% url 'class_admin' classroom.unique_id teacher.username %}">
+                            {% if teacher in admins %}
+                                <nobr>Dismiss from admin</nobr>
+                            {% else %}
+                                <nobr>Give admin status</nobr>
+                            {% endif %}
+                        </a> 
+                    {% endif %}
+                    <a href="{% url 'remove_member' classroom.unique_id teacher.username %}">
+                        <nobr>
+                            {% if is_admin %} Remove from classroom {% elif teacher == user  %} Leave classroom {% endif %}
+                        </nobr>
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+         </div><br>
+    {% endfor %} 
 
         {% for student in students %}
-        <div class="member-card bg-light p-4"><br/>
+        <div class="container member-card bg-light"><br/>
             <div style="display:flex;">
                 <div>
                     <img src="{{student.profile.profile_pic.url}}" height="70" width="70">
@@ -177,6 +178,7 @@
                 </div>
             </div>
 
+            {% if is_admin or student == user %}
             <div style="position:absolute;top:5px;right:10px;" class="btn-group dropleft">
                 <button type="button" class="btn dropdown-toggle bg-transparent btn-lg" 
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
@@ -191,19 +193,17 @@
     						{% endif %}
     					</a>
                     {% endif %}
-                    <a href="{% url 'remove_member' classroom.unique_id user.username %}">
+                    <a href="{% url 'remove_member' classroom.unique_id student.username %}">
                         <nobr>
-                            {% if is_admin %} 
-                                Remove from classroom 
-                            {% else %} 
-                                Leave classroom 
-                            {% endif %}
+                            {% if is_admin %} Remove from classroom {% elif student == user  %} Leave classroom {% endif %}
                         </nobr>
                     </a>
                 </div>
             </div>
-        </div>
+            {% endif %}
+        </div><br>
         {% endfor %}
+
     </div>
 </div>
 {% endblock %}

@@ -86,25 +86,27 @@
 				{% endif %}
 			</div>
 		</div>
-		{% if user == teacher  or user in admins and member != teacher and member in admins %}
+		{% if user == teacher or user in admins %}
+			{% if member not in admins and member != teacher %} 
 			<div style="position:absolute;top:5px;right:10px;"
-				class="btn-group dropleft">
-				<button class="btn dropdown-toggle btn-lg bg-transparent" 
-					data-toggle="dropdown" type="button" 
-					aria-haspopup="true" aria-expanded="false"> 
-				</button>
-				<div class="dropdown-content dropdown-menu">
-					{% if member in upload_permissions %}
-						<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
-							<nobr>Take upload permssion</nobr>
-						</a>
-					{% else %}
-						<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
-							<nobr>Give upload permissions</nobr>
-						</a>
-					{% endif %}
-				</div>
+			class="btn-group dropleft">
+			<button class="btn dropdown-toggle btn-lg bg-transparent" 
+				data-toggle="dropdown" type="button" 
+				aria-haspopup="true" aria-expanded="false"> 
+			</button>
+			<div class="dropdown-content dropdown-menu">
+				{% if member in upload_permissions %}
+					<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
+						<nobr>Take upload permssion</nobr>
+					</a>
+				{% else %}
+					<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
+						<nobr>Give upload permissions</nobr>
+					</a>
+				{% endif %}
 			</div>
+		</div>
+			{% endif %}
 		{% endif %}
 	</div><br>
 	{% endfor %}

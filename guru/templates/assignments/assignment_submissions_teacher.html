@@ -8,26 +8,27 @@
 				Submissions
 			</button>
 			<div class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton">
-				<button style="margin:0;"class="btn btn-primary btn-block" @click="show_all_submissions">
+				<button style="margin:0;"class="btn btn-primary btn-block" onclick="show_all_submissions()">
 					All Submissions
 				</button>
-				<button class="btn btn-success btn-block" @click='show_ontime_submissions'>
+				<button class="btn btn-success btn-block" onclick='show_ontime_submissions()'>
 					Ontime Submissions 
 				</button>
-				<button class="btn btn-danger btn-block" @click="show_late_submissions"> 
+				<button class="btn btn-danger btn-block" onclick="show_late_submissions()"> 
 					Late Submissions 
 				</button>
-				<button class="btn btn-primary btn-block" @click="show_not_submitted">
+				<button class="btn btn-primary btn-block" onclick="show_not_submitted()">
 					Not submitted
 				</button>
-				<button class="btn btn-primary btn-block" @click="cleared">
+				<button class="btn btn-primary btn-block" onclick="cl()">
 					Clear
 				</button>
 			</div>
 		</div>
 	</center>
 
-	<span v-if="all_submissions">
+	<span id="all_submissions">
+		All submissions
 		{% for submission in all_submissions %}
 			<div class="alert alert-info">
 				<a href="{{submission}}" download>
@@ -37,17 +38,21 @@
 				<a href="/profile/{{ submission.submitted_by.username}}">
 					{{ submission.submitted_by.first_name }} {{ submission.submitted_by.last_name }}
 				</a>at {{ submission.submitted_on }}. 
-				<form method="POST">{% csrf_token %}
-				 	<input type="hidden" name="id" value="{{submission.id}}">
-				 	<input name="marks_assigned" placeholder="Assign/Reconsider Marks" type="number" 
-				 	value = "{{submission.marks_assigned}}" max="{{assignment.full_marks}}">
-				 	<input type="submit" class="btn btn-primary" id="assignMarks" 
-				 		value="Assign marks">
-				</form>
+				<div class="overlay">
+					<form class="overlayform"method="POST">{% csrf_token %}
+						<input type="hidden" name="id" value="{{submission.id}}">
+						<input name="marks_assigned" placeholder="Assign/Reconsider Marks" type="number" 
+						value = "{{submission.marks_assigned}}" max="{{assignment.full_marks}}">
+						<input type="submit" class="btn btn-primary" id="assignMarks" 
+							value="Assign marks">
+				   </form>
+				</div>
 			</div>
 		{% endfor %}
 	</span>
-	<span id="ontime" v-if="ontime_submissions">
+
+	<span id="ontime">
+		Ontime submissions
 		{% for submission in ontime_submissions %}
 			<div class="alert alert-light p-2" 
 				style="box-shadow: 2px 4px 8px grey;border-radius:10px;">
@@ -59,7 +64,9 @@
 			</div>
 		{% endfor %}
 	</span>
-	<span v-if="late_submissions">
+
+	<span id="late_submissions">
+		late Submissions
 		{% for submission in late_submissions %}
 			<div class="alert alert-danger p-2" 
 				style="box-shadow: 2px 4px 8px grey;border-radius:10px;">
@@ -73,7 +80,9 @@
 			</div>
 		{% endfor %}
 	</span>
-	<span v-if="not_submitted"><br>
+
+	<span id="not_submitted"><br>
+		Not Submitted
 		{% if not_submitted %}
 			<form method="POST">{% csrf_token %}
 				<input type="hidden" name="send_reminder" value="1">
