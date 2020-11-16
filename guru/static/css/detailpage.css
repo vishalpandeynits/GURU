@@ -63,3 +63,32 @@
     display:inline-block;
     vertical-align:top;
 }
+#assignment-container>#button-container{
+	display:flex;
+	justify-content:center;
+	flex-wrap:wrap;
+	margin:5px auto;
+}
+#assignment-container>#button-container button{
+	height:40px;
+	margin:5px 10px;
+	width:200px !important;
+}
+.assignment-container{
+	display:flex;
+	justify-content:space-between;
+	align-items:center;;
+	padding:10px;
+	margin:10px 0px;
+	border-radius:10px;
+	box-shadow: 0px 0px 20px grey;
+	min-height:100px;
+}
+.assign-btn{
+	background:rgb(70, 135, 248);
+	color:white;
+	border:none;
+	border-radius:5px;
+	cursor:pointer;
+	padding:10px 10px;
+}

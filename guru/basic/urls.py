@@ -19,11 +19,12 @@ urlpatterns = [
     path('<unique_id>/<subject_id>/<id>/resource/delete/',resource_delete,name="delete_resource"),
     
     path('<unique_id>/<subject_id>/announcement/',announcements_list,name="announcement"),#
-    path('<unique_id>/<subject_id>/<id>/announcement/',announcement_details,name="announcement_page"),#
+    path('<unique_id>/<subject_id>/<id>/announcement/',announcement_details,name="announcement_page"),
     path('<unique_id>/<subject_id>/<id>/announcement/delete/',announcement_delete,name="delete_announcement"),
 
     path('<unique_id>/<subject_id>/assignments/',assignments_list,name="assignments"),#
-    path('<unique_id>/<subject_id>/<id>/assignment/',assignment_details,name="assignment_page"),#
+    path('<unique_id>/<subject_id>/<id>/assignment/',assignment_details,name="assignment_page"),
+    path('<unique_id>/<subject_id>/<id>/assignment-handle/',assignment_handle,name="assignment_handle"),
     path('<unique_id>/<subject_id>/<id>/assignment/delete/',assignment_delete,name="delete_assignment"),
 
     path('<unique_id>/<subject_id>/subject_details/',subject_details,name="subject_details"),#

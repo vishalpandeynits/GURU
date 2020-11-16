@@ -44,14 +44,19 @@
 		</div>
 	{% endif %}
 
-	<div class="row">
+	<div class="row d-flex justify-content-center">
+		{% if form %}
 		<div class="col-sm-12 col-lg-4 order-lg-2">
-			{% if is_teacher %}
-				{% include 'assignments/assignment_submissions_teacher.html' %}
-			{% else %}
-				{% include 'assignments/assignment_submissions_student.html' %}
-			{% endif %}
+			<h2 class="reg-title"> Submit your assignment </h2>
+			<center>
+				<form method="POST" id="submissionform" enctype="multipart/form-data">{% csrf_token %}
+					{{form}}<br>
+					<input type="hidden" name="id" value="{{submission.id }}"><br>
+					<input type="submit" class="btn btn-primary" value="Hand in">
+				</form><br>
+			</center>
 		</div>
+		{% endif %}
 
 		<div class="col-sm-12 col-lg-8 order-lg-1">
 			<!-- Update assignment logic start -->

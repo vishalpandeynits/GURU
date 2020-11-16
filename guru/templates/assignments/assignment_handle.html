@@ -1,0 +1,143 @@
+{% extends 'snippets/subject_page.html' %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% load filters %}
+{% load static %}
+{% block subject_content %}
+<div id="assignment-container" class="text-align-center">
+	<div id="button-container">
+		<button class="btn btn-primary btn-block" onclick="show_all_submissions()">
+			All Submissions
+		</button>
+		<button class="btn btn-success btn-block" onclick='show_ontime_submissions()'>
+			Ontime Submissions 
+		</button>
+		<button class="btn btn-danger btn-block" onclick="show_late_submissions()"> 
+			Late Submissions 
+		</button>
+		<button class="btn btn-primary btn-block" onclick="show_not_submitted()">
+			Not submitted
+		</button>
+	</div>
+	<div class="container">
+		<span id="all_submissions" >
+			<h1 class="heading"> All submissions </h1>
+			{% for submission in all_submissions %}
+			<div class="assignment-container bg-light">
+				<div>
+					<a href="{{submission}}" download>Download {{ submission.file|filebasename }}</a>
+					submitted_by 
+					<a href="/profile/{{ submission.submitted_by.username}}">
+						{{ submission.submitted_by.first_name }} {{ submission.submitted_by.last_name }}
+					</a>at {{ submission.submitted_on }}.
+				</div>
+				<div>
+					<button class="float-right assign-btn" onclick="on(_('{{forloop.counter}}'))"> Assign marks </button>
+				</div>
+			</div>
+
+			<div class="overlay"id="{{forloop.counter}}">
+				<form class="overlayform" style="width:300px;" method="POST">{% csrf_token %}
+					<a class="mb-2" onclick = "off(_('a'))" id="close"> &times;</a><br>
+					<input type="hidden" name="id" value="{{submission.id}}">
+					<input name="marks_assigned" placeholder="Assign/Reconsider Marks" type="number" 
+					value = "{{submission.marks_assigned}}" max="{{assignment.full_marks}}">
+					<center>
+						<button type="submit" class="btn btn-primary mt-2">Assign marks</button>
+					</center>
+			   </form>
+			</div>
+			{% endfor %}
+		</span>
+	
+		<span id="ontime" style="display:none;">
+			<h1 class="heading"> Ontime submissions </h1>
+			{% for submission in ontime_submissions %}
+			<div class="assignment-container bg-light">
+				<div>
+					<a href="{{submission}}" download>Download {{ submission.file|filebasename }}</a>
+					submitted_by 
+					<a href="/profile/{{ submission.submitted_by.username}}">
+						{{ submission.submitted_by.first_name }} {{ submission.submitted_by.last_name }}
+					</a>at {{ submission.submitted_on }}.
+				</div>
+				<div>
+					<button class="float-right assign-btn" onclick="on(_('{{submission.submitted_by}}'))"> Assign marks </button>
+				</div>
+			</div>
+
+			<div class="overlay" id="{{submission.submitted_by}}">
+				<form class="overlayform" style="width:300px;" method="POST">{% csrf_token %}
+					<a class="mb-2" onclick = "off(_('a'))" id="close"> &times;</a><br>
+					<input type="hidden" name="id" value="{{submission.id}}">
+					<input name="marks_assigned" placeholder="Assign/Reconsider Marks" type="number" 
+					value = "{{submission.marks_assigned}}" max="{{assignment.full_marks}}">
+					<center>
+						<button type="submit" class="btn btn-primary mt-2">Assign marks</button>
+					</center>
+			   </form>
+			</div>
+			{% endfor %}
+		</span>
+
+		<span id="late_submissions" style="display:none;">
+			<h1 class="heading"> late Submissions </h1>
+			{% for submission in late_submissions %}
+			<div class="assignment-container bg-light">
+				<div>
+					<a href="{{submission}}" download>Download {{ submission.file|filebasename }}</a>
+					submitted_by 
+					<a href="/profile/{{ submission.submitted_by.username}}">
+						{{ submission.submitted_by.first_name }} {{ submission.submitted_by.last_name }}
+					</a>at {{ submission.submitted_on }}.
+				</div>
+				<div>
+					<button class="float-right assign-btn" onclick="on(_('{{submission.submitted_by}}'))"> Assign marks </button>
+				</div>
+			</div>
+
+			<div class="overlay"id="{{submission.submitted_by}}">
+				<form class="overlayform" style="width:300px;" method="POST">{% csrf_token %}
+					<a class="mb-2" onclick = "off(_('a'))" id="close"> &times;</a><br>
+					<input type="hidden" name="id" value="{{submission.id}}">
+					<input name="marks_assigned" placeholder="Assign/Reconsider Marks" type="number" 
+					value = "{{submission.marks_assigned}}" max="{{assignment.full_marks}}">
+					<center>
+						<button type="submit" class="btn btn-primary mt-2">Assign marks</button>
+					</center>
+			   </form>
+			</div>
+			{% endfor %}
+		</span> 
+	 
+		<span id="not_submitted"  style="display:none;">
+			<h1 class="heading"> Not Submitted </h1>
+			{% if not_submitted %}
+				<center>
+					<form method="POST">{% csrf_token %}
+						<input type="hidden" name="send_reminder" value="1">
+						<input type="submit" value="Send Reminder to All" class="btn btn-dark mx-auto">
+					</form><br>
+				</center>
+				{% for student in not_submitted %}
+				<div class="container member-card bg-light"><br/>
+					<div style="display:flex;">
+						<div>
+							<img src="{{student.profile.profile_pic.url}}" height="70" width="70">
+						</div>
+						<div>
+							<a href="/profile/{{ student.username}}">
+								<h5> {{student.first_name }} {{student.last_name }} </h5>
+							</a>
+							<p>Have not submitted his assignment yet.</p>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			    
+			{% endif %}
+		</span>
+
+	</div>
+</div>
+{% endblock %}

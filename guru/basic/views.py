@@ -321,25 +321,12 @@ def assignments_list(request ,unique_id, subject_id, form=None):
 def assignment_details(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     if member_check(request.user, classroom):
-
         #querysets
-        updateform = form = submitted = not_submitted = submission = None
+        updateform = form = submitted  = submission = submission_object = None
         subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-        assignments = Assignment.objects.all().filter(subject_name=subject).order_by('submission_date').reverse()
         assignment = Assignment.objects.all().filter(subject_name=subject).get(id=id)
-
-        #list of submissions
-        try:
-            submission = Submission.objects.all().filter(assignment=assignment,submitted_by=request.user)
-        except Submission.DoesNotExist:
-            pass
-
-        all_submissions = Submission.objects.all().filter(assignment=assignment)
-        late_submissions = Submission.objects.all().filter(submitted_on__gt=assignment.submission_date)
-        ontime_submissions = all_submissions.difference(late_submissions)
         admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
         is_teacher = admin_check or request.user==subject.teacher
-
         #update assignment
         if is_teacher:
             if request.method=="POST":
@@ -352,17 +339,6 @@ def assignment_details(request,unique_id,subject_id,id):
             else:
                 updateform= AssignmentForm(instance=assignment)
 
-            # assigning marks by techer for each assignment
-            if request.POST.get('marks_assigned'):
-                id  = request.POST.get('id')
-                submission = Submission.objects.get(id=id)
-                marks = request.POST.get('marks_assigned')
-                submission.marks_assigned = marks
-                submission.save()
-                email_marks(request,submission,assignment)
-
-                return redirect(f'/{unique_id}/{subject_id}/{assignment.id}/assignment/')
-        submission_object = None
         #submitting assignment
         if not is_teacher:
             submission_object = Submission.objects.filter(Q(submitted_by=request.user)\
@@ -389,31 +365,19 @@ def assignment_details(request,unique_id,subject_id,id):
             'classroom':classroom,
             'submissionform':form,
             'submission':submission,
-            'all_submissions':all_submissions,
-            'late_submissions':late_submissions,
-            'ontime_submissions':ontime_submissions,
+            'submission_object':submission_object,
             'is_teacher':is_teacher,
-            'submission_object':submission_object
-            }
-        #list of submitted and not_submitted_students
-        if is_teacher:          
-            members = classroom.members.all()
-            teachers = classroom.teacher.all()
-            students = members.difference(teachers)
-            submitted = assignment.submitted_by.all()
-            not_submitted = students.difference(submitted)
-            params['submitted']=submitted
-            params['not_submitted']=not_submitted
-            if request.POST.get('send_reminder')=='1':
-                send_reminder(request,assignment,not_submitted.values_list('email', flat=True))
+            }       
         return render(request,'assignments/assignment_detail.html',params)
 
 @login_required
 def assignment_handle(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     is_admin = classroom.special_permissions.filter(username = request.user.username).exists()
+    subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     is_teacher = request.user==subject.teacher
-    if admin_check or is_teacher:
+    if is_admin or is_teacher:
+        assignment = Assignment.objects.all().filter(subject_name=subject).get(id=id)
         if request.POST.get('marks_assigned'):
             id  = request.POST.get('id')
             submission = Submission.objects.get(id=id)
@@ -422,6 +386,33 @@ def assignment_handle(request,unique_id,subject_id,id):
             submission.save()
             email_marks(request,submission,assignment)
             return redirect(f'/{unique_id}/{subject_id}/{assignment.id}/assignment/')
+
+        #list of submissions
+        try:
+            submission = Submission.objects.all().filter(assignment=assignment,submitted_by=request.user)
+        except Submission.DoesNotExist:
+            pass
+        all_submissions = Submission.objects.all().filter(assignment=assignment)
+        late_submissions = Submission.objects.all().filter(submitted_on__gt=assignment.submission_date)
+        ontime_submissions = all_submissions.difference(late_submissions)
+        members = classroom.members.all()
+        teachers = classroom.teacher.all()
+        students = members.difference(teachers)
+        submitted = assignment.submitted_by.all()
+        not_submitted = students.difference(submitted)
+        if request.POST.get('send_reminder')=='1':
+            send_reminder(request,assignment,not_submitted.values_list('email', flat=True))
+        params = {
+            'all_submissions':all_submissions,
+            'late_submissions':late_submissions,
+            'ontime_submissions':ontime_submissions,
+            'is_teacher':is_teacher,
+            'submitted':submitted,
+            'not_submitted':not_submitted,
+            'subject':subject,
+            'classroom':classroom,
+        }
+        return render(request,'assignments/assignment_handle.html',params)
     else:
         raise Http404()
 
