@@ -347,6 +347,8 @@ padding-right: 2px;
   padding:0px !important;
   box-shadow:0 0 20px grey;
   border-radius: 5px;
+  position: absolute;
+  right:80px;
   
 }
 .user-icon{

@@ -78,6 +78,12 @@
 						class="btn my-2 mx-1 buttons">
 							Update <i class="fas fa-edit"></i>
 					</button>
+					<a
+					href="{% url 'assignment-handle' classroom.unique_id subject.id assignment.id %}"
+					style="background:black;color:white;" 
+					class="btn my-2 mx-1 buttons">
+						Assign Marks<i class="fas fa-edit"></i>
+					</a>
 					{% endif %}
 					<a class="btn btn-dark mx-1 my-2 bg-primary buttons" 
 						href="/profile/{{assignment.assigned_by}}">

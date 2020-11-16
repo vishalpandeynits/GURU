@@ -82,11 +82,15 @@ function toggleMembersSubjects(){
 }
 
 // Change Files icon css
-const actualBtn = _('actual-btn');
-const fileChosen = _('file-chosen');
-actualBtn.addEventListener('change', function(){
-    _('file-upload-label').textContent = this.files[0].name + " selected. Click again to change"
-})
+function fileuploader(){
+    const actualBtn = _('actual-btn');
+    const fileChosen = _('file-chosen');
+    actualBtn.addEventListener('change', function(){
+        _('file-upload-label').textContent = this.files[0].name + " selected. Click again to change"
+    })
+}
+
+
 $(document).ready(function() {
     $('#close-btn').click(function() {
     $('#search-overlay').slideUp(200);
@@ -106,11 +110,6 @@ $(document).on('click', function (e) {
         }    
     }
 });
-// $(document).on('click', function (e) {
-//     if ($(e.target).closest(".user-icon").length === 0  ) {
-//         _('dropdown-container').style.display='none';
-//     }
-// })
 
 function deleteConfirm(entity, successCallback){
     var modal = $('#genericDeleteModal');
@@ -186,8 +185,8 @@ function copy_data(containerid) {
     alert("Classroom code copied");
     }
 
-    document.body.addEventListener('click',(e)=>{
-        if(e.target != document.getElementById('co') && e.target != document.getElementById('left') && e.target != document.getElementById('icon')){
-            document.getElementById('dropdown-container').style.display=null;
-        }
-    })
+document.body.addEventListener('click',(e)=>{
+    if(e.target != document.getElementById('co') && e.target != document.getElementById('left') && e.target != document.getElementById('icon')){
+        document.getElementById('dropdown-container').style.display=null;
+    }
+})

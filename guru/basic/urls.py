@@ -24,7 +24,7 @@ urlpatterns = [
 
     path('<unique_id>/<subject_id>/assignments/',assignments_list,name="assignments"),#
     path('<unique_id>/<subject_id>/<id>/assignment/',assignment_details,name="assignment_page"),
-    path('<unique_id>/<subject_id>/<id>/assignment-handle/',assignment_handle,name="assignment_handle"),
+    path('<unique_id>/<subject_id>/<id>/assignment-handle/',assignment_handle,name="assignment-handle"),
     path('<unique_id>/<subject_id>/<id>/assignment/delete/',assignment_delete,name="delete_assignment"),
 
     path('<unique_id>/<subject_id>/subject_details/',subject_details,name="subject_details"),#
