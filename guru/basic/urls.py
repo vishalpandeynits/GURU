@@ -14,7 +14,7 @@ urlpatterns = [
     path('subjects/<str:unique_id>/<str:username>/acceptRequest/',accept_request, name="accept_request"),
     path('subjects/<str:unique_id>/<str:username>/deleteRequest/',delete_request, name="delete_request"),
 
-    path('<unique_id>/<subject_id>/resource/',notes_list,name="resources"), #
+    path('<unique_id>/<subject_id>/resource/',notes_list,name="resources"), # 
     path('<unique_id>/<subject_id>/<id>/read/',note_details,name="read_note"), #
     path('<unique_id>/<subject_id>/<id>/resource/delete/',resource_delete,name="delete_resource"),
     

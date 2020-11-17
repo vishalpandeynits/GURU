@@ -81,15 +81,6 @@ function toggleMembersSubjects(){
     _('activity').style.display = _('members').style.display==='block'?'none':'block';
 }
 
-// Change Files icon css
-function fileuploader(){
-    const actualBtn = _('actual-btn');
-    const fileChosen = _('file-chosen');
-    actualBtn.addEventListener('change', function(){
-        _('file-upload-label').textContent = this.files[0].name + " selected. Click again to change"
-    })
-}
-
 
 $(document).ready(function() {
     $('#close-btn').click(function() {

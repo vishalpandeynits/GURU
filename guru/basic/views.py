@@ -386,7 +386,6 @@ def assignment_handle(request,unique_id,subject_id,id):
             submission.save()
             email_marks(request,submission,assignment)
             return redirect(f'/{unique_id}/{subject_id}/{assignment.id}/assignment/')
-
         #list of submissions
         try:
             submission = Submission.objects.all().filter(assignment=assignment,submitted_by=request.user)
