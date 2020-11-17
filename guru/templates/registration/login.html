@@ -3,6 +3,7 @@
 {% load crispy_forms_tags %} 
 {% load socialaccount %} 
 {% block content %}
+{% include 'snippets/navigation.html' %}
 <div class="container-fluid mb-4">
     <form method="POST" id="sign-up-form" class="login-form">{% csrf_token %}
         <h1 id="login-heading"> LOG IN</h1>

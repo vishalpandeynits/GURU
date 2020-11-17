@@ -4,20 +4,23 @@
 {% load filters %}
 {% block title %} Home view {% endblock %} 
 {% block content %}
-
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+{% endblock %}
 <div>
     {% include 'snippets/navigation.html' %}
-    <div class="text-center m-auto mt-4 ">
+    <br>
+    <div class="text-center container classroom-details m-auto mt-4 ">
         <h2> {{ classroom.class_name }} </h2>
         <span id="select_txt">{{ classroom.unique_id }}</span> 
         <button type="button" onclick="copy_data(select_txt)" style="background:none;border:none;">
-            &nbsp; &nbsp;<i class="fas fa-2x fa-clipboard"></i>
+            <i style="font-size:25px;"class="fas fa-clipboard"></i>
         </button>
         
         {% if classroom.description %}
         <p> {{ classroom.description }} </p>
         {% endif %}
-    </div>
+    </div><br>
     
     {% if messages %}
         <div class="messages container">
@@ -43,7 +46,7 @@
 		  		id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		   		 Invitation link
 		  	</button>
-		  	<div class="dropdown-menu bg-light" aria-labelledby="dropdownMenuButton">
+		  	<div class="dropdown-menu bg-light" style="padding:0;" aria-labelledby="dropdownMenuButton">
 		    	<a style="text-decoration: none;" target="_blank" class="invite-link" 
 					href="https://api.whatsapp.com/send?text=Click on
 				 	this link http://www.guru/join/{{classroom.unique_id}}/ 

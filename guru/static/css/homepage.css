@@ -106,3 +106,8 @@
     border-radius: 10px;
     padding: 8px 12px;
 }
+.classroom-details{
+    padding:10px;
+    background:white;
+    box-shadow:0px 0px 10px grey;
+}
