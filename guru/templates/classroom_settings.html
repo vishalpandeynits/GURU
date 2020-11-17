@@ -7,7 +7,6 @@
 
 <div>
     {% include 'snippets/navigation.html' %}
-
     <div class="text-center m-auto mt-4 ">
         <h2> {{ classroom.class_name }} </h2>
         <span id="select_txt">{{ classroom.unique_id }}</span> 
@@ -19,7 +18,7 @@
         <p> {{ classroom.description }} </p>
         {% endif %}
     </div>
-
+    
     {% if messages %}
         <div class="messages container">
             {% for message in messages %}

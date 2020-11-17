@@ -1,6 +1,9 @@
 {% extends 'snippets/subject_page.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+{% endblock %}
 {% load humanize %}
 {% block subject_content %}
 <style>

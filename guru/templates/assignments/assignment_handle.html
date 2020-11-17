@@ -3,6 +3,9 @@
 {% load humanize %}
 {% load filters %}
 {% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/detailpage.css' %}">
+{% endblock %}
 {% block subject_content %}
 <div id="assignment-container" class="text-align-center">
 	<div id="button-container">

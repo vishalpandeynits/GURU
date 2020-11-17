@@ -1,11 +1,16 @@
 {% extends 'snippets/subject_page.html' %} 
 {% load crispy_forms_tags %} 
 {% load humanize %} 
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/listpage.css' %}">
+{% include 'django_quill/media.html' %}
+{% endblock %}
 {% block subject_content %}
 
 {% if assignments %}
 <div id="search-overlay" class="block">		
-	<div class="centered">
+	<div class="centered"> 
 	  <div id='search-box'>
 		<i id="close-btn" class="fa fa-times fa-2x"></i>
 		<form  id='search-form' >

@@ -35,7 +35,6 @@ strong {
 
 
 /*Login page css*/
-
 .login-form {
     padding: 20px;
     background: white;
@@ -60,7 +59,6 @@ strong {
 .login-form label{
     margin:0px;
 }
-
 .submit-btn {
     background: black;
     color: white;
@@ -116,7 +114,6 @@ strong {
 .login-form input:focus{
     outline:0;
 }
-
 .social-button {
     background-position: 25px 0px;
     box-sizing: border-box;
@@ -195,8 +192,6 @@ strong {
     transition: all .3s ease;
     text-decoration: none;
 }
-
-
 /*Log in page ends*/
 
 
@@ -229,13 +224,10 @@ strong {
     border-radius: 10px;
     font-weight: bolder;
 }
-
-
 /*Reset form css ends*/
 
 
 /*Password reset done*/
-
 #content {
     color: black;
     font-size: 1.4em;
@@ -243,19 +235,14 @@ strong {
     padding: 20px;
     border-radius: 10px;
 }
-
-
 /*Password reset done ends*/
 
-
 /*Password reset confirm*/
-
 .form-contain {
     background: white;
     padding: 20px;
     border-radius: 10px;
 }
-
 #password-reset-form {
     padding: 20px;
     margin: auto;
@@ -270,53 +257,41 @@ strong {
     padding: 5px;
     border-radius: 4px;
 }
-
 .submit-btn {
     text-align: center;
     margin: auto;
     width: 250px;
 }
-
-
 /*Password reset confirm ends */
 
 
 /*Password change form*/
-
 .password-change-form {
     background: white;
     border: 1px solid black;
     padding: 15px;
     border-radius: 10px;
 }
-
 .password-change-form input[type="password"] {
     width: 95%;
     padding: 5px;
     border-radius: 10px;
     border: 1px solid grey;
 }
-
 .password-change-form input[type="password"]:focus {
     outline: none;
 }
-
-
 /*Password change form ends*/
 
 
 /*Password change done start*/
-
 #message {
     text-align: center;
     font-size: 1.3em;
 }
-
 .message-container {
     padding: 10px;
     background: white;
     border-radius: 10px;
 }
-
-
 /*Password change done end*/

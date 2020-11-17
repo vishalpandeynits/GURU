@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% load filters %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
 {% block content %}
 <div>
 	{% include 'snippets/navigation.html' %}
-
     {% if messages %}
         <div class="messages container">
             {% for message in messages %}
@@ -17,61 +21,44 @@
             {% endfor %}
         </div>
     {% endif %}
-	
 	<div id="profile" class="container">
-
 		<div class="row">
-
 			<div id="info" class="mx-auto">
-
 				<img style="width:100%;height: 300px;" class="img-fluid" 
 					src="{{ profile.profile_pic.url }}"><br><br>
 
 				<h3 style="text-align:center;">{{ profile.user.username }}</h3>
 				<h4 style="text-align:center;"> {{user.first_name }} {{user.last_name }}</h4>
 				<pre style="text-align:center;">{{ profile.bio }}</pre>
-
 				<div id="social-container"  style="display:flex; justify-content: center;">
-
 					{% if profile.facebook %}
-
 						<a style="background:#3b5998;color:white;" href="{{ profile.facebook }}" target="_blank" 
 							class="btn-floating btn-lg btn-fb">
-							<i class="fab fa-facebook-f"></i>
-							
+							<i class="fab fa-facebook-f"></i>	
 						</a>
 					{% endif %}
-
 					<a style="background:#EA4335;color:white;"href="mailto:{{profile.user.email}}" target="_blank" 
 						class="btn-floating btn-lg btn-gplus">
 						<i class="fas fa-envelope"></i>
 					</a>
-
 					{% if profile.whatsapp_number != None %}
-
 						<a target="_blank" style="background:#1eae9d;color:white;"class="btn-floating btn-lg btn-whatsapp" 
 							href="https://api.whatsapp.com/send?phone={{user.profile.whatsapp_number}}">
 							<i class="fab fa-whatsapp"></i>
 						</a>
-
 					{% endif %}
 
 					{% if profile.phone_number  != None %}
-
 						<a style="color:white;"target="_blank" href="tel:{{user.profile.phone_number }}" 
 							class="btn-floating btn-lg">
 							<i style="transform: rotate(270deg)"class="fa fa-phone" aria-hidden="true"></i>
 						</a>
-
 					{% endif %}
 				</div>
-
 			</div>
-
 		</div>
 
 		{% if profile.user.username == user.username %}
-			
 				<div style="display:flex;justify-content:center">
 					<button style="margin:10px;"class="btn btn-info"
 					onclick="on(document.getElementsByClassName('overlay')[0])">
@@ -81,7 +68,6 @@
 					Change Password
 					</a>
 				</div>
-
 				<center>
 				{% if user.username == profile.user.username %}
 					{% if not user.profile.whatsapp_number or not user.profile.facebook or not user.profile.phone_number %}
@@ -111,9 +97,7 @@
 					</center>
 				</form>
 			</div>
-
 		{% endif %}
-
 	</div>
 </div>
 {% endblock %}

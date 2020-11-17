@@ -56,13 +56,6 @@
         padding: 0px !important;
     }
 }
-.ql-editor img{
-    width:300px !important;
-    height:300px !important;
-    margin:10px;
-    display:inline-block;
-    vertical-align:top;
-}
 #assignment-container>#button-container{
 	display:flex;
 	justify-content:center;

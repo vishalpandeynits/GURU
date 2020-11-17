@@ -1,6 +1,10 @@
 {% extends 'base.html' %} 
 {% load filters %}
-{% load crispy_forms_tags %} 
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/polls.css' %}">
+{% include 'django_quill/media.html' %}
+{% endblock %}
 {% block content %}
 <div>
     {% include 'snippets/navigation.html' %}

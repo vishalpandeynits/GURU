@@ -3,7 +3,11 @@
 {% block subject_content %} 
 {% load filters %}
 {% load humanize %} 
-
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/detailpage.css' %}">
+{% include 'django_quill/media.html' %}
+{% endblock %}
 {% load comments %}
 <style>
     .buttons {

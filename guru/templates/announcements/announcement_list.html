@@ -1,6 +1,11 @@
 {% extends 'snippets/subject_page.html' %}
 {% load crispy_forms_tags %}
 {% load humanize %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/listpage.css' %}">
+{% include 'django_quill/media.html' %}
+{% endblock %}
 {% block subject_content %}
 {% if announcements %}
 <div id="search-overlay" class="block">		

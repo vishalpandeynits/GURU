@@ -1,4 +1,9 @@
 {% extends 'base.html' %} 
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/polls.css' %}">
+{% include 'django_quill/media.html' %}
+{% endblock %}
 {% block content %}
 <style>
     .overlayform input[type="text"]{

@@ -14,24 +14,6 @@ function closeNav() {
     _("mySidenav").style.width = "0";
 }
 
-function createclassform() {
-    if (_('classform').style.display == 'none') {
-        _('joinform').style.display = 'none';
-        _('classform').style.display = 'block';
-    } else {
-        _('classform').style.display = 'none'
-    }
-}
-
-function joinform() {
-    if (display == _('joinform').style.display == 'none') {
-        _('classform').style.display = 'none'
-        _('joinform').style.display = 'block';
-    } else {
-        _('joinform').style.display = 'none';
-    }
-}
-
 // POLL JS
 function addInputField(){
     var container = document.getElementById("more-inputs");

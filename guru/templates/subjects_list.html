@@ -2,6 +2,9 @@
 {% load static %}
 {% block title %} Home view {% endblock %}
 {% load crispy_forms_tags %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+{% endblock %}
 {% block content %}
 <div>	
 	{% include 'snippets/navigation.html' %}
