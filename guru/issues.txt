@@ -1,3 +1,0 @@
-1. Progress bar for uploading and downloading files.
-2. Design of better home page.
-3. Adding a preloader.
