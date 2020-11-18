@@ -29,9 +29,7 @@ def signup(request):
             })
             mail_subject = 'Activate your account.'
             to_email = form.cleaned_data.get('email')
-            print( form.cleaned_data.get('email'))
-            h=send_mail(mail_subject, message,'vishalpandeynits@gmail.com',[to_email],fail_silently=False,html_message=message)
-            print(h)
+            send_mail(mail_subject, message,'guru.online.classroom.portal@gmail.com' ,[to_email],html_message=message)
             messages.add_message(request,messages.SUCCESS,'An Activation link is sent to your \
                     registrated email id.Please visit your email and activate your account.')
             return redirect('home')
