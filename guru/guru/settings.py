@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
@@ -20,10 +21,10 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '*j)kfw7j9ltu!=t$o0@4m!umac+&j#3)q^*j_g%z%qpwoeh=9d'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 SITE_ID = 3
 ALLOWED_HOSTS = ['*']
 
@@ -48,9 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.sites',
     'django_comments',
-    'django_cleanup.apps.CleanupConfig',
     'django_quill',
-    # 'user_visit',
 
     #all auth
     'allauth',
@@ -67,8 +66,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
-    # 'user_visit.middleware.UserVisitMiddleware',
 ]
 
 ROOT_URLCONF = 'guru.urls'
@@ -139,7 +136,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = False
-DATA_UPLOAD_MAX_MEMORY_SIZE = None
 
 QUILL_CONFIGS = {
     'default':{
@@ -170,22 +166,22 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 LOGIN_REDIRECT_URL ='/homepage/'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST= "smtp.gmail.com"
-EMAIL_HOST_USER= 'vishalpandeyviptsk@gmail.com'
-EMAIL_HOST_PASSWORD= '!@#$%^&*()__)_(*&^%$#%^&*('
+EMAIL_HOST_USER= config('EMAIL')
+EMAIL_HOST_PASSWORD= config('PASSWORD')
 EMAIL_PORT= 587
 EMAIL_USE_TLS= True
-DEFAULT_FROM_EMAIL= 'vishalpandeyviptsk@gmail.com'
+DEFAULT_FROM_EMAIL= config('EMAIL')
 
 #all-auth registraion settings
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS =1
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
-ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400 # 1 day.
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400
 LOGOUT_REDIRECT_URL = '/'
-ACCOUNT_PRESERVE_USERNAME_CASING = False # reduces the delays in iexact lookups
+ACCOUNT_PRESERVE_USERNAME_CASING = False
 ACCOUNT_UNIQUE_EMAIL=True
 ACCOUNT_USERNAME_MIN_LENGTH = 5
 ACCOUNT_USERNAME_REQUIRED =False
