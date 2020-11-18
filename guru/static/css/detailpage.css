@@ -85,3 +85,8 @@
 	cursor:pointer;
 	padding:10px 10px;
 }
+@media screen and (min-width:414px){
+    #submission-date{
+        float:right;
+    }
+}

@@ -11,6 +11,7 @@ from .forms import SignUpForm, ProfileUpdateForm
 from .models import Profile
 from django.contrib import messages
 from basic.models import Classroom
+from django.conf import settings
 
 def signup(request):
     if request.method == 'POST':
@@ -24,6 +25,7 @@ def signup(request):
                 'user': user, 'domain': current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
+                'site_name':settings.SITE_NAME
             })
             mail_subject = 'Activate your account.'
             to_email = form.cleaned_data.get('email')

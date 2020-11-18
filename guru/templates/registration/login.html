@@ -4,7 +4,7 @@
 {% load socialaccount %} 
 {% block content %}
 {% include 'snippets/navigation.html' %}
-<div class="container-fluid mb-4">
+<div class="container-fluid p-0">
     <form method="POST" id="sign-up-form" class="login-form">{% csrf_token %}
         <h1 id="login-heading"> LOG IN</h1>
         {{ form|crispy }}
@@ -14,9 +14,9 @@
 		</a><br>
         <button type="submit" class="submit-btn">Log In</button>
         <div class="login-box">
-            <a style="text-align: center;" href="#" class="social-button" id="facebook-connect">
+            <!-- <a style="text-align: center;" href="#" class="social-button" id="facebook-connect">
                 <span>Facebook </span>
-            </a>
+            </a> -->
             <a style="text-align: center;" href="{% provider_login_url 'google' %}" class="social-button" id="google-connect">
                 <span>Google</span>
             </a>

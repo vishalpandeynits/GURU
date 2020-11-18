@@ -399,7 +399,17 @@ def assignment_handle(request,unique_id,subject_id,id):
         not_submitted = students.difference(submitted)
         if request.POST.get('send_reminder')=='1':
             send_reminder(request,assignment,not_submitted.values_list('email', flat=True))
+
+        if request.POST.get('toggle_link'):
+            if assignment.submission_link:
+                assignment.submission_link  = False
+            else:
+                assignment.submission_link = True 
+            assignment.save()
+            print(assignment.submission_link)
+
         params = {
+            'assignment':assignment,
             'all_submissions':all_submissions,
             'late_submissions':late_submissions,
             'ontime_submissions':ontime_submissions,

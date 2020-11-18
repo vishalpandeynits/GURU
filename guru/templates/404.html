@@ -1,0 +1,24 @@
+  {% extends 'base.html' %}
+  {% load static %}
+  {% block css %}
+    <link rel="stylesheet" href="{% static 'css/404.css' %}" >
+  {% endblock %}
+  {% block content %}
+  <div class="background">
+    <div class="ground"></div>.
+  </div>
+
+  <div class="container404">
+    <div class="inner-content">
+      <h1 class="heading">404</h1>
+      <h2 class="heading2">Whoops !!!</h2>
+      <p class="subheading">
+        Looks like the page you were looking for is not available.
+      </p>
+      <br /><br />
+      <center>
+        <a href="/" id="home-btn"> Home </a>
+      </center>
+    </div>
+  </div>
+  {% endblock %}

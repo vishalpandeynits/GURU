@@ -21,6 +21,19 @@
 		<button class="btn btn-primary btn-block" onclick="show_not_submitted()">
 			Not submitted
 		</button>
+		<form method="POST" action="{% url 'assignment-handle' classroom.unique_id subject.id assignment.id %}">{% csrf_token %}
+			<input type="hidden" name="toggle_link" value="1">
+			<button type="submit" class="btn btn-info btn-block">
+				{% if assignment.submission_link %}
+					Close 
+				{% else %} 
+					Open 
+				{% endif %} Submission link
+			</button>
+		</form>
+		<button class="btn btn-primary btn-block" onclick="show_not_submitted()">
+			Not submitted
+		</button>
 
 	</div>
 	<div class="container">
@@ -132,16 +145,17 @@
 						<div>
 							<img src="{{student.profile.profile_pic.url}}" height="70" width="70">
 						</div>
-						<div>
+						<div class="ml-3">
+							
 							<a href="/profile/{{ student.username}}">
 								<h5> {{student.first_name }} {{student.last_name }} </h5>
 							</a>
+							{{ student.username }}
 							<p>Have not submitted his assignment yet.</p>
 						</div>
 					</div>
 				</div>
 				{% endfor %}
-			    
 			{% endif %}
 		</span>
 

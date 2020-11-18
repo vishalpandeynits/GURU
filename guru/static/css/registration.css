@@ -39,7 +39,7 @@ strong {
     padding: 20px;
     background: white;
     width: 35%;
-    margin: 10px auto;
+    margin: auto;
     box-shadow: 2px 4px 8px grey;
     position: relative;
     font-size: 1.3em;
@@ -83,7 +83,7 @@ strong {
 
 @media screen and (max-width: 600px) {
     #sign-up-form {
-        width: 97%;
+        width: 100%;
         margin:0;
     }
 }

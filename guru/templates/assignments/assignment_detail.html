@@ -9,13 +9,6 @@
 {% include 'django_quill/media.html' %}
 {% endblock %}
 {% block subject_content %}
-<style>
-	@media screen and (min-width:414px){
-		#submission-date{
-			float:right;
-		}
-	}
-</style>
 <div style="padding:3px;" class="container-fluid">
 	{% if is_teacher %}
 		<div class="overlay">
@@ -49,13 +42,13 @@
 	{% endif %}
 
 	<div class="row d-flex justify-content-center">
-		{% if form %}
+		{% if form and assignment.submission_link %}
 		<div class="col-sm-12 col-lg-4 mt-4 order-lg-2">
-			<h2 class="text-center reg-title"> Submit your assignment </h2>
-			<center>
+			<center style="border:4px solid rgb(30, 50, 150);padding:20px;">
+				<h2 class="text-center reg-title"> Submit your assignment </h2>
 				<form method="POST" id="submissionform" enctype="multipart/form-data">{% csrf_token %}
 					<input type="file" name="file" id="actual-btn" hidden/>
-					<label id="file-upload-label" style="background:blue;"for="actual-btn">
+					<label id="file-upload-label" style="background:rgb(90, 90, 186);width:90%;"for="actual-btn">
 						{% if submission_object.file %}
 							{{ submission_object.file|filebasename }}. Click to change
 						{% else %}
@@ -63,11 +56,16 @@
 						{% endif %}
 					<i class="fa mx-2 fa-upload" aria-hidden="true"></i>
 					</label>
-					<input type="hidden" name="id" value="{{submission.id }}"><br>
+					<input type="hidden" name="id" value="{{submission.id }}"><br><br>
 					<input type="submit" class="btn btn-primary" value="Hand in">
 				</form><br>
 			</center>
 		</div>
+		{% elif form and not assignment.submission_link %}
+			<div class="col-sm-12 col-lg-3 mt-4 order-lg-2" 
+				style="border:3px solid black;box-sizing:content-box;">
+				<h2 class="heading1 text-center text-primary"> Submission link is closed. Please ask your teacher or admins to open submission link. </h2>
+			</div>
 		{% endif %}
 
 		<div class="col-sm-12 col-lg-8 order-lg-1">
