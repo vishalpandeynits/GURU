@@ -96,11 +96,10 @@
     </div>
     {% endif %}
 
-    {% if pending_members %}
-        <h1 style="text-align:center;">Pending members</h1>
-    {% endif %}
-
     {% if is_admin %}
+    {% if pending_members %}
+    <h1 style="text-align:center;">Pending members</h1>
+    {% endif %}
     <div class="container mx-auto">
         <div class="row">
             <div style="position:relative;"class="col mb-4">

@@ -341,15 +341,13 @@ def assignment_details(request,unique_id,subject_id,id):
 
         #submitting assignment
         if not is_teacher:
-            submission_object = Submission.objects.filter(Q(submitted_by=request.user)\
-             & Q(assignment=assignment)).first()
+            submission_object = Submission.objects.filter(Q(submitted_by=request.user) & Q(assignment=assignment)).first()
             if request.method=="POST":
                 form = SubmitAssignmentForm(request.POST, request.FILES,instance=submission_object)
                 if form.is_valid():
                     data=form.save(commit=False)
                     data.submitted_by=request.user
                     data.assignment= assignment
-                    data.current_status = True
                     data.save()
                     assignment.submitted_by.add(request.user)
                     return redirect(f'/{unique_id}/{subject_id}/{assignment.id}/assignment/')
@@ -377,7 +375,7 @@ def assignment_handle(request,unique_id,subject_id,id):
     subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
     is_teacher = request.user==subject.teacher
     if is_admin or is_teacher:
-        assignment = Assignment.objects.all().filter(subject_name=subject).get(id=id)
+        assignment = Assignment.objects.get(id=id)
         if request.POST.get('marks_assigned'):
             id  = request.POST.get('id')
             submission = Submission.objects.get(id=id)
@@ -391,9 +389,9 @@ def assignment_handle(request,unique_id,subject_id,id):
             submission = Submission.objects.all().filter(assignment=assignment,submitted_by=request.user)
         except Submission.DoesNotExist:
             pass
-        all_submissions = Submission.objects.all().filter(assignment=assignment)
+        all_submissions = Submission.objects.all().filter(submitted_on__gte=assignment.submission_date) | Submission.objects.all().filter(submitted_on__lt=assignment.submission_date)
         late_submissions = Submission.objects.all().filter(submitted_on__gt=assignment.submission_date)
-        ontime_submissions = all_submissions.difference(late_submissions)
+        ontime_submissions = Submission.objects.all().filter(submitted_on__lte=assignment.submission_date)
         members = classroom.members.all()
         teachers = classroom.teacher.all()
         students = members.difference(teachers)

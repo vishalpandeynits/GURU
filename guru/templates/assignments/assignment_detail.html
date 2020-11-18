@@ -50,11 +50,19 @@
 
 	<div class="row d-flex justify-content-center">
 		{% if form %}
-		<div class="col-sm-12 col-lg-4 order-lg-2">
-			<h2 class="reg-title"> Submit your assignment </h2>
+		<div class="col-sm-12 col-lg-4 mt-4 order-lg-2">
+			<h2 class="text-center reg-title"> Submit your assignment </h2>
 			<center>
 				<form method="POST" id="submissionform" enctype="multipart/form-data">{% csrf_token %}
-					{{form}}<br>
+					<input type="file" name="file" id="actual-btn" hidden/>
+					<label id="file-upload-label" style="background:blue;"for="actual-btn">
+						{% if submission_object.file %}
+							{{ submission_object.file|filebasename }}. Click to change
+						{% else %}
+						Upload your assignment
+						{% endif %}
+					<i class="fa mx-2 fa-upload" aria-hidden="true"></i>
+					</label>
 					<input type="hidden" name="id" value="{{submission.id }}"><br>
 					<input type="submit" class="btn btn-primary" value="Hand in">
 				</form><br>

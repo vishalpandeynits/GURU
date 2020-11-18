@@ -21,6 +21,7 @@
 		<button class="btn btn-primary btn-block" onclick="show_not_submitted()">
 			Not submitted
 		</button>
+
 	</div>
 	<div class="container">
 		<span id="all_submissions" >
@@ -32,17 +33,18 @@
 					submitted_by 
 					<a href="/profile/{{ submission.submitted_by.username}}">
 						{{ submission.submitted_by.first_name }} {{ submission.submitted_by.last_name }}
-					</a>at {{ submission.submitted_on }}.
+					</a>at {{ submission.submitted_on }}.<br>
+					<b> Marks assigned: </b> {% if submission.marks_assigned %} {{ submission.marks_assigned }} {% else %} Not assigned yet {% endif %}
 				</div>
 				<div>
-					<button class="float-right assign-btn" onclick="on(_('{{forloop.counter}}'))"> Assign marks </button>
+					<button class="float-right assign-btn" onclick="on(_('{{submission.submitted_by}}all'))"> Assign marks </button>
 				</div>
 			</div>
 
-			<div class="overlay"id="{{forloop.counter}}">
+			<div class="overlay"id="{{submission.submitted_by}}all">
 				<form class="overlayform" style="width:300px;" method="POST">{% csrf_token %}
-					<a class="mb-2" onclick = "off(_('a'))" id="close"> &times;</a><br>
-					<input type="hidden" name="id" value="{{submission.id}}">
+					<a class="mb-2" onclick = "off(_('{{submission.submitted_by}}all'))" id="close"> &times;</a><br>
+					<input type="hidden" name="id" value="{{submission.id}}all">
 					<input name="marks_assigned" placeholder="Assign/Reconsider Marks" type="number" 
 					value = "{{submission.marks_assigned}}" max="{{assignment.full_marks}}">
 					<center>
@@ -62,16 +64,17 @@
 					submitted_by 
 					<a href="/profile/{{ submission.submitted_by.username}}">
 						{{ submission.submitted_by.first_name }} {{ submission.submitted_by.last_name }}
-					</a>at {{ submission.submitted_on }}.
+					</a>at {{ submission.submitted_on }}.<br>
+					<b> Marks assigned: </b> {% if submission.marks_assigned %} {{ submission.marks_assigned }} {% else %} Not assigned yet {% endif %}
 				</div>
 				<div>
-					<button class="float-right assign-btn" onclick="on(_('{{submission.submitted_by}}'))"> Assign marks </button>
+					<button class="float-right assign-btn" onclick="on(_('{{submission.submitted_by}}on'))"> Assign marks </button>
 				</div>
 			</div>
 
-			<div class="overlay" id="{{submission.submitted_by}}">
+			<div class="overlay" id="{{submission.submitted_by}}on">
 				<form class="overlayform" style="width:300px;" method="POST">{% csrf_token %}
-					<a class="mb-2" onclick = "off(_('a'))" id="close"> &times;</a><br>
+					<a class="mb-2" onclick = "off(_('{{submission.submitted_by}}on'))" id="close"> &times;</a><br>
 					<input type="hidden" name="id" value="{{submission.id}}">
 					<input name="marks_assigned" placeholder="Assign/Reconsider Marks" type="number" 
 					value = "{{submission.marks_assigned}}" max="{{assignment.full_marks}}">
@@ -92,16 +95,17 @@
 					submitted_by 
 					<a href="/profile/{{ submission.submitted_by.username}}">
 						{{ submission.submitted_by.first_name }} {{ submission.submitted_by.last_name }}
-					</a>at {{ submission.submitted_on }}.
+					</a>at {{ submission.submitted_on }}.<br>
+					<b> Marks assigned: </b> {% if submission.marks_assigned %} {{ submission.marks_assigned }} {% else %} Not assigned yet {% endif %}
 				</div>
 				<div>
-					<button class="float-right assign-btn" onclick="on(_('{{submission.submitted_by}}'))"> Assign marks </button>
+					<button class="float-right assign-btn" onclick="on(_('{{submission.submitted_by}}late'))"> Assign marks </button>
 				</div>
 			</div>
 
-			<div class="overlay"id="{{submission.submitted_by}}">
+			<div class="overlay"id="{{submission.submitted_by}}late">
 				<form class="overlayform" style="width:300px;" method="POST">{% csrf_token %}
-					<a class="mb-2" onclick = "off(_('a'))" id="close"> &times;</a><br>
+					<a class="mb-2" onclick = "off(_('{{submission.submitted_by}}late'))" id="close"> &times;</a><br>
 					<input type="hidden" name="id" value="{{submission.id}}">
 					<input name="marks_assigned" placeholder="Assign/Reconsider Marks" type="number" 
 					value = "{{submission.marks_assigned}}" max="{{assignment.full_marks}}">
@@ -123,7 +127,7 @@
 					</form><br>
 				</center>
 				{% for student in not_submitted %}
-				<div class="container member-card bg-light"><br/>
+				<div class="container member-card bg-light p-2"><br/>
 					<div style="display:flex;">
 						<div>
 							<img src="{{student.profile.profile_pic.url}}" height="70" width="70">

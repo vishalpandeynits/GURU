@@ -79,7 +79,7 @@ class Assignment(models.Model):
 	submitted_by = models.ManyToManyField(User,related_name="Submissions")
 	full_marks = models.IntegerField(default=100)
 	slug = models.SlugField(unique=True)
-
+	submission_link = models.BooleanField(default=True)
 	def __str__(self):
 		return "Assignment on "+ self.topic
 
@@ -95,7 +95,7 @@ class Submission(models.Model):
 	submitted_on = models.DateTimeField(auto_now_add=True)
 	current_status = models.BooleanField(default=False)
 	marks_assigned = models.IntegerField(null=True,blank=True)
-
+	# history = models.CharField(max_length=1000)
 	def __str__(self):
 		return "Assignment upload of "+self.assignment.topic + self.submitted_by.username
 
