@@ -1,0 +1,154 @@
+* {
+    scroll-behavior: smooth;
+}
+.foot {
+    position: absolute;
+    bottom: 0;
+    left:0;
+    right:0;
+    height:10px;
+}
+.btn-home {
+    border-radius: 15px;
+    width: 180px;
+    margin:10px;
+    color: white;
+    background-color: black;
+    transition: background 0.6s;
+}
+.btn-home:hover {
+    color: black;
+    background-color: white;
+    border: 1px solid black;
+}
+
+#intro-image{
+    z-index:-1;
+}
+.intro-section{
+    position: relative;
+    width:100%;
+    box-sizing:content-box;
+    background: url('/static/intro_image.jpg');
+    background-repeat:no-repeat;
+    background-position: center center;
+    background-size: cover;
+    height:800px;
+}
+.intro-section #button-containers{ 
+    position: absolute;
+    left:10%;
+    top:45%;
+    width:500px;
+    transform: translate(-10%, -50%);
+}
+.intro-section #intro {
+    color: black;
+    text-shadow: 5px 5px 15px white;
+    font-size: 3em;
+    font-weight: bold;
+}
+.intro-section div{
+    position:absolute;
+    top:20px;
+}
+
+#why-guru{
+    display:flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 100%;
+}
+#why-guru div{
+    padding:20px;
+    height:22em;
+    min-width:20rem;
+    color:white;
+    background:#1ebea5;
+    outline-width:20px;
+    outline:20px solid #16a596;
+    box-sizing:content-box;
+}
+#why-guru div h2{
+    color:#14274e;
+    height:5rem;
+    box-sizing:content-box;
+}
+#why-guru div p{
+    font-size:1.25em;
+}
+#for-teachers{
+    display:flex;
+    justify-content:space-around;
+    flex-wrap: wrap;
+}
+#for-teachers div{
+    padding:20px;
+    height:22em;
+    min-width:20rem;
+    margin:40px !important;
+    color:white;
+    background:#1ebea5;
+    outline-width:20px;
+    outline:20px solid #16a596;
+    box-sizing:content-box;
+}
+#for-teachers div h2{
+    color:#14274e;
+    height:5rem;
+}
+#for-teachers div p{
+    font-size:1.3em;
+}
+
+@media screen and (max-width: 800px) {
+    .intro-section{
+        position: relative;
+        width:100%;
+        box-sizing:content-box;
+        background: url('/static/intro_image_mirror.jpg');
+        background-repeat:no-repeat;
+        background-position: center;
+        background-size: cover;
+        height:800px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        flex-direction: column;
+        width:100% !important;
+        text-align:center !important;
+        font-size: 1.2em;;
+    }
+    .intro-section div{
+        width:350px;
+        margin-top:10%;
+    }
+    #intro{
+        width:90% !important;
+        text-align:center !important;
+        font-size: 1.2em !important;
+
+    }
+    #why-guru div{
+        margin:40px !important;
+    }
+    #for-teachers div{
+        margin:40px !important;
+    }
+    #button-containers{
+        width:90% !important;
+        
+    }
+}
+
+li {
+    font-size: 1.3em;
+}
+
+.heading1 {
+    text-align: center;
+    border-bottom: 2px solid grey;
+    padding-bottom: 10px;
+    font-size: 2em;
+    font-weight: bold;
+}

@@ -1,0 +1,16 @@
+{% extends 'registration_base.html' %} 
+{% load static %} 
+{% load crispy_forms_tags %}  
+{% block content %}
+{% include 'snippets/navigation.html' %}
+<div style="margin:2px 2px;padding:0;"class="container-fluid mb-4">
+    <form method="POST" id="sign-up-form" class="login-form">{% csrf_token %}
+        <h1 id="login-heading"> SIGN UP</h1>
+        {{ signupform|crispy }}
+        <button type="submit" class="submit-btn">Create My Account.</button>
+        <a class="redirect" style="position:absolute;right:10px;" href="{%url 'login' %}">
+			Log In instead
+		</a><br>
+    </form>
+</div>
+{% endblock %} 

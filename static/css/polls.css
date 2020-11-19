@@ -1,0 +1,43 @@
+.divider{
+	border-top:4px solid black;
+}
+.side-buttons{
+	color:white !important;
+	padding: 7px;
+}
+#instruction{
+	color:red;
+	text-align: center;
+}
+.no-item{
+	text-align:center;
+	color:red;
+	font-weight: bolder;
+}
+#addpollbtn{
+	border:2px solid green;
+	color:white;
+	background: black;
+	margin:10px;
+}
+#addpollbtn:hover{
+	color:black;
+	background-color: white;
+}
+.poll-list{
+	background:white;
+	margin:10px 0px;
+	padding:10px 40px;
+	border-radius:10px;
+	font-size:1.5em;
+	display:flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	box-shadow:2px 2px 7px grey;
+}
+.choice{
+	background:white;
+	padding:10px;
+	font-weight:bolder;
+	margin: 10px 0px;
+}

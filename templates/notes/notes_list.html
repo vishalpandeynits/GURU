@@ -1,0 +1,89 @@
+ {% extends 'snippets/subject_page.html' %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/listpage.css' %}">
+{% include 'django_quill/media.html' %}
+{% endblock %}
+{% block subject_content %}
+{% if page %}
+<div id="search-overlay" class="block">		
+	<div class="centered">
+	  <div id='search-box'>
+		<i id="close-btn" class="fa fa-times fa-2x"></i>
+		<form  id='search-form' >
+		  <input id='search-text' name='search' placeholder='Search' type='text' />
+			<button id='search-button' type='submit'><span><i class="fas fa-search"></i></span>
+			</button>
+		</form>
+	  </div>
+	</div>
+</div>
+{% endif %}
+<div class="container" >
+	<div class="row m-2">
+		<div class="col-12 d-flex justify-content-between">
+			{% if is_teacher %}
+				<button onclick="on(document.getElementsByClassName('overlay')[0])" 
+					type="button" class="btn add-btn float-left">
+					Add <i class="fa fa-plus" aria-hidden="true"></i>
+				</button>
+			{% else %}
+			<div></div>
+			{% endif %}
+			{% if page %}
+			<div style="align-self:flex-end;">
+				<i id="search-btn" class="fa fa-search fa-2x"></i>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+
+	{% if is_teacher %} 
+		<div class="overlay">
+		    <form method="POST"class="overlayform" enctype="multipart/form-data">
+		    	{% csrf_token %}
+				<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+					{% for field in form %}
+						{% if field.field.widget.input_type == 'file' %}
+						<input type="file" name="file" id="actual-btn" hidden/>
+						<label id="file-upload-label" class="text-center"for="actual-btn">Upload File<i class="fa mx-2 fa-upload" aria-hidden="true"></i></label>
+						{% else %}
+							{{ field.label_tag }}<br>
+							{{ field }}
+						{% endif %}
+					{% endfor %}
+				<center>
+					<input type="submit" class=" submit-button"value="Submit">
+				</center>
+			</form>
+		</div>
+	{% endif %}
+	
+	{% if page %}
+		<div style="min-height:400px;">
+			{% for note in page %}
+			<div class="container row ">
+				<div class="col-12">
+					<a href="{% url 'read_note' classroom.unique_id subject.id note.id %}">
+						<div class="content">
+							<div class="topic mb-4 font-weight-bold">
+								<i class="fas text-primary fa-book-open"></i> {{ note.topic }} 
+								</div>
+							<div class="uploaded_by"> Uploaded by: {{ note.uploaded_by }} </div>
+							<div class="time">Uploaded {{ note.uploaded_on|naturaltime }}</div><br>
+						</div>
+					</a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		{% include 'snippets/paginations.html' %}	
+	{% else %}
+		<h2 class="no-items"> 
+			No material added yet.
+		</h2>
+	{% endif %}
+</div>
+{% endblock %}
