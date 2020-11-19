@@ -8,3 +8,4 @@ six==1.15.0
 Jinja2==2.11.1
 django-quill-editor
 python-decouple
+gunicorn
