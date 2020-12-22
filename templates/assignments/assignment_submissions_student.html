@@ -1,0 +1,9 @@
+{% load crispy_forms_tags %}
+<h2 class="reg-title"> Submit your assignment </h2>
+<center>
+	<form method="POST" id="submissionform" enctype="multipart/form-data">{% csrf_token %}
+	    {{form}}<br>
+	    <input type="hidden" name="id" value="{{submission.id }}"><br>
+		<input type="submit" class="btn btn-primary" value="Hand in">
+	</form><br>
+</center>

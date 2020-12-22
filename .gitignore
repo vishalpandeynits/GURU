@@ -1,2 +1,7 @@
+<<<<<<< HEAD
+.env
+media/
+=======
 media
 db.sqlite3
+>>>>>>> 39d5cfe5afed9fc1209c8c9d127bac3fbfbe26c9
