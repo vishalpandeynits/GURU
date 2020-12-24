@@ -18,11 +18,6 @@ strong {
 }
 /*Sign up*/
 
-#sign-up-form .controls{
-    margin:0;
-    padding:0;
-}
-
 #sign-up-form ul {
     color: red;
 }
@@ -46,14 +41,14 @@ strong {
     color: bolder;
 }
 
-.login-form input {
+.login-form>input {
     width: 100%;
     padding: 10px;
-    margin: 0px 0px 15px 0px;
+    margin: 0px 0px 5px 0px;
     height: 40px;
     border-radius: 5px;
 }
-.login-form input[type="text"]:focus{
+.login-form>input[type="text"]:focus{
     outline:0;
 }
 .login-form label{
@@ -275,14 +270,21 @@ strong {
     padding: 15px;
     border-radius: 10px;
 }
-.password-change-form input[type="password"] {
+.password-change-form p{
+    margin:0;
+}
+.password-change-form input[type="password"],input[type="text"] {
     width: 95%;
     padding: 5px;
-    border-radius: 10px;
+    border-radius: 5px;
     border: 1px solid grey;
 }
-.password-change-form input[type="password"]:focus {
+.password-change-form input[type="password"]:focus,input[type="text"]:focus {
     outline: none;
+}
+.password-change-form input[type="checkbox"]{
+    margin-top: 10px;;
+    display:inline;
 }
 /*Password change form ends*/
 

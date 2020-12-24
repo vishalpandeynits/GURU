@@ -415,3 +415,10 @@ padding-right: 2px;
       font-size: 1.3em !important;
   }
 }
+.controls{
+  margin-bottom: 0 !important;
+  height:fit-content !important;
+}
+.control-group{
+  padding:0;
+}
