@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% block title %} {{ profile.user.username|upper}} {% endblock %}
 {% load filters %}
 {% load static %}
 {% block css %}

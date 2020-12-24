@@ -1,17 +1,16 @@
 {% extends 'registration_base.html' %} 
 {% load static %} 
 {% load crispy_forms_tags %}  
+{% block title %}SIGNUP{% endblock %}
 {% block content %}
 {% include 'snippets/navigation.html' %}
-<div style="margin:2px 2px;"class="container-fluid mb-4">
-
-    <form method="POST" id="sign-up-form" onsubmit ="return signUpPageValidation();"class="login-form">{% csrf_token %}
+<br>
+<div class="container-fluid mb-4">
+    <form method="POST" id="sign-up-form" onsubmit ="return signUpPageValidation();" 
+        class="login-form">
+        {% csrf_token %}
         <h1 id="login-heading"> SIGN UP</h1>
-        <span style="color:red;">
-            <span id="error-log">
-
-            </span>
-        </span>
+        <span id="error-log"></span>
         {{ signupform|crispy }}
         <div>
             <input type="checkbox" onchange="TogglePassword()" id="password-btn"> Show Password

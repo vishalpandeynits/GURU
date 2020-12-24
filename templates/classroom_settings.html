@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %} 
 {% load static %} 
 {% load filters %}
-{% block title %} Home view {% endblock %} 
+{% block title %} {{classroom.class_name|upper}}{% endblock %} 
 {% block content %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
@@ -16,7 +16,6 @@
         <button type="button" onclick="copy_data(select_txt)" style="background:none;border:none;">
             <i style="font-size:25px;"class="fas fa-clipboard"></i>
         </button>
-        
         {% if classroom.description %}
         <p> {{ classroom.description }} </p>
         {% endif %}

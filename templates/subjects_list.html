@@ -1,20 +1,30 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %} Home view {% endblock %}
+{% block title %} SUBJECTS {% endblock %}
 {% load crispy_forms_tags %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
 {% endblock %}
 {% block content %}
 <div>	
-	{% include 'snippets/navigation.html' %}
+	{% include 'snippets/navigation.html' %}<br>
+	<div class="text-center container classroom-details m-auto mt-4 ">
+        <h2> {{ classroom.class_name }} </h2>
+        <span id="select_txt">{{ classroom.unique_id }}</span> 
+        <button type="button" onclick="copy_data(select_txt)" style="background:none;border:none;">
+            <i style="font-size:25px;"class="fas fa-clipboard"></i>
+        </button>
+        {% if classroom.description %}
+        <p> {{ classroom.description }} </p>
+        {% endif %}
+    </div>
     {% if form %}
-        <div class="messages mt-4 container">
+        <div class="messages container">
     	    <center> 
 				<button onclick="on(document.getElementsByClassName('overlay')[0])" id="add-subject-btn"> 
 					Add a subject
 				</button>
-			<center><br>
+			<center>
 
             {% for message in messages %}
                 <div class='alert alert-{{ message.tags }} alert-dismissible fade show'>
