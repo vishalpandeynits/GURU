@@ -4,9 +4,10 @@
 {% load socialaccount %} 
 {% block content %}
 {% include 'snippets/navigation.html' %}
-<div class="container-fluid p-0">
-    <form method="POST" id="sign-up-form" class="login-form">{% csrf_token %}
+<div class="container-fluid p-0"><br>
+    <form method="POST" id="sign-up-form" onsubmit ="return logInPageValidation()"class="login-form">{% csrf_token %}
         <h1 id="login-heading"> LOG IN</h1>
+        <span id="login-error"></span>
         {{ form }}
         <div style="float:left;display:block;">
             <input type="checkbox" onchange="logInPasswordToggle()" id="password-btn"> Show Password
@@ -27,7 +28,7 @@
         <a class="redirect" style="text-align:center;display: block;" href="{%url 'signup' %}">
             Create a new account
         </a>
-    </form>
+    </form><br>
 
 </div>
 {% endblock %}

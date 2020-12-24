@@ -21,6 +21,15 @@ strong {
 #sign-up-form ul {
     color: red;
 }
+#sign-up-form input[type="text"],input[type="email"],input[type="password"]{
+    width:100% !important;
+    margin: 0px 0px 5px 0px;
+    height: 40px;
+    border-radius: 5px;
+    outline-width:0px;
+    border:1px solid black;;
+    
+}
 .login-form li{
     font-size: 0.8em;
     font-weight:bold;
@@ -41,16 +50,6 @@ strong {
     color: bolder;
 }
 
-.login-form>input {
-    width: 100%;
-    padding: 10px;
-    margin: 0px 0px 5px 0px;
-    height: 40px;
-    border-radius: 5px;
-}
-.login-form>input[type="text"]:focus{
-    outline:0;
-}
 .login-form label{
     margin:0px;
 }
@@ -202,7 +201,7 @@ strong {
 }
 
 #resetform-container input[type="email"] {
-    width: 95%;
+    width: 100%;
     margin: auto;
     padding: 8px;
     border-radius: 5px;
@@ -279,12 +278,8 @@ strong {
     border-radius: 5px;
     border: 1px solid grey;
 }
-.password-change-form input[type="password"]:focus,input[type="text"]:focus {
-    outline: none;
-}
 .password-change-form input[type="checkbox"]{
-    margin-top: 10px;;
-    display:inline;
+    margin-top: 10px;
 }
 /*Password change form ends*/
 
