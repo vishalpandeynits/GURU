@@ -286,7 +286,7 @@ padding-right: 2px;
   overflow:auto;
   border-radius:10px;
 }
-.overlay .overlayform input,textarea{
+.overlay .overlayform input,textarea,select{
   padding: 5px;
   display:block;
   width:100%;

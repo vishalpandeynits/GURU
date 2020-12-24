@@ -183,6 +183,7 @@ def subjects(request, unique_id, form = None):
             'classroom':classroom,
             'is_admin':is_teacher,
             'classes':classes,
+            'members':members
             }
         return render(request,'subjects_list.html',params)
 

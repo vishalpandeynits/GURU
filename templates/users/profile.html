@@ -20,16 +20,26 @@
                 </div>
             {% endfor %}
         </div>
-    {% endif %}
+	{% endif %}<br>
+
+	{% if user.username == profile.user.username %}
+		{% if not user.profile.whatsapp_number or not user.profile.facebook or not user.profile.phone_number %}
+		<center class="lead bg-warning p-2 bg-dark container text-white">
+			Please add your contact details so other users can contact you in case of any need.
+		</center>
+		{% endif %}
+	{% endif %}
+	
 	<div id="profile" class="container">
 		<div class="row">
 			<div id="info" class="mx-auto">
 				<img style="width:100%;height: 300px;" class="img-fluid" 
 					src="{{ profile.profile_pic.url }}"><br><br>
 
-				<h3 style="text-align:center;">{{ profile.user.username }}</h3>
-				<h4 style="text-align:center;"> {{user.first_name }} {{user.last_name }}</h4>
-				<pre style="text-align:center;">{{ profile.bio }}</pre>
+				<h3 class="text-center">{{ profile.user.username }}</h3>
+				<h4 class="text-center"> {{user.first_name }} {{user.last_name }}</h4>
+				<pre class="text-center">{{ profile.bio }}</pre>
+				
 				<div id="social-container"  style="display:flex; justify-content: center;">
 					{% if profile.facebook %}
 						<a style="background:#3b5998;color:white;" href="{{ profile.facebook }}" target="_blank" 
@@ -59,24 +69,18 @@
 		</div>
 
 		{% if profile.user.username == user.username %}
-				<div style="display:flex;justify-content:center">
-					<button style="margin:10px;"class="btn btn-info"
-					onclick="on(document.getElementsByClassName('overlay')[0])">
-					Edit profile
-					</button>
-					<a style="margin:10px;"class="btn btn-info" href="{% url 'password_change' %}">
-					Change Password
-					</a>
-				</div>
-				<center>
-				{% if user.username == profile.user.username %}
-					{% if not user.profile.whatsapp_number or not user.profile.facebook or not user.profile.phone_number %}
-						Please add your contact details so other users can contact you in case of any need.
-					{% endif %}
-				{% endif %}
+			<center>
+				<button style="margin:10px;"class="btn btn-info"
+				onclick="on(document.getElementsByClassName('overlay')[0])">
+				Edit profile
+				</button>
+				<a style="margin:10px;"class="btn btn-info" href="{% url 'password_change' %}">
+				Change Password
+				</a>
 			</center>
+
 			<div class="overlay">
-				<form method="POST"class="overlayform" enctype="multipart/form-data">
+				<form method="POST" class="overlayform" onsubmit="return validateprofile();" enctype="multipart/form-data">
 					{% csrf_token %}
 					<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
 						{% for field in p_form %}
@@ -97,7 +101,23 @@
 					</center>
 				</form>
 			</div>
+
 		{% endif %}
 	</div>
 </div>
+<script>
+	function validateprofile(){
+		var phoneNumber = document.querySelector("input[name='phone_number']").value;
+		var whatsapp_number= document.querySelector("input[name='whatsapp_number']").value;
+		var facebook = document.querySelector("input[name='facebook']").value;
+		var phoneRGEX =/^\+(91)[6-9]\d{9}$/g
+		var phoneResult = phoneRGEX.test(phoneNumber);
+		var phoneRGEX =/^\+(91)[6-9]\d{9}$/g
+		var whatsapp = phoneRGEX.test(whatsapp_number);
+		var fbREGX = /(?:(?:http|https):\/\/)?(?:www.)?facebook.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[?\w\-]*\/)?(?:profile.php\?id=(?=\d.*))?([\w\-]*)?/
+		var fbcheck = fbREGX.test(facebook)
+		if(phoneResult && whatsapp && fbcheck) return true;
+		else return false;
+	}
+</script>
 {% endblock %}

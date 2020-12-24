@@ -36,7 +36,12 @@
 				{% csrf_token %}
 				<input type="text" name="subject_name" placeholder="Add a subject."
 						maxlength="50" required id="id_subject_name"><br>
-				<input type="text" name="teacher" placeholder="username of teacher."><br>
+				<select name="teacher">
+					<option value="" disabled selected hidden>Please Choose</option>
+					{% for member in members %}
+						<option> {{ member }}</option>
+					{% endfor %}
+				</select>
 				<center>
 					<input type="submit" class="btn btn-success text-white" value="Add">
 				</center>

@@ -75,7 +75,7 @@ def profiles(request, username):
             p_form = ProfileUpdateForm(initial={
                 'phone_number':request.user.profile.phone_number or '+91',
                 'whatsapp_number':request.user.profile.whatsapp_number or '+91',
-                'facebook':request.user.profile.facebook or 'https://www.facebook.com/',
+                'facebook':request.user.profile.facebook or 'https://www.facebook.com',
                 'profile_pic':request.user.profile.profile_pic,
                 'bio':request.user.profile.bio
             })

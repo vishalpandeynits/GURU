@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = "*j)kfw7j9ltu!=t$o0@4m!umac+&j#3)q^*j_g%z%qpwoeh=9d"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = True
 SITE_ID = 3
 ALLOWED_HOSTS = ['*']
 
@@ -167,7 +167,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 LOGIN_REDIRECT_URL ='/homepage/'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST= "smtp.gmail.com"
 EMAIL_HOST_USER= config('EMAIL')
 EMAIL_HOST_PASSWORD= config('PASSWORD')

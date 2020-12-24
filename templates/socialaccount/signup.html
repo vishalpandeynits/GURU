@@ -10,11 +10,12 @@
 <style>
   #login-container{
     width:fit-content;
-    background:rgb(110, 101, 235);
+    background:rgb(229, 229, 238);
     max-width:500px;
     box-shadow:0 0 20px grey;
     border-radius:10px;
     width:100%;
+    height:fit-content;
   }
   #login-container ul li {
     color:black !important;
@@ -26,21 +27,34 @@
     color:white;
     background: rgb(148, 42, 155);
     width:300px;
+    height:fit-content;
     border:none;
     padding:10px 0;
     cursor:pointer;
+    transition:all 1s;
+  }
+  #submit:hover{
+    color:white;
+    background:black;
+    font-size:1.3em;
+    font-weight: 900;
+  }
+  .errorlist li{
+    color:red !important;
   }
 </style>
 <center>
   <div class=" text-center p-4 my-4" id="login-container">
     <h1 class="heading">{% trans "Sign Up" %}</h1>
-    <p class="lead text-light">{% blocktrans with provider_name=account.get_provider.name site_name=site.name %}You are about to use your {{provider_name}} account to login to
-      this website. As a final step, please complete the following form{% endblocktrans %}</p>
+    <p class="lead">{% blocktrans with provider_name=account.get_provider.name site_name=site.name %}
+      You are about to use your {{provider_name}} account to login to
+      this website. As a final step, please complete the following form{% endblocktrans %}
+    </p>
     <form class="signup login-form" id="sign-up-form" method="post" action="{% url 'socialaccount_signup' %}">
       {% csrf_token %}
       {{ form.as_p }}
       {% if redirect_field_value %}
-      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      <input style="color:red;"type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
       {% endif %}
       <input type="submit" value='{% trans "Sign Up" %}' id="submit">
     </form>
