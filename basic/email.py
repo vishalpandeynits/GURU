@@ -10,7 +10,9 @@ def note_email(note):
 		'site_name':settings.SITE_NAME
 	})
 	mail_subject = 'A new note is added.'
-	to_email = note.subject_name.classroom.members.values_list('email', flat=True)
+	all_members = note.subject_name.classroom.members.values_list('email', flat=True)
+	teachers = note.subject_name.classroom.teacher.values_list('email',flat=True)
+	to_email = all_members.difference(teachers)
 	send_mail(mail_subject, message,'guru.online.classroom.portal@gmail.com',to_email,html_message=message)
 
 def assignment_email(assignment):
@@ -20,7 +22,9 @@ def assignment_email(assignment):
 		'site_name':settings.SITE_NAME
 	})
 	mail_subject = 'A new Assignment is added.'
-	to_email = assignment.subject_name.classroom.members.values_list('email', flat=True)
+	all_members = note.subject_name.classroom.members.values_list('email', flat=True)
+	teachers = note.subject_name.classroom.teacher.values_list('email',flat=True)
+	to_email = all_members.difference(teachers)
 	send_mail(mail_subject, message,'guru.online.classroom.portal@gmail.com',to_email,html_message=message)
 
 def announcement_email(announcement):
@@ -51,4 +55,7 @@ def send_reminder(request,assignment,emails):
 			'site_name':settings.SITE_NAME
 		})
 	mail_subject = 'reminder for your not submitted assignment '+ assignment.topic
+	all_members = note.subject_name.classroom.members.values_list('email', flat=True)
+	teachers = note.subject_name.classroom.teacher.values_list('email',flat=True)
+	to_email = all_members.difference(teachers)
 	send_mail(mail_subject,message,'guru.online.classroom.portal@gmail.com',emails,html_message=message)

@@ -163,3 +163,20 @@ document.body.addEventListener('click',(e)=>{
         document.getElementById('dropdown-container').style.display=null;
     }
 })
+// let Link = window.Quill.import('formats/link');
+
+// class CustomLink extends Link {
+
+//   static sanitize(url) {
+//     let value = super.sanitize(url);
+//     if(value)
+//     {
+//       for(let i=0;i<CustomLink.PROTOCOL_WHITELIST.length;i++)
+//         if(value.startsWith(CustomLink.PROTOCOL_WHITELIST[i]))
+//           return value;
+//       return `http://${value}`
+//     }
+//     return value;
+//   }
+// }
+// Quill.register(CustomLink);

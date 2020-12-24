@@ -150,7 +150,7 @@ QUILL_CONFIGS = {
                     {'align': []},
                     {'image':[]},
                     { 'size': ['small', 'large', 'huge'] },
-                    'bold', 'italic', 'underline', 'strike','link','formula','image','blockquote','code-block',
+                    'bold', 'italic', 'underline', 'strike','link','image','blockquote','code-block',
                     {'color': []},
                     {'background': []},
                     { 'list': 'ordered'}, { 'list': 'bullet' },
