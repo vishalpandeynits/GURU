@@ -24,7 +24,7 @@
     {% get_comment_list for note as comment_list %}<br>
     {% for comment in comment_list reversed %}
         <div  style="width:100%;"class="comment-box p-2">
-            <a href="/profile/{{comment.user.username}}">
+            <a href="{% url 'profile' comment.user.username %}">
               <img class="float-left mr-4"style="border-radius: 50%;"
                 src="{{comment.user.profile.profile_pic.url }}" height="60" width="60">
             </a>

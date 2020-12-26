@@ -26,13 +26,13 @@
 			style="color:white;background:black;padding: 7px;cursor:pointer;"
 			 class="m-2 float-right">
 			 Update <i class="fas fa-edit"></i>
-		</button>
+			</button>
 			{% endif %}
 			<a class="btn btn-primary m-2 float-right" 
 			style="color:white;padding: 7px;"
-			href="/profile/{{announcement.announced_by}}">
+			href="{% url 'profile' announcement.announced_by %}">
 			Contact <i class="fas fa-phone-volume"></i>
-		</a><br><br>
+			</a><br><br>
 
 			{% if is_teacher %}
 			<div class="overlay">

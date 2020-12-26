@@ -1,3 +1,4 @@
+<!-- No absolute url -->
 {% extends 'base.html' %} 
 {% load static %} 
 {% load crispy_forms_tags %} 
@@ -33,7 +34,7 @@
 				href="{% url 'subjects' classroom.unique_id %}" > 
 				<i class="fas fa-book mr-2"></i> Subjects 
 			</a>
-			<a href="/profile/{{user.username}}/" onclick="closeNav()"> 
+			<a href="{% url 'profile' user.username %}" onclick="closeNav()"> 
 				<i class="fas fa-user mr-2"></i> {{ user.username|title }} 
 			</a>
 		</div>
@@ -57,7 +58,7 @@
         </div>
 
     <div id="dropdown-container" style="flex-direction: column;"class="bg-dark float-right text-dark">
-        <a class="text-light d-block" href="/profile/{{user.username}}/">
+        <a class="text-light d-block" href="{% url 'profile' user.username %}">
             Profile
         </a>
         <a class="text-light d-block" href="{% url 'logout' %}">

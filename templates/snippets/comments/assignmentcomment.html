@@ -28,7 +28,7 @@
 
 {% for comment in comment_list reversed %}
     <div class="alert comment-box mt-4 p-2">
-        <a href="/profile/{{comment.user.username}}">
+        <a href="{% url 'profile' comment.user.username %}">
           <img class="float-left m-2 mr-4"style="border-radius: 50%;"
             src="{{comment.user.profile.profile_pic.url }}" height="60" width="60">
         </a>

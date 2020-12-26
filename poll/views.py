@@ -147,6 +147,3 @@ def delete_poll(request,unique_id, poll_id):
 		return redirect(f'/polls/{unique_id}')
 	else:
 		raise Http404()
-
-
-

@@ -12,7 +12,7 @@
         <div style="float:left;display:block;">
             <input type="checkbox" onchange="logInPasswordToggle()" id="password-btn"> Show Password
         </div>
-        <a style="float:right;display:block;" class="redirect" href="{%url 'password_reset' %}">
+        <a style="float:right;display:block;" class="redirect" href="{% url 'password_reset' %}">
 			Forgot Password? 
 		</a><br><br>
         <button type="submit" class="submit-btn">Log In</button>

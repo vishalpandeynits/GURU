@@ -9,7 +9,7 @@
 {% block content %}
 <div>
     {% include 'snippets/navigation.html' %}
-    <div style="padding:3px;" class="container-fluid ">
+    <div class="container-fluid ">
         {% if messages %}
             <div class="messages container mt-4">
                 {% for message in messages %}
@@ -39,7 +39,7 @@
                 </a>
                 {% endif %}
                 <a  class="btn btn-dark m-1 side-buttons float-right" 
-                    href="/profile/{{poll.created_by.username}}">
+                    href="{% url 'profile' poll.created_by.username %}">
                     Contact <i class="fas fa-phone-volume"></i>
 				</a>
 
@@ -54,7 +54,9 @@
                             {% for field in updateform %}
                             {% if field.field.widget.input_type == 'file' %}
                             <input type="file" name="file" id="actual-btn" hidden/>
-                            <label id="file-upload-label" class="text-center"for="actual-btn">Upload File<i class="fa mx-2 fa-upload" aria-hidden="true"></i></label>
+                            <label id="file-upload-label" class="text-center"for="actual-btn">
+                                Upload File<i class="fa mx-2 fa-upload" aria-hidden="true"></i>
+                            </label>
                             {% else %}
                                 {{ field.label_tag }}<br>
                                 {{ field }}
@@ -114,7 +116,7 @@
                 </p>
 
                 {% for choice in choices %}
-                    <a href="/polls/{{classroom.unique_id}}/voting/{{poll.id}}/{{choice.id}}">
+                    <a href="{% url 'voting' classroom.unique_id poll.id choice.id %}">
                         <div class="alert choice">{{ choice.choice_text}} 
                             {% if show_result %}
                                 <span class="text-success float-right">

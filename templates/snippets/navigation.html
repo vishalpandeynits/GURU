@@ -11,7 +11,7 @@
                 <a href="{% url 'polls' classroom.unique_id %}">
                     <i class="fas fa-vote-yea mr-2"></i> Polls
                 </a>
-                <a href="/classroom/{{classroom.unique_id}}/">
+                <a href="{% url 'subjects' classroom.unique_id %}">
                   <i class="fas fa-chalkboard-teacher mr-2"></i>Classroom
                 </a>
             {% endif %}
@@ -48,7 +48,7 @@
     </div>
 
     <div id="dropdown-container" style="flex-direction: column;"class="bg-dark float-right text-dark">
-        <a class="text-light d-block" href="/profile/{{user.username}}/">
+        <a class="text-light d-block" href="{% url 'profile' user.username %}">
             Profile
         </a>
         <a class="text-light d-block" href="{% url 'logout' %}">

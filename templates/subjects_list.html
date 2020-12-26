@@ -43,7 +43,7 @@
 		{% if form %}
 		<div class="overlay">
 
-			<form class="overlayform" action="/guru/{{classroom.unique_id}}/" 
+			<form class="overlayform" action="{% url 'subjects' classroom.unique_id %}" 
 				method="POST" onsubmit="return validateAddSubject()" enctype="multipart/form-data">
 				<a onclick="off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a><br>
 				{% csrf_token %}
@@ -56,7 +56,9 @@
 					<select name="teacher">
 						<option disabled selected hidden>Please Choose</option>
 						{% for member in members %}
-							<option> {{ member.first_name }} {{member.last_name }}({{member.username}})</option>
+							<option value="{{member.username}}"> 
+								{{ member.first_name }} {{member.last_name }}({{member.username}})
+							</option>
 						{% endfor %}
 					</select><br>
 					<input type="submit" class="btn btn-success float-right text-white" value="Add Subject">

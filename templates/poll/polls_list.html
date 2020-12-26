@@ -57,7 +57,7 @@
                 <div class="poll-list">
                     <div class="mb-3 font-weight-bold">
                         0{{ forloop.counter }} 
-                        <a href="/polls/{{classroom.unique_id}}/poll-page/{{ poll.id }}"> {{ poll.topic}}</a>
+                        <a href="{% url 'poll_page' classroom.unique_id poll.id %}"> {{ poll.topic}}</a>
                     </div>
                     <div>
                         {{poll.who_can_vote}} can Vote.<br> 

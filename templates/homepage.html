@@ -27,31 +27,47 @@
 			Join a class 
 		</button>
 	</div>
+
 	<div class="overlay">
         <form method="POST"class="overlayform"enctype="multipart/form-data">
             {% csrf_token %}
-			<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> <br>
+			<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a><br>
 			<h1 class="text-center"> Create a classroom</h1>
 			<div>
 				{% for field in createclassform %}
-				{% if field.field.widget.input_type == 'file' %}
-				<input type="file" name="file" id="actual-btn" hidden/>
-				<label id="file-upload-label" class="text-center"for="actual-btn">Upload Classroom Pic<i class="fa mx-2 fa-upload" aria-hidden="true"></i></label>
-				{% elif field.field.widget.input_type == 'checkbox' %}
-				<input type="checkbox" name="need_permission" id="id_need_permission" checked> 
-					<label for="id_need_permission" style="display:inline-block;" title="Joiners will need Permisson of admins to join this classroom">Need permission to join</label><br>
-				{% else %}
-					{{ field.label_tag }}<br>
-					{{ field }}
-				{% endif %}
+					{% if field.field.widget.input_type == 'file' %}
+
+						<input type="file" name="file" id="actual-btn" hidden/>
+						<label id="file-upload-label" class="text-center"for="actual-btn">
+							Upload Classroom Pic
+							<i class="fa mx-2 fa-upload" aria-hidden="true"></i>
+						</label>
+
+					{% elif field.field.widget.input_type == 'checkbox' %}
+
+						<input type="checkbox" name="need_permission" id="id_need_permission" checked> 
+						<label for="id_need_permission" style="display:inline-block;" 
+							title="Joiners will need Permisson of admins to join this classroom">
+							Need permission to join
+						</label><br>
+
+					{% else %}
+
+						{{ field.label_tag }}<br>
+						{{ field }}
+
+					{% endif %}
 				{% endfor %}
 				<input type="submit" class="btn btn-primary float-right"value="Create Classroom">
 			</div>
         </form>
 	</div>
+
 	<div class="overlay">
 		<form class="overlayform" method="POST">{% csrf_token %} 
-			<a onclick="off(document.getElementsByClassName('overlay')[1])" id="close"> &times;</a><br>
+			<a onclick="off(document.getElementsByClassName('overlay')[1])" id="close">
+				&times;
+			</a><br>
 			<h1 class="text-center">Join a classroom </h1>
 			<div>
 				Unique id: <br>
@@ -60,6 +76,7 @@
 			</div>
 		</form>
 	</div>
+
 	{% if classes %} 
 		<div class="row px-4">
 			{% for class in classes reversed %}

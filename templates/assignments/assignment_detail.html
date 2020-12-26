@@ -98,7 +98,7 @@
 					</a>
 					{% endif %}
 					<a class="btn btn-dark mx-1 my-2 bg-primary buttons" 
-						href="/profile/{{assignment.assigned_by}}">
+						href="{% url 'profile' assignment.assigned_by %}">
 						Contact <i class="fas fa-phone-volume"></i>
 					</a>
 				</div>

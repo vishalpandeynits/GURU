@@ -7,7 +7,7 @@ urlpatterns = [
     path('guru/join/<unique_id>/',join,name="join"),
     path('classroom/<unique_id>/',classroom_page,name="classroom_page"),
     path('guru/<unique_id>/',subjects,name="subjects"),
-    path('<unique_id>/<int:subject_id>/delete/',delete_subject,name="delete_subject"),
+    path('<unique_id>/<int:subject_id>/delete/',delete_subject,name="delete_subject"), 
     path('<unique_id>/<username>/Classadmin/',admin_status,name="class_admin"),
 
     path('subjects/<str:unique_id>/<str:username>/removeMember/',remove_member, name="remove_member"),

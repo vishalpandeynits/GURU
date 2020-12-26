@@ -44,7 +44,7 @@
 				<div>
 					<a href="{{submission}}" download>Download {{ submission.file|filebasename }}</a>
 					submitted_by 
-					<a href="/profile/{{ submission.submitted_by.username}}">
+					<a href="{% url 'profile' submission.submitted_by.username %}">
 						{{ submission.submitted_by.first_name }} {{ submission.submitted_by.last_name }}
 					</a>at {{ submission.submitted_on }}.<br>
 					<b> Marks assigned: </b> {% if submission.marks_assigned %} {{ submission.marks_assigned }} {% else %} Not assigned yet {% endif %}
@@ -75,7 +75,7 @@
 				<div>
 					<a href="{{submission}}" download>Download {{ submission.file|filebasename }}</a>
 					submitted_by 
-					<a href="/profile/{{ submission.submitted_by.username}}">
+					<a href="{% url 'profile' submission.submitted_by.username %}">
 						{{ submission.submitted_by.first_name }} {{ submission.submitted_by.last_name }}
 					</a>at {{ submission.submitted_on }}.<br>
 					<b> Marks assigned: </b> {% if submission.marks_assigned %} {{ submission.marks_assigned }} {% else %} Not assigned yet {% endif %}
@@ -106,7 +106,7 @@
 				<div>
 					<a href="{{submission}}" download>Download {{ submission.file|filebasename }}</a>
 					submitted_by 
-					<a href="/profile/{{ submission.submitted_by.username}}">
+					<a href="{% url 'profile' submission.submitted_by.username %}">
 						{{ submission.submitted_by.first_name }} {{ submission.submitted_by.last_name }}
 					</a>at {{ submission.submitted_on }}.<br>
 					<b> Marks assigned: </b> {% if submission.marks_assigned %} {{ submission.marks_assigned }} {% else %} Not assigned yet {% endif %}
@@ -147,7 +147,7 @@
 						</div>
 						<div class="ml-3">
 							
-							<a href="/profile/{{ student.username}}">
+							<a href="{% url 'profile' student.username %}">
 								<h5> {{student.first_name }} {{student.last_name }} </h5>
 							</a>
 							{{ student.username }}

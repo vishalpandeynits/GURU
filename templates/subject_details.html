@@ -81,7 +81,7 @@
 			<div>
 				<h5> {{member.first_name }} {{member.last_name}}</h5>
 				<h5>
-					<a href="/profile/{{ member.username }}">
+					<a href="{% url 'profile' member.username %}">
 						{{ member.username }} 
 					</a><br>
 					{% if member in admins %}Admin{% endif %}
