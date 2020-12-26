@@ -41,21 +41,22 @@
 		{% if form %}
 		<div class="overlay">
 
-			<form style="width:300px;" class="overlayform" action="/guru/{{classroom.unique_id}}/" 
+			<form class="overlayform" action="/guru/{{classroom.unique_id}}/" 
 				method="POST" onsubmit="return validateAddSubject()" enctype="multipart/form-data">
 				<a onclick="off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a><br>
 				{% csrf_token %}
-				<input type="text" name="subject_name" placeholder="Add a subject."
-						maxlength="50" required id="id_subject_name"><br>
-				<select name="teacher">
-					<option disabled selected hidden>Please Choose</option>
-					{% for member in members %}
-						<option> {{ member }}</option>
-					{% endfor %}
-				</select><br>
-				<center>
-					<input type="submit" class="btn btn-success text-white" value="Add">
-				</center>
+				<h1 class="text-center"> Add a subject </h1><br>
+				<div>
+					<input type="text" name="subject_name" placeholder="Add a subject."
+					maxlength="50" required id="id_subject_name"><br>
+					<select name="teacher">
+						<option disabled selected hidden>Please Choose</option>
+						{% for member in members %}
+							<option> {{ member.first_name }} {{member.last_name }}({{member.username}})</option>
+						{% endfor %}
+					</select><br>
+					<input type="submit" class="btn btn-success float-right text-white" value="Add">
+				</div>
 			</form>
 		</div>
 		{% endif %}

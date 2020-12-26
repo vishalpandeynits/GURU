@@ -43,21 +43,23 @@
 		<div class="overlay">
 		    <form method="POST" class="overlayform" enctype="multipart/form-data">
 		    	{% csrf_token %}
-				<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
-				{% for field in form %}
-					{% if field.field.widget.input_type == 'file' %}
-					<input type="file" name="file" id="actual-btn" hidden/>
-					<label id="file-upload-label"for="actual-btn">Upload File<i class="fa mx-2 fa-upload" aria-hidden="true"></i></label>
-					{% elif field.label == 'Submission date:' %}
-						if field.field
-					{% else %}
-						{{ field.label_tag }}<br>
-						{{ field }}
-					{% endif %}
-				{% endfor %}
-				<center>
-					<input type="submit" class="submit-button"value="Submit">
-				</center>
+				<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> <br>
+				<h1 class="text-center"> Add an Announcement </h1><br>
+				<div>
+					
+					{% for field in form %}
+						{% if field.field.widget.input_type == 'file' %}
+						<input type="file" name="file" id="actual-btn" hidden/>
+						<label id="file-upload-label"for="actual-btn">Upload File<i class="fa mx-2 fa-upload" aria-hidden="true"></i></label>
+						{% elif field.label == 'Submission date:' %}
+							if field.field
+						{% else %}
+							{{ field.label_tag }}<br>
+							{{ field }}
+						{% endif %}
+					{% endfor %}<br>
+						<input type="submit" class="btn btn-primary float-right mt-4"value="Submit">
+				</div>
 			</form>
 		</div>
 	{% endif %}

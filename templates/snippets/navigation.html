@@ -42,12 +42,8 @@
  
     {% if  user.is_authenticated %}
     <div id="co" class="float-right user-icon mr-4 mt-3 text-dark"  onclick="on(_('dropdown-container'))" >
-        <i id="left" 
-        style="position:absolute;top:25px;right:75px;"
-        class="fas mr-2 fa-chevron-left"></i>
-
         <img id="icon" height="50" width="50" 
-        style="position:absolute;top:5px;right:20px;border-radius:35%;"
+        style="position:relative;top:-5px;right:-20px;border-radius:35%;"
         src="{{ user.profile.profile_pic.url }}">
     </div>
 

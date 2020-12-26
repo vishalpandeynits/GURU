@@ -15,29 +15,30 @@
 		<div class="overlay">
 			<form method="POST" id="updateform" class="addForm overlayform" 
 				enctype="multipart/form-data">{% csrf_token %}
-				<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
-				{% for field in updateform %}
-					{% if field.field.widget.input_type == 'file' %}
-					<input type="file" name="file" id="actual-btn" hidden/>
-					<label id="file-upload-label"for="actual-btn">
-						{% if assignment.file %}
-							{{ assignment.file|filebasename }}. Click to change
+				<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> <br>
+				<h1 class="text-center">Update:{{ assignment }}</h1>
+				<div>
+					{% for field in updateform %}
+						{% if field.field.widget.input_type == 'file' %}
+						<input type="file" name="file" id="actual-btn" hidden/>
+						<label id="file-upload-label"for="actual-btn">
+							{% if assignment.file %}
+								{{ assignment.file|filebasename }}. Click to change
+							{% else %}
+							Upload File
+							{% endif %}
+						<i class="fa mx-2 fa-upload" aria-hidden="true"></i>
+						</label>
+						{% elif field.field.widget.input_type == 'datetime-local' %}
+						<label for="id_submission_date">Submission date:</label><br>
+						<input type="datetime-local" name="submission_date" value="{{assignment.submission_date}}" required id="id_submission_date">
 						{% else %}
-						Upload File
+							{{ field.label_tag }}<br>
+							{{ field }}
 						{% endif %}
-					<i class="fa mx-2 fa-upload" aria-hidden="true"></i>
-					</label>
-					{% elif field.field.widget.input_type == 'datetime-local' %}
-					<label for="id_submission_date">Submission date:</label><br>
-					<input type="datetime-local" name="submission_date" value="{{assignment.submission_date}}" required id="id_submission_date">
-					{% else %}
-						{{ field.label_tag }}<br>
-						{{ field }}
-					{% endif %}
-				{% endfor %}
-				<center>
-					<input type="submit" class="submit-button"value="Submit">
-				</center>
+					{% endfor %}<br>
+					<input type="submit" class="btn btn-primary float-right" value="Submit">
+				</div>
 			</form>
 		</div>
 	{% endif %}

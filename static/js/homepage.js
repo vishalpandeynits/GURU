@@ -38,24 +38,18 @@ function checkComment(){
 }
 //EMPTY COMMENT ISSUE ENDS
 
-function noscroll(event){
-    $('html, body').css({
-        overflow: 'hidden',
-        height: '100%'
-    });
-}
-
 //HOMEPAGE JAVASCRIPT
 function on(el) {
-    el.style.display = "flex";
-    document.addEventListener("scroll",noscroll);
+    $('html, body').css({
+        overflowY: 'hidden',
+        height:'100%',
+    });
+    el.style.display = 'flex';
 }
-
 function off(el) {
     el.style.display= "none";
     $('html, body').css({
         overflowY: 'auto',
-        height: '100%'
     });
 }
 function toggleMembersSubjects(){  
@@ -161,6 +155,10 @@ function copy_data(containerid) {
 document.body.addEventListener('click',(e)=>{
     if(e.target != document.getElementById('co') && e.target != document.getElementById('left') && e.target != document.getElementById('icon')){
         document.getElementById('dropdown-container').style.display=null;
+        $('html, body').css({
+            overflowY: 'auto',
+            height: '100%'
+        });
     }
 })
 // let Link = window.Quill.import('formats/link');

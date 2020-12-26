@@ -44,7 +44,8 @@
 		<div class="overlay">
 		    <form method="POST"class="overlayform" enctype="multipart/form-data">
 		    	{% csrf_token %}
-				<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+				<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> <br><br>
+				<div>
 					{% for field in form %}
 						{% if field.field.widget.input_type == 'file' %}
 						<input type="file" name="file" id="actual-btn" hidden/>
@@ -54,9 +55,8 @@
 							{{ field }}
 						{% endif %}
 					{% endfor %}
-				<center>
-					<input type="submit" class=" submit-button"value="Submit">
-				</center>
+					<input type="submit" class="btn btn-primary float-right mt-4"value="Submit">
+				</div>
 			</form>
 		</div>
 	{% endif %}

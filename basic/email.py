@@ -22,8 +22,8 @@ def assignment_email(assignment):
 		'site_name':settings.SITE_NAME
 	})
 	mail_subject = 'A new Assignment is added.'
-	all_members = note.subject_name.classroom.members.values_list('email', flat=True)
-	teachers = note.subject_name.classroom.teacher.values_list('email',flat=True)
+	all_members = assignment.subject_name.classroom.members.values_list('email', flat=True)
+	teachers = assignment.subject_name.classroom.teacher.values_list('email',flat=True)
 	to_email = all_members.difference(teachers)
 	send_mail(mail_subject, message,'guru.online.classroom.portal@gmail.com',to_email,html_message=message)
 

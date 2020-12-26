@@ -24,6 +24,7 @@ h1,h2,h3,h4,h5,h6,em,b{
 ::-webkit-scrollbar-thumb:hover {
   background-color: #2995aa;
 }
+
 a{
   text-decoration:none !important;
 }
@@ -82,7 +83,7 @@ padding-right: 2px;
   height: 100%;
   width: 0px;
   position: fixed;
-  z-index: 1; 
+  z-index: 100; 
   top: 0;
   left: 0;
   background-color: white;
@@ -212,9 +213,9 @@ padding-right: 2px;
   box-shadow:0 0 20px grey;
   border-radius: 5px;
   position: absolute;
-  right:90px;
+  right:65px;
   top:10px;
-  
+  z-index:9000;
 }
 #dropdown-container a{
   padding:5px;
@@ -268,40 +269,48 @@ padding-right: 2px;
   align-items:center;
   justify-content:center;
   position:fixed;
-  top:0;
+  top:70px;
   left:0;
   right:0;
   bottom:0;
-  width: 100%;
   background-color:rgb(0, 0, 0,0.5);
-  z-index: 10000000000;
+  z-index:50;
 }
 .overlay .overlayform {
-  width:60%;
+  display:flex;
+  align-items:center;
+  flex-direction:column;
+  width:100%;
+  height:100%;
   z-index:10000;
   position:relative;
   background: rgb(255, 255, 255);
-  padding:1em;
-  max-height:700px;
-  overflow:auto;
-  border-radius:10px;
+  overflow-y:scroll;
 }
 .overlay .overlayform input,textarea,select{
   padding: 5px;
-  display:block;
   width:100%;
-  border:2px solid #aedfed;
+  margin-bottom:10px;
   border:1.5px solid black;
   outline: none;
+  transition: all 0.1s;
+}
+.overlay .overlayform input:focus,textarea:focus{
+  outline: 3px solid rgb(31, 157, 241);
+  border:none;
 }
 .django-quill-widget-container{
   width:100%;
   padding:0;
   margin-bottom:50px;
 }
+.overlay .overlayform input{
+  border:0.5px solid grey;
+  transition:0.1s; 
+}
 .overlay .overlayform input[type="checkbox"]{
   margin:0;
-  width:  20px;
+  width:20px;
   display:inline;
 }
 .overlay .overlayform input[type="file"]{
@@ -309,26 +318,20 @@ padding-right: 2px;
   height:80px !important;
 }
 .overlay .overlayform input[type="submit"]{
-  width: 100px;
-  color:white;
-  border-radius:5px;
-  height:40px;
-  margin:0;
-  border:none;
-  background-color:black;
-  cursor:pointer;
-  text-align: center;
-  transition:all 0.2s ease-in-out;
+  width:200px;
 }
 .overlay .overlayform input[type="submit"]:hover{
-  width:200px;
-  box-shadow:0 0 32px black;
 }
-
+.overlayform>div{
+  width:40%;
+  border:2px solid black;
+  padding:20px;
+  border-radius: 25px;
+}
 .overlay #close {
-  position:absolute;
-  right:1px;
-  top:-15px;
+  position:fixed;
+  right:20px;
+  top:55px;
   margin-bottom:10px;
   display:block;
   font-size: 3em !important;
@@ -414,4 +417,15 @@ padding-right: 2px;
   #navbar a {
       font-size: 1.3em !important;
   }
+  .overlayform>#profile-edit{
+    width:100%;
+  }
+}
+#co{
+  float:right;
+}
+option{
+  height:50px;
+  font-size:1.3em;
+  padding:5px;
 }

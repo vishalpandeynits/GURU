@@ -80,10 +80,13 @@
 			</center>
 
 			<div class="overlay">
+				
 				<form method="POST" class="overlayform" onsubmit="return validateprofile();" enctype="multipart/form-data">
 					{% csrf_token %}
-					<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> 
+					<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> <br>
+					<h1> Update your profile </h1><br>
 					<p id="profile-errors"></p>
+					<div id="profile-edit">
 						{% for field in p_form %}
 							{% if field.field.widget.input_type == 'file' %}
 							<input type="file" name="file" id="actual-btn" hidden/>
@@ -97,9 +100,8 @@
 								{{ field }}
 							{% endif %}
 						{% endfor %}
-					<center>
-						<input type="submit" class=" submit-button"value="Submit">
-					</center>
+						<input type="submit" class="btn btn-primary float-right"value="Submit">
+					</div>
 				</form>
 			</div>
 
