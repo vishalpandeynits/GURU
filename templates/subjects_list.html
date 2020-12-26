@@ -8,6 +8,7 @@
 {% block content %}
 <div>	
 	{% include 'snippets/navigation.html' %}<br>
+	{% if is_admin %}
 	<div class="text-center container classroom-details m-auto mt-4 ">
         <h2> {{ classroom.class_name }} </h2>
         <span id="select_txt">{{ classroom.unique_id }}</span> 
@@ -17,7 +18,8 @@
         {% if classroom.description %}
         <p> {{ classroom.description }} </p>
         {% endif %}
-    </div>
+	</div>
+	{% endif %}
     {% if form %}
         <div class="messages container">
     	    <center> 
@@ -47,15 +49,17 @@
 				{% csrf_token %}
 				<h1 class="text-center"> Add a subject </h1><br>
 				<div>
-					<input type="text" name="subject_name" placeholder="Add a subject."
+					Subject name: 
+					<input type="text" name="subject_name"
 					maxlength="50" required id="id_subject_name"><br>
+					Teacher's Id:<br>
 					<select name="teacher">
 						<option disabled selected hidden>Please Choose</option>
 						{% for member in members %}
 							<option> {{ member.first_name }} {{member.last_name }}({{member.username}})</option>
 						{% endfor %}
 					</select><br>
-					<input type="submit" class="btn btn-success float-right text-white" value="Add">
+					<input type="submit" class="btn btn-success float-right text-white" value="Add Subject">
 				</div>
 			</form>
 		</div>

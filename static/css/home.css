@@ -158,6 +158,7 @@ padding-right: 2px;
 }
 #home-btn-container .btn-home {
   border-radius: 10px;
+  border:2px solid black;
   width: 180px;
   color: white;
   background-color: black;
@@ -172,6 +173,7 @@ padding-right: 2px;
   color:black;
   transition:all 0.5s;
   padding:5px;
+  text-align:center;
 }
 .invite-link:hover{
   background:  black;
@@ -295,10 +297,6 @@ padding-right: 2px;
   outline: none;
   transition: all 0.1s;
 }
-.overlay .overlayform input:focus,textarea:focus{
-  outline: 3px solid rgb(31, 157, 241);
-  border:none;
-}
 .django-quill-widget-container{
   width:100%;
   padding:0;
@@ -313,20 +311,24 @@ padding-right: 2px;
   width:20px;
   display:inline;
 }
-.overlay .overlayform input[type="file"]{
+/* .overlay .overlayform input[type="file"]{
   width:100%;
   height:80px !important;
-}
+} */
 .overlay .overlayform input[type="submit"]{
-  width:200px;
+  width:160px;
 }
-.overlay .overlayform input[type="submit"]:hover{
+.overlay .overlayform input:focus,textarea:focus{
+  outline: 3px solid rgb(31, 157, 241);
+  border:none;
+  border-radius:10px;
 }
 .overlayform>div{
-  width:40%;
+  width:70%;
   border:2px solid black;
   padding:20px;
-  border-radius: 25px;
+  border-radius: 5px;
+  margin-bottom:20px;
 }
 .overlay #close {
   position:fixed;
@@ -341,36 +343,20 @@ padding-right: 2px;
   cursor:pointer;
 }
 #file-upload-label {
-  background-color: black;;
+  background-color: rgb(19, 101, 209);;
   color: white;
   text-align:center;
-  padding-top: 0.8rem;
+  padding-top: 0.6rem;
   width:100%;
-  height:50px;
+  height:40px;
   vertical-align: middle;
   border-radius: 0.3rem;
   cursor: pointer;
-  margin-top: 1rem;
 }
 
 #file-chosen{
   margin-left: 0.3rem;
   font-family: sans-serif;
-}
-
-@media screen and (max-width:1000px){
-  .overlay .overlayform {
-      display:block;
-      width:100%;
-      height:100%;
-
-  }
-  .overlay .overlayform input[type="submit"]{
-      margin-top:40px;
-  }
-  .django-quill-widget-container{
-      margin-bottom:80px;
-  }
 }
 /* Overlay form settings ends*/
 .heading{
@@ -419,6 +405,16 @@ padding-right: 2px;
   }
   .overlayform>#profile-edit{
     width:100%;
+  }
+  .overlayform>div{
+    width:100%;
+    padding:10px;;
+    border:none;
+  }
+  .overlay .overlayform {
+    display:flex;
+    align-items:center;
+    flex-direction:column;
   }
 }
 #co{

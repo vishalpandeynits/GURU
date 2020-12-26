@@ -44,7 +44,7 @@
 		    <form method="POST" class="overlayform" enctype="multipart/form-data">
 		    	{% csrf_token %}
 				<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> <br>
-				<h1 class="text-center"> Add an Announcement </h1><br>
+				<h1 class="text-center"> Add an Announcement </h1>
 				<div>
 					
 					{% for field in form %}
@@ -58,7 +58,7 @@
 							{{ field }}
 						{% endif %}
 					{% endfor %}<br>
-						<input type="submit" class="btn btn-primary float-right mt-4"value="Submit">
+						<input type="submit" class="btn btn-primary float-right mt-4"value="Add Announcement">
 				</div>
 			</form>
 		</div>
