@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
+{% load socialaccount %}
 {% block title %} {{ profile.user.username|upper}} {% endblock %}
 {% load filters %}
 {% load static %}
+{% load account %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 {% endblock %}
@@ -21,7 +23,6 @@
             {% endfor %}
         </div>
 	{% endif %}<br>
-
 	{% if user.username == profile.user.username %}
 		{% if not user.profile.whatsapp_number or not user.profile.facebook or not user.profile.phone_number %}
 		<center class="lead bg-warning p-2 bg-dark container text-white">
@@ -33,8 +34,15 @@
 	<div id="profile" class="container">
 		<div class="row">
 			<div id="info" class="mx-auto">
+				{% get_social_accounts user as accounts %}
+				{% if accounts %} 
+				<img style="width:100%;height: 300px;" class="img-fluid"
+					src="{{ user.socialaccount_set.all.0.get_avatar_url }}"/><br><br>
+				{% else %}
 				<img style="width:100%;height: 300px;" class="img-fluid" 
-					src="{{ profile.profile_pic.url }}"><br><br>
+				src="{{ profile.profile_pic.url }}"><br><br>
+				{% endif %}
+				
 
 				<h3 class="text-center">{{ profile.user.username }}</h3>
 				<h4 class="text-center"> {{user.first_name }} {{user.last_name }}</h4>
@@ -67,16 +75,18 @@
 				</div>
 			</div>
 		</div>
-
 		{% if profile.user.username == user.username %}
 			<center>
 				<button style="margin:10px;"class="btn btn-info"
 				onclick="on(document.getElementsByClassName('overlay')[0])">
 				Edit profile
 				</button>
-				<a style="margin:10px;"class="btn btn-info" href="{% url 'password_change' %}">
-				Change Password
-				</a>
+				{% get_social_accounts user as accounts %}
+				{% if not accounts %} 
+					<a style="margin:10px;"class="btn btn-info" href="{% url 'password_change' %}">
+						Change Password
+					</a>
+				{% endif %}
 			</center>
 
 			<div class="overlay">
@@ -104,8 +114,11 @@
 					</div>
 				</form>
 			</div>
-
 		{% endif %}
 	</div>
+	<hr/>
+	{% if profile.user.username == user.username %}
+		<h1 class="text-center"> Your pending requests </h1>
+	{% endif %}
 </div>
 {% endblock %}

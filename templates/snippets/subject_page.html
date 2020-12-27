@@ -3,6 +3,8 @@
 {% load static %} 
 {% load crispy_forms_tags %} 
 {% block content %}
+{% load socialaccount %}
+{% load account %}
 <div class="row">
     <div class="col-2">
         <div id="mySidenav" class="sidenav">
@@ -46,16 +48,20 @@
 		&#9776;
 	</span>
 
+    {% get_social_accounts user as accounts %}
     {% if  user.is_authenticated %}
-        <div id="co" class="float-right user-icon mr-4 mt-3 text-dark"  onclick="on(_('dropdown-container'))" >
-			<i id="left" 
-			style="position:absolute;top:25px;right:75px;"
-			class="fas mr-2 fa-chevron-left"></i>
-
-			<img id="icon" height="50" width="50" 
-			style=" position:absolute;top:5px;right:20px;border-radius:35%;"
-			src="{{ user.profile.profile_pic.url }}">
-        </div>
+    <div id="co" class="float-right user-icon mr-4 mt-3 text-dark"  onclick="on(_('dropdown-container'))" >
+        <i id="left" 
+        style="position:absolute;top:25px;right:75px;"
+        class="fas mr-2 fa-chevron-left"></i>
+        <img id="icon" height="50" width="50" 
+        style="position:relative;top:-18px;right:-15px;border-radius:15%;"
+        {% if accounts %} 
+        src="{{ user.socialaccount_set.all.0.get_avatar_url }}"
+        {% else %}
+        src="{{ user.profile.profile_pic.url }}"
+        {% endif %}>
+    </div>
 
     <div id="dropdown-container" style="flex-direction: column;"class="bg-dark float-right text-dark">
         <a class="text-light d-block" href="{% url 'profile' user.username %}">
