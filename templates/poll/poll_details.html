@@ -95,18 +95,11 @@
                     <div class="float-right ">
                         <a style="text-decoration: none;" 
                             target="_blank" 
+                            title="invite by whatsapp"
                             href="https://api.whatsapp.com/send?text=Click on
 						 	this link {{site_name}}/polls/{{classroom.unique_id}}/poll-page/{{poll.id}}/ 
 						 	to participate in poll {{ details}}/)">
                             <i class="fab fa-whatsapp fa-2x m-2" aria-hidden="true"></i>
-                        </a>
-
-                        <a style="text-decoration: none;" 
-                            target="_blank" 
-                            href="mailto:{{members_email}}?subject= Invitation for participation in a poll. 
-							&body=Click on this link {{site_name}}/polls/{{classroom.unique_id}}/poll-page/{{poll.id}}/
-						 	participate in {{details}}">
-                            <i class="fas fa-envelope fa-2x m-2"></i>
                         </a>
                     </div><br><br>
                 </div>
@@ -128,6 +121,12 @@
                 {% endfor %}
             </div>
         </div>
+        
+        <div class="container">
+            <div class="divider"></div><br>
+            {% include 'snippets/comments//poll_comments.html' %}
+        </div>
+        
     </div>
 </div>
 {% endblock %}

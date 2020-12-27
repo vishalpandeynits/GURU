@@ -149,6 +149,3 @@ def delete_poll(request,unique_id, poll_id):
 		return redirect(reverse('polls',kwargs={'unique_id':classroom.unique_id}))
 	else:
 		raise Http404()
-
-def invite(request,poll_id, emails):
-	pass

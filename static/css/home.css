@@ -223,8 +223,7 @@ padding-right: 2px;
   padding:5px;
   width:100px;
   text-align:center;
-  transition:all 0.5s;
-  
+  transition:all 0.5s; 
 }
 #dropdown-container a:hover{
   background:white;
@@ -234,36 +233,6 @@ padding-right: 2px;
 #dropdown-container:hover{
   display:inline-block;
 }
-
-.ql-editor p a{
-  color:blue !important;
-  text-decoration: none !important;
-}
-.ql-editor pre{
-  background:black;
-  color:white;
-  padding:20px;
-}
-.ql-editor img{
-  width:300px !important;
-  height:300px !important;
-  margin:10px;
-  display:inline-block;
-  vertical-align:top;
-}
-.overlayform .ql-editor,.ql-toolbar{
-  border:1.5px solid black;
-  
-}
-.ql-toolbar{
-  border:1.5px solid black !important;
-  border-bottom: none !important;
-  box-sizing: border-box;;
-}
-.django-quill-widget-container{
-  margin-bottom:50px;
-  height:25rem;
-  }
 
 /*overlay form settings*/
 .overlay {
@@ -290,42 +259,44 @@ padding-right: 2px;
   overflow-y:scroll;
 }
 .overlay .overlayform input,textarea,select{
-  padding: 5px;
+  padding:5px;
+  border:2px solid rgb(31, 157, 241);
   width:100%;
-  margin-bottom:10px;
-  border:1.5px solid black;
-  outline: none;
   transition: all 0.1s;
-}
-.django-quill-widget-container{
-  width:100%;
-  padding:0;
-  margin-bottom:50px;
+  resize: none;
+  outline:none;
 }
 .overlay .overlayform input{
-  border:0.5px solid grey;
-  transition:0.1s; 
+  border:2px solid rgb(31, 157, 241);
+  transition:0.2s;
 }
 .overlay .overlayform input[type="checkbox"]{
   margin:0;
   width:20px;
   display:inline;
 }
-/* .overlay .overlayform input[type="file"]{
-  width:100%;
-  height:80px !important;
-} */
 .overlay .overlayform input[type="submit"]{
-  width:160px;
+  width:fit-content;
+  padding:10px 40px;
+  background: black;
+  color:white;
+  border:none;
+  font-weight:bolder;
+  font-size: 1.2em;
+  transition:all 0.7s;
+  margin-top:1rem;
+}
+.overlay .overlayform input[type="submit"]:hover{
+  background:linear-gradient(to right,rgb(172, 42, 165),rgb(17, 196, 166));
+  color:white;
 }
 .overlay .overlayform input:focus,textarea:focus{
-  outline: 3px solid rgb(31, 157, 241);
-  border:none;
+  border: 2px solid rgb(31, 157, 241);
   border-radius:10px;
 }
 .overlayform>div{
   width:70%;
-  border:2px solid black;
+  border:3px solid rgb(0, 0, 0);
   padding:20px;
   border-radius: 5px;
   margin-bottom:20px;
@@ -343,15 +314,16 @@ padding-right: 2px;
   cursor:pointer;
 }
 #file-upload-label {
-  background-color: rgb(19, 101, 209);;
+  background-color:rgb(31, 157, 241);
   color: white;
   text-align:center;
-  padding-top: 0.6rem;
+  padding: 0.6rem;
   width:100%;
-  height:40px;
+  height:fit-content;
   vertical-align: middle;
   border-radius: 0.3rem;
   cursor: pointer;
+  margin-top:10px;
 }
 
 #file-chosen{
@@ -424,4 +396,43 @@ option{
   height:50px;
   font-size:1.3em;
   padding:5px;
+}
+
+.django-quill-widget-container{
+  border:2px solid black !important;
+  height:fit-content;
+  height:500px !important;
+  margin-bottom: 10px;
+}
+#quill-id_description{
+  border:none;
+  border-top:2px solid black !important;
+  height:450px;
+}
+.ql-editor{
+  border:none !important;
+}
+.ql-editor p a{
+  color:blue !important;
+  text-decoration: none !important;
+}
+.ql-editor pre{
+  background:black;
+  color:white;
+  padding:20px;
+}
+.ql-editor img{
+  width:300px !important;
+  height:300px !important;
+  margin:10px;
+  display:inline-block;
+  vertical-align:top;
+}
+.overlayform .ql-editor,.ql-toolbar{
+  border:1.5px solid black;
+  
+}
+.ql-toolbar{
+  border: none !important;
+  box-sizing: border-box;
 }
