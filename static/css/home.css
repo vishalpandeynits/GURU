@@ -5,6 +5,9 @@ html,body{
   padding:0;
   font-family: 'Nunito Sans', sans-serif !important;
 }
+button{
+  outline:none !important;
+}
 h1,h2,h3,h4,h5,h6,em,b{
   font-family: 'Questrial', sans-serif !important;
 }

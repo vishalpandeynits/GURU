@@ -142,15 +142,20 @@ function cl(){
     $('#not_submitted').hide()
 }
 
-function copy_data(containerid) {
-    var range = document.createRange();
-    range.selectNode(containerid); //changed here
-    window.getSelection().removeAllRanges(); 
-    window.getSelection().addRange(range); 
-    document.execCommand("copy");
-    window.getSelection().removeAllRanges();
-    alert("Classroom code copied");
-    }
+function copyText(text) {
+    navigator.clipboard.writeText(text);
+}
+function myFunction() {
+    var copyext = document.getElementById("classroom-code").textContent;
+    copyText(copyext); 
+
+    var tooltip = document.getElementById("myTooltip");
+    tooltip.innerHTML = "Copied: " + copyext;
+}
+function outFunc() {
+    var tooltip = document.getElementById("myTooltip");
+    tooltip.innerHTML = "Copy to clipboard";
+}
 
 document.body.addEventListener('click',(e)=>{
     if(e.target != document.getElementById('co') && e.target != document.getElementById('left') && e.target != document.getElementById('icon')){

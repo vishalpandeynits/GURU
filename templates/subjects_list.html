@@ -9,16 +9,19 @@
 <div>	
 	{% include 'snippets/navigation.html' %}<br>
 	{% if is_admin %}
-	<div class="text-center container classroom-details m-auto mt-4 ">
+    <div class="text-center container classroom-details m-auto mt-4 ">
         <h2> {{ classroom.class_name }} </h2>
-        <span id="select_txt">{{ classroom.unique_id }}</span> 
-        <button type="button" onclick="copy_data(select_txt)" style="background:none;border:none;">
-            <i style="font-size:25px;"class="fas fa-clipboard"></i>
-        </button>
+        <span id="classroom-code">{{ classroom.unique_id }}</span>
+        <span class="tooltip" style="opacity:1;">
+            <button onclick="myFunction()" onmouseout="outFunc()">
+              <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+              <i style="font-size:25px;"class="fas fa-clipboard"></i>
+              </button>
+        </span>
         {% if classroom.description %}
         <p> {{ classroom.description }} </p>
         {% endif %}
-	</div>
+    </div>
 	{% endif %}
     {% if form %}
         <div class="messages container">
