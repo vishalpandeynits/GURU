@@ -6,6 +6,7 @@ from .email import *
 from django_quill.fields import QuillField
 from django.utils.text import slugify
 from .utils import unique_id
+from django.urls import reverse
 
 class Classroom(models.Model):
 	created_by = models.ForeignKey(User, on_delete = models.CASCADE,related_name='created_by')
@@ -142,6 +143,11 @@ def note_tracker(sender, instance, created, **kwargs):
 	if created:
 		activity = Subject_activity(subject=instance.subject_name,actor=instance.uploaded_by)
 		activity.action = "A new note is added."
+		activity.url = reverse('read_note', kwargs={
+			'unique_id':instance.subject_name.classroom.unique_id,
+			'subject_id':instance.subject_name.id,
+			'id':instance.id
+			})
 		activity.save()
 
 @receiver(post_save, sender=Announcement)
@@ -149,6 +155,11 @@ def announcement_tracker(sender, instance, created,**kwargs):
 	if created:
 		activity = Subject_activity(subject=instance.subject_name,actor=instance.announced_by)
 		activity.action = "A new Announcement is added."
+		activity.url = reverse('announcement_page',kwargs={
+			'unique_id':instance.subject_name.classroom.unique_id,
+			'subject_id':instance.subject_name.id,
+			'id':instance.id
+			})
 		activity.save()
 
 @receiver(post_save, sender=Assignment)
@@ -156,6 +167,11 @@ def assignment_tracker(sender, instance, created, **kwargs):
 	if created:
 		activity = Subject_activity(subject=instance.subject_name,actor=instance.assigned_by)
 		activity.action = f"A new Assignment is added. Submission date is {instance.submission_date}"
+		activity.url = reverse('assignment_page',kwargs={
+			'unique_id':instance.subject_name.classroom.unique_id,
+			'subject_id':instance.subject_name.id,
+			'id':instance.id
+			})
 		activity.save()
 
 @receiver(post_save,sender=Subject)

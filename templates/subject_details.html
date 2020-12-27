@@ -10,6 +10,9 @@
 	#overlayform .subject_description{
     height:200px !important;
 }
+#activity *{
+	color:black !important;
+}
 </style>
 <div class="container">
 
@@ -124,12 +127,14 @@
 		<h1 class="text-center"> Activities </h1>
 		<span style="min-height:500px;">
 			{% for activity in page %}
-			<div class="row activity-container mx-auto bg-light">
-				{{ activity.action }}<br>
-				{{ activity.actor }}<br>
-				{{ activity.time|naturaltime }}<br>
-			</div>
-		{% endfor %}
+				<a id="activity" href="{{activity.url}}">
+					<div class="row activity-container mx-auto bg-light">
+						{{ activity.action }}<br>
+						{{ activity.actor }}<br>
+						{{ activity.time|naturaltime }}<br>
+					</div>
+				</a>
+			{% endfor %}
 		{% include 'snippets/paginations.html' %}
 		</span>
 	</div>
