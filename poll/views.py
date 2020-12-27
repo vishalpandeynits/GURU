@@ -12,6 +12,7 @@ from basic.utils import *
 from .forms import *
 from .models import *
 from django.utils import timezone
+from django.conf import settings
 
 def filter_fun(key):
 	return key!=""
@@ -43,7 +44,7 @@ def polls(request,unique_id):
 						choice.poll = Poll.objects.get(id=form.id)
 						choice.choice_text = i
 						choice.save()
-					return redirect(f'/polls/{unique_id}')
+					return redirect(reverse('polls',kwargs={'unique_id':classroom.unique_id}))
 			else:
 				form = QuestionForm()
 
@@ -81,7 +82,7 @@ def poll_page(request,unique_id, poll_id):
 				if form.is_valid():
 					form = form.save(commit=False)
 					form.save()
-					return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
+					return redirect(reverse('poll_page',kwargs={'unique_id':classroom.unique_id,'poll_id':poll.id}))
 			else:
 				form = PollUpdateForm(instance=poll)
 
@@ -99,7 +100,8 @@ def poll_page(request,unique_id, poll_id):
 			'emails':members_email,
 			'members_email':members_email,
 			'teachers_email':teachers_email,
-			'is_admin':admin_check
+			'is_admin':admin_check,
+			'site_name':settings.SITE_NAME
 		}
 		if poll.voters.filter(username=request.user.username).exists():
 			params['classes'] = Classroom.objects.all().filter(members=request.user)
@@ -122,7 +124,7 @@ def voting(request,unique_id,poll_id,choice_id):
 			students = members.difference(teachers)
 			if request.user not in students:
 				messages.add_message(request,messages.INFO,f'Only Students are allowed to Vote.')
-				return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
+				return redirect(reverse('poll_page',kwargs={'unique_id':classroom.unique_id,'poll_id':poll.id}))
 
 		now = timezone.now()
 		can_vote_now = now <= poll.announce_at
@@ -132,18 +134,21 @@ def voting(request,unique_id,poll_id,choice_id):
 				choice.votes += 1
 				poll.voters.add(request.user)
 				choice.save()
-				return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
+				return redirect(reverse('poll_page',kwargs={'unique_id':classroom.unique_id,'poll_id':poll.id}))
 			else:
 				messages.add_message(request,messages.INFO,"You have already voted.")
-				return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
+				return redirect(reverse('poll_page',kwargs={'unique_id':classroom.unique_id,'poll_id':poll.id}))
 		else:
 			messages.add_message(request,messages.INFO,"Time's up for voting")
-			return redirect(f'/polls/{unique_id}/poll-page/{poll.id}')
+			return redirect(reverse('poll_page',kwargs={'unique_id':classroom.unique_id,'poll_id':poll.id}))
 
 def delete_poll(request,unique_id, poll_id):
 	poll = Poll.objects.get(id=poll_id)
 	if request.user == poll.created_by:
 		poll.delete()
-		return redirect(f'/polls/{unique_id}')
+		return redirect(reverse('polls',kwargs={'unique_id':classroom.unique_id}))
 	else:
 		raise Http404()
+
+def invite(request,poll_id, emails):
+	pass

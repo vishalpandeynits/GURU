@@ -11,7 +11,7 @@
                 <a href="{% url 'polls' classroom.unique_id %}">
                     <i class="fas fa-vote-yea mr-2"></i> Polls
                 </a>
-                <a href="{% url 'subjects' classroom.unique_id %}">
+                <a href="{% url 'classroom_page' classroom.unique_id %}">
                   <i class="fas fa-chalkboard-teacher mr-2"></i>Classroom
                 </a>
             {% endif %}

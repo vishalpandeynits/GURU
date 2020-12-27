@@ -96,7 +96,7 @@
                         <a style="text-decoration: none;" 
                             target="_blank" 
                             href="https://api.whatsapp.com/send?text=Click on
-						 	this link http://127.0.0.1:8000/polls/{{classroom.unique_id}}/poll-page/{{poll.id}}/ 
+						 	this link {{site_name}}/polls/{{classroom.unique_id}}/poll-page/{{poll.id}}/ 
 						 	to participate in poll {{ details}}/)">
                             <i class="fab fa-whatsapp fa-2x m-2" aria-hidden="true"></i>
                         </a>
@@ -104,7 +104,7 @@
                         <a style="text-decoration: none;" 
                             target="_blank" 
                             href="mailto:{{members_email}}?subject= Invitation for participation in a poll. 
-							&body=Click on this link http://127.0.0.1:8000/polls/{{classroom.unique_id}}/poll-page/{{poll.id}}/
+							&body=Click on this link {{site_name}}/polls/{{classroom.unique_id}}/poll-page/{{poll.id}}/
 						 	participate in {{details}}">
                             <i class="fas fa-envelope fa-2x m-2"></i>
                         </a>

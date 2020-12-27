@@ -12,6 +12,7 @@ from .models import Profile
 from django.contrib import messages
 from basic.models import Classroom
 from django.conf import settings
+from django.urls import reverse
 
 def signup(request):
     if request.method == 'POST':
@@ -51,7 +52,7 @@ def activate(request, uidb64, token,backend='django.contrib.auth.backends.ModelB
             contact details so other users can contact you in case of any need.')
         if user is not None:
             login(request, user,backend='django.contrib.auth.backends.ModelBackend')
-        return redirect(f'/profile/{user.username}')
+        return redirect(reverse('profile',kwargs={'username':user.username}))
     else:
         messages.add_message(request,messages.WARNING,'Activation link is invalid.')
         return redirect('home')
@@ -68,7 +69,7 @@ def profiles(request, username):
                 if request.FILES:
                     k.profile_pic=request.FILES['file']
                 k.save()
-                return redirect(f'/profile/{username}/')
+                return redirect(reverse('profile',kwargs={'username':p_user.username}))
         else:
             instance = request.user.profile
             instance.bio = instance.bio
