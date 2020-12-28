@@ -4,7 +4,8 @@ REGX= {
     'emailREGX':/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
     'phone_number':/^\+(91)[6-9]\d{9}$/g,
     'description_check':/^.{100,}/,
-    'username':/^.{8,16}/
+    'username':/^.{8,16}/,
+    'uniqueIdREGX':/^.{7,15}/
 }
 
 function signUpPageValidation(){
@@ -120,3 +121,24 @@ function validateprofile(){
     if(phoneResult && whatsapp && fbcheck) return true;
     else return false;
 }
+function forgotPasswordValidate(){
+    var email = document.getElementsByName('email')[0].value;
+
+    var emailCheck =  REGX['emailREGX'].test(email);
+    if(!emailCheck){
+        txt="You have entered a non-valid email.";
+        document.getElementById('password-reset-error').textContent = txt;
+        return false;
+    }
+    return true;
+}
+function uniqueid(){
+    var uniqueId = document.getElementsByName('join_key')[0].value;
+    var uniqueIdCheck =  REGX['uniqueIdREGX'].test(uniqueId);
+    if(!uniqueIdCheck){
+        txt="Unique id would have 7 to 15 characters.";
+        document.getElementById('uniqueIdCheck-error').textContent = txt;
+        return false;
+    }
+    return false;
+} 

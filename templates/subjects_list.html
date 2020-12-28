@@ -12,7 +12,7 @@
     <div class="text-center container classroom-details m-auto mt-4 ">
         <h2> {{ classroom.class_name }} </h2>
         <span id="classroom-code">{{ classroom.unique_id }}</span>
-        <span class="tooltip" style="opacity:1;">
+        <span class="tooltip" style="opacity:1;z-index:1;">
             <button onclick="myFunction()" onmouseout="outFunc()">
               <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
               <i style="font-size:25px;"class="fas fa-clipboard"></i>

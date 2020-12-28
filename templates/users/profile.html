@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load socialaccount %}
-{% block title %} {{ profile.user.username|upper}} {% endblock %}
+{% block title %} {{ p_user.first_name|upper}} {% endblock %}
 {% load filters %}
 {% load static %}
 {% load account %}
@@ -34,10 +34,10 @@
 	<div id="profile" class="container">
 		<div class="row">
 			<div id="info" class="mx-auto">
-				{% get_social_accounts user as accounts %}
+				{% get_social_accounts p_user as accounts %}
 				{% if accounts %} 
 				<img style="width:100%;height: 300px;" class="img-fluid"
-					src="{{ user.socialaccount_set.all.0.get_avatar_url }}"/><br><br>
+					src="{{ p_user.socialaccount_set.all.0.get_avatar_url }}"/><br><br>
 				{% else %}
 				<img style="width:100%;height: 300px;" class="img-fluid" 
 				src="{{ profile.profile_pic.url }}"><br><br>
@@ -45,7 +45,7 @@
 				
 
 				<h3 class="text-center">{{ profile.user.username }}</h3>
-				<h4 class="text-center"> {{user.first_name }} {{user.last_name }}</h4>
+				<h4 class="text-center"> {{p_user.first_name }} {{p_user.last_name }}</h4>
 				<pre class="text-center">{{ profile.bio }}</pre>
 				
 				<div id="social-container"  style="display:flex; justify-content: center;">
@@ -61,13 +61,13 @@
 					</a>
 					{% if profile.whatsapp_number != None %}
 						<a target="_blank" style="background:#1eae9d;color:white;"class="btn-floating btn-lg btn-whatsapp" 
-							href="https://api.whatsapp.com/send?phone={{user.profile.whatsapp_number}}">
+							href="https://api.whatsapp.com/send?phone={{ profile.whatsapp_number}}">
 							<i class="fab fa-whatsapp"></i>
 						</a>
 					{% endif %}
 
 					{% if profile.phone_number  != None %}
-						<a style="color:white;"target="_blank" href="tel:{{user.profile.phone_number }}" 
+						<a style="color:white;"target="_blank" href="tel:{{profile.phone_number }}" 
 							class="btn-floating btn-lg">
 							<i style="transform: rotate(270deg)"class="fa fa-phone" aria-hidden="true"></i>
 						</a>
@@ -75,6 +75,7 @@
 				</div>
 			</div>
 		</div>
+
 		{% if profile.user.username == user.username %}
 			<center>
 				<button style="margin:10px;"class="btn btn-info"

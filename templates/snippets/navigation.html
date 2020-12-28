@@ -42,14 +42,13 @@
         </span>
     {% endif %}
 
-    {% get_social_accounts user as accounts %}
+    
     {% if  user.is_authenticated %}
+    {% get_social_accounts user as accounts %}
+    <i id="left" class="fas mr-2 float-right fa-chevron-left"></i>
     <div id="co" class="float-right user-icon mr-4 mt-3 text-dark"  onclick="on(_('dropdown-container'))" >
-        <i id="left" 
-        style="position:absolute;top:25px;right:75px;"
-        class="fas mr-2 fa-chevron-left"></i>
         <img id="icon" height="50" width="50" 
-        style="position:relative;top:-10px;right:-15px;border-radius:15%;"
+        style="position:relative;top:-10px;right:-40px;border-radius:15%;"
         {% if accounts %} 
         src="{{ user.socialaccount_set.all.0.get_avatar_url }}"
         {% else %}

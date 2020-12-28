@@ -118,7 +118,8 @@
 /* Copy classroom code  */
 .tooltip {
     position: relative;
-    display: inline-block; 
+    display: inline-block;
+    opacity:1 !important;
 }
 .tooltip button{
     border:none;
@@ -133,7 +134,7 @@
     border-radius: 6px;
     padding: 5px;
     position: absolute;
-    z-index: 1;
+    z-index: -1 !important;
     bottom: 150%;
     left: 50%;
     margin-left: -75px;

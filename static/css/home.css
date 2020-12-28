@@ -11,6 +11,9 @@ button{
 h1,h2,h3,h4,h5,h6,em,b{
   font-family: 'Questrial', sans-serif !important;
 }
+.text-area{
+  min-height:100px !important;
+}
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -269,6 +272,9 @@ padding-right: 2px;
   resize: none;
   outline:none;
 }
+.overlay .overlayform textarea {
+  min-height:150px;
+}
 .overlay .overlayform input{
   border:2px solid rgb(31, 157, 241);
   transition:0.2s;
@@ -404,13 +410,13 @@ option{
 .django-quill-widget-container{
   border:2px solid black !important;
   height:fit-content;
-  height:500px !important;
+  height:550px !important;
   margin-bottom: 10px;
 }
 #quill-id_description{
   border:none;
   border-top:2px solid black !important;
-  height:450px;
+  height:350px;
 }
 .ql-editor{
   border:none !important;
@@ -455,4 +461,10 @@ option{
 }
 .comment-box *{
   color:white;
+}
+#left{
+  float:right;
+  position:relative;
+  top:25px;
+  right:50px;
 }

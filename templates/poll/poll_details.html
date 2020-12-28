@@ -23,8 +23,8 @@
             </div>
         {% endif %}
 
-        <div class="row ">
-            <div class="col-sm-12 mx-auto my-4 col-md-6">
+        <div class="row m-0 p-0 container-fluid">
+            <div class="col-md-7 mx-auto col-lg-8 col-sm-12">
                 {% if is_admin %}
                 <a class="btn btn-danger m-1 side-buttons float-right" 
                     style="background:red;" 
@@ -42,7 +42,6 @@
                     href="{% url 'profile' poll.created_by.username %}">
                     Contact <i class="fas fa-phone-volume"></i>
 				</a>
-
                 <br><br>
                 {% if is_admin %}
                 <div class="overlay">
@@ -110,7 +109,7 @@
 
                 {% for choice in choices %}
                     <a href="{% url 'voting' classroom.unique_id poll.id choice.id %}">
-                        <div class="alert choice">{{ choice.choice_text}} 
+                        <div class="alert alert-info choice">{{ choice.choice_text}} 
                             {% if show_result %}
                                 <span class="text-success float-right">
         							{{ choice.votes }} Votes

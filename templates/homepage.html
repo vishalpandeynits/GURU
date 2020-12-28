@@ -64,15 +64,16 @@
 	</div>
 
 	<div class="overlay">
-		<form class="overlayform" method="POST">{% csrf_token %} 
+		<form class="overlayform" onsubmit="return uniqueid()" method="POST">{% csrf_token %} 
 			<a onclick="off(document.getElementsByClassName('overlay')[1])" id="close">
 				&times;
 			</a><br>
 			<h1 class="text-center">Join a classroom </h1>
 			<div>
 				Unique id: <br>
-				<input type="text" placeholder="Unique ID"name="join_key"><br>
-				<input type="submit" class="btn btn-primary float-right"value="Join Class">
+				<input type="text" placeholder="Unique ID"name="join_key">
+				<p id="uniqueIdCheck-error" style="margin:0;color:red;"></p>
+				<input type="submit" class="btn btn-primary float-right"value="Join Classroom">
 			</div>
 		</form>
 	</div>
