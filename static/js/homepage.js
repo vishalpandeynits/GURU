@@ -166,20 +166,13 @@ document.body.addEventListener('click',(e)=>{
         });
     }
 })
-// let Link = window.Quill.import('formats/link');
+const tx = document.getElementsByTagName('textarea');
+for (let i = 0; i < tx.length; i++) {
+  tx[i].setAttribute('style', 'height:' + (tx[i].scrollHeight) + 'px;overflow-y:hidden;');
+  tx[i].addEventListener("input", OnInput, false);
+}
 
-// class CustomLink extends Link {
-
-//   static sanitize(url) {
-//     let value = super.sanitize(url);
-//     if(value)
-//     {
-//       for(let i=0;i<CustomLink.PROTOCOL_WHITELIST.length;i++)
-//         if(value.startsWith(CustomLink.PROTOCOL_WHITELIST[i]))
-//           return value;
-//       return `http://${value}`
-//     }
-//     return value;
-//   }
-// }
-// Quill.register(CustomLink);
+function OnInput() {
+  this.style.height = 'auto';
+  this.style.height = (this.scrollHeight) + 'px';
+}

@@ -439,3 +439,20 @@ option{
   border: none !important;
   box-sizing: border-box;
 }
+.comment-box {
+  border-radius: 10px;
+  background: #628181;
+  margin-bottom: 10px;
+  height:fit-content;
+  padding:10px 10px 0px 10px;
+}
+.comment-box img{
+  border:1px solid white;
+  border-radius:50%;
+  margin:10px;
+  height:60px;
+  width:60px;
+}
+.comment-box *{
+  color:white;
+}

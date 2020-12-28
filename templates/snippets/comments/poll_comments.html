@@ -4,7 +4,7 @@
    {% get_comment_form for poll as form %}
 
    <form action="{% comment_form_target %}" method="POST">{% csrf_token %}
-        <textarea name="comment" onkeyup="checkComment()" style="width:100%;resize:none;" rows="4" 
+        <textarea name="comment" onkeyup="checkComment()" rows="4" 
             maxlength="300" id="id_comment" required></textarea>
 
         {% if form.name == "honeypot" %} style="display:none;" {% endif %}
@@ -13,8 +13,8 @@
         {{ form.timestamp }}
         {{ form.security_hash }}
         <input type="hidden" name="next" 
-            value="{% url 'poll_page' classroom.unique_id poll.id %}" />
-        <input type="submit" style="width:130px;" class="btn btn-primary float-right"
+        value="{% url 'poll_page' classroom.unique_id poll.id %}" />
+        <input type="submit" class="btn btn-primary float-right"
           value="Add comment" id="id_submit" disabled/>
           
     </form>
@@ -27,10 +27,11 @@
     {% for comment in comment_list reversed %}
         <div class="comment-box p-2">
             <a href="{% url 'profile' comment.user.username %}">
-              <img class="float-left mr-4"style="border-radius: 50%;"
-                src="{{comment.user.profile.profile_pic.url }}" height="60" width="60">
+              <img class="float-left mr-4"
+                src="{{comment.user.profile.profile_pic.url }}">
+                <b style="color:blue;">{{ comment.user.first_name}} {{comment.user.last_name }}</b>
             </a>
-            <b>{{ comment.user.username}}</b>
+            
             <pre>{{ comment.comment }}</pre>
             <span style="float:right;">Commented {{ comment.submit_date|naturaltime }}</span><br>
         </div>

@@ -1,9 +1,3 @@
-.comment-box {
-    border-radius: 10px;
-    box-shadow: 3px 5px 6px black;
-    background: #FFFEEB;
-    margin-bottom: 20px;
-}
 .dropdown {
     position: relative;
     display: inline-block;
