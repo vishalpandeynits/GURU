@@ -36,6 +36,7 @@ def join(request,key):
         classroom.pending_members.add(request.user)
         messages.add_message(request,message.INFO,"Your request is pending,\
          you can access when someone let's you in.")
+        request.user.profile.pending_invitations.add(classroom)
         return redirect(reverse('homepage'))
     else:
         classroom.members.add(request.user)
@@ -60,7 +61,9 @@ def homepage(request):
             classroom.pending_members.add(request.user)
             messages.add_message(request, messages.SUCCESS,"Your request is sent.\
              You can access classroom material when someone lets you in.")
+            request.user.profile.pending_invitations.add(classroom)
             return redirect(reverse('homepage'))
+            
         else:
             classroom.members.add(request.user)
             notify = Classroom_activity(classroom=classroom,actor=request.user)
@@ -129,7 +132,6 @@ def classroom_page(request,unique_id):
                 if request.FILES:
                     classroom.classroom_pic = request.FILES['file']
                 classroom.save()
-                print("Form saved ")
                 return redirect(reverse('subjects',kwargs={'unique_id':classroom.unique_id}))
         else:
             form = CreateclassForm(instance=classroom)
@@ -249,7 +251,6 @@ def note_details(request, unique_id, subject_id, id, form = None):
         if is_teacher:
             if request.method=="POST": 
                 form = NoteForm(request.POST,request.FILES,instance=note)
-                print(request.POST.get('file'))
                 if form.is_valid():
                     form.file = request.POST.get('file')
                     form.save()
@@ -417,8 +418,6 @@ def assignment_handle(request,unique_id,subject_id,id):
             else:
                 assignment.submission_link = True 
             assignment.save()
-            print(assignment.submission_link)
-
         params = {
             'assignment':assignment,
             'all_submissions':all_submissions,
@@ -619,6 +618,7 @@ def accept_request(request,unique_id,username):
         user = User.objects.get(username=username)
         classroom.members.add(user)
         classroom.pending_members.remove(user)
+        user.profile.pending_invitations.remove(classroom)
         # notify = Classroom_activity(classroom=classroom,actor=request.user)
         # notify.action = "A new member "+ str(user.username) + "have joined your classroom."
         # notify.save()
@@ -646,3 +646,15 @@ def manage_upload_permission(request,unique_id,subject_id,username):
         else:
             subject.upload_permission.add(user)
             return redirect(reverse('subject_details',kwargs={'unique_id':classroom.unique_id,'subject_id':subject.id}))
+
+@login_required
+def unsend_request(request,unique_id):
+    classroom = Classroom.objects.get(unique_id=unique_id)  
+    if classroom in request.user.profile.pending_invitations.all():
+        request.user.profile.pending_invitations.remove(classroom)
+        classroom.pending_members.remove(request.user)
+        return redirect(reverse('profile',kwargs={
+            'username':request.user.username
+        }))
+    else:
+        raise Http404()

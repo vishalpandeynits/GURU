@@ -45,6 +45,7 @@
 				
 
 				<h3 class="text-center">{{ profile.user.username }}</h3>
+				<h5 class="text-center">{{profile.user.last_time_logout}}</h5>
 				<h4 class="text-center"> {{p_user.first_name }} {{p_user.last_name }}</h4>
 				<pre class="text-center">{{ profile.bio }}</pre>
 				
@@ -119,7 +120,16 @@
 	</div>
 	<hr/>
 	{% if profile.user.username == user.username %}
-		<h1 class="text-center"> Your pending requests </h1>
+	<div class="container">
+	<h1 class="text-center">Your pending requests({{pending_requests|length}}) </h1>
+		{% for classroom in pending_requests %}
+			<div class="alert bg-dark text-light mx-auto">
+				{{ classroom.class_name }} 
+				<a class="float-right text-primary" href="{% url 'unsend_request' classroom.unique_id %}">Cancel request</a>
+			</div>
+			
+		{% endfor %}
+	</div>
 	{% endif %}
 </div>
 {% endblock %}

@@ -28,5 +28,7 @@ urlpatterns = [
     path('<unique_id>/<subject_id>/<id>/assignment/delete/',assignment_delete,name="delete_assignment"),
 
     path('<unique_id>/<subject_id>/subject_details/',subject_details,name="subject_details"),#
-    path('<unique_id>/<subject_id>/upload_permissions/<username>/',manage_upload_permission,name="upload_permissions")
+    path('<unique_id>/<subject_id>/upload_permissions/<username>/',manage_upload_permission,name="upload_permissions"),
+
+    path('<unique_id>/unsend-request',unsend_request,name="unsend_request")
 ]

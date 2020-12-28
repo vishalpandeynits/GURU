@@ -83,6 +83,7 @@ def profiles(request, username):
     if request.user.is_authenticated:
         my_classes = Classroom.objects.all().filter(members=request.user)
     context = {		
+        'pending_requests':request.user.profile.pending_invitations.all(),
         'p_user':p_user,
         'p_form' : p_form,
         'profile' : profile,

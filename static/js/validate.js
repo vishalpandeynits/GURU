@@ -140,5 +140,5 @@ function uniqueid(){
         document.getElementById('uniqueIdCheck-error').textContent = txt;
         return false;
     }
-    return false;
+    return true;
 } 
