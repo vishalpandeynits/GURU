@@ -8,7 +8,7 @@ from .forms import *
 from .models import *
 from .email import *
 from .delete_notify import *
-from .utils import unique_id, proper_pagination, pagination, extension_type
+from .utils import *
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
@@ -296,10 +296,9 @@ def assignments_list(request ,unique_id, subject_id, form=None):
         if is_teacher:
             if request.method=="POST":
                 form = AssignmentForm(request.POST,request.FILES)
-                time= request.POST.get('submission_date')
                 if form.is_valid():
                     assignment = form.save(commit=False)
-                    assignment.submission_date = time
+                    assignment.submission_date = datetime_return(request.POST.get('submission_date'),request.POST.get('submission_time'))
                     assignment.subject_name = subject
                     assignment.assigned_by = request.user
                     assignment.save()
@@ -343,6 +342,7 @@ def assignment_details(request,unique_id,subject_id,id):
                 if updateform.is_valid():
                     assignmentform = updateform.save(commit=False)
                     assignmentform.subject_name = subject
+                    assignmentform.submission_date = datetime_return(request.POST.get('submission_date'),request.POST.get('submission_time'))
                     assignmentform.save()
                     return redirect(reverse('assignment_page',kwargs=
                         {'unique_id':classroom.unique_id,'subject_id':subject.id,'id':assignment.id}))
@@ -376,6 +376,9 @@ def assignment_details(request,unique_id,subject_id,id):
             'submission':submission,
             'submission_object':submission_object,
             'is_teacher':is_teacher,
+            'submission_date':str(assignment.submission_date.date()),
+            'submission_time':str(assignment.submission_date.time())[:-3],
+
             }       
         return render(request,'assignments/assignment_detail.html',params)
 

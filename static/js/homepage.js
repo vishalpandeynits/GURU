@@ -37,20 +37,14 @@ function checkComment(){
     }
 }
 //EMPTY COMMENT ISSUE ENDS
-
 //HOMEPAGE JAVASCRIPT
 function on(el) {
-    $('html, body').css({
-        overflowY: 'hidden',
-        height:'100%',
-    });
     el.style.display = 'flex';
+    document.body.classList.add("no-scroll");
 }
 function off(el) {
     el.style.display= "none";
-    $('html, body').css({
-        overflowY: 'auto',
-    });
+    document.body.classList.remove("no-scroll");
 }
 function toggleMembersSubjects(){  
     _('members').style.display = _('members').style.display==='block'?'none':'block';
@@ -166,13 +160,20 @@ document.body.addEventListener('click',(e)=>{
         });
     }
 })
-const tx = document.getElementsByTagName('textarea');
-for (let i = 0; i < tx.length; i++) {
-  tx[i].setAttribute('style', 'height:' + (tx[i].scrollHeight) + 'px;overflow-y:hidden;');
-  tx[i].addEventListener("input", OnInput, false);
-}
+// let Link = window.Quill.import('formats/link');
 
-function OnInput() {
-  this.style.height = 'auto';
-  this.style.height = (this.scrollHeight) + 'px';
-}
+// class CustomLink extends Link {
+
+//   static sanitize(url) {
+//     let value = super.sanitize(url);
+//     if(value)
+//     {
+//       for(let i=0;i<CustomLink.PROTOCOL_WHITELIST.length;i++)
+//         if(value.startsWith(CustomLink.PROTOCOL_WHITELIST[i]))
+//           return value;
+//       return `http://${value}`
+//     }
+//     return value;
+//   }
+// }
+// Quill.register(CustomLink);

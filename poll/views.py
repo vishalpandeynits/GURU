@@ -13,9 +13,7 @@ from .forms import *
 from .models import *
 from django.utils import timezone
 from django.conf import settings
-
-def filter_fun(key):
-	return key!=""
+import datetime 
 
 @login_required
 def polls(request,unique_id):
@@ -31,11 +29,11 @@ def polls(request,unique_id):
 				form = QuestionForm(request.POST or None,request.FILES)
 				choice_list = request.POST.getlist('check')
 				choice_list = list(filter(filter_fun,choice_list))
-
+				
 				if form.is_valid():
 					form = form.save(commit=False)
 					form.classroom = classroom
-					form.announce_at = request.POST.get('date')
+					form.announce_at = datetime_return(request.POST.get('announce_at_date'),request.POST.get('announce_at_time'))
 					form.created_by = request.user
 					form.save()
 
@@ -69,6 +67,7 @@ def poll_page(request,unique_id, poll_id):
 		now = timezone.now()
 		#poll list and voting page.
 		poll = Poll.objects.get(id=poll_id)
+		announce = datetime.datetime.strptime(str(poll.announce_at), '%Y-%m-%d %H:%M:%S+00:00')
 		choices = Choice.objects.all().filter(poll=poll)
 		if now >= poll.announce_at:
 			choices = choices.order_by('-votes')
@@ -81,6 +80,7 @@ def poll_page(request,unique_id, poll_id):
 				form = PollUpdateForm(request.POST or None,request.FILES,instance=poll)
 				if form.is_valid():
 					form = form.save(commit=False)
+					form.announce_at =  datetime_return(request.POST.get('announce_at_date'),request.POST.get('announce_at_time'))
 					form.save()
 					return redirect(reverse('poll_page',kwargs={'unique_id':classroom.unique_id,'poll_id':poll.id}))
 			else:
@@ -101,7 +101,9 @@ def poll_page(request,unique_id, poll_id):
 			'members_email':members_email,
 			'teachers_email':teachers_email,
 			'is_admin':admin_check,
-			'site_name':settings.SITE_NAME
+			'site_name':settings.SITE_NAME,
+			'date':str(announce.date()),
+			'time':str(announce.time())[:-3]
 		}
 		if poll.voters.filter(username=request.user.username).exists():
 			params['classes'] = Classroom.objects.all().filter(members=request.user)

@@ -47,11 +47,6 @@ class Note(models.Model):
 	def __str__(self):
 		return self.topic
 
-	def save(self, *args, **kwargs):
-		unique = unique_id()
-		self.slug = slugify(self.topic + unique[:5])
-		super(Note, self).save(*args, **kwargs)
-
 
 class Announcement(models.Model):
 	subject_name = models.ForeignKey(Subject, on_delete=models.CASCADE)
@@ -64,11 +59,6 @@ class Announcement(models.Model):
 
 	def __str__(self):
 		return self.subject
-
-	def save(self, *args, **kwargs):
-		unique = unique_id()
-		self.slug = slugify(self.subject + unique[:5])
-		super(Announcement, self).save(*args, **kwargs)
 
 class Assignment(models.Model):
 	subject_name = models.ForeignKey(Subject,on_delete=models.CASCADE)
@@ -85,11 +75,6 @@ class Assignment(models.Model):
 
 	def __str__(self):
 		return "Assignment on "+ self.topic
-
-	def save(self, *args, **kwargs):
-		unique = unique_id()
-		self.slug = slugify(self.topic + unique[:5])
-		super(Assignment, self).save(*args, **kwargs)
 
 class Submission(models.Model):
 	assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)

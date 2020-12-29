@@ -468,3 +468,19 @@ option{
   top:25px;
   right:50px;
 }
+.no-scroll{
+  overflow-y:hidden !important;
+}
+input[type="date"],input[type="time"]{
+  width:49.8% !important;
+  margin: 10px 0 !important;
+  display:inline;
+}
+input[type="date"]{
+  position:relative;
+  left:10px;
+}
+input[type="date"]:focus,input[type="time"]:focus{
+  border-radius: 0 !important;
+
+}

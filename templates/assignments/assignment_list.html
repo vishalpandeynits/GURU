@@ -55,6 +55,10 @@
 						<label id="file-upload-label"for="actual-btn">
 							Upload File<i class="fa mx-2 fa-upload" aria-hidden="true"></i>
 						</label>
+						{% elif field.field.widget.input_type == 'datetime-local' %}
+						Submission time <br>
+						<input type="date" onclick ="previous_date_disable(this)" name="submission_date">
+                        <input type="time" name="submission_time">
 						{% else %}
 							{{ field.label_tag }}<br>
 							{{ field }}
@@ -67,7 +71,7 @@
 	{% endif %}
 
 	{% if assignments %}
-		<div style="min-height:600px;" > 
+		<div style="min-height:600px;"> 
 			{% for assignment in assignments %}
 			<div class="container row">
 				<div class="col-12">

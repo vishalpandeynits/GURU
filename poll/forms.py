@@ -1,6 +1,5 @@
 from django import forms
 from .models import Poll, Choice
-from django.forms.widgets import DateInput
 
 class QuestionForm(forms.ModelForm):
 	class Meta:
@@ -11,10 +10,7 @@ class QuestionForm(forms.ModelForm):
 class PollUpdateForm(forms.ModelForm):
 	class Meta:
 		model = Poll
-		fields = ['topic','poll_details','announce_at']
-		widgets = {
-				'announce_at': DateInput(attrs={'type': 'datetime-local'}),
-			}
+		fields = ['topic','poll_details',]
 
 class ChoiceForm(forms.ModelForm):
 	class Meta:

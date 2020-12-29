@@ -61,6 +61,9 @@
                                 {{ field }}
                             {% endif %}
                             {% endfor %}
+                            Announce at:<br>
+                            <input type="date" onclick ="previous_date_disable(this)" value="{{date}}"name="announce_at_date">
+                            <input type="time" value="{{time }}"name="announce_at_time">
                             <input type="submit" class="btn btn-primary float-right"value="Update Poll">
                         </div>
                     </form>
@@ -123,7 +126,7 @@
         
         <div class="container">
             <div class="divider"></div><br>
-            {% include 'snippets/comments//poll_comments.html' %}
+            {% include 'snippets/comments/poll_comments.html' %}
         </div>
         
     </div>

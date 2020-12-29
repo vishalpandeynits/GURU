@@ -30,7 +30,8 @@
 
 	<div class="overlay">
         <form method="POST"class="overlayform"enctype="multipart/form-data">
-            {% csrf_token %}
+			{% csrf_token %}
+			
 			<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a><br>
 			<h1 class="text-center"> Create a classroom</h1>
 			<div>

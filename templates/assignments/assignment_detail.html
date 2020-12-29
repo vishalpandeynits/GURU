@@ -30,8 +30,9 @@
 						<i class="fa mx-2 fa-upload" aria-hidden="true"></i>
 						</label>
 						{% elif field.field.widget.input_type == 'datetime-local' %}
-						<label for="id_submission_date">Submission date:</label><br>
-						<input type="datetime-local" name="submission_date" value="{{assignment.submission_date}}" required id="id_submission_date">
+						Submission time <br>
+						<input type="date" onclick ="previous_date_disable(this)"  value="{{submission_date}}"name="submission_date">
+						<input type="time" value="{{submission_time}}" name="submission_time">
 						{% else %}
 							{{ field.label_tag }}<br>
 							{{ field }}
@@ -66,7 +67,9 @@
 		{% elif form and not assignment.submission_link %}
 			<div class="col-sm-12 col-lg-3 mt-4 order-lg-2" 
 				style="border:3px solid black;box-sizing:content-box;">
-				<h2 class="heading1 text-center text-primary"> Submission link is closed. Please ask your teacher or admins to open submission link. </h2>
+				<h2 class="heading1 text-center text-primary">
+					Submission link is closed. Please ask your teacher or admins to open submission link. \
+				</h2>
 			</div>
 		{% endif %}
 
