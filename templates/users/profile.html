@@ -34,7 +34,7 @@
 		<div class="row">
 			<div id="info" class="mx-auto">
 				{% get_social_accounts p_user as accounts %}
-				{% if accounts %} 
+				{% if profile.profile_pic.url != '/media/avatar.jpg' %} 
 				<img style="width:100%;height: 300px;" class="img-fluid"
 					src="{{ p_user.socialaccount_set.all.0.get_avatar_url }}"/><br><br>
 				{% else %}
@@ -96,7 +96,10 @@
 							<input type="file" name="file" id="actual-btn" hidden/>
 							<label id="file-upload-label" class="text-center"for="actual-btn">                       
 								{% if user.profile.profile_pic %}
-								{{ user.profile.profile_pic|filebasename }}. Click to change
+									{% if not accounts %}
+										{{ user.profile.profile_pic|filebasename }}.
+									{% endif %}
+								 	Click to change
 								{% endif %}
 								Upload Profile pic<i class="fa mx-2 fa-upload" aria-hidden="true"></i></label>
 							{% else %}

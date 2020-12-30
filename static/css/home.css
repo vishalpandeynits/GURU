@@ -5,6 +5,9 @@ html,body{
   padding:0;
   font-family: 'Nunito Sans', sans-serif !important;
 }
+.no-scroll{
+  overflow-y:hidden !important;
+}
 button{
   outline:none !important;
 }
@@ -14,11 +17,12 @@ h1,h2,h3,h4,h5,h6,em,b{
 .text-area{
   min-height:100px !important;
 }
-.scroller {
-  overflow-y: scroll;
-  scrollbar-color: #0A4C95 #C2D2E4;
+.messages{
+  position:absolute;
+  top:100px;
+  left:0;
+  right:0;
 }
-
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -415,13 +419,12 @@ option{
 .django-quill-widget-container{
   border:2px solid black !important;
   height:fit-content;
-  height:550px !important;
   margin-bottom: 10px;
 }
 #quill-id_description{
   border:none;
   border-top:2px solid black !important;
-  height:350px;
+  height:500px;
 }
 .ql-editor{
   border:none !important;
@@ -438,7 +441,6 @@ option{
 }
 .ql-editor img{
   width:300px !important;
-  height:300px !important;
   margin:10px;
   display:inline-block;
   vertical-align:top;
@@ -473,9 +475,6 @@ option{
   position:relative;
   top:25px;
   right:50px;
-}
-.no-scroll{
-  overflow-y:hidden !important;
 }
 input[type="date"],input[type="time"]{
   width:49.8% !important;

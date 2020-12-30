@@ -14,7 +14,7 @@ class Classroom(models.Model):
 	special_permissions = models.ManyToManyField(User, related_name= "special_permissions")
 	pending_members = models.ManyToManyField(User,related_name='pending_members')
 	classroom_pic = models.ImageField(default="classroom.jpg",upload_to="classrooms/",null=True)
-	class_name = models.CharField(max_length = 100)
+	class_name = models.CharField(max_length = 50)
 	description = models.TextField(null=True, blank=True,max_length=300)
 	created_on = models.DateTimeField(auto_now_add=True)
 	unique_id = models.CharField(max_length=16,unique=True)
@@ -44,7 +44,6 @@ class Note(models.Model):
 
 	def __str__(self):
 		return self.topic
-
 
 class Announcement(models.Model):
 	subject_name = models.ForeignKey(Subject, on_delete=models.CASCADE)

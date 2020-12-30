@@ -97,14 +97,17 @@
 			</div>
 
 			<div class="overlay" id="{{submission.submitted_by}}on">
-				<form class="overlayform" style="width:300px;" method="POST">{% csrf_token %}
+				<form class="overlayform" method="POST">{% csrf_token %}
 					<a class="mb-2" onclick = "off(_('{{submission.submitted_by}}on'))" id="close"> &times;</a><br>
-					<input type="hidden" name="id" value="{{submission.id}}">
-					<input name="marks_assigned" placeholder="Assign/Reconsider Marks" type="number" 
-					value = "{{submission.marks_assigned}}" max="{{assignment.full_marks}}">
-					<center>
-						<button type="submit" class="btn btn-primary mt-2">Assign marks</button>
-					</center>
+					<div>
+						<input type="hidden" name="id" value="{{submission.id}}">
+						Marks assigned:
+						<input name="marks_assigned" placeholder="Assign/Reconsider Marks" type="number" 
+						value = "{{submission.marks_assigned}}" max="{{assignment.full_marks}}">
+						<center>
+							<button type="submit" class="btn btn-primary mt-2">Assign marks</button>
+						</center>
+					</div>
 			   </form>
 			</div>
 			{% endfor %}
@@ -132,9 +135,10 @@
 
 			<div class="overlay"id="{{submission.submitted_by}}late">
 				<form class="overlayform" method="POST">{% csrf_token %}
+					<a class="mb-2" onclick = "off(_('{{submission.submitted_by}}late'))" id="close"> &times;</a><br>
 					<div>
-						<a class="mb-2" onclick = "off(_('{{submission.submitted_by}}late'))" id="close"> &times;</a><br>
 						<input type="hidden" name="id" value="{{submission.pk}}">
+						Marks assigned:
 						<input name="marks_assigned" placeholder="Assign/Reconsider Marks" type="number" 
 						value = "{{submission.marks_assigned}}" max="{{assignment.full_marks}}">
 						<center>

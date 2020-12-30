@@ -23,14 +23,14 @@
         {% endif %}
     </div>
 	{% endif %}
-    {% if form %}
-        <div class="messages container">
-    	    <center> 
-				<button onclick="on(document.getElementsByClassName('overlay')[0])" id="add-subject-btn"> 
-					Add a subject
-				</button>
-			<center>
+	{% if form %}
+		<center> 
+			<button onclick="on(document.getElementsByClassName('overlay')[0])" id="add-subject-btn"> 
+				Add a subject
+			</button>
+		</center>
 
+        <div class="messages container">
             {% for message in messages %}
                 <div class='alert alert-{{ message.tags }} alert-dismissible fade show'>
                     {{ message }} 
