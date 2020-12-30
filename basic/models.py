@@ -4,7 +4,6 @@ from django.db.models.signals import post_save,pre_delete
 from django.dispatch import receiver
 from .email import *
 from django_quill.fields import QuillField
-from django.utils.text import slugify
 from .utils import unique_id
 from django.urls import reverse
 
@@ -42,7 +41,6 @@ class Note(models.Model):
 	topic = models.CharField(max_length=100,)
 	description = QuillField()
 	uploaded_by = models.ForeignKey(User,on_delete=models.CASCADE)
-	slug = models.SlugField(unique=True)
 
 	def __str__(self):
 		return self.topic
@@ -55,7 +53,6 @@ class Announcement(models.Model):
 	description = QuillField()
 	file = models.FileField(upload_to='media/announcement/',null=True,blank=True)
 	announced_by = models.ForeignKey(User,on_delete=models.CASCADE)
-	slug = models.SlugField(unique=True)
 
 	def __str__(self):
 		return self.subject
@@ -70,7 +67,6 @@ class Assignment(models.Model):
 	assigned_by = models.ForeignKey(User,on_delete=models.CASCADE)
 	submitted_by = models.ManyToManyField(User,related_name="Submissions")
 	full_marks = models.IntegerField(default=100)
-	slug = models.SlugField(unique=True)
 	submission_link = models.BooleanField(default=True)
 
 	def __str__(self):
@@ -83,7 +79,7 @@ class Submission(models.Model):
 	submitted_on = models.DateTimeField(auto_now_add=True)
 	current_status = models.BooleanField(default=False)
 	marks_assigned = models.IntegerField(null=True,blank=True)
-	# history = models.CharField(max_length=1000)
+	history = models.CharField(max_length=5000,null=True,blank=True)
 	def __str__(self):
 		return "Assignment upload of "+self.assignment.topic + self.submitted_by.username
 

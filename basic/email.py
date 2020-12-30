@@ -55,7 +55,4 @@ def send_reminder(request,assignment,emails):
 			'site_name':settings.SITE_NAME
 		})
 	mail_subject = 'reminder for your not submitted assignment '+ assignment.topic
-	all_members = note.subject_name.classroom.members.values_list('email', flat=True)
-	teachers = note.subject_name.classroom.teacher.values_list('email',flat=True)
-	to_email = all_members.difference(teachers)
 	send_mail(mail_subject,message,'guru.online.classroom.portal@gmail.com',emails,html_message=message)

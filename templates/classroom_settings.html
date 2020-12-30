@@ -10,8 +10,9 @@
 <div>
     {% include 'snippets/navigation.html' %}
     <br>
-    <div class="text-center container classroom-details m-auto mt-4 ">
+    <div class="text-center container classroom-details m-auto mt-4">
         <h2> {{ classroom.class_name }} </h2>
+        {% if is_admin %}
         <span id="classroom-code">{{ classroom.unique_id }}</span>
         <span class="tooltip" style="opacity:1;z-index:1;">
             <button onclick="myFunction()" onmouseout="outFunc()">
@@ -19,6 +20,7 @@
               <i style="font-size:20px;"class="fas fa-clipboard"></i>
               </button>
         </span>
+        {% endif %}
         {% if classroom.description %}
         <p> {{ classroom.description }} </p>
         {% endif %}
@@ -42,7 +44,7 @@
         <button class="btn btn-dark" onclick="on(document.getElementsByClassName('overlay')[0])">
             Update
         </button>
-        {% endif %}
+        
 		<span class="dropdown ">
 		  	<button class="btn btn-dark dropdown-toggle mx-2 " type="button" 
 		  		id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -63,7 +65,8 @@
 					Invite by email 
 				</a>
 		 	</div>
-		</span>
+        </span>
+        {% endif %}
     </div>
 		
     {% if is_admin %}
@@ -126,11 +129,15 @@
                  </div>
                 <div class="member-card bg-light">
                     <div>
-                        <img height="70" width="70" src="{{member.profile.profile_pic.url}}">
+                        <a href="{% url 'profile' member.username %}">
+                            <img height="70" width="70" src="{{member.profile.profile_pic.url}}">
+                        </a>
                     </div>
                     <div>
-                        <h5> {{member.first_name }} {{member.last_name }}</h5>
-                        <h4>{{ member.username }} &nbsp; &nbsp;</h4>
+                        <a href="{% url 'profile' member.username %}">
+                            <h5> {{member.first_name }} {{member.last_name }}</h5>
+                            <h4>{{ member.username }} &nbsp; &nbsp;</h4>
+                        </a>
                          <p>{{member.profile.bio}}</p>
                      </div>
                 </div><br>
@@ -145,11 +152,15 @@
         <div class=" container member-card bg-light"><br>
             <div style="display:flex;">
                 <div>
-                    <img height="70" width="70" src="{{teacher.profile.profile_pic.url}}">
+                    <a href="{% url 'profile' teacher.username %}">
+                        <img height="70" width="70" src="{{teacher.profile.profile_pic.url}}">
+                    </a>
                 </div>
                 <div>
-                    <h5>  {{teacher.first_name }} {{teacher.last_name }} </h5>
-                    <b>{{ teacher.username }} </b><br>
+                    <a href="{% url 'profile' teacher.username %}">
+                        <h5>  {{teacher.first_name }} {{teacher.last_name }} </h5>
+                        <b>{{ teacher.username }} </b>
+                    </a><br>
                     {% if teacher in admins %}Admin{% endif %}
                     <p>{{teacher.profile.bio}}</p>
                 </div>
@@ -184,11 +195,16 @@
         <div class="container member-card bg-light"><br/>
             <div style="display:flex;">
                 <div>
-                    <img src="{{student.profile.profile_pic.url}}" height="70" width="70">
+                    <a href="{% url 'profile' student.username %}">
+                        <img src="{{student.profile.profile_pic.url}}" height="70" width="70">
+                    </a>
                 </div>
                 <div>
-                    <h5>  {{student.first_name }} {{student.last_name }} </h5>
-                    <b>{{ student.username }} </b><br> 
+                    <a href="{% url 'profile' student.username %}">
+                        <h5>  {{student.first_name }} {{student.last_name }} </h5>
+                        <b>{{ student.username }} </b>
+                    </a>
+                    <br> 
                     {% if student in admins %}  Admin  {% endif %}
                     <p>{{student.profile.bio}}</p>
                 </div>

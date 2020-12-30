@@ -31,15 +31,11 @@
 				{% endif %} Submission link
 			</button>
 		</form>
-		<button class="btn btn-primary btn-block" onclick="show_not_submitted()">
-			Not submitted
-		</button>
-
 	</div>
 	<div class="container">
 		<span id="all_submissions" >
 			<h1 class="heading"> All submissions </h1>
-			{% for submission in all_submissions %}
+			{% for submission in all_submissions reversed %}
 			<div class="assignment-container bg-light">
 				<div>
 					<a href="{{submission}}" download>Download {{ submission.file|filebasename }}</a>
@@ -47,7 +43,17 @@
 					<a href="{% url 'profile' submission.submitted_by.username %}">
 						{{ submission.submitted_by.first_name }} {{ submission.submitted_by.last_name }}
 					</a>at {{ submission.submitted_on }}.<br>
-					<b> Marks assigned: </b> {% if submission.marks_assigned %} {{ submission.marks_assigned }} {% else %} Not assigned yet {% endif %}
+					<b> Marks assigned: </b> 
+					{% if submission.marks_assigned %} 
+						{{ submission.marks_assigned }} 
+					{% else %}
+						Not assigned yet 
+					{% endif %}<br>
+					{% if submission in late_submissions %}
+						<b style="color:red;"> Turned Late </b>
+					{% else %}
+						<b style="color:green;">In time submission </b>
+					{% endif %}
 				</div>
 				<div>
 					<button class="float-right assign-btn" onclick="on(_('{{submission.submitted_by}}all'))"> Assign marks </button>
@@ -55,14 +61,16 @@
 			</div>
 
 			<div class="overlay"id="{{submission.submitted_by}}all">
-				<form class="overlayform" style="width:300px;" method="POST">{% csrf_token %}
+				<form class="overlayform" method="POST">{% csrf_token %}
 					<a class="mb-2" onclick = "off(_('{{submission.submitted_by}}all'))" id="close"> &times;</a><br>
-					<input type="hidden" name="id" value="{{submission.id}}all">
-					<input name="marks_assigned" placeholder="Assign/Reconsider Marks" type="number" 
-					value = "{{submission.marks_assigned}}" max="{{assignment.full_marks}}">
-					<center>
-						<button type="submit" class="btn btn-primary mt-2">Assign marks</button>
-					</center>
+					<div>
+						<input type="hidden" name="id" value="{{submission.id}}">
+						<input name="marks_assigned" placeholder="Assign/Reconsider Marks" type="number" 
+						value = "{{submission.marks_assigned}}" max="{{assignment.full_marks}}">
+						<center>
+							<button type="submit" class="btn btn-primary mt-2">Assign marks</button>
+						</center>
+					</div>
 			   </form>
 			</div>
 			{% endfor %}
@@ -70,7 +78,7 @@
 	
 		<span id="ontime" style="display:none;">
 			<h1 class="heading"> Ontime submissions </h1>
-			{% for submission in ontime_submissions %}
+			{% for submission in ontime_submissions reversed %}
 			<div class="assignment-container bg-light">
 				<div>
 					<a href="{{submission}}" download>Download {{ submission.file|filebasename }}</a>
@@ -97,11 +105,14 @@
 			   </form>
 			</div>
 			{% endfor %}
+			{% if not ontime_submissions|length %}
+				<h1 class="text-danger text-center"> No submissions found </h1>
+			{% endif %}
 		</span>
 
 		<span id="late_submissions" style="display:none;">
 			<h1 class="heading"> late Submissions </h1>
-			{% for submission in late_submissions %}
+			{% for submission in late_submissions reversed %}
 			<div class="assignment-container bg-light">
 				<div>
 					<a href="{{submission}}" download>Download {{ submission.file|filebasename }}</a>
@@ -117,17 +128,22 @@
 			</div>
 
 			<div class="overlay"id="{{submission.submitted_by}}late">
-				<form class="overlayform" style="width:300px;" method="POST">{% csrf_token %}
-					<a class="mb-2" onclick = "off(_('{{submission.submitted_by}}late'))" id="close"> &times;</a><br>
-					<input type="hidden" name="id" value="{{submission.id}}">
-					<input name="marks_assigned" placeholder="Assign/Reconsider Marks" type="number" 
-					value = "{{submission.marks_assigned}}" max="{{assignment.full_marks}}">
-					<center>
-						<button type="submit" class="btn btn-primary mt-2">Assign marks</button>
-					</center>
-			   </form>
+				<form class="overlayform" method="POST">{% csrf_token %}
+					<div>
+						<a class="mb-2" onclick = "off(_('{{submission.submitted_by}}late'))" id="close"> &times;</a><br>
+						<input type="hidden" name="id" value="{{submission.pk}}">
+						<input name="marks_assigned" placeholder="Assign/Reconsider Marks" type="number" 
+						value = "{{submission.marks_assigned}}" max="{{assignment.full_marks}}">
+						<center>
+							<button type="submit" class="btn btn-primary mt-2">Assign mssarks</button>
+						</center>
+					</div>
+				</form>
 			</div>
 			{% endfor %}
+			{% if not late_submissions|length %}
+			<h1 class="text-success text-center"> No submissions found </h1>
+		{% endif %}
 		</span> 
 	 
 		<span id="not_submitted"  style="display:none;">
@@ -140,13 +156,14 @@
 					</form><br>
 				</center>
 				{% for student in not_submitted %}
-				<div class="container member-card bg-light p-2"><br/>
+				<div class="container member-card bg-light m-2 p-2"><br/>
 					<div style="display:flex;">
 						<div>
-							<img src="{{student.profile.profile_pic.url}}" height="70" width="70">
+							<a href="{% url 'profile' student.username %}">
+								<img src="{{student.profile.profile_pic.url}}" height="70" width="70">
+							</a>
 						</div>
 						<div class="ml-3">
-							
 							<a href="{% url 'profile' student.username %}">
 								<h5> {{student.first_name }} {{student.last_name }} </h5>
 							</a>
@@ -156,9 +173,12 @@
 					</div>
 				</div>
 				{% endfor %}
+			{% else %}
+			<h2 class="heading1 text-center text-danger"> 
+				Everyone had made submissions.
+			</h2>
 			{% endif %}
 		</span>
-
 	</div>
 </div>
 {% endblock %}

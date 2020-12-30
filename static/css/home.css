@@ -14,6 +14,11 @@ h1,h2,h3,h4,h5,h6,em,b{
 .text-area{
   min-height:100px !important;
 }
+.scroller {
+  overflow-y: scroll;
+  scrollbar-color: #0A4C95 #C2D2E4;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -285,7 +290,7 @@ padding-right: 2px;
   display:inline;
 }
 .overlay .overlayform input[type="submit"]{
-  width:fit-content;
+  width:250px !important;
   padding:10px 40px;
   background: black;
   color:white;
@@ -420,6 +425,7 @@ option{
 }
 .ql-editor{
   border:none !important;
+  padding: 10px 0 !important;
 }
 .ql-editor p a{
   color:blue !important;
@@ -482,5 +488,4 @@ input[type="date"]{
 }
 input[type="date"]:focus,input[type="time"]:focus{
   border-radius: 0 !important;
-
 }

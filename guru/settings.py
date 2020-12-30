@@ -131,7 +131,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/kolkata'
 
 USE_I18N = True
 
@@ -147,10 +147,11 @@ QUILL_CONFIGS = {
             'toolbar': [
                 [
                     {'font': []},
+                    { 'size': ['small', 'large', 'huge'] },
                     {'header': []},
                     {'align': []},
                     {'image':[]},
-                    { 'size': ['small', 'large', 'huge'] },
+                    
                     'bold', 'italic', 'underline', 'strike','link','image','blockquote','code-block',
                     {'color': []},
                     {'background': []},

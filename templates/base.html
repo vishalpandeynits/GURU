@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
     {% block css %}
     {% endblock %}
+    <style>
+        .no-scroll{
+            overflow-y:hidden !important;
+            }
+    </style>
     <link rel="icon" type="image/png" sizes="57x57" href="{% static 'favicon.png' %}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 </head>
@@ -25,24 +30,6 @@
     actualBtn.addEventListener('change', function(){
         _('file-upload-label').textContent = this.files[0].name + " selected. Click again to change"
     })
-    </script>
-    <script>
-        let Link = window.Quill.import('formats/link');
-        class CustomLink extends Link {
-
-        static sanitize(url) {
-            let value = super.sanitize(url);
-            if(value)
-            {
-            for(let i=0;i<CustomLink.PROTOCOL_WHITELIST.length;i++)
-                if(value.startsWith(CustomLink.PROTOCOL_WHITELIST[i]))
-                return value;
-            return `http://${value}`
-            }
-            return value;
-        }
-        }
-        Quill.register(CustomLink);
     </script>
 </body>
 </html>

@@ -54,7 +54,7 @@ class UserLoginForm(AuthenticationForm):
 class ProfileUpdateForm(forms.ModelForm):
 	class Meta:
 		model = Profile
-		fields = ['bio', 'profile_pic','phone_number','whatsapp_number','facebook']
+		fields = ['bio', 'profile_pic','phone_number','whatsapp_number']
 
 	def __init__(self, *args, **kwargs):
 		super(ProfileUpdateForm, self).__init__(*args, **kwargs)

@@ -99,13 +99,10 @@ function validateAddSubject(){
 function validateprofile(){
     var phoneNumber = document.querySelector("input[name='phone_number']").value;
     var whatsapp_number= document.querySelector("input[name='whatsapp_number']").value;
-    var facebook = document.querySelector("input[name='facebook']").value;
     var phoneRGEX =/^\+(91)[6-9]\d{9}$/g;
     var phoneResult = phoneRGEX.test(phoneNumber);
     var phoneRGEX =/^\+(91)[6-9]\d{9}$/g;
     var whatsapp = phoneRGEX.test(whatsapp_number);
-    var fbREGX = /(?:(?:http|https):\/\/)?(?:www.)?facebook.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[?\w\-]*\/)?(?:profile.php\?id=(?=\d.*))?([\w\-]*)?/
-    var fbcheck = fbREGX.test(facebook)
     txt = "";
     if(!phoneResult){
         txt += "Phone no. must be valid Indian phone no. starting with +91<br>";
@@ -113,12 +110,9 @@ function validateprofile(){
     if(!whatsapp){
         txt += 'Whatsapp no. must be valid indian phone number starting with +91.<br>';
     }
-    if(!fbcheck){
-        txt += 'Facebook URL must be valid profile URL<br>';
-    }
     txt = '<p style="color:red;text-align:center;">'+ txt + '</p>'
     _('profile-errors').innerHTML = txt;
-    if(phoneResult && whatsapp && fbcheck) return true;
+    if(phoneResult && whatsapp) return true;
     else return false;
 }
 function forgotPasswordValidate(){

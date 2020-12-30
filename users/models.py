@@ -9,7 +9,6 @@ class Profile(models.Model):
 	profile_pic = models.ImageField(default='avatar.jpg', upload_to='profile_pics')
 	phone_number = models.CharField(max_length=13,null=True,blank=True)
 	whatsapp_number = models.CharField(max_length=13,null=True,blank=True)
-	facebook = models.URLField()
 	pending_invitations = models.ManyToManyField(Classroom)
 	
 	def __str__(self):

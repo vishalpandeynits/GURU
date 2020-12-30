@@ -10,43 +10,24 @@
 {% include 'django_quill/media.html' %}
 {% endblock %}
 {% block subject_content %}
-<div style="padding:3px;" class="container-fluid">
-	{% if is_teacher %}
-		<div class="overlay">
-			<form method="POST" id="updateform" class="addForm overlayform" 
-				enctype="multipart/form-data">{% csrf_token %}
-				<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> <br>
-				<h1 class="text-center">Update:{{ assignment }}</h1>
-				<div>
-					{% for field in updateform %}
-						{% if field.field.widget.input_type == 'file' %}
-						<input type="file" name="file" id="actual-btn" hidden/>
-						<label id="file-upload-label"for="actual-btn">
-							{% if assignment.file %}
-								{{ assignment.file|filebasename }}. Click to change
-							{% else %}
-							Upload File
-							{% endif %}
-						<i class="fa mx-2 fa-upload" aria-hidden="true"></i>
-						</label>
-						{% elif field.field.widget.input_type == 'datetime-local' %}
-						Submission time <br>
-						<input type="date" onclick ="previous_date_disable(this)"  value="{{submission_date}}"name="submission_date">
-						<input type="time" value="{{submission_time}}" name="submission_time">
-						{% else %}
-							{{ field.label_tag }}<br>
-							{{ field }}
-						{% endif %}
-					{% endfor %}
-					<input type="submit" class="btn btn-primary float-right" value="Update Assignment">
-				</div>
-			</form>
-		</div>
-	{% endif %}
+<div class="container-fluid">
+	{% if messages %}
+	<div class="messages container">
+		{% for message in messages %}
+			<div class='alert alert-{{ message.tags }} alert-dismissible fade show'>
+				{{ message }} 
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				  </button>
+			</div>
+		{% endfor %}
+	</div>
+{% endif %}
 
-	<div class="row d-flex justify-content-center">
+	<div class="row w-100 m-0">
+
 		{% if form and assignment.submission_link %}
-		<div class="col-sm-12 col-lg-4 mt-4 order-lg-2">
+		<div class="col-sm-12 col-lg-3 mt-4 order-lg-2">
 			<center style="border:4px solid rgb(30, 50, 150);padding:20px;">
 				<h2 class="text-center reg-title"> Submit your assignment </h2>
 				<form method="POST" id="submissionform" enctype="multipart/form-data">{% csrf_token %}
@@ -64,48 +45,42 @@
 				</form><br>
 			</center>
 		</div>
-		{% elif form and not assignment.submission_link %}
+
+		{% elif not is_teacher and not assignment.submission_link %}
 			<div class="col-sm-12 col-lg-3 mt-4 order-lg-2" 
-				style="border:3px solid black;box-sizing:content-box;">
+				style="border:3px solid black;float:right;max-height:300px;">
 				<h2 class="heading1 text-center text-primary">
-					Submission link is closed. Please ask your teacher or admins to open submission link. \
+					Submission link is closed. Please ask your teacher or admins to open submission link.
 				</h2>
 			</div>
 		{% endif %}
 
-		<div class="col-sm-12 col-lg-8 order-lg-1">
+		<div class="col-md-9 mx-lg-auto col-sm-12 order-lg-1">
 			<!-- Update assignment logic start -->
-				<div class="row d-flex justify-content-end ">
+			<div class="d-flex flex-wrap justify-content-lg-end justify-content-sm-center ">
+				{% if is_teacher %}
+				<button class="btn btn-danger mx-1 my-2 buttons" 
+					value="{% url 'delete_assignment' classroom.unique_id subject.id assignment.id %}"
+					style="background:red;" data-entity="user" id="userDeleteButton">
+					Delete <i class="fa fa-trash" aria-hidden="true"></i>
+				</button>
+				{% include 'snippets/deleteconfirm.html' %}
+				
+				<button onclick="on(document.getElementsByClassName('overlay')[0])"
+					style="background:black;color:white;" class="btn my-2 mx-1 buttons">
+						Update <i class="fas fa-edit"></i>
+				</button>
 
-					{% if is_teacher %}
-					<button  class="btn btn-danger mx-1 my-2 buttons" 
-						value="{% url 'delete_assignment' classroom.unique_id subject.id assignment.id %}"
-						style="background:red;"
-						data-entity="user" id="userDeleteButton"
-						>
-						Delete <i class="fa fa-trash" aria-hidden="true"></i>
-					</button>
-					{% include 'snippets/deleteconfirm.html' %}
-					
-					<button 
-						onclick="on(document.getElementsByClassName('overlay')[0])"
-						style="background:black;color:white;" 
-						class="btn my-2 mx-1 buttons">
-							Update <i class="fas fa-edit"></i>
-					</button>
-					<a
-					href="{% url 'assignment-handle' classroom.unique_id subject.id assignment.id %}"
-					style="background:black;color:white;" 
-					class="btn my-2 mx-1 buttons">
-						Assign Marks<i class="fas fa-edit"></i>
-					</a>
-					{% endif %}
-					<a class="btn btn-dark mx-1 my-2 bg-primary buttons" 
-						href="{% url 'profile' assignment.assigned_by %}">
-						Contact <i class="fas fa-phone-volume"></i>
-					</a>
-				</div>
+				<a href="{% url 'assignment-handle' classroom.unique_id subject.id assignment.id %}"
+				style="background:black;color:white;" class="btn my-2 mx-1 buttons">
+					Assign Marks<i class="fas fa-edit"></i>
+				</a>
+			{% endif %}
 
+			<a class="btn btn-dark mx-1 my-2 bg-primary buttons" href="{% url 'profile' assignment.assigned_by %}">
+				Contact <i class="fas fa-phone-volume"></i>
+			</a>
+			</div>
 				<!-- Assignment details -->
 				<div id="detail-content">
 					<p id="detail-topic">
@@ -137,4 +112,38 @@
 			</div>
 	</div>
 </div>
+
+{% if is_teacher %}
+	<div class="overlay">
+		<form method="POST" id="updateform" class="addForm overlayform" 
+			enctype="multipart/form-data">{% csrf_token %}
+			<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> <br>
+			<h1 class="text-center">Update:{{ assignment }}</h1>
+			<div>
+				{% for field in updateform %}
+					{% if field.field.widget.input_type == 'file' %}
+					<input type="file" name="file" id="actual-btn" hidden/>
+					<label id="file-upload-label"for="actual-btn">
+						{% if assignment.file %}
+							{{ assignment.file|filebasename }}. Click to change
+						{% else %}
+						Upload File
+						{% endif %}
+					<i class="fa mx-2 fa-upload" aria-hidden="true"></i>
+					</label>
+					{% elif field.field.widget.input_type == 'datetime-local' %}
+					Submission time <br>
+					<input type="date" onclick ="previous_date_disable(this)"  value="{{submission_date}}"name="submission_date">
+					<input type="time" value="{{submission_time}}" name="submission_time">
+					{% else %}
+						{{ field.label_tag }}<br>
+						{{ field }}
+					{% endif %}
+				{% endfor %}
+				<input type="submit" class="btn btn-primary float-right" value="Update Assignment">
+			</div>
+		</form>
+	</div>
+{% endif %}
+
 {% endblock %}

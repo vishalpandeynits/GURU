@@ -7,7 +7,6 @@
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 {% endblock %}
-
 {% block content %}
 <div>
 	{% include 'snippets/navigation.html' %}
@@ -24,7 +23,7 @@
         </div>
 	{% endif %}<br>
 	{% if user.username == profile.user.username %}
-		{% if not user.profile.whatsapp_number or not user.profile.facebook or not user.profile.phone_number %}
+		{% if not user.profile.whatsapp_number or not user.profile.phone_number %}
 		<center class="lead bg-warning p-2 bg-dark container text-white">
 			Please add your contact details so other users can contact you in case of any need.
 		</center>
@@ -50,12 +49,6 @@
 				<pre class="text-center">{{ profile.bio }}</pre>
 				
 				<div id="social-container"  style="display:flex; justify-content: center;">
-					{% if profile.facebook %}
-						<a style="background:#3b5998;color:white;" href="{{ profile.facebook }}" target="_blank" 
-							class="btn-floating btn-lg btn-fb">
-							<i class="fab fa-facebook-f"></i>	
-						</a>
-					{% endif %}
 					<a style="background:#EA4335;color:white;"href="mailto:{{profile.user.email}}" target="_blank" 
 						class="btn-floating btn-lg btn-gplus">
 						<i class="fas fa-envelope"></i>
@@ -80,7 +73,7 @@
 		{% if profile.user.username == user.username %}
 			<center>
 				<button style="margin:10px;"class="btn btn-info"
-				onclick="on(document.getElementsByClassName('overlay')[0])">
+				onclick="on(document.getElementById('x'))">
 				Edit profile
 				</button>
 				{% get_social_accounts user as accounts %}
@@ -91,8 +84,7 @@
 				{% endif %}
 			</center>
 
-			<div class="overlay">
-				
+			<div id="x" class="overlay">
 				<form method="POST" class="overlayform" onsubmit="return validateprofile();" enctype="multipart/form-data">
 					{% csrf_token %}
 					<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> <br>
@@ -121,7 +113,9 @@
 	<hr/>
 	{% if profile.user.username == user.username %}
 	<div class="container">
-	<h1 class="text-center">Your pending requests({{pending_requests|length}}) </h1>
+		{% if pending_requests %}
+			<h1 class="text-center">Your pending requests({{pending_requests|length}}) </h1>
+		{% endif %}
 		{% for classroom in pending_requests %}
 			<div class="alert bg-dark text-light mx-auto">
 				{{ classroom.class_name }} 

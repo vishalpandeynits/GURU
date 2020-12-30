@@ -14,7 +14,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.urls import reverse
 
-# return redirect(reverse('url_to_redirect_to', kwargs={'args_1':value}))
 #--------------------------------------------helper functions-----------------------------------
 
 def member_check(user,classroom):
@@ -200,7 +199,7 @@ def notes_list(request,unique_id,subject_id,form = None):
     if member_check(request.user,classroom):
 
         #querysets
-        subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+        subject = Subject.objects.get(id=subject_id)
         notes = Note.objects.all().filter(subject_name=subject).order_by('-id')
         if request.GET.get('search'):
             search = request.GET.get('search')
@@ -240,7 +239,7 @@ def note_details(request, unique_id, subject_id, id, form = None):
     classroom = Classroom.objects.get(unique_id=unique_id)
     if member_check(request.user,classroom):
         #queryset
-        subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+        subject = Subject.objects.get(id=subject_id)
         notes = Note.objects.all().filter(subject_name=subject)
         note = Note.objects.get(id=id)
         upload_permission = subject.upload_permission.filter(username=request.user.username).exists()
@@ -254,8 +253,11 @@ def note_details(request, unique_id, subject_id, id, form = None):
                 if form.is_valid():
                     form.file = request.POST.get('file')
                     form.save()
-                    return redirect(reverse('read_note',
-                        kwargs={'unique_id':classroom.unique_id,'subject_id':subject.id,'id':note.id}))
+                    return redirect(reverse('read_note',kwargs={
+                        'unique_id':classroom.unique_id,
+                        'subject_id':subject.id,
+                        'id':note.id
+                        }))
             else:
                 form= NoteForm(instance=note)
         params={
@@ -331,8 +333,8 @@ def assignment_details(request,unique_id,subject_id,id):
     if member_check(request.user, classroom):
         #querysets
         updateform = form = submitted  = submission = submission_object = None
-        subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-        assignment = Assignment.objects.all().filter(subject_name=subject).get(id=id)
+        subject = Subject.objects.get(id=subject_id)
+        assignment = Assignment.objects.get(id=id)
         admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
         is_teacher = admin_check or request.user==subject.teacher
         #update assignment
@@ -342,7 +344,7 @@ def assignment_details(request,unique_id,subject_id,id):
                 if updateform.is_valid():
                     assignmentform = updateform.save(commit=False)
                     assignmentform.subject_name = subject
-                    assignmentform.submission_date = datetime_return(request.POST.get('submission_date'),request.POST.get('submission_time'))
+                    assignmentform.submission_date = datetime_return(request.POST.get('submission_date'), request.POST.get('submission_time'))
                     assignmentform.save()
                     return redirect(reverse('assignment_page',kwargs=
                         {'unique_id':classroom.unique_id,'subject_id':subject.id,'id':assignment.id}))
@@ -350,20 +352,24 @@ def assignment_details(request,unique_id,subject_id,id):
                 updateform= AssignmentForm(instance=assignment)
 
         #submitting assignment
-        if not is_teacher:
+        if not is_teacher: 
             submission_object = Submission.objects.filter(Q(submitted_by=request.user) & Q(assignment=assignment)).first()
             if request.method=="POST":
-                form = SubmitAssignmentForm(request.POST, request.FILES,instance=submission_object)
-                if form.is_valid():
-                    data=form.save(commit=False)
-                    data.submitted_by=request.user
-                    data.assignment= assignment
-                    data.save()
-                    assignment.submitted_by.add(request.user)
-                    return redirect(reverse('assignment_page',kwargs=
-                        {'unique_id':classroom.unique_id,'subject_id':subject.id,'id':assignment.id}))
+                if assignment.submission_link:
+                    form = SubmitAssignmentForm(request.POST, request.FILES,instance=submission_object)
+                    if form.is_valid():
+                        data=form.save(commit=False)
+                        data.submitted_by=request.user
+                        data.assignment= assignment
+                        data.save()
+                        assignment.submitted_by.add(request.user)
+                        return redirect(reverse('assignment_page',kwargs=
+                            {'unique_id':classroom.unique_id,'subject_id':subject.id,'id':assignment.id}))
+                else:
+                    messages.add_message(request,messages.WARNING,"Submission link is closed.")
             else:
                 form = SubmitAssignmentForm(instance=submission_object)
+        
 
         params={
             'assignment':assignment,
@@ -386,27 +392,31 @@ def assignment_details(request,unique_id,subject_id,id):
 def assignment_handle(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     is_admin = classroom.special_permissions.filter(username = request.user.username).exists()
-    subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+    subject = Subject.objects.get(id=subject_id)
     is_teacher = request.user==subject.teacher
+    
     if is_admin or is_teacher:
         assignment = Assignment.objects.get(id=id)
         if request.POST.get('marks_assigned'):
-            id  = request.POST.get('id')
-            submission = Submission.objects.get(id=id)
+            idn  = request.POST.get('id') 
+            submission = Submission.objects.get(id=idn)
             marks = request.POST.get('marks_assigned')
             submission.marks_assigned = marks
             submission.save()
             email_marks(request,submission,assignment)
-            return redirect(reverse('assignments',kwargs=
-                        {'unique_id':classroom.unique_id,'subject_id':subject.id,'id':assignment.id}))
+            return redirect(reverse('assignment-handle',kwargs={
+                'unique_id':classroom.unique_id,
+                'subject_id':subject.id,
+                'id':assignment.id
+                }))
         #list of submissions
         try:
             submission = Submission.objects.all().filter(assignment=assignment,submitted_by=request.user)
         except Submission.DoesNotExist:
             pass
-        all_submissions = Submission.objects.all().filter(submitted_on__gte=assignment.submission_date) | Submission.objects.all().filter(submitted_on__lt=assignment.submission_date)
-        late_submissions = Submission.objects.all().filter(submitted_on__gt=assignment.submission_date)
-        ontime_submissions = Submission.objects.all().filter(submitted_on__lte=assignment.submission_date)
+        all_submissions = Submission.objects.all().filter(assignment=assignment)
+        late_submissions = Submission.objects.all().filter(Q(assignment=assignment) & Q(submitted_on__gt=assignment.submission_date))
+        ontime_submissions = Submission.objects.all().filter(Q(assignment=assignment) & Q(submitted_on__lte=assignment.submission_date))
         members = classroom.members.all()
         teachers = classroom.teacher.all()
         students = members.difference(teachers)
@@ -439,8 +449,8 @@ def assignment_handle(request,unique_id,subject_id,id):
 @login_required
 def assignment_delete(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-    assignment = Assignment.objects.all().filter(subject_name=subject).get(id=id)
+    subject = Subject.objects.get(id=subject_id)
+    assignment = Assignment.objects.get(id=id)
     admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
     is_teacher = admin_check or request.user==subject.teacher
     if is_teacher:
@@ -458,7 +468,7 @@ def announcements_list(request, unique_id, subject_id):
     if member_check(request.user, classroom):
 
         #querysets
-        subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+        subject = Subject.objects.get(id=subject_id)
         admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
         is_teacher = admin_check or request.user==subject.teacher
         announcements = Announcement.objects.all().filter(subject_name=subject).order_by('-id')
@@ -512,8 +522,11 @@ def announcement_details(request,unique_id,subject_id,id):
                     announcementform = form.save(commit=False)
                     announcementform.subject_name = subject
                     announcementform.save()
-                    return redirect(reverse('announcement_page',kwargs=
-                        {'unique_id':classroom.unique_id,'subject_id':subject.id,'id':announcement.id}))
+                    return redirect(reverse('announcement_page',kwargs={
+                        'unique_id':classroom.unique_id,
+                        'subject_id':subject.id,
+                        'id':announcement.id
+                        }))
             else:
                 form= AnnouncementForm(instance=announcement)
         params={
@@ -529,15 +542,17 @@ def announcement_details(request,unique_id,subject_id,id):
 @login_required
 def announcement_delete(request,unique_id,subject_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
-    announcement = Announcement.objects.all().filter(subject_name=subject).get(id=id)
+    subject = Subject.objects.get(id=subject_id)
+    announcement = Announcement.objects.get(id=id)
     admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
     is_teacher = admin_check or request.user==subject.teacher
     if is_teacher:
         announcement.delete()
         announcement_delete_notify(request,announcement)
-        return redirect(reverse('announcement',kwargs=
-                        {'unique_id':classroom.unique_id,'subject_id':subject.id}))
+        return redirect(reverse('announcement',kwargs={
+            'unique_id':classroom.unique_id,
+            'subject_id':subject.id
+            }))
     else:
         raise Http404()
 
@@ -545,7 +560,7 @@ def announcement_delete(request,unique_id,subject_id,id):
 def subject_details(request,unique_id, subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     if member_check(request.user, classroom):
-        subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+        subject = Subject.objects.get(id=subject_id)
         admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
         upload_permission = subject.upload_permission.all()
         members = classroom.members.all().order_by('username')
@@ -582,7 +597,7 @@ def subject_details(request,unique_id, subject_id):
 @login_required
 def delete_subject(request,unique_id, subject_id):
     classroom = Classroom.objects.get(unique_id=unique_id)
-    subject = Subject.objects.all().filter(classroom=classroom).get(id=subject_id)
+    subject = Subject.objects.get(id=subject_id)
     admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
 
     if admin_check:
@@ -636,7 +651,7 @@ def delete_request(request,unique_id,username):
         classroom.pending_members.remove(user)
         return redirect(reverse('classroom_page',kwargs={'unique_id':classroom.unique_id}))
 
-@login_required
+@login_required 
 def manage_upload_permission(request,unique_id,subject_id,username):
     classroom = Classroom.objects.get(unique_id=unique_id)  
     if member_check(request.user,classroom):
@@ -661,3 +676,9 @@ def unsend_request(request,unique_id):
         }))
     else:
         raise Http404()
+
+@login_required
+def export_marks(request,classroom,assignment):
+    classroom = Classroom.objects.get(unique_id=unique_id)  
+    if member_check(request.user,classroom):
+        pass

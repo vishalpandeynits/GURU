@@ -7,15 +7,15 @@
 {% load humanize %}
 {% block subject_content %}
 <style>
-	#overlayform .subject_description{
-    height:200px !important;
+#overlayform .subject_description{
+	height:200px !important;
 }
 #activity *{
 	color:black !important;
 }
 </style>
-<div class="container">
 
+<div class="container">
 	<div class="subject-intro">
 		<div id="subject-name">Subject: {{ subject.subject_name }}</div>
 		<p id="subject-teacher">Teacher: {{ subject.teacher }}</p>
@@ -72,7 +72,7 @@
 	</div>
 	{% endif %}
 
-	<div id="members" class="m-auto">
+	<div style="display:block;" id="members" class="m-auto">
 		<h1 class="text-center"> Members </h1>
 
 	{% for member in members %}
@@ -90,7 +90,7 @@
 					{% if member in admins %}Admin{% endif %}
 					{% if member == teacher %}Teacher{% endif %}
 				</h5>
-				<p>{{member.profile.bio}}</p>
+				<p class="m-0">{{member.profile.bio}}</p>
 				{% if member in upload_permissions and member not in admins %}
 					Can upload resources
 				{% endif %}
@@ -98,32 +98,32 @@
 		</div>
 		{% if user == teacher or user in admins %}
 			{% if member not in admins and member != teacher %} 
-			<div style="position:absolute;top:5px;right:10px;"
-			class="btn-group dropleft">
-			<button class="btn dropdown-toggle btn-lg bg-transparent" 
-				data-toggle="dropdown" type="button" 
-				aria-haspopup="true" aria-expanded="false"> 
-			</button>
-			<div class="dropdown-content dropdown-menu">
-				{% if member in upload_permissions %}
-					<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
-						<nobr>Take upload permssion</nobr>
-					</a>
-				{% else %}
-					<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
-						<nobr>Give upload permissions</nobr>
-					</a>
-				{% endif %}
+			<div style="position:absolute;top:5px;right:10px;" class="btn-group dropleft">
+				<button class="btn dropdown-toggle btn-lg bg-transparent" 
+					data-toggle="dropdown" type="button" 
+					aria-haspopup="true" aria-expanded="false"> 
+				</button>
+				<div class="dropdown-content dropdown-menu">
+					{% if member in upload_permissions %}
+						<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
+							<nobr>Take upload permssion</nobr>
+						</a>
+					{% else %}
+						<a href="{% url 'upload_permissions' classroom.unique_id subject.id member.username %}">
+							<nobr>Give upload permissions</nobr>
+						</a>
+					{% endif %}
+				</div>
 			</div>
-		</div>
 			{% endif %}
 		{% endif %}
 	</div><br>
 	{% endfor %}
 	</div>
 	<!-- Members list end -->
+
 	{% if page %}
-	<div id="activity" class="m-auto">
+	<div id="activitya" class="m-auto" style="display:none;">
 		<h1 class="text-center"> Activities </h1>
 		<span style="min-height:600px;">
 			{% for activity in page %}
@@ -138,6 +138,8 @@
 		{% include 'snippets/paginations.html' %}
 		</span>
 	</div>
+	{% else %}
+		<h1 id="activitya" style="display:none;" class="heading"> No Activities in this classroom.</h1>
 	{% endif %}
 </div>
 {% endblock %}
