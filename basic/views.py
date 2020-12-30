@@ -638,9 +638,6 @@ def accept_request(request,unique_id,username):
         classroom.members.add(user)
         classroom.pending_members.remove(user)
         user.profile.pending_invitations.remove(classroom)
-        # notify = Classroom_activity(classroom=classroom,actor=request.user)
-        # notify.action = "A new member "+ str(user.username) + "have joined your classroom."
-        # notify.save()
         return redirect(reverse('classroom_page',kwargs={'unique_id':classroom.unique_id}))
 
 @login_required
@@ -678,38 +675,39 @@ def unsend_request(request,unique_id):
     else:
         raise Http404()
 
-@login_required
-def export_marks(request,classroom,assignment):
-    classroom = Classroom.objects.get(unique_id=unique_id)  
-    if member_check(request.user,classroom):
-        pass
+def export_marks(request,unique_id,id):
+    classroom = Classroom.objects.get(unique_id=unique_id)
+    admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
+    if admin_check or request.user==remove_this_user:
+        assignment = Assignment.objects.get(id=id)
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = f'attachment; filename="mark_sheet of {assignment.topic}.xls"'
 
-def export_users_xls(request,id):
-    response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="mark_sheet.xls"'
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet('Submissions')
 
-    wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet('Submissions')
+        # Sheet header, first row
+        row_num = 0
 
-    # Sheet header, first row
-    row_num = 0
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
 
-    font_style = xlwt.XFStyle()
-    font_style.font.bold = True
+        columns = ['Username','submitted_on','marks_obtained']
 
-    columns = ['Username','submitted_on' 'marks_obtained']
-
-    for col_num in range(len(columns)):
-        ws.write(row_num, col_num, columns[col_num], font_style)
-    # Sheet body, remaining rows
-    font_style = xlwt.XFStyle()
-    assignment = Assignment.objects.get(id=id)
-    rows =  Submission.objects.filter(assignment=assignment).values_list('submitted_by','submitted_on','marks_assigned',)
-    rows = [[x.strftime("%Y-%m-%d %H:%M") if isinstance(x, datetime.datetime) else x for x in row] for row in rows ]
-    for row in rows:
-        row_num += 1
-        for col_num in range(len(row)):
-            ws.write(row_num, col_num, row[col_num], font_style)
-
-    wb.save(response)
-    return HttpResponse(response)
+        for col_num in range(len(columns)):
+            ws.write(row_num, col_num, columns[col_num], font_style)
+        # Sheet body, remaining rows
+        font_style = xlwt.XFStyle()
+        
+        rows = Submission.objects.all().filter(assignment=assignment).values_list('submitted_by','submitted_on','marks_assigned')
+        rows = [[x.strftime("%Y-%m-%d %H:%M") if isinstance(x, datetime.datetime) else x for x in row] for row in rows ]
+        
+        for row in rows:
+            row_num += 1
+            row[0]=str(User.objects.get(id=row[0]))
+            for col_num in range(len(row)):
+                ws.write(row_num, col_num, row[col_num], font_style)
+        wb.save(response)
+        return response
+    else:
+        raise Http404()

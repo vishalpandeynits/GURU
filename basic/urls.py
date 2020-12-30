@@ -31,5 +31,5 @@ urlpatterns = [
     path('<unique_id>/<subject_id>/upload_permissions/<username>/',manage_upload_permission,name="upload_permissions"),
 
     path('<unique_id>/unsend-request',unsend_request,name="unsend_request"),
-    path('see-marks/<id>',export_users_xls,name="export_excel")
+    path('<unique_id>/<id>/see-marks',export_marks,name="export_marks")
 ]
