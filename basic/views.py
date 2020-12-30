@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
-from django.http import Http404
+from django.http import Http404,HttpResponse
 from django.contrib import messages
 from django.db.models import Q
 from .forms import *
@@ -13,6 +13,7 @@ from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.urls import reverse
+import xlwt
 
 #--------------------------------------------helper functions-----------------------------------
 
@@ -682,3 +683,33 @@ def export_marks(request,classroom,assignment):
     classroom = Classroom.objects.get(unique_id=unique_id)  
     if member_check(request.user,classroom):
         pass
+
+def export_users_xls(request,id):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="mark_sheet.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Submissions')
+
+    # Sheet header, first row
+    row_num = 0
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['Username','submitted_on' 'marks_obtained']
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+    assignment = Assignment.objects.get(id=id)
+    rows =  Submission.objects.filter(assignment=assignment).values_list('submitted_by','submitted_on','marks_assigned',)
+    rows = [[x.strftime("%Y-%m-%d %H:%M") if isinstance(x, datetime.datetime) else x for x in row] for row in rows ]
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, row[col_num], font_style)
+
+    wb.save(response)
+    return HttpResponse(response)
