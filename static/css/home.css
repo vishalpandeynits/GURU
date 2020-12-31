@@ -6,7 +6,7 @@ html,body{
   font-family: 'Nunito Sans', sans-serif !important;
 }
 .no-scroll{
-  overflow-y:hidden !important;
+  overflow:hidden !important;
 }
 button{
   outline:none !important;
@@ -230,7 +230,7 @@ padding-right: 2px;
   box-shadow:0 0 20px grey;
   border-radius: 5px;
   position: absolute;
-  right:75px;
+  right:65px;
   top:10px;
   z-index:9000;
 }
@@ -261,6 +261,7 @@ padding-right: 2px;
   bottom:0;
   background-color:rgb(0, 0, 0,0.5);
   z-index:50;
+  overflow-y:hidden !important;
 }
 .overlay .overlayform {
   display:flex;

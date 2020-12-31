@@ -1,7 +1,11 @@
 function _(el){
     return document.getElementById(el)
 }
-
+document.body.addEventListener('click',(e)=>{
+    if(e.target != document.getElementById('co') && e.target != document.getElementById('left') && e.target != document.getElementById('icon')){
+        document.getElementById('dropdown-container').style.display=null;
+    }
+})
 if (window.history.replaceState) {
     window.history.replaceState(null, null, window.location.href);
 }
@@ -41,17 +45,23 @@ function checkComment(){
 function on(el) {
     el.style.display = 'flex';
     document.body.classList.add("no-scroll");
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    document.body.style.overflow='hidden';
+}
+function on_nav(el) {
+    el.style.display = 'flex';
 }
 function off(el) {
     el.style.display= "none";
     document.body.classList.remove("no-scroll");
+    document.body.style.overflowY='auto';
 }
 
 function toggleMembersSubjects(){  
     _('members').style.display = _('members').style.display==='block'?'none':'block';
     _('activitya').style.display = _('members').style.display==='block'?'none':'block';
 }
-
 
 $(document).ready(function() {
     $('#close-btn').click(function() {
@@ -100,8 +110,7 @@ deleteConfirm(entity,myRandomSuccessCallBackFunction)
 });
 
 //local success callback after delete function
-function myRandomSuccessCallBackFunction()
-{
+function myRandomSuccessCallBackFunction(){
     url =_('userDeleteButton').value
     window.location.href = 'http://127.0.0.1:8000'+url
 }
@@ -151,10 +160,3 @@ function outFunc() {
     var tooltip = document.getElementById("myTooltip");
     tooltip.innerHTML = "Copy to clipboard";
 }
-
-document.body.addEventListener('click',(e)=>{
-    if(e.target != document.getElementById('co') && e.target != document.getElementById('left') && e.target != document.getElementById('icon')){
-        document.getElementById('dropdown-container').style.display=null;
-        document.body.classList.remove("no-scroll");
-    }
-})

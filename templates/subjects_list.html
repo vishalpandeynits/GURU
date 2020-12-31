@@ -44,7 +44,7 @@
 
 	<div class="container-fluid">
 		{% if form %}
-		<div class="overlay">
+		<div id="overlay" class="overlay">
 
 			<form class="overlayform" action="{% url 'subjects' classroom.unique_id %}" 
 				method="POST" onsubmit="return validateAddSubject()" enctype="multipart/form-data">

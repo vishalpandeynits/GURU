@@ -149,3 +149,8 @@ function previous_date_disable(el){
     var minDate= year + '-' + month + '-' + day;
     el.min = minDate
 }
+const actualBtn = _('actual-btn');
+const fileChosen = _('file-chosen');
+    actualBtn.addEventListener('change', function(){
+        _('file-upload-label').textContent = this.files[0].name + " selected. Click again to change"
+    })
