@@ -23,7 +23,7 @@
                     Switch classroom 
                 </h4>
                 {% for class in classes %}
-                    <a href="{% url 'subjects' class.unique_id %}" onclick="closeNav()">
+                    <a class="text-wrap1"href="{% url 'subjects' class.unique_id %}" onclick="closeNav()">
                       <i class="fas fa-chalkboard-teacher mr-2"></i> {{ class.class_name }}
                     </a>
                 {% endfor %}
@@ -37,9 +37,7 @@
         &#9776;
     </span>
     {% if classroom %}
-        <span style="font-size:1.6em;margin-left:20px;position:relative;top:16px;">
-            &nbsp;  {{ classroom.class_name }}
-        </span>
+        <span class="class-name">&nbsp;  {{ classroom.class_name|slice:"0:20" }}</span>
     {% endif %}
 
     
