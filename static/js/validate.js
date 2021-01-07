@@ -154,3 +154,14 @@ const fileChosen = _('file-chosen');
     actualBtn.addEventListener('change', function(){
         _('file-upload-label').textContent = this.files[0].name + " selected. Click again to change"
     })
+
+    const tx = document.getElementsByTagName('textarea');
+    for (let i = 0; i < tx.length; i++) {
+      tx[i].setAttribute('style', 'height:' + (tx[i].scrollHeight) + 'px;overflow-y:hidden;');
+      tx[i].addEventListener("input", OnInput, false);
+    }
+    
+    function OnInput() {
+      this.style.height = 'auto';
+      this.style.height = (this.scrollHeight) + 'px';
+    }
