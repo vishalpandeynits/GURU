@@ -1,0 +1,79 @@
+<div class="contactus-container">
+    <div class="container__box">
+      <h1 class="container__title">CONTACT</h1>
+  
+      <div class="info">
+        <p class="info__text">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae et
+          quo cupiditate illum veniam eaque.
+        </p>
+  
+        <div class="info__box">
+          <div class="info__content">
+            <i class="info__icon fas fa-map-marker-alt"></i>
+            <p class="info__details">
+              16a, unknown street <br />
+              london <br />
+              ab12 3cd
+            </p>
+          </div>
+  
+          <div class="info__content">
+            <i class="info__icon fas fa-share-alt"></i>
+            <div class="social">
+              <a href="https://youtu.be/v1Btws20jNs" target="_blank"><i class="social__icon fab fa-youtube"></i></a>
+              <a href="https://github.com/GridSequence/Contact-Us.git" target="_blank"><i class="social__icon fab fa-github"></i></a>
+              <a href="#"><i class="social__icon fab fa-facebook"></i></a>
+              <a href="https://codepen.io/gridsequence/pen/YzWZOyj" target="_blank"><i class="social__icon fab fa-codepen"></i></a>
+            </div>
+          </div>
+  
+          <div class="info__content">
+            <i class="info__icon fa fa-phone"></i>
+            <p class="info__details">+91 9957767675</p>
+          </div>
+        </div>
+  
+        <div class="info__send">WRITE TO US</div>
+      </div>
+  
+      <form class="form" method="POST" action="{% url 'home' %}">{% csrf_token %}
+        <div class="form__box">
+          <div class="form__content">
+            <label class="form__label" for="name">NAME</label>
+            <input class="form__input" type="text" name="name" id="name" />
+          </div>
+  
+          <div class="form__content">
+            <label class="form__label" for="email">EMAIL</label>
+            <input class="form__input" type="email" name="email" id="email" />
+          </div>
+  
+          <div class="form__content">
+            <label class="form__label" for="subject">SUBJECT</label>
+            <input
+                   class="form__input"
+                   type="text"
+                   name="subject"
+                   id="subject"
+                   />
+          </div>
+  
+          <div class="form__content">
+            <label class="form__label" for="textArea">MESSAGE</label>
+            <textarea
+                      class="form__input form__input--text"
+                      type="text"
+                      name="message"
+                      id="name"
+                      ></textarea>
+          </div>
+        </div>
+  
+        <div class="form__send">
+            <input type="submit" value="SEdND">
+        </div>
+      </form>
+    </div>
+    
+  </div>

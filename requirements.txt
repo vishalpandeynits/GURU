@@ -10,3 +10,4 @@ django-quill-editor
 python-decouple
 gunicorn
 whitenoise
+psycopg2

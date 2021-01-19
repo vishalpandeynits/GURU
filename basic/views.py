@@ -27,6 +27,14 @@ def member_check(user,classroom):
 def home(request):
     if request.user.is_authenticated:
         return redirect(reverse('homepage'))
+    else:
+        if request.method=='POST':
+            name=request.POST.get('name')
+            subject = request.POST.get('subject')
+            email = request.POST.get('email')
+            message =f"{name} \n {email} \n {request.POST.get('message')} "
+            mail_subject = 'Contact us:  '+ subject
+            send_mail(subject,message,'guru.online.classroom.portal@gmail.com',[email])
     return render(request,'intro_page.html')
 
 @login_required

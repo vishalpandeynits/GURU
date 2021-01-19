@@ -101,14 +101,17 @@ WSGI_APPLICATION = 'guru.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
     }
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -207,3 +210,5 @@ SOCIALACCOUNT_EMAIL_REQUIRED=ACCOUNT_EMAIL_REQUIRED
 SOCIALACCOUNT_STORE_TOKENS=False
 
 SITE_NAME = 'http://127.0.0.1:8000'
+
+GOOGLE_RECAPTCHA_SECRET_KEY = '6LfaVyQaAAAAALJOna_iqSi93vBKNd0sOi0XqpA_'
