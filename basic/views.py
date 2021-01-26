@@ -32,7 +32,7 @@ def home(request):
             email = request.POST.get('email')
             message =f"{name} \n {email} \n {request.POST.get('message')} "
             mail_subject = 'Contact us:  '+ subject
-            send_mail(subject,message,'guru.online.classroom.portal@gmail.com',[email])
+            print(send_mail(subject,message,'guru.online.classroom.portal@gmail.com',['guru.online.classroom.portal@gmail.com']))
     return render(request,'intro_page.html')
 
 @login_required

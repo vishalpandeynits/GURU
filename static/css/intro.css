@@ -172,12 +172,11 @@ textarea {
   
 }
 .container__box {
-  height: 540px;
+  height: 640px;
   width: 960px;
   border-radius: 8px;
   box-shadow: inset 0 0 10px #282d3e;
   position: relative;
-  border:2px solid white;
 }
 .container__title {
   height: 40px;
@@ -200,7 +199,7 @@ textarea {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   justify-items: center;
-  padding: 0 40px;
+  padding: 40px;
 }
 .info__send,
 .form__send {
@@ -211,6 +210,7 @@ textarea {
   padding-top: 14px;
   letter-spacing: 2px;
   font-weight: bold;
+  color:white !important;
   transition: all 0.5s ease-in-out;
   cursor: pointer;
   border-bottom: 1px solid #f2fdff;
@@ -274,6 +274,7 @@ textarea {
   opacity: 0;
   pointer-events: none;
   text-align: center;
+  padding:40px;
 }
 .form--show {
   opacity: 1;
