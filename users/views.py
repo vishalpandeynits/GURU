@@ -10,7 +10,6 @@ from .token import account_activation_token
 from .forms import SignUpForm, ProfileUpdateForm
 from .models import Profile
 from django.contrib import messages
-from basic.models import Classroom
 from django.conf import settings
 from django.urls import reverse
 
@@ -60,7 +59,7 @@ def activate(request, uidb64, token,backend='django.contrib.auth.backends.ModelB
 def profiles(request, username):
     p_user = get_object_or_404(User, username=username)
     profile = get_object_or_404(Profile, user=p_user)
-    p_form = my_classes=None
+    p_form =None
     if p_user == request.user:
         if request.method == "POST":
             p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile,)
@@ -79,13 +78,10 @@ def profiles(request, username):
                 'profile_pic':request.user.profile.profile_pic,
                 'bio':request.user.profile.bio
             })
-    if request.user.is_authenticated:
-        my_classes = Classroom.objects.all().filter(members=request.user)
     context = {		
         'pending_requests':request.user.profile.pending_invitations.all(),
         'p_user':p_user,
         'p_form' : p_form,
         'profile' : profile,
-        'classes':my_classes
     }
     return render (request, 'users/profile.html', context)

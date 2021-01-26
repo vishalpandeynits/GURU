@@ -10,8 +10,6 @@ from .email import *
 from .delete_notify import *
 from .utils import *
 from django.core.paginator import Paginator
-from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
 from django.urls import reverse
 import xlwt
 
@@ -94,10 +92,8 @@ def homepage(request):
         createclassform = CreateclassForm()
 
     #queryset
-    my_classes = Classroom.objects.all().filter(members=request.user)
     params={
         'createclassform':createclassform,
-        'classes':my_classes
         }
     return render(request,'homepage.html',params)
 
@@ -130,7 +126,6 @@ def classroom_page(request,unique_id):
         students = members.difference(teachers)
         pending_members = classroom.pending_members.all()
         admins = classroom.special_permissions.all()
-        classes = Classroom.objects.all().filter(members=request.user)
         is_admin = classroom.special_permissions.filter(username = request.user.username).exists()
         #classroom_update
         if request.method=="POST":
@@ -151,8 +146,6 @@ def classroom_page(request,unique_id):
             'is_admin':is_admin,
             'form':form,
             'admins':admins,
-            'classes':classes,
-            'site_name':settings.SITE_NAME
         }
         return render(request,'classroom_settings.html',params)
 
@@ -165,7 +158,6 @@ def subjects(request, unique_id, form = None):
         subjects = Subject.objects.all().filter(classroom=classroom)
         subject_teacher_check = Classroom.objects.filter(teacher=request.user).exists()
         admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
-        classes = Classroom.objects.all().filter(members=request.user)
         is_teacher = admin_check
 
         # Admins can add a subject with its teacher
@@ -197,7 +189,6 @@ def subjects(request, unique_id, form = None):
             'form':form,
             'classroom':classroom,
             'is_admin':is_teacher,
-            'classes':classes,
             'members':members
             }
         return render(request,'subjects_list.html',params)
@@ -206,7 +197,6 @@ def subjects(request, unique_id, form = None):
 def notes_list(request,unique_id,subject_id,form = None):
     classroom = Classroom.objects.get(unique_id=unique_id)
     if member_check(request.user,classroom):
-
         #querysets
         subject = Subject.objects.get(id=subject_id)
         notes = Note.objects.all().filter(subject_name=subject).order_by('-id')

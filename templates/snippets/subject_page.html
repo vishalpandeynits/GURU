@@ -11,17 +11,20 @@
             <button class="closebtn" onclick="closeNav()">
 				&times;
 			</button >
+			<a href="{% url 'homepage' %}" onclick="closeNav()">
+				<i class="fas fa-home mr-2"></i> Home
+			</a>
 			<a  onclick="closeNav()"
 				href="{% url 'resources' classroom.unique_id subject.id  %}" >
 				<i class="fas fa-book-open mr-2"></i> Resources
 			</a>
 			<a onclick="closeNav()"
 				href="{% url 'assignments' classroom.unique_id subject.id  %}" >
-				<i class="fas fa-briefcase mr-2"></i> Assignment
+				<i class="fas fa-briefcase mr-2"></i> Assignments
 			</a>
 			<a onclick="closeNav()"
 				href="{% url 'announcement' classroom.unique_id subject.id %}">
-				<i class="fas fa-bullhorn mr-2"></i> Announcement
+				<i class="fas fa-bullhorn mr-2"></i> Announcements
 			</a>
 			<a style="border-bottom:5px solid black;" 
 			   href="{% url 'subject_details' classroom.unique_id subject.id %}"
@@ -29,16 +32,16 @@
 			   <i class="fas fa-chalkboard-teacher mr-2"></i> 
 			   {{ subject.subject_name }}
 			</a>
-			<a href="{% url 'homepage' %}" onclick="closeNav()">
-				<i class="fas fa-home mr-2"></i> Home
-			</a>
-			<a onclick="closeNav()"
-				href="{% url 'subjects' classroom.unique_id %}" > 
-				<i class="fas fa-book mr-2"></i> Subjects 
-			</a>
-			<a href="{% url 'profile' user.username %}" onclick="closeNav()"> 
-				<i class="fas fa-user mr-2"></i> {{ user.username|title }} 
-			</a>
+			{% if classes %}
+			<h4 style="text-align:center;font-weight: bolder;"> 
+				Switch classroom 
+			</h4>
+			{% for class in classes %}
+				<a class="text-wrap1"href="{% url 'subjects' class.unique_id %}" onclick="closeNav()">
+				  <i class="fas fa-chalkboard-teacher mr-2"></i> {{ class.class_name }}
+				</a>
+			{% endfor %}
+		{% endif %}
 		</div>
 	</div>
 </div>
@@ -70,7 +73,6 @@
         </a>
     </div>
     {% endif %}
-
 </div>
 {% block subject_content %} {% endblock %}
 

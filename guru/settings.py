@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "*j)kfw7j9ltu!=t$o0@4m!umac+&j#3)q^*j_g%z%qpwoeh=9d"
+SECRET_KEY = config('SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'basic.apps.BasicConfig',
     'users.apps.UsersConfig',
     'poll.apps.PollConfig',
-    'examination.apps.ExaminationConfig',
 
     #packages
     'crispy_forms',
@@ -84,6 +83,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
+                "basic.context_preprocess.data",
             ],
         },
     },
@@ -101,22 +101,22 @@ WSGI_APPLICATION = 'guru.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME':config('DBNAME'),
-        'USER':config('USER'),
-        'PASSWORD':config('DBPASS'),
-        'PORT':config('DBPORT'),
-        'HOST':config('DBHOST'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME':config('DBNAME'),
+#         'USER':config('USER'),
+#         'PASSWORD':config('DBPASS'),
+#         'PORT':config('DBPORT'),
+#         'HOST':config('DBHOST'),
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -146,7 +146,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 QUILL_CONFIGS = {
     'default':{
@@ -187,7 +187,6 @@ EMAIL_USE_TLS= True
 DEFAULT_FROM_EMAIL= config('EMAIL')
 
 #all-auth registraion settings
-ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS =1
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
@@ -201,7 +200,7 @@ ACCOUNT_USERNAME_VALIDATORS = None
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
-        'SCOPE': [
+        'SCOPE': [ 
             'profile',
             'email',
         ],
@@ -214,7 +213,4 @@ SOCIALACCOUNT_PROVIDERS = {
 SOCIALACCOUNT_QUERY_EMAIL=ACCOUNT_EMAIL_REQUIRED
 SOCIALACCOUNT_EMAIL_REQUIRED=ACCOUNT_EMAIL_REQUIRED
 SOCIALACCOUNT_STORE_TOKENS=False
-
-SITE_NAME = 'http://127.0.0.1:8000'
-
-GOOGLE_RECAPTCHA_SECRET_KEY = '6LfaVyQaAAAAALJOna_iqSi93vBKNd0sOi0XqpA_'
+GOOGLE_RECAPTCHA_SECRET_KEY = config('recaptcha')

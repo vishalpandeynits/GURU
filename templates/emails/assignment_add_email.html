@@ -87,7 +87,7 @@
             <table border="0" cellspacing="0" cellpadding="0">
               <tr>
                   <td align="center" style="border-radius: 3px;" bgcolor="#7c72dc">
-                    <a  href=" {{site_name}}{% url 'assignment_page' classroom.unique_id assignment.subject_name.id assignment.id %}" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #7c72dc; display: inline-block;">Visit</a>
+                    <a  href=" {{ request.scheme }}://{{ request.META.HTTP_HOST }}/{% url 'assignment_page' classroom.unique_id assignment.subject_name.id assignment.id %}" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #7c72dc; display: inline-block;">Visit</a>
                   </td>
               </tr>
             </table>
@@ -109,8 +109,8 @@
         <tr>
           <td bgcolor="#111111" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;" >
             <p style="margin: 0;">
-              <a  href=" {{site_name}}{% url 'assignment_page' classroom.unique_id assignment.subject_name.id assignment.id %}" target="_blank" style="color: #7c72dc;">
-                {{site_name}}{% url 'assignment_page' classroom.unique_id assignment.subject_name.id assignment.id %}
+              <a  href=" {{ request.scheme }}://{{ request.META.HTTP_HOST }}/{% url 'assignment_page' classroom.unique_id assignment.subject_name.id assignment.id %}" target="_blank" style="color: #7c72dc;">
+                {{ request.scheme }}://{{ request.META.HTTP_HOST }}/{% url 'assignment_page' classroom.unique_id assignment.subject_name.id assignment.id %}
           		</a>
             </p>
           </td>

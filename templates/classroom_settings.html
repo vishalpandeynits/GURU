@@ -53,14 +53,14 @@
 		  	<div class="dropdown-menu bg-light" style="padding:0;" aria-labelledby="dropdownMenuButton">
 		    	<a style="text-decoration: none;" target="_blank" class="invite-link" 
 					href="https://api.whatsapp.com/send?text=Click on
-				 	this link {{site_name}}/join/{{classroom.unique_id}}/
+				 	this link {{ request.scheme }}://{{ request.META.HTTP_HOST }}/join/{{classroom.unique_id}}/
 				 	to join classroom {{classroom}} created by 
 				 	{{classroom.created_by}}/)">
 				 	Invite by Whatsapp
 				</a>
 				<a style="text-decoration: none;" target="_blank" class="invite-link" 
 					href="mailto:?subject= Invitation for {{classroom}} 
-					&body=Click on this link {{site_name}}/join/{{classroom.unique_id}}/
+					&body=Click on this link {{ request.scheme }}://{{ request.META.HTTP_HOST }}/join/{{classroom.unique_id}}/
 				 	to join classroom {{classroom}} created by {{classroom.created_by}}">
 					Invite by email 
 				</a>

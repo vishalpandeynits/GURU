@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.core.exceptions import ValidationError
 from .models import Profile
 import django
+
 class SignUpForm(UserCreationForm):
 	email = forms.EmailField(label="E-mail")
 
