@@ -2,6 +2,7 @@
 from pathlib import Path
 import os
 from decouple import config 
+import django_heroku
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = config('SECRET')
@@ -173,6 +174,7 @@ REST_FRAMEWORK = {
 }
 
 if PRODUCTION:
+    django_heroku.settings(locals())
     EMAIL_HOST= "smtp.gmail.com"
     EMAIL_HOST_USER= config('EMAIL')
     EMAIL_HOST_PASSWORD= config('PASSWORD')

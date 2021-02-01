@@ -1,6 +1,7 @@
 Django==3.1
 django-allauth==0.42.0
 django-contrib-comments==1.9.2
+django-rest-framework
 django-crispy-forms==1.9.2
 humanize==2.6.0
 Pillow==7.2.0
@@ -13,3 +14,4 @@ whitenoise
 psycopg2
 boto3
 django-storages
+django-heroku
