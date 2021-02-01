@@ -3,10 +3,10 @@ from django.conf import settings
 from django.urls import path,include
 from django.conf.urls.static import static
 from django.contrib.auth import views
-from users.forms import UserLoginForm 
+from users.forms import UserLoginForm
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('AKIAUMKLYNQMHJ3N2H7Q/', admin.site.urls),
     path('', include('basic.urls')),
     path('accounts/password_reset/', views.PasswordResetView.as_view(
     html_email_template_name='registration/password_reset_html_email.html'

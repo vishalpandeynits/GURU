@@ -5,7 +5,7 @@ from decouple import config
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = config('SECRET')
-SITE_ID = 3
+SITE_ID = 4
 ALLOWED_HOSTS = ['*']
 
 PRODUCTION = config('PROD', default=False, cast=bool)
@@ -178,7 +178,7 @@ if PRODUCTION:
     EMAIL_PORT= 587
     EMAIL_USE_TLS= True
     DEFAULT_FROM_EMAIL= config('EMAIL')
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')

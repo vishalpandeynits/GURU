@@ -36,7 +36,7 @@ class SignUpForm(UserCreationForm):
 		# checking User unique
 		try:
 		    User.objects.get(username=cleaned_data['username'])
-		    if len(cleaned_data['username'])>16 or len(cleaned_data['username'])<8:
+		    if len(cleaned_data['username'])>16 or len(cleaned_data['username'])<4:
 		    	raise ValidationError('username must be between 8 to 16 characters long.')
 
 		except User.DoesNotExist:

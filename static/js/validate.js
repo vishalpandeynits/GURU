@@ -4,7 +4,7 @@ REGX= {
     'emailREGX':/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
     'phone_number':/^\+(91)[6-9]\d{9}$/g,
     'description_check':/^.{100,}/,
-    'username':/^.{8,16}/,
+    'username':/^.{4,16}/,
     'uniqueIdREGX':/^.{7,15}/
 }
 
@@ -18,7 +18,7 @@ function signUpPageValidation(){
     var email = document.querySelector('input[name="email"]').value;
     var usernameCheck = REGX['username'].test(username);
     if(!usernameCheck){
-        errors.push('Username must be between 8 to 16 characters long.');
+        errors.push('Username must be between 4 to 16 characters long.');
     }
     var firstNameCheck = REGX['nameREGX'].test(first_name);
     if(!firstNameCheck){
