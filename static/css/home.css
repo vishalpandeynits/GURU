@@ -23,10 +23,10 @@ h1,h2,h3,h4,h5,h6,em,b{
 }
 .messages{
   position:absolute;
-  top:50px;
+  top:10px;
   left:0;
   right:0;
-  border:3px solid black;
+  z-index:100000000000000;
 }
 ::-webkit-scrollbar {
   width: 10px;

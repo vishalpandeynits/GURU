@@ -1,8 +1,7 @@
 
 from pathlib import Path
 import os
-from decouple import config 
-import django_heroku
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = config('SECRET')
@@ -173,7 +172,6 @@ REST_FRAMEWORK = {
 }
 
 if PRODUCTION:
-    django_heroku.settings(locals())
     EMAIL_HOST= "smtp.gmail.com"
     EMAIL_HOST_USER= config('EMAIL')
     EMAIL_HOST_PASSWORD= config('PASSWORD')
@@ -193,7 +191,7 @@ if PRODUCTION:
     AWS_LOCATION = 'media'
     AWS_QUERYSTRING_AUTH=True
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    SITE_NAME = 'https://online-guru.herokuapp.com/'
+    SITE_NAME = 'https://nits-class.herokuapp.com'
     AWS_PRIVATE_MEDIA_LOCATION = 'private'
     PRIVATE_FILE_STORAGE = 'guru.storage_back.PrivateMediaStorage'
 
