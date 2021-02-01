@@ -5,7 +5,7 @@ from decouple import config
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = config('SECRET')
-SITE_ID = 4
+SITE_ID = config('SITE')
 ALLOWED_HOSTS = ['*']
 
 PRODUCTION = config('PROD', default=False, cast=bool)
