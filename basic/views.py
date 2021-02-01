@@ -40,7 +40,7 @@ def join(request,key):
     classroom = Classroom.objects.get(unique_id=key)
     if classroom.need_permission==True:
         classroom.pending_members.add(request.user)
-        messages.add_message(request,message.INFO,"Your request is pending,\
+        messages.add_message(request,messages.INFO,"Your request is pending,\
          you can access when someone let's you in.")
         request.user.profile.pending_invitations.add(classroom)
         return redirect(reverse('homepage'))
@@ -78,7 +78,7 @@ def homepage(request):
     
     #create classroom
     if request.method=='POST':
-        createclassform = CreateclassForm(request.POST or None)
+        createclassform = CreateclassForm(request.POST ,request.FILES)
         if createclassform.is_valid():
             classroom=createclassform.save(commit=False)
             classroom.unique_id = unique_id()
@@ -87,7 +87,8 @@ def homepage(request):
             classroom.teacher.add(request.user)
             classroom.members.add(request.user)
             classroom.special_permissions.add(request.user)
-            return redirect(reverse('subjects',kwargs={'unique_id':classroom.unique_id}))
+            # return redirect(reverse('subjects',kwargs={'unique_id':classroom.unique_id}))
+            return redirect('/')
     else:
         createclassform = CreateclassForm()
 
@@ -676,7 +677,7 @@ def unsend_request(request,unique_id):
 def export_marks(request,unique_id,id):
     classroom = Classroom.objects.get(unique_id=unique_id)
     admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
-    if admin_check or request.user==remove_this_user:
+    if admin_check:
         assignment = Assignment.objects.get(id=id)
         response = HttpResponse(content_type='application/ms-excel')
         response['Content-Disposition'] = f'attachment; filename="mark_sheet of {assignment.topic}.xls"'

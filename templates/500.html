@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %} SERVER ERROR{% endblock %}
+{% load static %}
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/404.css' %}" >
+{% endblock %}
+{% block content %}
+<div style="display: unset;width:100%;position:absolute;top:0px;">
+  {% include 'snippets/navigation.html' %}
+</div>
+<div class="background">
+  <div class="ground"></div>
+</div>
+
+<div class="container404">
+  <div class="inner-content">
+    <h1 class="heading">500</h1><br>
+    <h2 class="heading2">Whoops !!!</h2><br>
+    <p class="subheading">
+      Looks like there is some Server error. Inform it to Site owner.
+    </p>
+    <br /><br />
+    <center>
+      <a href="/" class="m-4" id="home-btn"> Home </a>
+      <a href="{% url 'login' %}/#contact-us" class="m-4" id="home-btn"> Inform Owner</a>
+    </center>
+  </div>
+</div>
+{% endblock %}

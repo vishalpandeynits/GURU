@@ -11,6 +11,7 @@
     {% block css %} {% endblock %}
 </head>
 <body style="overflow-x:hidden;background: rgb(182, 236, 240);">
+    <img src="https://cdn.fstoppers.com/styles/large-16-9/s3/lead/2016/04/laanscapes-chapel-of-eternal-sunset-2016-by-daniel-laan.jpg" style="display: none;" onerror="alert('Connection dead');" />
     <div id="preloader">
         <div id="status">&nbsp;</div>
     </div>
@@ -21,6 +22,12 @@
     <script src="{% static 'js/homepage.js' %}"></script>
     <script src="{% static 'js/validate.js' %}"></script>
     <script>
+        window.addEventListener('online', function(e) {
+        alert("You are online");
+        });
+        window.addEventListener('offline', function(e) {
+        alert("Netwok Connection lost, Please coonect again to experience smooth interaction. !!");
+        });
         $(window).on('load', function(){
         $('#status').fadeOut();
         $('#preloader').delay(150).fadeOut('slow');

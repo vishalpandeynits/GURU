@@ -34,9 +34,9 @@
 		<div class="row">
 			<div id="info" class="mx-auto">
 				{% get_social_accounts p_user as accounts %}
-				{% if profile.profile_pic.url != '/media/avatar.jpg' %} 
-				<img style="width:100%;height: 300px;" class="img-fluid"
-					src="{{ p_user.socialaccount_set.all.0.get_avatar_url }}"/><br><br>
+				{% if profile.profile_pic.url == '/media/avatar.jpg' %} 
+					<img style="width:100%;height: 300px;" class="img-fluid"
+						src="{{ p_user.socialaccount_set.all.0.get_avatar_url }}"/><br><br>
 				{% else %}
 				<img style="width:100%;height: 300px;" class="img-fluid" 
 				src="{{ profile.profile_pic.url }}"><br><br>
@@ -44,7 +44,6 @@
 				
 
 				<h3 class="text-center">{{ profile.user.username }}</h3>
-				<h5 class="text-center">{{profile.user.last_time_logout}}</h5>
 				<h4 class="text-center"> {{p_user.first_name }} {{p_user.last_name }}</h4>
 				<pre class="text-center">{{ profile.bio }}</pre>
 				

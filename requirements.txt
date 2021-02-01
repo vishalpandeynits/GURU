@@ -11,3 +11,5 @@ python-decouple
 gunicorn
 whitenoise
 psycopg2
+boto3
+django-storages

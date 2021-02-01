@@ -6,6 +6,7 @@ from .email import *
 from django_quill.fields import QuillField
 from .utils import unique_id
 from django.urls import reverse
+from guru.storage_back import PrivateMediaStorage
 
 class Classroom(models.Model):
 	created_by = models.ForeignKey(User, on_delete = models.CASCADE,related_name='created_by')
@@ -13,7 +14,7 @@ class Classroom(models.Model):
 	teacher = models.ManyToManyField(User, related_name='classroom_teachers')
 	special_permissions = models.ManyToManyField(User, related_name= "special_permissions")
 	pending_members = models.ManyToManyField(User,related_name='pending_members')
-	classroom_pic = models.ImageField(default="classroom.jpg",upload_to="classrooms/",null=True)
+	classroom_pic = models.ImageField(upload_to="classroom",default="classroom.jpg",storage=PrivateMediaStorage(),null=True,)
 	class_name = models.CharField(max_length = 50)
 	description = models.TextField(null=True, blank=True,max_length=300)
 	created_on = models.DateTimeField(auto_now_add=True)
@@ -28,7 +29,7 @@ class Subject(models.Model):
 	subject_name = models.CharField(max_length=50)
 	teacher = models.ForeignKey(User,on_delete=models.CASCADE,related_name="teacher")
 	upload_permission = models.ManyToManyField(User,related_name="upload_permitted")
-	subject_pic = models.ImageField(upload_to="subject_content/",default="book.jpg")
+	subject_pic = models.ImageField(upload_to="subject_content",default="book.jpg",storage=PrivateMediaStorage(),)
 	description = models.TextField(null=True,blank=True,max_length=500)
 
 	def __str__(self):
@@ -37,7 +38,7 @@ class Subject(models.Model):
 class Note(models.Model):
 	subject_name = models.ForeignKey(Subject, on_delete=models.CASCADE)
 	uploaded_on = models.DateTimeField(auto_now_add= True)
-	file = models.FileField(upload_to='media/notes/',null=True,blank=True,)
+	file = models.FileField(storage=PrivateMediaStorage(),upload_to="notes",null=True,blank=True,)
 	topic = models.CharField(max_length=100,)
 	description = QuillField()
 	uploaded_by = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -50,7 +51,7 @@ class Announcement(models.Model):
 	issued_on = models.DateTimeField(auto_now_add= True)
 	subject = models.CharField(max_length=100)
 	description = QuillField()
-	file = models.FileField(upload_to='media/announcement/',null=True,blank=True)
+	file = models.FileField(storage=PrivateMediaStorage(),upload_to="announcements",null=True,blank=True)
 	announced_by = models.ForeignKey(User,on_delete=models.CASCADE)
 
 	def __str__(self):
@@ -59,7 +60,7 @@ class Announcement(models.Model):
 class Assignment(models.Model):
 	subject_name = models.ForeignKey(Subject,on_delete=models.CASCADE)
 	uploaded_on = models.DateTimeField(auto_now_add= True)
-	file = models.FileField(upload_to='media/',null=True,blank = True,)
+	file = models.FileField(storage=PrivateMediaStorage(),upload_to="assignments",null=True,blank = True,)
 	topic = models.CharField(max_length=100,)
 	description = QuillField()
 	submission_date = models.DateTimeField() 
@@ -73,7 +74,7 @@ class Assignment(models.Model):
 
 class Submission(models.Model):
 	assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
-	file = models.FileField(upload_to="Submissions/")
+	file = models.FileField(storage=PrivateMediaStorage(),upload_to="submissions",)
 	submitted_by = models.ForeignKey(User,on_delete=models.CASCADE)
 	submitted_on = models.DateTimeField(auto_now_add=True)
 	current_status = models.BooleanField(default=False)
