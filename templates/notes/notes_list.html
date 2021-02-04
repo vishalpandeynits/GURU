@@ -7,6 +7,18 @@
 {% include 'django_quill/media.html' %}
 {% endblock %}
 {% block subject_content %}
+{% if messages %}
+<div class="messages container">
+	{% for message in messages %}
+	<div class='alert alert-{{ message.tags }} border border-{{ message.tags }} alert-dismissible fade show'>
+		{{ message }} 
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+	</div>
+{% endfor %}
+</div>
+{% endif %}<br>
 {% if page %}
 <div id="search-overlay" class="block">		
 	<div class="centered">
@@ -42,7 +54,7 @@
 
 	{% if is_teacher %} 
 		<div class="overlay">
-		    <form method="POST"class="overlayform" enctype="multipart/form-data">
+		    <form method="POST" class="overlayform" enctype="multipart/form-data">
 		    	{% csrf_token %}
 				<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> <br>
 				<h1 class="text-center"> Add a note</h1>
@@ -87,7 +99,7 @@
 		{% include 'snippets/paginations.html' %}	
 	{% else %}
 		<h2 class="no-items"> 
-			No material added yet.
+			Looks like note you are searching is not available or not added.
 		</h2>
 	{% endif %}
 </div>

@@ -36,16 +36,21 @@
 				{% get_social_accounts p_user as accounts %}
 					<img style="width:100%;height: 300px;" class="img-fluid"
 					{% if accounts %} 
-					src="{{ p_user.socialaccount_set.all.0.get_avatar_url }}"
+						{% if p_user.profile.profile_pic|filebasename != 'avatar.jpg' %}
+							src="{{ p_user.profile.profile_pic.url }}"
+						{% else %}
+							src="{{ p_user.socialaccount_set.all.0.get_avatar_url }}"
+						{% endif %}
 					{% else %}
-					src="{{ p_user.profile.profile_pic.url }}"
-					{% endif %}>
+						src="{{ p_user.profile.profile_pic.url }}"
+					{% endif %}
+					>
 				<br><br>
 				
 
 				<h3 class="text-center">{{ profile.user.username }}</h3>
 				<h4 class="text-center"> {{p_user.first_name }} {{p_user.last_name }}</h4>
-				<pre class="text-center">{{ profile.bio }}</pre>
+				<pre class="text-center">{% if profile.bio %}{{ profile.bio }}{% endif %}</pre>
 				
 				<div id="social-container"  style="display:flex; justify-content: center;">
 					<a style="background:#EA4335;color:white;"href="mailto:{{profile.user.email}}" target="_blank" 
@@ -84,7 +89,7 @@
 			</center>
 
 			<div id="x" class="overlay">
-				<form method="POST" class="overlayform" onsubmit="return validateprofile();" enctype="multipart/form-data">
+				<form id="form2" method="POST" class="overlayform" onsubmit="return validateprofile();" enctype="multipart/form-data">
 					{% csrf_token %}
 					<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> <br>
 					<h1> Update your profile </h1><br>
@@ -106,7 +111,7 @@
 								{{ field }}
 							{% endif %}
 						{% endfor %}
-						<input type="submit" class="btn btn-primary float-right"value="Update Profile">
+						<input type="submit" id="profile-submit" class="btn btn-primary float-right"value="Update Profile">
 					</div>
 				</form>
 			</div>
@@ -115,9 +120,7 @@
 	<hr/>
 	{% if profile.user.username == user.username %}
 	<div class="container">
-		{% if pending_requests %}
-			<h1 class="text-center">Your pending requests({{pending_requests|length}}) </h1>
-		{% endif %}
+		<h1 class="text-center">Your pending requests({{pending_requests|length}}) </h1>
 		{% for classroom in pending_requests %}
 			<div class="alert bg-dark text-light mx-auto">
 				{{ classroom.class_name }} 
@@ -128,4 +131,6 @@
 	</div>
 	{% endif %}
 </div>
+{% endblock %}
+{% block javascript %}
 {% endblock %}

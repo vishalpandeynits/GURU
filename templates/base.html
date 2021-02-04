@@ -8,15 +8,14 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <link rel="icon" type="image/png" sizes="57x57" href="{% static 'favicon.png' %}">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     {% block css %} {% endblock %}
 </head>
 <body style="overflow-x:hidden;background: rgb(182, 236, 240);">
-    <img src="https://cdn.fstoppers.com/styles/large-16-9/s3/lead/2016/04/laanscapes-chapel-of-eternal-sunset-2016-by-daniel-laan.jpg" style="display: none;" onerror="alert('Connection dead');" />
     <div id="preloader">
         <div id="status">&nbsp;</div>
     </div>
     {% block content %} {% endblock %}
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
     <script src="{% static 'js/homepage.js' %}"></script>
@@ -32,6 +31,50 @@
         $('#status').fadeOut();
         $('#preloader').delay(150).fadeOut('slow');
         })
+        setTimeout(function () { 
+        $('.alert').alert('close'); 
+        }, 3000);
     </script>
+    <script>
+        "use strict";
+        (() => {
+        const modified_inputs = new Set;
+        const defaultValue = "defaultValue";
+        // store default values
+        addEventListener("beforeinput", (evt) => {
+            const target = evt.target;
+            if (!(defaultValue in target || defaultValue in target.dataset)) {
+                target.dataset[defaultValue] = ("" + (target.value || target.textContent)).trim();
+            }
+        });
+        addEventListener("input", (evt) => {
+            const target = evt.target;
+            let original;
+            if (defaultValue in target) {
+                original = target[defaultValue];
+            } else {
+                original = target.dataset[defaultValue];
+            }
+            if (original !== ("" + (target.value || target.textContent)).trim()) {
+                if (!modified_inputs.has(target)) {
+                    modified_inputs.add(target);
+                }
+            } else if (modified_inputs.has(target)) {
+                modified_inputs.delete(target);
+            }
+        });
+        addEventListener("submit", () => {
+            modified_inputs.clear();
+        });
+        addEventListener("beforeunload", (evt) => {
+            if (modified_inputs.size) {
+                const unsaved_changes_warning = "Changes you made may not be saved.";
+                evt.returnValue = unsaved_changes_warning;
+                return unsaved_changes_warning;
+            }
+        });
+        })();
+</script>
+{% block javascript %}{% endblock %}
 </body>
 </html>

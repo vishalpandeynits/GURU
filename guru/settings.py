@@ -1,4 +1,3 @@
-
 from pathlib import Path
 import os
 from decouple import config
@@ -33,6 +32,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     "django_filters",
     'storages',
+    'imagekit',
 
     #all auth
     'allauth',

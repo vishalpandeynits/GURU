@@ -42,7 +42,7 @@ def activate(request, uidb64, token,backend='django.contrib.auth.backends.ModelB
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, user.DoesNotExist):
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
@@ -50,7 +50,7 @@ def activate(request, uidb64, token,backend='django.contrib.auth.backends.ModelB
         messages.add_message(request,messages.SUCCESS,'Thank you for your email confirmation. We request you to kindly update your \
             contact details so other users can contact you in case of any need.')
         if user is not None:
-            login(request, user,backend='django.contrib.auth.backends.ModelBackend')
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         return redirect(reverse('profile',kwargs={'username':user.username}))
     else:
         messages.add_message(request,messages.WARNING,'Activation link is invalid.')

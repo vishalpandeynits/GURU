@@ -20,6 +20,6 @@ urlpatterns = [
     path('comments/', include('django_comments.urls')),
     path('accounts/', include('allauth.urls')),
     path('rest/',include('rest_framework.urls')),
-    path('basicrest/',include('basic.rest_urls'))
+    path('basicrest/',include('basic.rest_urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

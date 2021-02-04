@@ -1,12 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save,pre_delete
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .email import *
 from django_quill.fields import QuillField
-from .utils import unique_id
 from django.urls import reverse
+from imagekit.models import ProcessedImageField
 from guru.storage_back import PrivateMediaStorage
+from imagekit.processors import ResizeToFill
 
 class Classroom(models.Model):
 	created_by = models.ForeignKey(User, on_delete = models.CASCADE,related_name='created_by')
@@ -14,7 +15,8 @@ class Classroom(models.Model):
 	teacher = models.ManyToManyField(User, related_name='classroom_teachers')
 	special_permissions = models.ManyToManyField(User, related_name= "special_permissions")
 	pending_members = models.ManyToManyField(User,related_name='pending_members')
-	classroom_pic = models.ImageField(upload_to="classroom",default="classroom.jpg",storage=PrivateMediaStorage(),null=True,)
+	classroom_pic = ProcessedImageField(upload_to="classroom",default="classroom.jpg",storage=PrivateMediaStorage(),null=True,
+	processors=[ResizeToFill(1000, 1000)],format='JPEG',options={'quality': 100})
 	class_name = models.CharField(max_length = 50)
 	description = models.TextField(null=True, blank=True,max_length=300)
 	created_on = models.DateTimeField(auto_now_add=True)
@@ -24,12 +26,14 @@ class Classroom(models.Model):
 	def __str__(self):
 		return self.class_name
 
+
 class Subject(models.Model):
 	classroom = models.ForeignKey(Classroom, on_delete = models.CASCADE)
 	subject_name = models.CharField(max_length=50)
 	teacher = models.ForeignKey(User,on_delete=models.CASCADE,related_name="teacher")
 	upload_permission = models.ManyToManyField(User,related_name="upload_permitted")
-	subject_pic = models.ImageField(upload_to="subject_content",default="book.jpg",storage=PrivateMediaStorage(),)
+	subject_pic = ProcessedImageField(upload_to="subject_content",default="book.jpg",storage=PrivateMediaStorage(),
+	processors=[ResizeToFill(1000, 1000)],format='JPEG',options={'quality': 100})
 	description = models.TextField(null=True,blank=True,max_length=500)
 
 	def __str__(self):

@@ -1,80 +1,89 @@
-<div class="contactus-container">
-    <div class="container__box">
-      <h1 class="container__title">CONTACT</h1>
   
-      <div class="info">
-        <p class="info__text">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae et
-          quo cupiditate illum veniam eaque.
-        </p>
-        <div class="info__box">
-          <div class="info__content">
-            <i class="info__icon fas fa-map-marker-alt"></i>
-            <p class="info__details">
-              16a, unknown street <br />
-              london <br />
-              ab12 3cd
-            </p>
-          </div>
-  
-          <div class="info__content">
-            <i class="info__icon fas fa-share-alt"></i>
-            <div class="social">
-              <a href="https://github.com/GridSequence/Contact-Us.git" target="_blank"><i class="social__icon fab fa-github"></i></a>
-              <a href="#"><i class="social__icon fab fa-facebook"></i></a>
-            </div>
-          </div>
-  
-          <div class="info__content">
-            <i class="info__icon fa fa-phone"></i>
-            <p class="info__details">+91 9957767675</p>
+  <section id="contact">
+    <h1 class="section-header text-center">CONTACT</h1>
+    <div class="contact-wrapper row">
+      <form method="POST" id="contact-form">{% csrf_token %}
+        <div class="form-group row">
+          <div class="col-sm-12">
+            <input type="text" class="form-control" id="name" placeholder="NAME" name="name" required>
           </div>
         </div>
-  
-        <div class="info__send">WRITE TO US</div>
-      </div>
-  
-      <form class="form" method="POST">{% csrf_token %}
-        <div class="form__box">
-          <div class="form__content">
-            <label class="form__label" for="name">NAME</label>
-            <input class="form__input" required type="text" name="name" id="name" />
-          </div>
-  
-          <div class="form__content">
-            <label class="form__label" for="email">EMAIL</label>
-            <input class="form__input" type="email" name="email" id="email" />
-          </div>
-  
-          <div class="form__content">
-            <label class="form__label" for="subject">SUBJECT</label>
-            <input
-                   class="form__input"
-                   type="text"
-                   name="subject"
-                   id="subject"
-                   required
-                   />
-          </div>
-  
-          <div class="form__content">
-            <label class="form__label" for="textArea">MESSAGE</label>
-            <textarea class="form__input form__input--text"
-                      type="text"
-                      name="message"
-                      required
-                      id="name"
-                      ></textarea>
+        <div class="form-group row">
+          <div class="col-sm-12">
+            <input type="email" class="form-control" id="email" placeholder="EMAIL" name="email" required>
           </div>
         </div>
-        <center>
-          <script src='https://www.google.com/recaptcha/api.js'></script>
-          <div class="g-recaptcha" data-sitekey="6LeG0TwaAAAAADNBKNsIe8WGspEi07Hra7x-6PAs"></div>
-        </center>
-        <div class="form__send" style="position:relative;top:-20px;cursor:pointer;">
-            <input style="color:white;"type="submit" value="SEND">
+        <div class="form-group row">
+          <div class="col-sm-12">
+            <input type="text" class="form-control" id="subject" placeholder="SUBJECT" name="subject"  required>
+          </div>
         </div>
+        <textarea class="form-control" rows="10" id="message" placeholder="MESSAGE" name="message" required></textarea>
+        <button class="btn btn-primary send-button" id="submit" type="submit" value="SEND">
+          <div class="button">
+            <i class="fa fa-paper-plane"></i><span class="send-text">SEND</span>
+          </div>
+        </button>
       </form>
+        <div class="direct-contact-container">
+          <ul class="contact-list">
+            <li class="list-item"><i class="fas fa-map-marker fa-x"><span class="contact-text place">Tinsukia, Assam</span></i></li>
+            <li class="list-item"><i class="fas fa-phone fa-x"><span class="contact-text phone"><a href="tel:+91-9957767675" title="Give me a call">+91-9957767675</a></span></i></li>
+            <li class="list-item"><i class="fas fa-envelope fa-x"><span class="contact-text gmail"><a href="mailto:vishalpandeyviptsk@gmail.com" title="Send me an email">vishalpandeyviptsk@gmail.com</a></span></i></li>
+          </ul>
+          <hr>
+          <ul class="social-media-list">
+            <li><a href="#" target="_blank" class="contact-icon">
+              <i class="fab fa-github" aria-hidden="true"></i></a>
+            </li>
+            <li><a href="#" target="_blank" class="contact-icon">
+              <i class="fab fa-linkedin" aria-hidden="true"></i></a>
+            </li>
+            <li><a href="#" target="_blank" class="contact-icon">
+              <i class="fab fa-twitter" aria-hidden="true"></i></a>
+            </li>
+            <li><a href="#" target="_blank" class="contact-icon">
+              <i class="fab fa-instagram" aria-hidden="true"></i></a>
+            </li>
+          </ul>
+          <hr>
+          <div class="copyright">&copy; ALL OF THE RIGHTS RESERVED</div>
+        </div>
+      
     </div>
-    
-  </div>
+</section> 
+<script>
+$.ajaxSetup({
+headers: { "X-CSRFToken": '{{csrf_token}}' }
+});
+</script>
+<script>
+submit.addEventListener('click',(event)=>{
+  event.preventDefault();
+  $.ajax({
+      type:'POST',
+      url:"{% url 'home' %}",
+      enctype:'multipart/form-data',
+      data:JSON.stringify({
+      name:document.getElementsByName('name')[0].value,
+      email:document.getElementsByName('email')[0].value,
+      message:document.getElementsByName('subject')[0].value,
+      subject:document.getElementsByName('message')[0].value,
+    }),
+      dataType: 'json',
+      success:function(response){
+        console.log(response);
+      },
+      error:function(error){
+         if(error.status==200){
+          document.getElementsByName('name')[0].value = "";
+          document.getElementsByName('email')[0].value = "";
+          document.getElementsByName('subject')[0].value = "";
+          document.getElementsByName('message')[0].value = "";
+          alert(error.responseText);
+         } 
+      },
+      crossDomain:false,
+  })
+})
+</script>

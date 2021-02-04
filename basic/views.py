@@ -12,7 +12,7 @@ from .utils import *
 from django.core.paginator import Paginator
 from django.urls import reverse
 import xlwt
-
+import json
 #--------------------------------------------helper functions-----------------------------------
 
 def member_check(user,classroom):
@@ -26,13 +26,16 @@ def home(request):
     if request.user.is_authenticated:
         return redirect(reverse('homepage'))
     else:
-        if request.method=='POST':
-            name=request.POST.get('name')
-            subject = request.POST.get('subject')
-            email = request.POST.get('email')
-            message =f"{name} \n {email} \n {request.POST.get('message')} "
-            mail_subject = 'Contact us:  '+ subject
-            print(send_mail(subject,message,'guru.online.classroom.portal@gmail.com',['guru.online.classroom.portal@gmail.com']))
+        if request.method=='POST' and request.is_ajax():
+            updatedData=json.loads(request.body.decode('UTF-8'))
+            name=updatedData.get('name') or ""
+            email = updatedData.get('email') or ""
+            message =f"{name} \n {email} \n {updatedData.get('message')} "
+            mail_subject = 'Contact us:  '+ updatedData.get('subject') or ""
+            if(send_mail(mail_subject,message,'guru.online.classroom.portal@gmail.com',['guru.online.classroom.portal@gmail.com'])):
+                return HttpResponse("Email sent successfully")
+            else:
+                return HttpResponse("Error while sending email")
     return render(request,'intro_page.html')
 
 @login_required
@@ -219,6 +222,7 @@ def notes_list(request,unique_id,subject_id,form = None):
                     data.subject_name = subject
                     data.uploaded_by = request.user
                     data.save()
+                    messages.add_message(request,messages.SUCCESS,f"Your Note {data.topic} is added")
                     return redirect(reverse('resources',kwargs={'unique_id':classroom.unique_id,'subject_id':subject.id}))
             else:
                 form= NoteForm()
