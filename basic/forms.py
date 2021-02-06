@@ -31,7 +31,6 @@ class AssignmentForm(forms.ModelForm):
 		model = Assignment
 		fields = ['topic','full_marks','submission_date','file','description']
 		widgets = {
-				'submission_date': DateInput(attrs={'type': 'datetime-local'}),
 				'full_marks':NumberInput(attrs={'max-value': '100'})
 			}
 

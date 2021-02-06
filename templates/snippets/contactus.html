@@ -53,11 +53,6 @@
     </div>
 </section> 
 <script>
-$.ajaxSetup({
-headers: { "X-CSRFToken": '{{csrf_token}}' }
-});
-</script>
-<script>
 submit.addEventListener('click',(event)=>{
   event.preventDefault();
   $.ajax({

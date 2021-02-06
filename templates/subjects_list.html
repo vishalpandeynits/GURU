@@ -6,8 +6,9 @@
 <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
 {% endblock %}
 {% block content %}
-<div>	
+<div>
 	{% include 'snippets/navigation.html' %}<br>
+	
 	{% if is_admin %}
     <div class="text-center container classroom-details m-auto mt-4 ">
         <h2> {{ classroom.class_name }} </h2>
@@ -23,6 +24,7 @@
         {% endif %}
     </div>
 	{% endif %}
+
 	{% if form %}
 		<center> 
 			<button onclick="on(document.getElementsByClassName('overlay')[0])" id="add-subject-btn"> 
@@ -72,13 +74,13 @@
 
 		{% if subjects %}
 		<br>
-		<div class="row">
+		<div class="row" style="width:100vw !important;">
 			{% for subject in subjects %}
 			<div class="col-xs-12 col-md-6 col-lg-4">
 				<a class="text-center" style="color:white;"
 					href="{% url 'resources' classroom.unique_id subject.id  %}">
 				<div class="subject-container">
-				  <img src="{{subject.subject_pic.url }}" alt="Notebook" loading=""style="width:100%;height:350px;">
+				  <img src="{{subject.subject_pic.url }}" alt="Notebook" style="width:100%;height:350px;">
 				  <div class="content">
 					    <h1>{{ subject|upper }}</h1>
 					    <p>by {{subject.teacher }}</p>

@@ -14,6 +14,9 @@ class Poll(models.Model):
 	voters = models. ManyToManyField(User,related_name="voters")
 	announce_at= models.DateTimeField()
 
+	class Meta:
+   		ordering = ['-id']
+
 class Choice(models.Model):
 	poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
 	choice_text = models.CharField(max_length=200)

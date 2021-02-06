@@ -1,9 +1,104 @@
 {% load socialaccount %}
-{% load filters %}
 {% load account %}
+{% load filters %}
+{% load humanize %}
+{% load notifications_tags %} 
+<style>
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 60px;
+    position: relative;
+    top:10px;
+}
+
+.icon {
+    cursor: pointer;
+    margin-right: 50px;
+    line-height: 60px;
+}
+
+.icon span {
+    background: #f00;
+    padding: 7px;
+    border-radius: 50%;
+    color: #fff;
+    vertical-align: top;
+    margin-left: -25px
+}
+
+.icon:hover {
+    opacity: .7
+}
+
+.logo {
+    flex: 1;
+    margin-left: 50px;
+    color: #eee;
+    font-size: 20px;
+    font-family: monospace
+}
+
+.notifications {
+    width: 300px;
+    height: 0px;
+    opacity: 0;
+    position: absolute;
+    top: 50px;
+    right: 62px;
+    border-radius: 5px 0px 5px 5px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    z-index:500;
+}
+
+.notifications h2 {
+    font-size: 14px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    color: #999
+}
+
+.notifications h2 span {
+    color: #f00
+}
+
+.notifications-item {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    padding: 6px 9px;
+    margin-bottom: 0px;
+    cursor: pointer
+}
+
+.notifications-item:hover {
+    background-color: #eee
+}
+
+.notifications-item img {
+    display: block;
+    width: 50px;
+    height: 50px;
+    margin-right: 9px;
+    border-radius: 50%;
+    margin-top: 2px
+}
+
+.notifications-item .text h4 {
+    color: #777;
+    font-size: 16px;
+    margin-top: 3px
+}
+
+.notifications-item .text p {
+    color: #aaa;
+    font-size: 12px
+}
+</style>
 <div class="row">
     <div class="col-2">
-        <div style="float:right;" id="mySidenav" class="sidenav">
+        <div id="mySidenav" class="sidenav">
             <button class="closebtn" onclick="closeNav()">
               &times;
             </button >
@@ -33,41 +128,84 @@
     </div>
 </div>
 
-<div class="px-2 bg-light" style="background:white;height:65px;box-shadow:0px 4px 10px rgb(146, 144, 144);">
-    <span class="pl-1 mb-4" id="openNav" onclick="openNav()">
-        &#9776;
-    </span>
-    {% if classroom %}
-        <span class="class-name">&nbsp;  {{ classroom.class_name|slice:"0:20" }}</span>
-    {% endif %}
-
-    
-    {% if  user.is_authenticated %}
-    {% get_social_accounts user as accounts %}
-    
-    <div id="co" class="float-right user-icon mr-4 mt-3 text-dark"  onclick="on_nav(_('dropdown-container'))" >
-        <img id="icon" height="50" width="50" 
-        style="position:absolute;top:10px;right:10px;border-radius:15%;"
-        {% if accounts %} 
-            {% if p_user.profile.profile_pic|filebasename != 'avatar.jpg' %}
-                src="{{ user.profile.profile_pic.url }}"
-            {% else %}
-                src="{{ user.socialaccount_set.all.0.get_avatar_url }}"
-            {% endif %}
-        {% else %}
-            src="{{ user.profile.profile_pic.url }}"
+<div class="horizontal-bar">
+    <div>
+        <span id="openNav" onclick="openNav()">
+            &#9776;
+        </span>
+        {% if classroom %}
+            <span class="class-name">&nbsp;  {{ classroom.class_name|slice:"0:20" }}</span>
         {% endif %}
-        >
     </div>
-
-    <div id="dropdown-container" style="flex-direction: column;"class="bg-dark float-right text-dark">
-        <a class="text-light d-block" href="{% url 'profile' user.username %}">
-            Profile
-        </a>
-        <a class="text-light d-block" href="{% url 'logout' %}">
-            Log Out
-        </a>
+    <div class="second-box">  
+        {% if user.is_authenticated %}
+        <nav>
+            <div class="icon" id="bell"> <i class="fas fa-2x fa-bell"></i> </div>
+            <div class="notifications" id="box">
+                <h2>Notifications - <span>{% live_notify_badge %}</span></h2>
+                <div id="notification-container">
+                </div>
+                <script>
+                    function my_special_notification_callback(data) {
+                        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                        el = document.getElementById('notification-container');
+                        var str = "";
+                        for (var i=0; i < data.unread_list.length; i++) {
+                            msg = data.unread_list[i];
+                            str += `<a href="${msg.data.url}">
+                            <div class="notifications-item"> 
+                                    <div class="text">
+                                        <h4> ${msg.verb} </h4> by
+                                        <span>${msg.actor}</span> on ${ new Date(msg.timestamp).toLocaleDateString("en-US", options)}
+                                    </div>
+                                </div></a>`
+                            console.log(msg);
+                        }
+                        el.innerHTML = str;
+                    }
+                    </script>
+                {% register_notify_callbacks callbacks='fill_notification_badge,my_special_notification_callback' %}
+            </div>
+        </nav>
+        {% get_social_accounts user as accounts %}
+        <div class="user-icon"  onclick="on_nav(_('dropdown-container'))" >
+            <img id="icon" height="50" width="50"
+            {% if accounts %} 
+                {% if p_user.profile.profile_pic|filebasename != 'avatar.jpg' %}
+                    src="{{ user.profile.profile_pic.url }}"
+                {% else %}
+                    src="{{ user.socialaccount_set.all.0.get_avatar_url }}"
+                {% endif %}
+            {% else %}
+                src="{{ user.profile.profile_pic.url }}"
+            {% endif %}
+            >
+        </div>
+        <div id="dropdown-container" style="flex-direction: column;"class="bg-dark float-right text-dark">
+            <a class="text-light d-block" href="{% url 'profile' user.username %}">
+                Profile
+            </a>
+            <a class="text-light d-block" href="{% url 'logout' %}">
+                Log Out
+            </a>
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
 </div>
-</div>
+<script>
+    $(document).ready(function(){
+var down = false;
+    $('#bell').click(function(e){
+    var color = $(this).text();
+    if(down){
+    $('#box').css('height','0px');
+    $('#box').css('opacity','0');
+    down = false;
+    }else{
+    $('#box').css('height','auto');
+    $('#box').css('opacity','1');
+    down = true;
+    }
+    });
+});
+</script>

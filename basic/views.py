@@ -9,10 +9,10 @@ from .models import *
 from .email import *
 from .delete_notify import *
 from .utils import *
-from django.core.paginator import Paginator
 from django.urls import reverse
 import xlwt
 import json
+from notifications.signals import notify
 #--------------------------------------------helper functions-----------------------------------
 
 def member_check(user,classroom):
@@ -36,7 +36,7 @@ def home(request):
                 return HttpResponse("Email sent successfully")
             else:
                 return HttpResponse("Error while sending email")
-    return render(request,'intro_page.html')
+    return render(request,'intro_page.html',{})
 
 @login_required
 def join(request,key):
@@ -72,12 +72,12 @@ def homepage(request):
              You can access classroom material when someone lets you in.")
             request.user.profile.pending_invitations.add(classroom)
             return redirect(reverse('homepage'))
-            
         else:
             classroom.members.add(request.user)
-            notify = Classroom_activity(classroom=classroom,actor=request.user)
-            notify.action = "A new member "+ str(request.user.username)+ "Have joined your classroom."
-            notify.save()
+            recepients = classroom.members.all(),
+            url = reverse('profile',kwargs={'username':request.user.username})
+            notify.send(sender=request.user,recipient=recepients,
+            verb=f"{request.user.username} has joined {classroom.class_name}",url= url)
     
     #create classroom
     if request.method=='POST':
@@ -160,9 +160,7 @@ def subjects(request, unique_id, form = None):
         #querysets
         members = classroom.members.all()
         subjects = Subject.objects.all().filter(classroom=classroom)
-        subject_teacher_check = Classroom.objects.filter(teacher=request.user).exists()
         admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
-        is_teacher = admin_check
 
         # Admins can add a subject with its teacher
         if admin_check:
@@ -192,7 +190,7 @@ def subjects(request, unique_id, form = None):
             'subjects':subjects,
             'form':form,
             'classroom':classroom,
-            'is_admin':is_teacher,
+            'is_admin':admin_check,
             'members':members
             }
         return render(request,'subjects_list.html',params)
@@ -212,12 +210,11 @@ def notes_list(request,unique_id,subject_id,form = None):
         upload_permission = subject.upload_permission.all().filter(username=request.user.username).exists()
         admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
         is_teacher = admin_check or upload_permission or request.user==subject.teacher  
-
         #Add note form handling
         if is_teacher:
             if request.method=="POST":
                 form = NoteForm(request.POST,request.FILES)
-                if form.is_valid():
+                if form.is_valid:
                     data=form.save(commit=False)
                     data.subject_name = subject
                     data.uploaded_by = request.user
@@ -293,18 +290,22 @@ def resource_delete(request,unique_id,subject_id,id):
 @login_required
 def assignments_list(request ,unique_id, subject_id, form=None):
     classroom = Classroom.objects.get(unique_id=unique_id)
+    print("gdfg")
     if member_check(request.user,classroom):
+        print("gdfg")
         subject = Subject.objects.get(id=subject_id)
         admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
         is_teacher = admin_check or subject.teacher==request.user
 
         #add assignent form handling
         if is_teacher:
+            print("gdfg")
             if request.method=="POST":
+                print("gdfg")
                 form = AssignmentForm(request.POST,request.FILES)
                 if form.is_valid():
+                    print("gdfg")
                     assignment = form.save(commit=False)
-                    assignment.submission_date = datetime_return(request.POST.get('submission_date'),request.POST.get('submission_time'))
                     assignment.subject_name = subject
                     assignment.assigned_by = request.user
                     assignment.save()
@@ -318,6 +319,7 @@ def assignments_list(request ,unique_id, subject_id, form=None):
         search = request.GET.get('search')
         if search:
             assignments = assignments.filter(Q(topic__icontains=search)|Q(description__icontains=search))
+            print("gdfg")
         query,page_range = pagination(request,assignments)
         assignments=query.object_list
 
@@ -348,7 +350,6 @@ def assignment_details(request,unique_id,subject_id,id):
                 if updateform.is_valid():
                     assignmentform = updateform.save(commit=False)
                     assignmentform.subject_name = subject
-                    assignmentform.submission_date = datetime_return(request.POST.get('submission_date'), request.POST.get('submission_time'))
                     assignmentform.save()
                     return redirect(reverse('assignment_page',kwargs=
                         {'unique_id':classroom.unique_id,'subject_id':subject.id,'id':assignment.id}))

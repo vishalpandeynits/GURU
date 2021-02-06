@@ -3,6 +3,8 @@
 {% block title %} POLL LIST {% endblock %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/polls.css' %}">
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 {% include 'django_quill/media.html' %}
 {% endblock %}
 {% block content %}
@@ -32,9 +34,7 @@
                                 {{ field }}
                             {% endif %}
                         {% endfor %}
-                        <label for="announce_at_date">Announce at</label><br>
-                        <input type="date" onclick ="previous_date_disable(this)" name="announce_at_date">
-                        <input type="time" name="announce_at_time">
+                        Options:<br>
                         <input type="text" class="mb-2" autocomplete="off" placeholder="Mention more option..." name="check">
                         <input type="text" class="mb-2" autocomplete="off" placeholder="Mention your option..." name="check">
                         <div id="more-inputs"></div>
@@ -72,4 +72,12 @@
     </div>
 </div>
 </div>
+<script>
+$('#id_announce_at').datetimepicker({
+    datepicker: { showOtherMonths: true },
+    modal: true,
+    footer: true,
+    format:'dd/mm/yyyy HH:MM',
+});
+</script>
 {% endblock %}

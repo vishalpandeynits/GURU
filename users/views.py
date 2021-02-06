@@ -12,6 +12,7 @@ from .models import Profile
 from django.contrib import messages
 from django.conf import settings
 from django.urls import reverse
+from basic.models import Classroom
 
 def signup(request):
     if request.method == 'POST':
@@ -79,7 +80,7 @@ def profiles(request, username):
                 'bio':request.user.profile.bio
             })
     context = {		
-        'pending_requests':request.user.profile.pending_invitations.all(),
+        'pending_requests':Classroom.objects.filter(pending_members__username__icontains=request.user.username),
         'p_user':p_user,
         'p_form' : p_form,
         'profile' : profile,

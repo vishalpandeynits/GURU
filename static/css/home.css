@@ -3,7 +3,14 @@
 html,body{
   margin:0;
   padding:0;
+  overflow-x:hidden;
+  background:#FAFAFA;
   font-family: 'Nunito Sans', sans-serif !important;
+}
+.row{
+  width:100vw;
+  display:flex;
+  overflow:hiden;
 }
 .no-scroll{
   overflow:hidden !important;
@@ -82,21 +89,22 @@ padding-right: 2px;
 
 /*Sidenav*/
 #openNav{
-  background:black;
-  color:white;
   font-size:30px;
   cursor:pointer;
   box-shadow:2px 4px 4px darkgrey;
-  width:40px;
-  border-radius:15px;
-  border-color:white;
-  display: inline;
-  float:left;
-  position:relative;
-  top:9px;
-  left:15px;
+  width:50px !important;
+  height:50px !important;
+  border-radius:45%;
+  text-align: center;
+  padding:5px;
+  padding-left:12px;
   background:white;
   color:black;
+  transition:0.3s;
+}
+#openNav:hover{
+  background:black;
+  color:white;
 }
 
 .sidenav {
@@ -209,6 +217,43 @@ padding-right: 2px;
 }
 .user-icon{
   cursor:pointer;
+  border-radius:10%;
+}
+.second-box{
+  display:flex;
+  justify-content: flex-end;
+  align-items:center;
+}
+.second-box>span{
+  margin-right:20px;
+  color:blue;
+  margin-top:10px;
+  position:relative;
+  padding:10px;
+  border-radius:48%;
+}
+.second-box>span>.count{
+  position:absolute;
+  top:-2px;
+  border-radius:50%;
+  padding:0px 6px;
+  background:red;
+  color:white;
+  right: -0px;
+  font-size:18px;;
+  color:black;
+  font-weight: bold;
+
+}
+.horizontal-bar{
+  background:white;
+  width:100vw !important;
+  padding:0 20px;
+  display:flex;
+  align-items: center;
+  justify-content:space-between;
+  height:8.6vh;
+  box-shadow:0px 0px 8px black;
 }
 .dropdown-content {
   font-size: 15px;
@@ -515,9 +560,6 @@ input[type="date"]:focus,input[type="time"]:focus{
 }
 .class-name{
   font-size:1.4em;
-  position:relative;
-  top:18px;
-  left:10px;
   width:150px;
   height:50px;
   max-height:60px;

@@ -4,6 +4,7 @@ from django.urls import path,include
 from django.conf.urls.static import static
 from django.contrib.auth import views
 from users.forms import UserLoginForm
+import notifications.urls
 
 urlpatterns = [
     path('AKIAUMKLYNQMHJ3N2H7Q/', admin.site.urls),
@@ -21,5 +22,6 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('rest/',include('rest_framework.urls')),
     path('basicrest/',include('basic.rest_urls')),
+    path('inbox/notifications/', include(notifications.urls, namespace='notifications')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

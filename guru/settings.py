@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "django_filters",
     'storages',
     'imagekit',
+    'notifications',
 
     #all auth
     'allauth',
@@ -106,6 +107,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
 
 QUILL_CONFIGS = {
     'default':{

@@ -1,10 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from .email import *
 from django_quill.fields import QuillField
-from django.urls import reverse
 from imagekit.models import ProcessedImageField
 from guru.storage_back import PrivateMediaStorage
 from imagekit.processors import ResizeToFill
@@ -106,62 +103,3 @@ class Classroom_activity(models.Model):
 
 	def __str__(self):
 		return self.action
-
-
-@receiver(post_save, sender=Note)
-def note_signal(sender, instance, created, **kwargs):
-	if created:
-		note_email(instance)
-
-@receiver(post_save, sender=Announcement)
-def announcement_signal(sender, instance, created, **kwargs):
-	if created:
-		announcement_email(instance)
-
-@receiver(post_save, sender=Assignment)
-def assignment_signal(sender, instance, created, **kwargs):
-	if created:
-		assignment_email(instance)
-
-@receiver(post_save, sender=Note)
-def note_tracker(sender, instance, created, **kwargs):
-	if created:
-		activity = Subject_activity(subject=instance.subject_name,actor=instance.uploaded_by)
-		activity.action = "A new note is added."
-		activity.url = reverse('read_note', kwargs={
-			'unique_id':instance.subject_name.classroom.unique_id,
-			'subject_id':instance.subject_name.id,
-			'id':instance.id
-			})
-		activity.save()
-
-@receiver(post_save, sender=Announcement)
-def announcement_tracker(sender, instance, created,**kwargs):
-	if created:
-		activity = Subject_activity(subject=instance.subject_name,actor=instance.announced_by)
-		activity.action = "A new Announcement is added."
-		activity.url = reverse('announcement_page',kwargs={
-			'unique_id':instance.subject_name.classroom.unique_id,
-			'subject_id':instance.subject_name.id,
-			'id':instance.id
-			})
-		activity.save()
-
-@receiver(post_save, sender=Assignment)
-def assignment_tracker(sender, instance, created, **kwargs):
-	if created:
-		activity = Subject_activity(subject=instance.subject_name,actor=instance.assigned_by)
-		activity.action = f"A new Assignment is added. Submission date is {instance.submission_date}"
-		activity.url = reverse('assignment_page',kwargs={
-			'unique_id':instance.subject_name.classroom.unique_id,
-			'subject_id':instance.subject_name.id,
-			'id':instance.id
-			})
-		activity.save()
-
-@receiver(post_save,sender=Subject)
-def classroom_tracker(sender, instance, created, **kwargs):
-	if created:
-		activity = Classroom_activity(classroom=instance.classroom,actor=instance.classroom.created_by)#CHECK
-		activity.action = f"A new subject is added."
-		activity.save()

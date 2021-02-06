@@ -4,8 +4,12 @@
 {% block title %} POLL DETAILS {% endblock %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/polls.css' %}">
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 {% include 'django_quill/media.html' %}
 {% endblock %}
+{% load cache %}
+{% cache 100 poll %}
 {% block content %}
 <div>
     {% include 'snippets/navigation.html' %}
@@ -61,9 +65,6 @@
                                 {{ field }}
                             {% endif %}
                             {% endfor %}
-                            Announce at:<br>
-                            <input type="date" onclick ="previous_date_disable(this)" value="{{date}}"name="announce_at_date">
-                            <input type="time" value="{{time }}"name="announce_at_time">
                             <input type="submit" class="btn btn-primary float-right"value="Update Poll">
                         </div>
                     </form>
@@ -111,7 +112,7 @@
                 </p>
 
                 {% for choice in choices %}
-                    <a href="{% url 'voting' classroom.unique_id poll.id choice.id %}">
+                    <a onclick="vote(this)" href="{% url 'voting' classroom.unique_id poll.id choice.id %}">
                         <div class="alert alert-info choice">{{ choice.choice_text}} 
                             {% if show_result %}
                                 <span class="text-success float-right">
@@ -131,4 +132,14 @@
         
     </div>
 </div>
+<script>
+    $('#id_announce_at').datetimepicker({
+        datepicker: { showOtherMonths: true },
+        modal: true,
+        footer: true,
+        format:'dd/mm/yyyy HH:MM',
+        value: '{{ poll.announce_at|date:"d/m/Y" }} {{ poll.announce_at|time:"H:i" }}' 
+    });
+</script>
 {% endblock %}
+{% endcache %}

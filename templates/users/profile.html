@@ -4,8 +4,9 @@
 {% load filters %}
 {% load static %}
 {% load account %}
+{% load humanize %}
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<link href="{% static 'css/profile.css' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
 <div>
@@ -22,77 +23,92 @@
 		{% endfor %}
         </div>
 	{% endif %}<br>
-	{% if user.username == profile.user.username %}
-		{% if not user.profile.whatsapp_number or not user.profile.phone_number %}
-		<center class="lead bg-warning p-2 bg-dark container text-white">
-			Please add your contact details so other users can contact you in case of any need.
-		</center>
-		{% endif %}
-	{% endif %}
-	
-	<div id="profile" class="container">
-		<div class="row">
-			<div id="info" class="mx-auto">
-				{% get_social_accounts p_user as accounts %}
-					<img style="width:100%;height: 300px;" class="img-fluid"
-					{% if accounts %} 
-						{% if p_user.profile.profile_pic|filebasename != 'avatar.jpg' %}
-							src="{{ p_user.profile.profile_pic.url }}"
-						{% else %}
-							src="{{ p_user.socialaccount_set.all.0.get_avatar_url }}"
-						{% endif %}
-					{% else %}
-						src="{{ p_user.profile.profile_pic.url }}"
-					{% endif %}
-					>
-				<br><br>
-				
+    <div class="container">
+        <div class="profile-header">
+          <div class="profile-img">
+            <img 
+            {% if accounts %} 
+                {% if p_user.profile.profile_pic|filebasename != 'avatar.jpg' %}
+                    src="{{ user.profile.profile_pic.url }}"
+                {% else %}
+                    src="{{ user.socialaccount_set.all.0.get_avatar_url }}"
+                {% endif %}
+            {% else %}
+                src="{{ user.profile.profile_pic.url }}"
+            {% endif %}
+         width="200" alt="Profile Image">
+          </div>
+          <div class="profile-nav-info">
+            <h3 class="user-name">{{p_user.first_name}} {{p_user.last_name}} Vishal Pandey</h3>
+            <div class="address">
+              <p id="state" class="state">{{p_user.username}}</p>
+              <p id="state" class="state">Joined on {{p_user.date_joined|date }} </p>
+            </div>
+          </div>
+          <div class="profile-option">
+            <div class="notification">
+              <i class="fa fa-bell"></i>
+              <span class="alert-message">3</span>
+            </div>
+          </div>
+        </div>
+      
+        <div class="main-bd">
+          <div class="left-side">
+            <div class="profile-side">
+              <p class="mobile-no"><i class="fa fa-2x mb-2 fa-phone"></i> {{p_user.profile.phone_number }}</p>
+              <p class="user-mail"><i class="fa fa-2x mb-2 fa-envelope"></i> {{p_user.email }}</p>
+              <p class="mobile-no"><i class="fab fa-2x fa-whatsapp"></i></i> {{p_user.profile.whatsapp_number }}</p>
+              <div class="user-bio">
+                <h3>Bio</h3>
+                <p class="bio">
+                    {{p_user.profile.bio }}
+                </p>
+              </div>
+            </div>
+      
+          </div>
+          <div class="right-side">
+            <div class="nav">
+              <ul>
+                <li onclick="tabs(0)" class="user-post active">Classrooms </li>
+                <li onclick="tabs(1)" class="user-review">Update Profile</li>
+                <li onclick="tabs(2)" class="user-setting"> Pending requests </li>
+              </ul>
+            </div>
 
-				<h3 class="text-center">{{ profile.user.username }}</h3>
-				<h4 class="text-center"> {{p_user.first_name }} {{p_user.last_name }}</h4>
-				<pre class="text-center">{% if profile.bio %}{{ profile.bio }}{% endif %}</pre>
-				
-				<div id="social-container"  style="display:flex; justify-content: center;">
-					<a style="background:#EA4335;color:white;"href="mailto:{{profile.user.email}}" target="_blank" 
-						class="btn-floating btn-lg btn-gplus">
-						<i class="fas fa-envelope"></i>
-					</a>
-					{% if profile.whatsapp_number != None %}
-						<a target="_blank" style="background:#1eae9d;color:white;"class="btn-floating btn-lg btn-whatsapp" 
-							href="https://api.whatsapp.com/send?phone={{ profile.whatsapp_number}}">
-							<i class="fab fa-whatsapp"></i>
-						</a>
-					{% endif %}
+            <div class="profile-body">
+              <div class="profile-posts tab">
+                <h1>Classrooms</h1>
+				<table class="table table-striped table hover table-bordered">
+					<thead class="thead-dark">
+					  <tr>
+						<th scope="col"></th>
+						<th scope="col">Class</th>
+						<th scope="col">Created By</th>
+						<th scope="col">Subjects</th>
+					  </tr>
+					</thead>
+					<tbody>
+						{% for class in classes %}
+							<tr>
+								<th scope="row">{{forloop.counter}}</th>
+								<td>
+									<a href="{% url 'subjects' class.unique_id %}">{{class.class_name|upper}}</a>
 
-					{% if profile.phone_number  != None %}
-						<a style="color:white;"target="_blank" href="tel:{{profile.phone_number }}" 
-							class="btn-floating btn-lg">
-							<i style="transform: rotate(270deg)"class="fa fa-phone" aria-hidden="true"></i>
-						</a>
-					{% endif %}
-				</div>
-			</div>
-		</div>
-
-		{% if profile.user.username == user.username %}
-			<center>
-				<button style="margin:10px;" class="btn btn-info"
-				onclick="on(document.getElementById('x'))">
-				Edit profile
-				</button>
-				{% get_social_accounts user as accounts %}
-				{% if not accounts %} 
-					<a style="margin:10px;"class="btn btn-info" href="{% url 'password_change' %}">
-						Change Password
-					</a>
-				{% endif %}
-			</center>
-
-			<div id="x" class="overlay">
-				<form id="form2" method="POST" class="overlayform" onsubmit="return validateprofile();" enctype="multipart/form-data">
+								</td>
+								<td>{{class.created_by}}</td>
+								<td>{{class.subject_set.count }}</td>
+								</th>
+							</tr>
+						{% endfor %}
+					</tbody>
+				  </table>
+              </div>
+              <div class="profile-reviews tab">
+                <h1>Update Profile</h1>
+                <form method="POST" onsubmit="return validateprofile();" enctype="multipart/form-data">
 					{% csrf_token %}
-					<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> <br>
-					<h1> Update your profile </h1><br>
 					<p id="profile-errors"></p>
 					<div id="profile-edit">
 						{% for field in p_form %}
@@ -110,27 +126,71 @@
 								{{ field.label_tag }}<br>
 								{{ field }}
 							{% endif %}
-						{% endfor %}
-						<input type="submit" id="profile-submit" class="btn btn-primary float-right"value="Update Profile">
+						{% endfor %}<br>
+						<input type="submit" class="btn btn-primary float-right"value="Update Profile">
 					</div>
 				</form>
-			</div>
-		{% endif %}
-	</div>
-	<hr/>
-	{% if profile.user.username == user.username %}
-	<div class="container">
-		<h1 class="text-center">Your pending requests({{pending_requests|length}}) </h1>
-		{% for classroom in pending_requests %}
-			<div class="alert bg-dark text-light mx-auto">
-				{{ classroom.class_name }} 
-				<a class="float-right text-primary" href="{% url 'unsend_request' classroom.unique_id %}">Cancel request</a>
-			</div>
-			
-		{% endfor %}
-	</div>
-	{% endif %}
-</div>
+              </div>
+              <div class="profile-settings tab">
+                <div class="account-setting">
+                  <h1>Your pending requests ({{ pending_requests|length }})</h1>
+				  {% for classroom in pending_requests %}
+					<div class="alert bg-light border-dark mx-auto">
+						{{ classroom.class_name }} 
+						<a class="float-right text-primary" href="{% url 'unsend_request' classroom.unique_id %}">Cancel request</a>
+					</div>
+			  		{% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 {% endblock %}
 {% block javascript %}
+<script>
+$(".nav ul li").click(function() {
+  $(this)
+    .addClass("active")
+    .siblings()
+    .removeClass("active");
+});
+
+const tabBtn = document.querySelectorAll(".nav ul li");
+const tab = document.querySelectorAll(".tab");
+
+function tabs(panelIndex) {
+  tab.forEach(function(node) {
+    node.style.display = "none";
+  });
+  tab[panelIndex].style.display = "block";
+}
+tabs(0);
+
+let bio = document.querySelector(".bio");
+const bioMore = document.querySelector("#see-more-bio");
+const bioLength = bio.innerText.length;
+
+function bioText() {
+  bio.oldText = bio.innerText;
+
+  bio.innerText = bio.innerText.substring(0, 100) + "...";
+  bio.innerHTML += `<span onclick='addLength()' id='see-more-bio'>See More</span>`;
+}
+
+bioText();
+
+function addLength() {
+  bio.innerText = bio.oldText;
+  bio.innerHTML +=
+    "&nbsp;" + `<span onclick='bioText()' id='see-less-bio'>See Less</span>`;
+  document.getElementById("see-less-bio").addEventListener("click", () => {
+    document.getElementById("see-less-bio").style.display = "none";
+  });
+}
+if (document.querySelector(".alert-message").innerText > 9) {
+  document.querySelector(".alert-message").style.fontSize = ".7rem";
+}
+
+</script>
 {% endblock %}
