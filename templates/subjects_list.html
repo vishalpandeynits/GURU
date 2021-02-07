@@ -25,7 +25,7 @@
     </div>
 	{% endif %}
 
-	{% if form %}
+	{% if is_admin %}
 		<center> 
 			<button onclick="on(document.getElementsByClassName('overlay')[0])" id="add-subject-btn"> 
 				Add a subject
@@ -45,7 +45,7 @@
     {% endif %}
 
 	<div class="container-fluid">
-		{% if form %}
+		{% if is_admin %}
 		<div id="overlay" class="overlay">
 
 			<form class="overlayform" action="{% url 'subjects' classroom.unique_id %}" 

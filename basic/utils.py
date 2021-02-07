@@ -1,9 +1,15 @@
 import string
 from random import choice,randint
 from django.core.paginator import Paginator
-import re
-from django.utils.text import slugify
-import datetime 
+from django.http.response import Http404
+from django.http import Http404
+
+def member_check(user,classroom):
+    member = classroom.members.all().filter(username=user.username)
+    if member:
+        return True
+    raise Http404()
+
 def extension_type(file_name):
 	videos = ['WEBM','MPG', 'MP2', 'MPEG','MPE', 'MPV', 'OGG', 'MP4', 'M4P' , 'M4V', 'AVI', 'WMV', 'MOV', 'QT','FLV', 'SWF','MKV']
 	images = ["JPG","PNG","GIF","PSD","RAW","BMP","SVG","AI","EPS","JPEG"]
@@ -38,8 +44,3 @@ def unique_id():
 
 def filter_fun(key):
 	return key!=""
-
-def datetime_return(str1,str2):
-    datetime_str = str1 + ' ' + str2
-    datetime_val=datetime.datetime.strptime(datetime_str, '%Y-%m-%d %H:%M')
-    return datetime_val

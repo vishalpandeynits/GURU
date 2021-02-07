@@ -60,9 +60,6 @@
 		    	{% csrf_token %}
 				<a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> <br>
 				<h1 class="text-center"> Add a note</h1>
-				<div class="progress progress-striped active" >
-					<div class="bar" style="width: 0%;"><span id="percent"></span></div>
-				</div>
 				<div>
 					{% for field in form %}
 						{% if field.field.widget.input_type == 'file' %}

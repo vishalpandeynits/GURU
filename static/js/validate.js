@@ -148,27 +148,27 @@ function previous_date_disable(el){
     var minDate= year + '-' + month + '-' + day;
     el.min = minDate
 }
-// const actualBtn = _('actual-btn');
-// const fileChosen = _('file-chosen');
-// actualBtn.addEventListener('change', function(){
-// try {
-//     var maxFileSize = 15
-//     var fileSize = _('actual-btn').files[0].size
-//     fileSize = fileSize / 1048576;
-//     alert(fileSize);
-//     if(fileSize <= maxFileSize ){
-//     _('file-upload-label').textContent = this.files[0].name + " selected. Click again to change"
-//     }
-//     if (fileSize > maxFileSize) throw "Too big";
-//     }
-//     catch (e) {
-//     alert("Sorry, file is too large. Please select one that is smaller than "+maxFileSize +' Mb');
-//     e.preventDefault()
-//     console.log(_('actual-btn').files[0].size);
-//     _('file-upload-label').innerHTML='Upload File<span>\
-//     <i class="fa mx-2 fa-upload" aria-hidden="true"></i></span></label>';
-//     }
-// })
+const actualBtn = _('actual-btn');
+const fileChosen = _('file-chosen');
+actualBtn.addEventListener('change', function(){
+try {
+    var maxFileSize = 15
+    var fileSize = _('actual-btn').files[0].size
+    fileSize = fileSize / 1048576;
+    alert(fileSize);
+    if(fileSize <= maxFileSize ){
+    _('file-upload-label').textContent = this.files[0].name + " selected. Click again to change"
+    }
+    if (fileSize > maxFileSize) throw "Too big";
+    }
+    catch (e) {
+    alert("Sorry, file is too large. Please select one that is smaller than "+maxFileSize +' Mb');
+    e.preventDefault()
+    console.log(_('actual-btn').files[0].size);
+    _('file-upload-label').innerHTML='Upload File<span>\
+    <i class="fa mx-2 fa-upload" aria-hidden="true"></i></span></label>';
+    }
+})
 
 const tx = document.getElementsByTagName('textarea');
 for (let i = 0; i < tx.length; i++) {

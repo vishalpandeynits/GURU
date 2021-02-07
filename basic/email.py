@@ -1,6 +1,5 @@
 from django.template.loader import render_to_string
-from django.core.mail import EmailMessage,send_mail
-from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from django.conf import settings
 
 def note_email(note):

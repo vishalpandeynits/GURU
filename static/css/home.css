@@ -3,14 +3,11 @@
 html,body{
   margin:0;
   padding:0;
-  overflow-x:hidden;
-  background:#FAFAFA;
+  background:#d8e9e9;
   font-family: 'Nunito Sans', sans-serif !important;
 }
-.row{
-  width:100vw;
-  display:flex;
-  overflow:hiden;
+body{
+  overflow-x: hidden;
 }
 .no-scroll{
   overflow:hidden !important;
@@ -587,4 +584,58 @@ background-image: url(https://raw.githubusercontent.com/niklausgerber/PreLoadMe/
 background-repeat: no-repeat;
 background-position: center;
 margin: -100px 0 0 -100px;
+}
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 60px;
+  position: relative;
+  top:10px;
+}
+
+.notifications {
+  width: 300px;
+  position: absolute;
+  display: none;
+  top: 50px;
+  right: 62px;
+  border-radius: 5px 0px 5px 5px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  z-index:500;
+}
+
+.notifications h2 {
+  font-size: 14px;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  color: #999
+}
+
+.notifications h2 span {
+  color: #f00
+}
+
+.notifications-item {
+  display: flex;
+  border-bottom: 1px solid #eee;
+  padding: 6px 9px;
+  margin-bottom: 0px;
+  cursor: pointer
+}
+
+.notifications-item:hover {
+  background-color: #eee
+}
+
+.notifications-item .text h4 {
+  color: #777;
+  font-size: 16px;
+  margin-top: 3px
+}
+
+.notifications-item .text p {
+  color: #aaa;
+  font-size: 12px
 }

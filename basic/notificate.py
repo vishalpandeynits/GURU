@@ -7,7 +7,7 @@ from django.urls import reverse
 @receiver(post_save, sender=Note)
 def note_signal(sender, instance, created, **kwargs):
 	if created:
-		students = instance.subject_name.classroom.members.all().difference(instance.subject_name.classroom.teacher.all()).difference(instance.subject_name.classroom.special_permsissions.all())
+		students = instance.subject_name.classroom.members.all().difference(instance.subject_name.classroom.teacher.all()).difference(instance.subject_name.classroom.special_permissions.all())
 		activity = Subject_activity(subject=instance.subject_name,actor=instance.uploaded_by)
 		activity.action = "A new note is added."
 		activity.url = reverse('read_note', kwargs={
@@ -45,6 +45,6 @@ def assignment_signal(sender, instance, created, **kwargs):
 		'id':instance.id
 		})
 		activity.save()
-		students = instance.subject_name.classroom.members.all().difference(instance.subject_name.classroom.teacher.all()).difference(instance.subject_name.classroom.special_permsissions.all())
-		notify.send(sender=instance.ussigned_by,recipient=students,verb=activity.action,url= activity.url)
+		students = instance.subject_name.classroom.members.all().difference(instance.subject_name.classroom.teacher.all()).difference(instance.subject_name.classroom.special_permissions.all())
+		notify.send(sender=instance.assigned_by,recipient=students,verb=activity.action,url= activity.url)
 		assignment_email(instance)

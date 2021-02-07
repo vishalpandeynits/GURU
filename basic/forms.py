@@ -1,15 +1,12 @@
 from django import forms
-import django
-from django.contrib.auth.models import User
 from .models import Classroom, Subject, Note, Announcement, Assignment, Submission
-from django.contrib.auth.forms import UserCreationForm
-from django.forms.widgets import DateInput,NumberInput
+from django.forms.widgets import NumberInput
+
 class CreateclassForm(forms.ModelForm):
 	class Meta:
 		model =  Classroom
 		fields = ['class_name','need_permission','description','classroom_pic']
 	
-
 class SubjectForm(forms.ModelForm):
 	class Meta:
 		model = Subject
@@ -24,7 +21,6 @@ class NoteForm(forms.ModelForm):
 	class Meta:
 		model = Note
 		fields = ['topic','file','description']
-
 
 class AssignmentForm(forms.ModelForm):
 	class Meta:
