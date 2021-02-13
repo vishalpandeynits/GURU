@@ -493,11 +493,13 @@ option{
 #quill-id_description{
   border:none;
   border-top:2px solid black !important;
-  height:500px;
+  height:500px !important;
 }
 .ql-editor{
-  border:none !important;
+  border:none;
+  border-top:1px solid black !important;
   padding: 10px 0 !important;
+  min-height:300px !important;
 }
 .ql-editor p a{
   color:blue !important;

@@ -304,3 +304,46 @@ form *{
   justify-content: center;
   margin: 20px auto;
 }
+#info{
+  padding:40px;
+  background:white;
+  width:50%;
+  box-shadow: 2px 4px 16px grey;
+  border-radius:5px;
+}
+#info img{
+	box-shadow: 2px 4px 6px grey;
+	border-radius:15px;
+	transition:transform 0.4s;
+}
+#info img:hover{
+	transform:scale(1.1,1.1);
+}
+@media screen and (max-width:600px){
+	#info{
+		width:100%;
+	}
+}
+
+#social-container a{
+  font-size:2em;
+  background:#2b2b52;
+  border-radius:25%;
+  width:70px;
+  margin:10px;
+  text-decoration:none;
+}
+#social-container a i{
+  display:flex;
+  justify-content: center;
+  padding: 5px;
+}
+#social-container{
+  display:flex;
+  justify-content: center;
+  align-items:center;
+  flex-wrap: wrap;
+}
+#profile{
+  margin-top:50px;
+}

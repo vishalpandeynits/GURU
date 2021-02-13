@@ -1,3 +1,6 @@
+function _(el){
+    return document.getElementById(el)
+}
 // Profile Page Validation
 REGX= {
     'nameREGX':/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/,
@@ -135,43 +138,36 @@ function uniqueid(){
     }
     return true;
 } 
-function previous_date_disable(el){
-    var dtToday = new Date();
-    var month = dtToday.getMonth() + 1;
-    var day = dtToday.getDate();
-    var year = dtToday.getFullYear();
-    if(month < 10)
-        month = '0' + month.toString();
-    if(day < 10)
-        day = '0' + day.toString();
-    
-    var minDate= year + '-' + month + '-' + day;
-    el.min = minDate
-}
+
 const actualBtn = _('actual-btn');
 const fileChosen = _('file-chosen');
-actualBtn.addEventListener('change', function(){
-try {
-    var maxFileSize = 15
-    var fileSize = _('actual-btn').files[0].size
-    fileSize = fileSize / 1048576;
-    alert(fileSize);
-    if(fileSize <= maxFileSize ){
-    _('file-upload-label').textContent = this.files[0].name + " selected. Click again to change"
-    }
-    if (fileSize > maxFileSize) throw "Too big";
-    }
-    catch (e) {
-    alert("Sorry, file is too large. Please select one that is smaller than "+maxFileSize +' Mb');
-    e.preventDefault()
-    console.log(_('actual-btn').files[0].size);
-    _('file-upload-label').innerHTML='Upload File<span>\
-    <i class="fa mx-2 fa-upload" aria-hidden="true"></i></span></label>';
-    }
-})
+if(actualBtn != null){
+    actualBtn.addEventListener('change', function(){
+        try {
+            var maxFileSize = 25
+            var fileSize = _('actual-btn').files[0].size
+            fileSize = fileSize / 1048576;
+            if(fileSize <= maxFileSize ){
+            _('file-upload-label').textContent = this.files[0].name + " selected. Click again to change"
+            }
+            if (fileSize > maxFileSize) throw "Too big";
+            }
+            catch (e) {
+            alert("Sorry, file is too large. Please select one that is smaller than "+maxFileSize +' Mb');
+            e.preventDefault()
+            console.log(_('actual-btn').files[0].size);
+            _('file-upload-label').innerHTML='Upload File<span>\
+            <i class="fa mx-2 fa-upload" aria-hidden="true"></i></span></label>';
+            }
+        })
+}
 
 const tx = document.getElementsByTagName('textarea');
 for (let i = 0; i < tx.length; i++) {
-    tx[i].setAttribute('style', 'height:' + (tx[i].scrollHeight) + 'px;overflow-y:hidden;');
-    tx[i].addEventListener("input", OnInput, false);
+    try{
+        tx[i].setAttribute('style', 'height:' + (tx[i].scrollHeight) + 'px;overflow-y:hidden;');
+        tx[i].addEventListener("input", OnInput, false);
+    }catch(err){
+        message="Not on that page."
+    }
 }

@@ -92,4 +92,4 @@ def profiles(request, username):
 @login_required
 def mark_notif_read(request):
     request.user.notifications.mark_all_as_read(request.user)
-    return redirect('/')
+    return redirect(request.META['HTTP_REFERER'])

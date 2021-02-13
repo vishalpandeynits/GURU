@@ -470,7 +470,7 @@ def announcements_list(request, unique_id, subject_id,form = None):
         return render(request,'announcements/announcement_list.html',params)
 
 @login_required#checked
-def announcement_details(request,unique_id,subject_id,id):
+def announcement_details(request,unique_id,subject_id,id,form = None):
     classroom = get_object_or_404(Classroom,unique_id=unique_id)
     if member_check(request.user, classroom):
         subject = get_object_or_404(Subject,id=subject_id)
@@ -655,10 +655,11 @@ def unsend_request(request,unique_id):
         raise Http404()
 
 @login_required#checked
-def export_marks(request,unique_id,id):
+def export_marks(request,unique_id,subject_id,id):
     classroom = get_object_or_404(Classroom,unique_id=unique_id)
     admin_check = classroom.special_permissions.filter(username = request.user.username).exists()
-    if admin_check:
+    subject = get_object_or_404(Subject,id=subject_id)
+    if admin_check or request.user==subject.teacher:
         assignment = get_object_or_404(Assignment,id=id)
         response = HttpResponse(content_type='application/ms-excel')
         response['Content-Disposition'] = f'attachment; filename="mark_sheet of {assignment.topic}.xls"'

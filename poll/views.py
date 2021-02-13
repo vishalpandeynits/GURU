@@ -78,6 +78,7 @@ def poll_page(request,unique_id, poll_id,form=None):
 		params = {
 			'choices' : choices,
 			'poll':poll,
+			'details':poll.poll_details,
 			'classroom':classroom,
 			'show_result': time_up or poll.voters.filter(username=request.user.username).exists(),
 			'voters_length':poll.voters.count(),

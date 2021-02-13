@@ -39,7 +39,7 @@
                     <form method="POST" class="overlayform"  enctype="multipart/form-data">
                         {% csrf_token %}
                         <a onclick = "off(document.getElementsByClassName('overlay')[0])" id="close"> &times;</a> <br>
-                        <h1 class="text-center"> Add a Poll</h1><br>
+                        <h1 class="text-center"> Update</h1><br>
                         <div>
                             {% for field in updateform %}
                             {% if field.field.widget.input_type == 'file' %}
@@ -75,11 +75,11 @@
                             {% endif %}
                         </center>
                     {% endif %}
-
+                    <h2 class="text-center mx-auto"> {{ poll.topic }} </h2>
                     <div class="ql-editor">{{ details.html|safe }}</div>
                     <div class="divider"></div>
                     <p> {{ poll.who_can_vote }} can participate in this poll.</p>
-                    <p style="float:right;"> Vote before {{ poll.announce_at }} </p>
+                    <p style="float:right;"> Vote before {{ poll.announce_at }}</p>
                     <p> {{ voters_length}} Votes.</p>
 
                     <div class="float-right ">

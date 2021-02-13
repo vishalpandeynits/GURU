@@ -4,8 +4,6 @@
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/intro.css' %}">
 {% endblock %}
-{% load cache %}
-{% cache 500 homepage %}
 {% block content %}
 <div id='navbar' class="mb-4">
     <a class="btn mx-2" href="#">Home </a>
@@ -120,5 +118,12 @@
     setInterval(navbackground,100)
     document.getElementsByClassName('intro-section')[0].style.height=document.height
 </script>
+<script>
+    $("textarea").keydown(function(e){
+    if (e.keyCode == 13)
+    {
+        e.preventDefault();
+    }
+});
+</script>
 {% endblock %}
-{% endcache %}

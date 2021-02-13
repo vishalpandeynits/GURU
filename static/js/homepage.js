@@ -3,9 +3,14 @@ function _(el){
 }
 document.body.addEventListener('click',(e)=>{
     if(e.target != document.getElementById('co') && e.target != document.getElementById('left') && e.target != document.getElementById('icon')){
-        document.getElementById('dropdown-container').style.display=null;
+        try{
+            document.getElementById('dropdown-container').style.display=null;
+        }catch(err){
+            a="Not on that page";
+        }
     }
 })
+
 function isDescendant(parent, child) {
     var node = child.parentNode;
     while (node != null) {
@@ -27,17 +32,6 @@ window.addEventListener("click", (e) => {
     }
 });
 
-if (window.history.replaceState) {
-    window.history.replaceState(null, null, window.location.href);
-}
-
-function openNav() {
-    _("mySidenav").style.width = "295px";
-}
-
-function closeNav() {
-    _("mySidenav").style.width = "0";
-}
 
 // POLL JS
 function addInputField(){
@@ -60,23 +54,6 @@ function checkComment(){
     else{
         _('id_submit').disabled=false;
     }
-}
-//EMPTY COMMENT ISSUE ENDS
-//HOMEPAGE JAVASCRIPT
-function on(el) {
-    el.style.display = 'flex';
-    document.body.classList.add("no-scroll");
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-    document.body.style.overflow='hidden';
-}
-function on_nav(el) {
-    el.style.display = 'flex';
-}
-function off(el) {
-    el.style.display= "none";
-    document.body.classList.remove("no-scroll");
-    document.body.style.overflowY='auto';
 }
 
 function toggleMembersSubjects(){  
@@ -133,7 +110,7 @@ deleteConfirm(entity,myRandomSuccessCallBackFunction)
 //local success callback after delete function
 function myRandomSuccessCallBackFunction(){
     url =_('userDeleteButton').value
-    window.location.href = 'http://127.0.0.1:8000'+url
+    window.location.href = window.location.protocol+window.location.href+url
 }
 
 function show_all_submissions(){
