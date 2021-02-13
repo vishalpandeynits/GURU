@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
 html,body{
-  margin:0;
+  margin:0 !important;
   padding:0;
   background:#d8e9e9;
   font-family: 'Nunito Sans', sans-serif !important;
@@ -86,24 +86,24 @@ padding-right: 2px;
 
 /*Sidenav*/
 #openNav{
+  padding:0px;
   font-size:30px;
   cursor:pointer;
-  box-shadow:2px 4px 4px darkgrey;
-  width:50px !important;
-  height:50px !important;
-  border-radius:45%;
-  text-align: center;
-  padding:5px;
-  padding-left:12px;
-  background:white;
-  color:black;
-  transition:0.3s;
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  transition:all 0.3s;
+  border:1px solid black;
+  color:white;
+  background:black;
 }
 #openNav:hover{
-  background:black;
-  color:white;
+  background:white;
+  color:black;
 }
-
 .sidenav {
   height: 100%;
   width: 0px;
@@ -243,14 +243,16 @@ padding-right: 2px;
 
 }
 .horizontal-bar{
-  background:white;
+  background:#f4f4f2;
+  position:absolute;
+  top:0;
   width:100vw !important;
   padding:0 20px;
   display:flex;
   align-items: center;
   justify-content:space-between;
-  height:8.6vh;
   box-shadow:0px 0px 8px black;
+  height:10vh;
 }
 .dropdown-content {
   font-size: 15px;
@@ -556,14 +558,36 @@ input[type="date"]:focus,input[type="time"]:focus{
   border-radius: 0 !important;
 }
 .class-name{
-  font-size:1.4em;
-  width:150px;
-  height:50px;
-  max-height:60px;
-  max-width: 150px;;
+  position:absolute;
+  left:80px;
+  top:2.6vh;
+  font-size:3vh;
   overflow:hidden;
   text-overflow: ellipsis;
 }
+.notification-icon {
+  color: black;
+  text-decoration: none;
+  padding: 0px 6px;
+  position: relative;
+  left:-20px;
+  top:-2px;
+  display: inline-block;
+  border-radius: 50%;
+  border: none;
+}
+
+.notification-icon .badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  padding: 5px 10px;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
+  display:none;
+}
+
 #preloader {
 position: fixed;
 top: 0;
@@ -598,8 +622,11 @@ nav {
   width: 300px;
   position: absolute;
   display: none;
-  top: 50px;
-  right: 62px;
+  top: 60px;
+  right: -60px !important;
+  max-width: 300px;
+  max-height:400px;
+  overflow:auto;
   border-radius: 5px 0px 5px 5px;
   background-color: #fff;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);

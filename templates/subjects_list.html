@@ -8,7 +8,6 @@
 {% block content %}
 <div>
 	{% include 'snippets/navigation.html' %}<br>
-	
 	{% if is_admin %}
     <div class="text-center container classroom-details m-auto mt-4 ">
         <h2> {{ classroom.class_name }} </h2>
@@ -23,25 +22,11 @@
         <p style="overflow:hidden;text-overflow: ellipsis;"> {{ classroom.description }} </p>
         {% endif %}
     </div>
-	{% endif %}
-
-	{% if is_admin %}
-		<center> 
-			<button onclick="on(document.getElementsByClassName('overlay')[0])" id="add-subject-btn"> 
-				Add a subject
-			</button>
-		</center>
-
-        <div class="messages container">
-            {% for message in messages %}
-                <div class='alert alert-{{ message.tags }} border border-{{ message.tags }} alert-dismissible fade show'>
-                    {{ message }} 
-                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                </div>
-            {% endfor %}
-        </div>
+	<center> 
+		<button onclick="on(document.getElementsByClassName('overlay')[0])" id="add-subject-btn"> 
+			Add a subject
+		</button>
+	</center>
     {% endif %}
 
 	<div class="container-fluid">

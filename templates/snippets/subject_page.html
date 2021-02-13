@@ -47,37 +47,70 @@
 </div>
 
 <div class="horizontal-bar">
-    <span id="openNav" onclick="openNav()">
-        &#9776;
-    </span>
-    {% if classroom %}
-        <span style="align-self: flex-start !important;"class="class-name">&nbsp;  {{ classroom.class_name|slice:"0:20" }}</span>
-    {% endif %}
-    
-    {% get_social_accounts user as accounts %}
-    <div class="user-icon"  onclick="on_nav(_('dropdown-container'))" >
-        <img id="icon" height="50" width="50"
-        {% if accounts %} 
-            {% if p_user.profile.profile_pic|filebasename != 'avatar.jpg' %}
-                src="{{ user.profile.profile_pic.url }}"
-            {% else %}
-                src="{{ user.socialaccount_set.all.0.get_avatar_url }}"
-            {% endif %}
-        {% else %}
-            src="{{ user.profile.profile_pic.url }}"
+    <div>
+        <span id="openNav" onclick="openNav()">
+            &#9776;
+        </span>
+        {% if classroom %}
+            <span class="class-name"> {{ classroom.class_name|slice:"0:20" }}</span>
         {% endif %}
-        >
     </div>
-    <div id="dropdown-container" style="flex-direction: column;"class="bg-dark float-right text-dark">
-        <a class="text-light d-block" href="{% url 'profile' user.username %}">
-            Profile
-        </a>
-        <a class="text-light d-block" href="{% url 'logout' %}">
-            Log Out
-        </a>
+    <div class="second-box">  
+        {% if user.is_authenticated %}
+        <nav>
+            <div class="icon" id="bell">
+                <button class="notification-icon">
+                    <span><i class="fas fa-2x fa-bell"></i> </span>
+                    <span id="notif-count" class="badge">{% live_notify_badge %}</span>
+                </button>
+            </div>
+            <div class="notifications" id="box">
+                <a href="{% url 'readall-notif' %}">Mark all as read.</a>
+                <div id="notification-container"> </div>
+                <div class="notification-container">
+                    {% for msg in read %}
+                    <a href="{{ msg.data.url }}">
+                        <div class="notifications-item"> 
+                                <div class="text">
+                                    <h4> {{msg.verb}} </h4> by
+                                    <span>{{msg.actor}}</span> on {{ msg.timestamp }}
+                                </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% register_notify_callbacks callbacks='fill_notification_badge,my_special_notification_callback' %}
+            </div>
+        </nav>
+        {% get_social_accounts user as accounts %}
+        <div class="user-icon"  onclick="on_nav(_('dropdown-container'))" >
+            <img id="icon" height="50" width="50"
+            {% if accounts %} 
+                {% if p_user.profile.profile_pic|filebasename != 'avatar.jpg' %}
+                    src="{{ user.profile.profile_pic.url }}"
+                {% else %}
+                    src="{{ user.socialaccount_set.all.0.get_avatar_url }}"
+                {% endif %}
+            {% else %}
+                src="{{ user.profile.profile_pic.url }}"
+            {% endif %}
+            >
+        </div>
+        <div id="dropdown-container" style="flex-direction: column;"class="bg-dark float-right text-dark">
+            <a class="text-light d-block" href="{% url 'profile' user.username %}">
+                Profile
+            </a>
+            <a class="text-light d-block" href="{% url 'logout' %}">
+                Log Out
+            </a>
+        </div>
+        {% endif %}
     </div>
 </div>
-{% block subject_content %} {% endblock %}
 
+<br><br><br>
+<div id="main">
+	{% block subject_content %} {% endblock %}
+</div>
 </div>
 {% endblock %}

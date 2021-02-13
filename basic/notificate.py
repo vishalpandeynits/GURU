@@ -30,7 +30,7 @@ def announcement_signal(sender, instance, created, **kwargs):
 		'id':instance.id
 		})
 		activity.save()
-		recepients = instance.subject_name.classroom.mebers.all().exclude(user=instance.announced_by)
+		recepients = instance.subject_name.classroom.members.all().exclude(username=instance.announced_by.username)
 		notify.send(sender=instance.announced_by,recipient=recepients,verb=activity.action,url= activity.url)
 		announcement_email(instance)
 

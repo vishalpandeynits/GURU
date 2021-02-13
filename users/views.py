@@ -2,17 +2,19 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.contrib.auth import authenticate, login
 from django.template.loader import render_to_string
+from django.contrib.auth import login
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from .token import account_activation_token
+
 from .forms import SignUpForm, ProfileUpdateForm
 from .models import Profile
 from django.contrib import messages
 from django.conf import settings
 from django.urls import reverse
 from basic.models import Classroom
+from django.contrib.auth.decorators import login_required
 
 def signup(request):
     if request.method == 'POST':
@@ -85,4 +87,9 @@ def profiles(request, username):
         'p_form' : p_form,
         'profile' : profile,
     }
-    return render (request, 'users/profile.html', context)
+    return render(request, 'users/profile.html', context)
+
+@login_required
+def mark_notif_read(request):
+    request.user.notifications.mark_all_as_read(request.user)
+    return redirect('/')

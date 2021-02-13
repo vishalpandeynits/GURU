@@ -105,10 +105,10 @@ function validateprofile(){
     var whatsapp = phoneRGEX.test(whatsapp_number);
     txt = "";
     if(!phoneResult){
-        txt += "Phone no. must be valid Indian phone no. starting with +91<br>";
+        txt += "Phone no. must be valid Indian phone number.<br>";
     }
     if(!whatsapp){
-        txt += 'Whatsapp no. must be valid indian phone number starting with +91.<br>';
+        txt += 'Whatsapp no. must be valid indian phone numbe.<br>';
     }
     txt = '<p style="color:red;text-align:center;">'+ txt + '</p>'
     _('profile-errors').innerHTML = txt;

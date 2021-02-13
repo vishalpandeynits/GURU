@@ -13,21 +13,6 @@
     <a class="btn mx-2" href="#contactus">Contact us </a>
 </div>
 
-{% if messages %}
-<center style="display:flex;justify-content: center;">
-    <div style="z-index:5;position:absolute;"class="messages container mt-4 pt-4">
-        {% for message in messages %}
-        <div class='alert alert-{{ message.tags }} border border-{{ message.tags }} alert-dismissible fade show'>
-            {{ message }} 
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-        </div>
-    {% endfor %}
-    </div>
-</center>
-{% endif %}
-
 <div class="intro-section">
     <div id="button-containers">
         <h1 id="intro">Learning will now, Indeed be in air</h1>

@@ -9,66 +9,57 @@
 <link href="{% static 'css/profile.css' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
+{% include 'snippets/navigation.html' %}
 <div>
-	{% include 'snippets/navigation.html' %}
-    {% if messages %}
-        <div class="messages container">
-			{% for message in messages %}
-			<div class='alert alert-{{ message.tags }} border border-{{ message.tags }} alert-dismissible fade show'>
-				{{ message }} 
-				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				  </button>
-			</div>
-		{% endfor %}
-        </div>
-	{% endif %}<br>
     <div class="container">
         <div class="profile-header">
           <div class="profile-img">
-            <img 
+            <img width="200" alt="Profile Image"
             {% if accounts %} 
                 {% if p_user.profile.profile_pic|filebasename != 'avatar.jpg' %}
-                    src="{{ user.profile.profile_pic.url }}"
+                    src="{{ p_user.profile.profile_pic.url }}"
                 {% else %}
-                    src="{{ user.socialaccount_set.all.0.get_avatar_url }}"
+                    src="{{ p_user.socialaccount_set.all.0.get_avatar_url }}"
                 {% endif %}
             {% else %}
-                src="{{ user.profile.profile_pic.url }}"
-            {% endif %}
-         width="200" alt="Profile Image">
+                src="{{ p_user.profile.profile_pic.url }}"
+            {% endif %}>
           </div>
+
           <div class="profile-nav-info">
-            <h3 class="user-name">{{p_user.first_name}} {{p_user.last_name}} Vishal Pandey</h3>
+            <h3 class="user-name">{{p_user.first_name}} {{p_user.last_name}}</h3>
             <div class="address">
               <p id="state" class="state">{{p_user.username}}</p>
               <p id="state" class="state">Joined on {{p_user.date_joined|date }} </p>
             </div>
           </div>
-          <div class="profile-option">
-            <div class="notification">
-              <i class="fa fa-bell"></i>
-              <span class="alert-message">3</span>
-            </div>
-          </div>
         </div>
       
-        <div class="main-bd">
-          <div class="left-side">
-            <div class="profile-side">
+        <div class="main-bd" >
+          <div class="left-side" >
+            <div class="profile-side" style="height:100%;">
+              {% if p_user.profile.phone_number %}
               <p class="mobile-no"><i class="fa fa-2x mb-2 fa-phone"></i> {{p_user.profile.phone_number }}</p>
+              {% endif %}
+              {% if p_user.email %}
               <p class="user-mail"><i class="fa fa-2x mb-2 fa-envelope"></i> {{p_user.email }}</p>
+              {% endif %}
+              {% if p_user.profile.whatsapp_number %}
               <p class="mobile-no"><i class="fab fa-2x fa-whatsapp"></i></i> {{p_user.profile.whatsapp_number }}</p>
+              {% endif %}
+              {% if p_user.profile.bio %}
               <div class="user-bio">
                 <h3>Bio</h3>
                 <p class="bio">
                     {{p_user.profile.bio }}
                 </p>
               </div>
+              {% endif %}
             </div>
-      
           </div>
+
           <div class="right-side">
+            {% if user == p_user %}
             <div class="nav">
               <ul>
                 <li onclick="tabs(0)" class="user-post active">Classrooms </li>
@@ -79,73 +70,80 @@
 
             <div class="profile-body">
               <div class="profile-posts tab">
-                <h1>Classrooms</h1>
-				<table class="table table-striped table hover table-bordered">
-					<thead class="thead-dark">
-					  <tr>
-						<th scope="col"></th>
-						<th scope="col">Class</th>
-						<th scope="col">Created By</th>
-						<th scope="col">Subjects</th>
-					  </tr>
-					</thead>
-					<tbody>
-						{% for class in classes %}
-							<tr>
-								<th scope="row">{{forloop.counter}}</th>
-								<td>
-									<a href="{% url 'subjects' class.unique_id %}">{{class.class_name|upper}}</a>
+                <h1 style="border-bottom:4px solid grey;">Classrooms</h1>
+                {% if classes %}
+                <table class="table table-striped table hover table-bordered">
+                  <thead class="thead-dark">
+                    <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Class</th>
+                    <th scope="col">Created By</th>
+                    <th scope="col">Subjects</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for class in classes %}
+                      <tr>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>
+                          <a href="{% url 'subjects' class.unique_id %}">{{class.class_name|upper}}</a>
 
-								</td>
-								<td>{{class.created_by}}</td>
-								<td>{{class.subject_set.count }}</td>
-								</th>
-							</tr>
-						{% endfor %}
-					</tbody>
-				  </table>
-              </div>
+                        </td>
+                        <td>{{class.created_by}}</td>
+                        <td>{{class.subject_set.count }}</td>
+                        </th>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                {% else %}
+                <h1 class="heading2">You are not enrolled in any class yet.</h1>
+                {% endif %}
+              </div> 
+
               <div class="profile-reviews tab">
-                <h1>Update Profile</h1>
-                <form method="POST" onsubmit="return validateprofile();" enctype="multipart/form-data">
-					{% csrf_token %}
-					<p id="profile-errors"></p>
-					<div id="profile-edit">
-						{% for field in p_form %}
-							{% if field.field.widget.input_type == 'file' %}
-							<input type="file" name="file" id="actual-btn" hidden/>
-							<label id="file-upload-label" class="text-center"for="actual-btn">                       
-								{% if user.profile.profile_pic %}
-									{% if not accounts %}
-										{{ user.profile.profile_pic|filebasename }}.
-									{% endif %}
-								 	Click to change
-								{% endif %}
-								Upload Profile pic<i class="fa mx-2 fa-upload" aria-hidden="true"></i></label>
-							{% else %}
-								{{ field.label_tag }}<br>
-								{{ field }}
-							{% endif %}
-						{% endfor %}<br>
-						<input type="submit" class="btn btn-primary float-right"value="Update Profile">
-					</div>
-				</form>
+                <h1 class="text-center">Update Profile</h1>
+                <form method="POST" onsubmit="return validateprofile();" enctype="multipart/form-data">{% csrf_token %}
+                  <p id="profile-errors"></p>
+                  <div id="profile-edit">
+                    {% for field in p_form %}
+                      {% if field.field.widget.input_type == 'file' %}
+                      <input type="file" name="file" id="actual-btn" hidden/>
+                      <label id="file-upload-label" class="text-center"for="actual-btn">                       
+                        {% if p_user.profile.profile_pic %}
+                          {% if not accounts %}
+                            {{ p_user.profile.profile_pic|filebasename }}.
+                          {% endif %}
+                          Click to change
+                        {% endif %}
+                        Upload Profile pic<i class="fa mx-2 fa-upload" aria-hidden="true"></i></label>
+                      {% else %}
+                        {{ field.label_tag }}<br>
+                        {{ field }}
+                      {% endif %}
+                    {% endfor %}<br>
+                    <input type="submit" class="btn btn-primary float-right"value="Update Profile">
+                  </div>
+                </form>
               </div>
+
               <div class="profile-settings tab">
                 <div class="account-setting">
                   <h1>Your pending requests ({{ pending_requests|length }})</h1>
-				  {% for classroom in pending_requests %}
-					<div class="alert bg-light border-dark mx-auto">
-						{{ classroom.class_name }} 
-						<a class="float-right text-primary" href="{% url 'unsend_request' classroom.unique_id %}">Cancel request</a>
-					</div>
-			  		{% endfor %}
+                  {% for classroom in pending_requests %}
+                  <div class="alert bg-light border-dark mx-auto">
+                    {{ classroom.class_name }} 
+                    <a class="float-right text-primary" href="{% url 'unsend_request' classroom.unique_id %}">Cancel request</a>
+                  </div>
+                  {% endfor %}
                 </div>
               </div>
-            </div>
-          </div>
+           </div>
+           {% endif %}
         </div>
-      </div>
+    </div>
+</div>
+</div>
 {% endblock %}
 {% block javascript %}
 <script>
@@ -166,31 +164,5 @@ function tabs(panelIndex) {
   tab[panelIndex].style.display = "block";
 }
 tabs(0);
-
-let bio = document.querySelector(".bio");
-const bioMore = document.querySelector("#see-more-bio");
-const bioLength = bio.innerText.length;
-
-function bioText() {
-  bio.oldText = bio.innerText;
-
-  bio.innerText = bio.innerText.substring(0, 100) + "...";
-  bio.innerHTML += `<span onclick='addLength()' id='see-more-bio'>See More</span>`;
-}
-
-bioText();
-
-function addLength() {
-  bio.innerText = bio.oldText;
-  bio.innerHTML +=
-    "&nbsp;" + `<span onclick='bioText()' id='see-less-bio'>See Less</span>`;
-  document.getElementById("see-less-bio").addEventListener("click", () => {
-    document.getElementById("see-less-bio").style.display = "none";
-  });
-}
-if (document.querySelector(".alert-message").innerText > 9) {
-  document.querySelector(".alert-message").style.fontSize = ".7rem";
-}
-
 </script>
 {% endblock %}

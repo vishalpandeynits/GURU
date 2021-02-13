@@ -6,6 +6,27 @@ document.body.addEventListener('click',(e)=>{
         document.getElementById('dropdown-container').style.display=null;
     }
 })
+function isDescendant(parent, child) {
+    var node = child.parentNode;
+    while (node != null) {
+        if (node == parent) {
+            return true;
+        }
+        node = node.parentNode;
+    }
+    return false;
+}
+window.addEventListener("click", (e) => {
+    var isChild = isDescendant(_("bell"),e.target)
+
+    if (isChild || isDescendant(_('box'),e.target)) {
+        _("box").style.display = "block";
+    }
+    else{
+        _("box").style.display = "none";
+    }
+});
+
 if (window.history.replaceState) {
     window.history.replaceState(null, null, window.location.href);
 }
