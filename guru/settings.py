@@ -3,12 +3,12 @@ import os
 from decouple import config
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
-SECRET_KEY = '*j)kfw7j9ltu!=t$o0@4m!umac+&j#3)q^*j_g%z%qpwoeh=9d' #config('SECRET')
-SITE_ID = 4 #config('SITE')
+SECRET_KEY = config('SECRET')
+SITE_ID = config('SITE')
 ALLOWED_HOSTS = ['*']
 
-PRODUCTION = False #config('PROD', default=False, cast=bool)
-DEBUG = True #config('DEBUG', default=False, cast=bool)
+PRODUCTION = config('PROD', default=False, cast=bool)
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'storages',
     'imagekit',
     'notifications',
+    "anymail",
 
     #all auth
     'allauth',
@@ -172,7 +173,6 @@ SOCIALACCOUNT_PROVIDERS = {
 SOCIALACCOUNT_QUERY_EMAIL=ACCOUNT_EMAIL_REQUIRED
 SOCIALACCOUNT_EMAIL_REQUIRED=ACCOUNT_EMAIL_REQUIRED
 SOCIALACCOUNT_STORE_TOKENS=False
-# GOOGLE_RECAPTCHA_SECRET_KEY = config('recaptcha')
 
 #REST FRAMEWORK
 REST_FRAMEWORK = {
@@ -181,43 +181,47 @@ REST_FRAMEWORK = {
 
 if PRODUCTION:
     EMAIL_HOST= "smtp.gmail.com"
-#     EMAIL_HOST_USER= config('EMAIL')
-#     EMAIL_HOST_PASSWORD= config('PASSWORD')
-#     EMAIL_PORT= 587
-#     EMAIL_USE_TLS= True
-#     DEFAULT_FROM_EMAIL= config('EMAIL')
-#     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-#     AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
-#     AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
-#     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
-#     AWS_S3_FILE_OVERWRITE = False
-#     AWS_DEFAULT_ACL = None
-#     AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-#     AWS_S3_OBJECT_PARAMETERS = {
-#     'CacheControl': 'max-age=10',
-#     }
-#     AWS_LOCATION = 'media'
-#     AWS_QUERYSTRING_AUTH=True
-#     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-#     SITE_NAME = 'https://nits-class.herokuapp.com'
-#     AWS_PRIVATE_MEDIA_LOCATION = 'private'
-#     PRIVATE_FILE_STORAGE = 'guru.storage_back.PrivateMediaStorage'
+    EMAIL_HOST_USER= config('EMAIL')
+    EMAIL_HOST_PASSWORD= config('PASSWORD')
+    EMAIL_PORT= 587
+    EMAIL_USE_TLS= True
+    DEFAULT_FROM_EMAIL= config('EMAIL')
+    EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
+    ANYMAIL = {
+        "MAILJET_API_KEY": config('MAILJET_API_KEY'),
+        "MAILJET_SECRET_KEY": config('MAILJET_SECRET_KEY'),
+    }
+    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_FILE_OVERWRITE = False
+    AWS_DEFAULT_ACL = None
+    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+    AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=10',
+    }
+    AWS_LOCATION = 'media'
+    AWS_QUERYSTRING_AUTH=True
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    SITE_NAME = 'https://nits-class.herokuapp.com'
+    AWS_PRIVATE_MEDIA_LOCATION = 'private'
+    PRIVATE_FILE_STORAGE = 'guru.storage_back.PrivateMediaStorage'
 
-#     AWS_PUBLIC_MEDIA_LOCATION ='public'
-#     PUBLIC_FILE_STORAGE = 'guru.storage_back.PublicMediaStorage'
+    AWS_PUBLIC_MEDIA_LOCATION ='public'
+    PUBLIC_FILE_STORAGE = 'guru.storage_back.PublicMediaStorage'
 
-#     AWS_S3_REGION_NAME = 'ap-south-1'
-#     AWS_S3_SIGNATURE_VERSION = 's3v4'
-#     DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME':config('DBNAME'),
-#         'USER':config('USER'),
-#         'PASSWORD':config('DBPASS'),
-#         'PORT':config('DBPORT'),
-#         'HOST':config('DBHOST'),
-#     }
-# }
+    AWS_S3_REGION_NAME = 'ap-south-1'
+    AWS_S3_SIGNATURE_VERSION = 's3v4'
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME':config('DBNAME'),
+        'USER':config('USER'),
+        'PASSWORD':config('DBPASS'),
+        'PORT':config('DBPORT'),
+        'HOST':config('DBHOST'),
+    }
+}
 else:
     MEDIA_URL = 'media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
