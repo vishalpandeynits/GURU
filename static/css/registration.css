@@ -1,8 +1,14 @@
 body{
     overflow-x:hidden !important;
 }
+input:focus{
+    /* outline:3px solid #64e2f0 !important; */
+    border-width:0px !important;
+    box-shadow: 0 0 1px 3px #6d6d79;
+}
+
 .reg-title {
-    color: grey;
+    color: rgb(184, 203, 243);
     font-weight: bolder;
     font-size: 1.4em;
     text-align: center;

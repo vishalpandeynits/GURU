@@ -335,7 +335,7 @@ padding-right: 2px;
   outline:none;
 }
 .overlay .overlayform textarea {
-  min-height:150px;
+  min-height:200px;
 }
 .overlay .overlayform input{
   border:2px solid rgb(31, 157, 241);
@@ -350,6 +350,7 @@ padding-right: 2px;
   width:250px !important;
   padding:10px 40px;
   background: black;
+  border:2px solid black;
   color:white;
   border:none;
   font-weight:bolder;
@@ -359,8 +360,8 @@ padding-right: 2px;
   float:right;
 }
 .overlay .overlayform input[type="submit"]:hover{
-  background:linear-gradient(to right,rgb(172, 42, 165),rgb(17, 196, 166));
-  color:white;
+  color:black;
+  background-color:white;
 }
 .overlay .overlayform input:focus,textarea:focus{
   border: 2px solid rgb(31, 157, 241);

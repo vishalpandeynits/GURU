@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Home view {% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+<p style="background:black; color:white; font-size:25px;cursor:pointer;width:40px;margin:10px; padding:8px; border-radius:50%;"onclick="openNav()">&#9776;</p>
+<div class="row">
+		<div class="col-2">
+		<div style="float:right;"id="mySidenav" class="sidenav">
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+			<a href='{% url "subject_page" classroom.unique_id subject.id %}' onclick="closeNav()">Home</a>
+			<a href="#symptoms" onclick="closeNav()">Resources</a>
+			<a href="#preventions" onclick="closeNav()">Assignment</a>
+			<a href="#mythbusters" onclick="closeNav()">Announcement</a>
+			<a href="#" onclick="closeNav()">Discussion</a> 
+			<a href="#youtube" onclick="closeNav()">Attend Class</a>
+			<a href="#youtube" onclick="closeNav()">Profile</a>
+			<a id="show-account"style="color:green;" onclick="showaccount()">{{user.username}}</a>
+			<span id="account" style="display:none;">
+				<a style="font-size: 1.3em;margin:0;" href="{% url 'logout' %}">Log Out </a>
+				<a style="font-size: 1.3em;margin:0;" href="{% url 'password_change' %}">Change Password </a>
+			</span>
+		</div>
+		</div>
+		<div class="col-10 bg-danger">
+				<h1 style="display:inline;"> {{ subject.subject_name }}</h1> by {{ subject.classroom.teacher.first_name|upper }} {{ subject.classroom.teacher.last_name|upper }}
+		<div class="row">
+			<div class="col-8 border-outline-danger" style="height:100%;">dfjdf 
+			</div>
+			<div class="col-4 border-outline-danger" style="height:100%;">dj
+			</div>
+		</div>
+		</div>
+
+</div>
+{% endblock %}

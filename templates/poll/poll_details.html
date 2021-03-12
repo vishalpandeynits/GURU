@@ -88,7 +88,7 @@
                             title="invite by whatsapp"
                             href="https://api.whatsapp.com/send?text=Click on
 						 	this link {{ request.scheme }}://{{ request.META.HTTP_HOST }}/polls/{{classroom.unique_id}}/poll-page/{{poll.id}}/ 
-						 	to participate in poll {{ details}}/)">
+						 	to participate in poll {{ poll.topic }}/)">
                             <i class="fab fa-whatsapp fa-2x m-2" aria-hidden="true"></i>
                         </a>
                     </div><br><br>
