@@ -1,8 +1,12 @@
 # GURU
 AN ONLINE CLASS PORTAL<br>
 This portal provides all functionalities for conduction of a smooth online classroom by school/College
+![GitHub repo size](https://img.shields.io/github/repo-size/vishalpandeyvip/GURU)
+![GitHub contributors](https://img.shields.io/github/contributors//vishalpandeyvip/GURU)
+![GitHub stars](https://img.shields.io/github/stars//vishalpandeyvip/GURU?style=social)
+![GitHub forks](https://img.shields.io/github/forks//vishalpandeyvip/GURU?style=social)
+![Twitter Follow](https://img.shields.io/twitter/follow/vishalpandeyvip?style=social)
 
-## Please don't mess up with MASTER BRANCH
 
 **Installation**
 
@@ -16,4 +20,26 @@ This portal provides all functionalities for conduction of a smooth online class
 6. Run `python manage.py migrate --run-syncdb`
 7. Run `python manage.py runserver`
 
-## Don't try to use login with google functionality, it will give error. It is left intentionally for now.
+# Don't try to use login with google functionality, it will give error. It is left intentionally for now.
+
+## Contributing to GURU
+<!--- If your README is long or you have some specific process or steps you want contributors to follow, consider creating a separate CONTRIBUTING.md file--->
+To contribute to GURU, follow these steps:
+
+1. Fork this repository.
+2. Create a branch: `git checkout -b <branch_name>`.
+3. Make your changes and commit them: `git commit -m '<commit_message>'`
+4. Push to the original branch: `git push origin <branch_name>`
+5. Create the pull request.
+
+Alternatively see the GitHub documentation on [creating a pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
+
+## Contributors
+
+Thanks to the following people who have contributed to this project:
+
+* [@vishalpandeyvip](https://github.com/vishalpandeyvip) 📖
+
+## Contact
+
+If you want to contact me you can reach me at <a href="mailto:vishalpandeyviptsk@gmail.com">vishalpandeyviptsk@gmail.com</a>
