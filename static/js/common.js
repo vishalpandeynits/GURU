@@ -37,11 +37,21 @@ function off(el) {
     document.body.style.overflowY='auto';
 }
 window.addEventListener('online', function(e) {
-    alert("You are online");
+    swal({
+        title: "Network Connectivity",
+        text: "Network connection is restored.",
+        icon: "success",
+        button: "OK !",
+      });
 });
 
 window.addEventListener('offline', function(e) {
-    alert("Netwok Connection lost, Please coonect again to experience smooth interaction.");
+    swal({
+        title: "Network Connectivity",
+        text: "Netwok Connection lost, Please coonect again to experience smooth interaction.",
+        icon: "error",
+        button: "OK !",
+      });
 });
 
 "use strict";

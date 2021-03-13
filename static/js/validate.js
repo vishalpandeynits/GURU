@@ -162,11 +162,11 @@ if(actualBtn != null){
         })
 }
 
-const tx = document.getElementsByTagName('textarea');
-for (let i = 0; i < tx.length; i++) {
+const txa = document.getElementsByTagName('textarea');
+for (let i = 0; i < txa.length; i++) {
     try{
-        tx[i].setAttribute('style', 'height:' + (tx[i].scrollHeight) + 'px;overflow-y:hidden;');
-        tx[i].addEventListener("input", OnInput, false);
+        txa[i].setAttribute('style', 'height:' + (txa[i].scrollHeight) + 'px;overflow-y:hidden;');
+        txa[i].addEventListener("input", OnInput, false);
     }catch(err){
         message="Not on that page."
     }
