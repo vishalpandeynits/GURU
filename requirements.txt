@@ -20,3 +20,4 @@ python-memcached==1.59
 django-imagekit==4.0.2
 django-notifications-hq==1.6.0
 django-anymail
+django-htmlmin==0.11.0

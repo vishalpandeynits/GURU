@@ -25,11 +25,11 @@
                 <a href="{% url 'readall-notif' %}">Mark all as read.</a>
                 <div id="notification-container"> </div>
                 <div class="notification-container">
-                    {% for msg in read %}
+                    {% for msg in read|slice:':3' %}
                     <a href="{{ msg.data.url }}">
                         <div class="notifications-item"> 
                                 <div class="text">
-                                    <h4> {{msg.verb}} </h4> by
+                                    <h4> {{msg.verb}} </h4> bysssssssssssssssssssssss
                                     <span>{{msg.actor}}</span> on {{ msg.timestamp }}
                                 </div>
                         </div>

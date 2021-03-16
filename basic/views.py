@@ -132,7 +132,7 @@ def classroom_page(request,unique_id):
         else:
             form = CreateclassForm(instance=classroom)
         params={
-            'members':members,
+            'members':members.distinct(),
             'admins':admins,
             'pending_members':pending_members,
             'classroom':classroom,
@@ -532,7 +532,7 @@ def subject_details(request,unique_id, subject_id):
         admins = classroom.special_permissions.all()
         teachers = classroom.teacher.all()
         teacher = subject.teacher
-        members = list(admins| members.difference(teachers))
+        members = list((admins| members.difference(teachers)).distinct())
         if teacher not in members:
             members.append(teacher)
 
