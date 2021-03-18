@@ -1,52 +1,134 @@
-<div id="contactus" class=" bg-light container-fluid">
-    <footer class="page-footer text-dark container font-small mdb-color lighten-3 p-2">
-
-        <div style="font-size: 1.2em;" class="text-center text-md-left">
-            <div class="row">
-
-
-                <div class="col-md-4 col-lg-3 mr-auto my-md-4 my-0 mt-4 mb-1">
-
-
-                        <h5 class="font-weight-bold text-center text-uppercase mb-3" style="font-size: 30px">GURU</h5>
-                    <p style="font-size: 17px;">
-                        GURU Learning management system has been designed to help students and teachers to overcome barriers. It delivers the promise of unhindered, hassle-free, academic instruction and evaluation over the internet.
-                    </p>
+{% load static %}
+<footer style="box-shadow: 0 0 10px grey;"class="u-clearfix u-footer" id="sec-d73a">
+    <div class="u-clearfix u-sheet u-sheet-1">
+       <div class="u-clearfix u-expanded-width-lg u-expanded-width-md u-expanded-width-xl u-expanded-width-xs u-gutter-30 u-layout-wrap u-layout-wrap-1">
+          <div class="u-gutter-0 u-layout">
+             <div class="u-layout-row">
+                <div class="u-align-center-lg u-align-left-md u-align-left-sm u-align-left-xl u-container-style u-layout-cell u-left-cell u-size-12 u-size-60-md u-layout-cell-1">
+                   <div class="u-container-layout u-valign-top-lg u-valign-top-sm u-valign-top-xl u-container-layout-1">
+                      <a class="u-image u-logo u-image-1" data-image-width="80" data-image-height="40">
+                      <img src="{% static 'default-logo.png' %}" class="u-logo-image u-logo-image-1" data-image-width="80">
+                      </a>
+                   </div>
                 </div>
-
-                <hr class="clearfix w-100 d-md-none">
-                <hr class="clearfix w-100 d-md-none">
-
-                <div class="col-md-4 col-lg-3 mx-auto my-md-4 my-0 mt-4 mb-1">
-
-                        <h5 style="font-size: 30px" class="font-weight-bold  text-center text-uppercase mb-3">Address</h5>
-
-                    <i class="fa fa-home mr-3 my-3"></i>Tinsukia, Assam<br>
-                    <i style="display:inline;" class="fa fa-envelope my-3 mr-3"></i>vishalpandeynits@gmail.com<br>
-                    <i class="fa fa-phone my-3 mr-3"></i> +919957767675
+                <div class="u-align-left u-container-style u-layout-cell u-size-24 u-size-60-md u-layout-cell-2">
+                   <div class="u-container-layout u-valign-middle u-container-layout-2">
+                      <!--position-->
+                      <div data-position="" class="u-position u-position-1">
+                         <!--block-->
+                         <div class="u-block">
+                            <div class="u-block-container u-clearfix">
+                               <!--block_header-->
+                               <h5 class="u-block-header u-text u-text-1">
+                                  <b>
+                                    GURU
+                                  </b> 
+                               </h5>
+                               <!--/block_header--><!--block_content-->
+                               <div class="u-block-content u-text u-text-2">
+                               <p style="font-size: 1.1em;;">
+                                  GURU LMS is not just any learning management system. 
+                                  It is an extremely well designed LMS that is going to 
+                                  redefine online learning management in the years to come. It
+                                  has been designed to help students overcome these barriers 
+                                  it delivers the promise of unhindered, hassle  free academic
+                                   instruction and evaluation over the internet.
+                               </p>
+                               </div>
+                               <!--/block_content-->
+                            </div>
+                         </div>
+                         <!--/block-->
+                      </div>
+                      <!--/position-->
+                   </div>
                 </div>
+                <div class="u-align-left u-container-style u-layout-cell u-size-12 u-size-60-md u-layout-cell-4">
+                   <div class="u-container-layout u-valign-middle u-container-layout-4">
+                      <!--position-->
+                      <div data-position="" class="u-position u-position-3">
+                         <!--block-->
+                         <div class="u-block">
+                            <div class="u-block-container u-clearfix">
+                               <!--block_header-->
+                               <h5 class="u-block-header u-text u-text-5">
+                                  <b>
+                                    Address
+                                  </b>
+                               </h5>
+                               <!--/block_header--><!--block_content-->
+                               <div class="u-block-content u-text u-text-6">
+                                  Sardapally Raja Ali Road,<br>
+                                  Naupukhri , Tinsukia <br>
+                                  Assam(786125)<br>
+                                  Phone:<br>
+                                  +91-9957767675<br>
+                                  Email:<br>
+                                  vishalpandeyviptsk@gmail.com<br>
+                               </div>
+                               <!--/block_content-->
+                            </div>
+                         </div>
+                         <!--/block-->
+                      </div>
+                      <!--/position-->
+                   </div>
+                </div>
+                <div class="u-align-left u-container-style u-layout-cell u-right-cell u-size-12 u-size-60-md u-layout-cell-5">
+                   <div class="u-container-layout u-valign-middle-lg u-valign-middle-xl u-valign-top-md u-valign-top-sm u-valign-top-xs u-container-layout-5">
+                      <!--position-->
+                      <div data-position="" class="u-position u-position-4">
+                         <!--block-->
+                         <div class="u-block">
+                            <div class="u-block-container u-clearfix">
+                               <h5 class="u-block-header u-text u-text-7">
+                                  <b>
+                                    Useful Links
+                                  </b>
+                               </h5>
+                               <div style="font-size:1.2em;"class="u-block-content u-text u-text-8">
+                                  <a href="{% url 'signup' %}"> Sign Up</a><br>
+                                  <a href="{% url 'login' %}">Log In</a><br>
+                                  <a href="{% url 'features' %}"> Features</a><br>
+                                  <a href="{% url 'privacy' %}"> Privacy policy </a><br>
+                                  <a href="https://github.com/vishalpandeyvip/" target="_blank"> Developer </a><br>
+                               </div>
+                               <!--/block_content-->
+                            </div>
+                         </div>
+                         <!--/block-->
+                      </div>
+                      <!--/position-->
+                   </div>
+                </div>
+             </div>
+          </div>
+          <div class="social_links">
+             <a href="https://www.instagram.com/_vishalpandeyvip/" target="_blank">
+                 <span class="fa-stack fa-lg ig combo">
+                     <i class="fa fa-circle fa-stack-2x circle"></i>
+                     <i class="fa fa-instagram fa-stack-1x fa-inverse icon"></i>
+                   </span>
+             </a>
+             <a href="https://www.facebook.com/bishal.panday.9275" target="_blank">
+                 <span class="fa-stack fa-lg fb combo">
+                     <i class="fa fa-circle fa-stack-2x circle"></i>
+                     <i class="fa fa-facebook fa-stack-1x fa-inverse icon"></i>
+                   </span>
+             </a>
+             <a href="https://www.linkedin.com/in/vishal-pandey-63262b1a0/" target="_blank">
+                 <span class="fa-stack fa-lg tw combo">
+                     <i class="fa fa-circle fa-stack-2x circle"></i>
+                     <i class="fa fa-linkedin fa-stack-1x fa-inverse icon"></i>
+                 </span>
+             </a>
+             <a href="https://www.github.com/vishalpandeyvip/" target="_blank">
+                <span class="fa-stack fa-lg tw combo">
+                    <i class="fa fa-circle fa-stack-2x circle"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse icon"></i>
+                </span>
+            </a>
+         </div><br><br>
+       </div>
 
-
-                <hr class="clearfix w-100 d-md-none">
-                <div class="col-md-2 col-lg-3 mx-auto my-4">
-                    <center>
-                        <h5 style="font-size: 30px" class="font-weight-bold text-center text-uppercase mb-3">Follow Me</h5>
-                        <a style="margin: 15px;" href="https://www.facebook.com/bishal.panday.9275" type="button" class="btn-floating mb-3 btn-fb">
-                            <i class="text-dark fab fa-facebook-f fa-2x"></i>
-                        </a>
-                        <a style="margin: 15px;" href="https://www.linkedin.com/in/vishal-pandey-63262b1a0/" type="button" class="btn-floating mb-3  btn-tw">
-                            <i class="fab text-dark fa-linkedin fa-2x"></i>
-                        </a>
-                        <a style="margin: 15px; margin-bottom: 30px;" href="https://github.com/vishalpandeyvip/" type="button" class="btn-floating  btn-github">
-                            <i class="fab text-dark fa-github fa-2x "></i>
-                        </a>
-                        <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="vishalpandey" data-color="#2B2B52" data-emoji="" data-font="Arial" data-text="Donate" data-outline-color="#fff" data-coffee-color="#fd0"></script>
-                    
-                    </center>
-                 </div>
-
-            </div>
-             <div class="footer-copyright text-center py-4">&copy; 2020 GURU | All Rights reserved</div>
-        </div>
-    </div> 
-</footer>
+ </footer>

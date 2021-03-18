@@ -9,7 +9,7 @@ ALLOWED_HOSTS = ['*']
 
 PRODUCTION = config('PROD', default=False, cast=bool)
 DEBUG = config('DEBUG', default=False, cast=bool)
-HTML_MINIFY = True
+HTML_MINIFY = False
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

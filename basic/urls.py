@@ -3,6 +3,8 @@ from .views import *
 
 urlpatterns = [
     path('',home,name="home"),
+    path('features/',features,name="features"),
+    path('privacy-policy/',privacy,name="privacy"),
     path('homepage/',homepage,name="homepage"),
     path('classroom/<unique_id>/',classroom_page,name="classroom_page"),
     path('<unique_id>/',subjects,name="subjects"),
@@ -30,5 +32,5 @@ urlpatterns = [
     path('<unique_id>/<subject_id>/upload_permissions/<username>/',manage_upload_permission,name="upload_permissions"),
 
     path('<unique_id>/unsend-request',unsend_request,name="unsend_request"),
-    path('<unique_id>/<subject_id>/<id>/see-marks',export_marks,name="export_marks")
+    path('<unique_id>/<subject_id>/<id>/see-marks',export_marks,name="export_marks"),
 ]

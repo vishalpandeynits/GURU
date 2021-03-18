@@ -10,7 +10,7 @@ from .email import *
 from .delete_notify import *
 from .utils import *
 from django.urls import reverse
-import xlwt,json,datetime 
+import xlwt,datetime 
 from notifications.signals import notify
 from django.views.decorators.csrf import csrf_exempt
 
@@ -20,17 +20,17 @@ def home(request):
     if request.user.is_authenticated:
         return redirect(reverse('homepage'))
     else:
-        if request.method=='POST' and request.is_ajax():
-            updatedData=json.loads(request.body.decode('UTF-8'))
-            name=updatedData.get('name')
-            email = updatedData.get('email')
-            message =f"{name} \n {email} \n {updatedData.get('message')} "
-            mail_subject = 'Contact us:  '+ updatedData.get('subject')
+        if request.method=='POST':
+            name=request.POST.get('name')
+            email = request.POST.get('email')
+            message =f"{name} \n {email} \n {request.POST.get('message')} "
+            mail_subject = 'Contact us : Sent by ' + name 
             if(send_mail(mail_subject,message,'guru.online.classroom.portal@gmail.com',['guru.online.classroom.portal@gmail.com'])):
-                return HttpResponse("Email sent successfully")
+                messages.add_message(request,messages.SUCCESS,'Your message sent successfully.')
             else:
-                return HttpResponse("Error while sending email")
-    return render(request,'intro_page.html')
+                messages.add_message(request,messages.ERROR,"An Error while sending your message.\
+                    Please try again or contact using given contact details.")
+    return render(request,'intro.html')
     
 @login_required#checked
 def homepage(request):
@@ -688,3 +688,9 @@ def export_marks(request,unique_id,subject_id,id):
         return response
     else:
         raise Http404()
+
+def features(request):
+    return render(request, 'features.html')
+
+def privacy(request):
+    return render(request, 'privacy.html')

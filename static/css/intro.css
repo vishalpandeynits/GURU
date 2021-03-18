@@ -1,315 +1,153 @@
 * {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
-.foot {
-    position: absolute;
-    bottom: 0;
-    left:0;
-    right:0;
-    height:10px;
+body{
+background:black;
+}
+::-webkit-scrollbar {
+width: 10px;
+}
+
+::-webkit-scrollbar-track {
+background-color: white; 
+
+}
+
+::-webkit-scrollbar-thumb {
+background-color: #4edba3;
+}
+
+::-webkit-scrollbar-thumb:hover {
+background-color: #2995aa;
+}
+.messages{
+position:absolute;
+top:10px;
+left:0;
+right:0;
+z-index:100000000000000;
+}
+.btn-container{
+display:flex;
+justify-content:flex-start;
 }
 .btn-home {
-    border-radius: 15px;
-    width: 180px;
-    margin:10px;
-    color: white;
-    background-color: black;
-    transition: background 0.6s;
+  border-radius: 10px;
+  min-width: 180px;
+  color: white;
+  background-color: black;
+  transition: background 0.6s;
+  display:inline;
+  margin-right:20px;
 }
 .btn-home:hover {
-    color: black;
-    background-color: white;
-    border: 1px solid black;
+  color: black;
+  background-color: white;
+  border: 1px solid black;
 }
 
 #intro-image{
-    z-index:-1;
+  z-index:-1;
 }
 .intro-section{
-    position: relative;
-    width:100%;
-    box-sizing:content-box;
-    background: url('/static/intro_image.jpg');
-    background-repeat:no-repeat;
-    background-position: center center;
-    background-size: cover;
-    height:800px;
+  position: relative;
+  width:100%;
+  box-sizing:content-box;
+  background: url('../images/intro_image.jpg');
+  background-repeat:no-repeat;
+  background-position: center center;
+  background-size: cover;
+  height:800px;
 }
 .intro-section #button-containers{ 
-    position: absolute;
-    left:10%;
-    top:45%;
-    width:500px;
-    transform: translate(-10%, -50%);
-}
-.intro-section #intro {
-    color: black;
-    text-shadow: 5px 5px 15px white;
-    font-size: 3em;
-    font-weight: bold;
+  position: absolute;
+  left:10%;
+  top:45%;
+  width:500px;
+  transform: translate(-10%, -50%);
 }
 .intro-section div{
-    position:absolute;
-    top:20px;
-}
-
-#why-guru{
-    display:flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    width: 100%;
-}
-#why-guru div{
-    padding:20px;
-    height:22em;
-    min-width:20rem;
-    color:white;
-    background:#1ebea5;
-    outline-width:20px;
-    outline:20px solid #16a596;
-    box-sizing:content-box;
-}
-#why-guru div h2{
-    color:#14274e;
-    height:5rem;
-    box-sizing:content-box;
-}
-#why-guru div p{
-    font-size:1.25em;
-}
-#for-teachers{
-    display:flex;
-    justify-content:space-around;
-    flex-wrap: wrap;
-}
-#for-teachers div{
-    padding:20px;
-    height:22em;
-    min-width:20rem;
-    margin:40px !important;
-    color:white;
-    background:#1ebea5;
-    outline-width:20px;
-    outline:20px solid #16a596;
-    box-sizing:content-box;
-}
-#for-teachers div h2{
-    color:#14274e;
-    height:5rem;
-}
-#for-teachers div p{
-    font-size:1.3em;
-}
-
-@media screen and (max-width: 800px) {
-    .intro-section{
-        position: relative;
-        width:100%;
-        box-sizing:content-box;
-        background: url('/static/intro_image_mirror.jpg');
-        background-repeat:no-repeat;
-        background-position: center;
-        background-size: cover;
-        height:800px;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        flex-direction: column;
-        width:100% !important;
-        text-align:center !important;
-        font-size: 1.2em;;
-    }
-    .intro-section div{
-        width:350px;
-        margin-top:10%;
-    }
-    #intro{
-        width:90% !important;
-        text-align:center !important;
-        font-size: 1.2em !important;
-
-    }
-    #why-guru div{
-        margin:40px !important;
-    }
-    #for-teachers div{
-        margin:40px !important;
-    }
-    #button-containers{
-        width:90% !important;
-        
-    }
+  position:absolute;
+  top:20px;
 }
 
 li {
-    font-size: 1.3em;
+  font-size: 1.3em;
 }
-
-.heading1 {
-    text-align: center;
-    border-bottom: 2px solid grey;
-    padding-bottom: 10px;
-    font-size: 2em;
-    font-weight: bold;
+body{
+  margin:0 !important;
+  padding: 0 !important;
 }
-#contact {
-  background-color: #000;
-  overflow: hidden;
-  padding:20px;
-}
-
-#contact .section-header {
-  text-align: center;
-  padding: 20px 0;
-  font: 300 60px "Oswald", sans-serif;
-  letter-spacing: 6px;
-  color: #fff;
-}
-
-#contact .contact-wrapper {
-  padding-top: 20px;
-  display:flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-#contact .contact-wrapper>*{
-  margin:0px 100px;
-}
-#contact .form-control,textarea {
-  background-color: #000;
-  color: #fff;
-  letter-spacing: 1px;
-}
-
-#contact .send-button{
-  margin-top: 15px;
-  height: 34px;
-  width: 400px;
-  overflow: hidden;
-  transition: all 0.2s ease-in-out;
-}
-
-#contact .button {
-  width: 400px;
-  height: 34px;
-  transition: all 0.2s ease-in-out;
-}
-
-#contact .send-text {
-  display: block;
-  margin-top: 10px;
-  letter-spacing: 2px;
-}
-
-#contact .button:hover {
-  transform: translate3d(0px, -29px, 0px);
-}
-
-#contact .direct-contact-container {
-  margin-top: 5px;
-}
-
-#contact  .contact-list {
-  list-style-type: none;
-  margin-left: -30px;
-  padding-right: 20px;
-}
-
-#contact .list-item {
-  line-height: 4;
-  color: #aaa;
-}
-
-#contact .contact-text {
-  letter-spacing: 1.9px;
-  color: #bbb;
-}
-
-#contact .place {
-  margin-left: 62px;
-}
-
-#contact .phone {
-  margin-left: 56px;
-}
-
-#contact .gmail {
-  margin-left: 53px;
-}
-
-#contact .contact-text a {
-  color: #bbb;
-  text-decoration: none;
-  transition-duration: 0.2s;
-}
-
-#contact .contact-text a:hover {
-  color: #fff;
-  text-decoration: none;
-}
-
-#contact .social-media-list {
+.intro-section{
   position: relative;
-  font-size: 2rem;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  margin: 0 auto;
-  padding: 0;
+  width:100%;
+  box-sizing:content-box;
+  background: url('/static/intro_image.jpg');
+  background-repeat:no-repeat;
+  background-position: center center;
+  background-size: cover;
+  height:800px;
 }
-
-#contact .social-media-list li a {
-  color: #fff;
-}
-
-#contact .social-media-list li {
-  position: relative;
-  display: inline-block;
-  height: 60px;
-  width: 60px;
-  margin: 10px 3px;
-  line-height: 60px;
-  border-radius: 50%;
-  color: #fff;
-  background-color: rgb(27, 27, 27);
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-#contact .social-media-list li:after {
-  content: "";
+.intro-section #button-containers{ 
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 60px;
-  height: 60px;
-  line-height: 60px;
-  border-radius: 50%;
-  opacity: 0;
-  box-shadow: 0 0 0 1px #fff;
-  transition: all 0.2s ease-in-out;
+  left:10%;
+  top:45%;
+  width:500px;
+  transform: translate(-10%, -50%);
 }
-
-#contact .social-media-list li:hover {
-  background-color: #fff;
+.intro-section #intro {
+  color: black;
+  text-shadow: 5px 5px 15px white;
+  font-size: 3em;
+  font-weight: bold;
 }
-
-#contact .social-media-list li:hover:after {
-  opacity: 1;
-  transform: scale(1.12);
-  transition-timing-function: cubic-bezier(0.37, 0.74, 0.15, 1.65);
+.intro-section div{
+  position:absolute;
+  top:20px;
 }
-
-#contact .social-media-list li:hover a {
-  color: #000;
+.btn-home {
+  border-radius: 15px;
+  width: 180px;
+  margin:10px;
+  color: white;
+  background-color: black;
+  transition: background 0.6s;
 }
-
-#contact .copyright {
-  color: #555;
-  letter-spacing: 1px;
-  text-align: center;
+.btn-home:hover {
+  color: black;
+  background-color: white;
+  border: 1px solid black;
 }
+@media screen and (max-width: 800px) {
+  .intro-section{
+      position: relative;
+      width:100%;
+      box-sizing:content-box;
+      background: url('/static/intro_image_mirror.jpg');
+      background-repeat:no-repeat;
+      background-position: center;
+      background-size: cover;
+      height:800px;
+      display:flex;
+      justify-content:end;
+      align-items:center;
+      flex-direction: column;
+      width:100% !important;
+      text-align:center !important;
+      font-size: 1.2em;;
+  }
+  .intro-section div{
+      width:350px;
+      margin-top:10%;
+  }
+  #intro{
+      text-align:center !important;
+      font-size: 1.2em !important;
 
-#contact hr {
-  border-color: rgba(255, 255, 255, 0.8);
+  }
+  #button-containers{
+      position: absolute;
+      left:-5%;
+      top:25%;
+  }
 }

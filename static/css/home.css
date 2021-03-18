@@ -431,6 +431,7 @@ padding-right: 2px;
   transition:0.5s;
   font-weight: bold;
   color:#14274e;
+  border-radius: 10px;
 }
 #navbar a:hover {
   border-bottom: 3px solid #14274e;
@@ -668,4 +669,11 @@ nav {
 .notifications-item .text p {
   color: #aaa;
   font-size: 12px
+}
+.nav-btn{
+  border-bottom:2px solid white;
+  
+}
+.nav-btn:hover{
+  border-bottom:2px solid black;
 }
