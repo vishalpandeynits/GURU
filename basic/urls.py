@@ -7,7 +7,7 @@ urlpatterns = [
     path('privacy-policy/',privacy,name="privacy"),
     path('homepage/',homepage,name="homepage"),
     path('classroom/<unique_id>/',classroom_page,name="classroom_page"),
-    path('<unique_id>/',subjects,name="subjects"),
+    path('class/<unique_id>/',subjects,name="subjects"),
     path('<unique_id>/<int:subject_id>/delete/',delete_subject,name="delete_subject"), 
 
     path('<unique_id>/<username>/Classadmin/',admin_status,name="class_admin"),
