@@ -3,7 +3,12 @@
 {% block title %} LOGIN {% endblock %}
 {% load socialaccount %} 
 {% block content %}
-{% include 'snippets/navigation.html' %}
+<div id='navbar' style="background-color: white;box-shadow: 0px 0px 8px grey;height:70px;">
+    <a class="nav-btn mx-4" href="{% url 'home' %}">Home </a>
+    <a class="nav-btn mx-4" href="{% url 'features' %}">Features </a>
+    <a class="nav-btn mx-4" href="{% url 'home' %}#contactus">Contact</a>
+  </div><br><br>
+<br>
 <div class="container-fluid p-0"><br>
     <form method="POST" id="sign-up-form" onsubmit ="return logInPageValidation()"class="login-form">{% csrf_token %}
         <h1 id="login-heading"> LOG IN</h1>

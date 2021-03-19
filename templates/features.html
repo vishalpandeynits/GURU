@@ -1,4 +1,82 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block title %} FEATURES {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'css/nicepage.css' %}">
+<link rel="stylesheet"  href="{% static 'css/home1.css' %}">
+<link rel="stylesheet"  href="{% static 'css/intro.css' %}">
+<style>
+    body{
+        background:white;
+    }
+</style>
+{% endblock %}
 {% block content %}
-Feature Page
+<a id="button"></a>
+<div id='navbar' style="background-color: white;box-shadow: 0px 0px 8px grey;height:70px;margin-bottom:70px;">
+  <a class="nav-btn mx-4" href="{% url 'home' %}">Home </a>
+  <a class="nav-btn mx-4" href="{% url 'features' %}">Features </a>
+  <a class="nav-btn mx-4" href="{% url 'home' %}#contactus">Contact</a>
+</div><br><br>
+<div class="row">
+    <div class="col-sm-12 col-md-8 mx-auto">
+        <h1 class="text-center heading"> Features for Admins </h1>
+        <img style="width:400px;width:400px;margin:auto;display:block;"src="https://cdn.craigdailypress.com/wp-content/uploads/sites/10/2017/08/MoCoHighPrincipal-CDP-081117-1240x864.jpg">
+<ol style="margin:20px;">
+    <li>Admins can create classrooms with unique entry protocols that
+    they can then distribute amongst their students and teachers who want to join classroom.</li>  
+    <li>Admins can inspect in any classroom at any time and see the progress of teachers and students.</li> 
+    <li>Admins can manage the role of admins, teachers and student without breaking any sweat.</li>
+    <li>Admins will also have the permissions of teacher, which allows them to send resources, assignments and announcementsat any time.</li>
+    <li>Admins can authorize students to post in the classroom.</li>
+    <li>Admins can contact anyone directly from within the web app</li>
+    <li>No one can join any classroom without admin's permissions unless admin have already given permission to join.</li>
+</ol>
+<hr>
+<h1 class="text-center heading"> Features for Teachers </h1>
+<img style="width:400px;width:400px;margin:auto;display:block;"src="https://www.henryharvin.com/blog/wp-content/uploads/2020/07/online-teacher.jpg">
+<ol style="margin:20px;">
+    <li>Teachers can provide assignments and set deadlines.</li> 
+    <li>Teachers can view students who had submitted on time, who couldn’t, who did and who didn’t.</li>
+    <li>Teachers can post resources in their classroom and also in the resource hub. </li>
+    <li>Teachers can authorize students to post in the classroom.</li>
+    <li>Teachers can contact students directly from within the web app</li>
+    <li>Teachers can add as many subjects as they want in the classroom.</li>
+    <li>Teachers can create polls and specify who can participate in them. Polls result will be shown accordingly.</li>
+</ol>
+<hr>
+<h1 class="text-center heading"> Features for Students </h1>
+<img style="width:400px;width:400px;margin:auto;display:block;"src="https://www.english.com/blog/wp-content/uploads/2020/04/YL-articles-1132x670.jpg">
+<ol style="margin:20px;">
+    <li>Students can join in any classroom with the unique classroom code provided.</li>  
+    <li>Students can submit their assignments and classwork without breaking a sweat.</li> 
+    <li>Students can contact their teacher directly from within the web app.</li>
+    <li>Students can post public comments on the resources, assignments and announcement assigned and clear their doubts.</li>
+    <li>Switching between classrooms and subjects is seamless.</li>
+</ol>
+<hr>
+</div>
+<b class="mx-4 p-4 col-md-8 col-sm-12 mx-auto">Note: The person who will create a classroom will be treated as an admin. 
+    After that other people can join this classroom. Then Admin can then create subjects and assign it to a teacher.
+    Only admin and teacher are allowed to post contents in this subject, unless they give permission to any other
+    student to upload resources(This user will not be allowed to add assignments or announcements). Also admins can 
+    make admin to other members or remove from the position of admins. Admins will also have permission to remove
+    members from classroom. There are lot of other features besides it. Happy exploring to you.
+</b> 
+</div>
+{% include 'snippets/footer.html' %}
+{% endblock %}
+{% block javascript %}
+<script>
+    var btn = $('#button');
+    $(window).scroll(function() {
+    if ($(window).scrollTop() > 300) btn.addClass('show');
+    else btn.removeClass('show');
+    });
+    btn.on('click', function(e) {
+       e.preventDefault();
+       $('html, body').animate({scrollTop:0}, '300');
+    });
+ </script>
 {% endblock %}

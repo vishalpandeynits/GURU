@@ -7,121 +7,138 @@
 <link rel="stylesheet" href="{% static 'css/nicepage.css' %}">
 <link rel="stylesheet" href="{% static 'css/home1.css' %}">
 <link rel="stylesheet" href="{% static 'css/intro.css' %}">
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
 <style>
    body{
       margin:0;
       padding:0;
       background:white;
    }
+   h1 {
+  font-family: bebas neue;
+  font-size: 46px;
+  text-align: center;
+  color: rgb(44,48,52);
+  margin: 0;
+  padding: 0 0 6px 0;
+  border-bottom: 1px solid rgba(0,0,0,.15);
+}
+h2 {
+  font-family: bebas neue;
+  font-size: 26px;
+  line-height: 10px;
+  text-align: left;
+  color: rgb(44,48,52);
+  margin: 0;
+  padding: 10px 0 0 0;
+}
+p {
+  font-family: open sans;
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: rgb(44,48,52);
+  margin: 0;
+  padding: 10px 0 0 0;
+}
 </style>
+<div id='navbar' style="background-color: white;box-shadow: 0px 0px 8px grey;height:70px;">
+   <a class="nav-btn mx-4" href="{% url 'home' %}">Home </a>
+   <a class="nav-btn mx-4" href="{% url 'features' %}">Features </a>
+   <a class="nav-btn mx-4" href="{% url 'home' %}#contactus">Contact</a>
+ </div><br><br>
+<br>
 {% endblock %}
+{% block title %} Privacy Policy {% endblock %}
 {% block content %}
-   <div style="background-color: aliceblue;color:black;">
-      <div id='navbar' style="background-color: white;box-shadow: 0px 0px 8px grey;height:70px;">
-         <a class="btn mx-4" href="{% url 'home' %}">Home </a>
-         <a class="btn mx-4" href="{% url 'features' %}">Features </a>
-         <a class="btn mx-4" href="{% url 'home' %}#contactus">Contact us </a>
-      </div><br><br><br>
-      <h2 style="text-align:center;">Privacy Policy</h2>
-      <div style="padding:0px 20px;">
-         <p> GUURU built the Drag Racing Lights app as a Commercial app. This SERVICE is provided by
-            Crispy Fhres  and is intended for use as is.
-         </p>
-         <p>This page is used to inform visitors regarding my policies with the collection, use, and disclosure
-            of Personal Information if anyone decided to use my Service.
-         </p>
-         <p>If you choose to use my Service, then you agree to the collection and use of information in
-            relation to this policy. The Personal Information that I collect is used for providing and improving
-            the Service. I will not use or share your information with anyone except as described
-            in this Privacy Policy.
-         </p>
-         <p>The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which is
-            accessible at Drag Racing Lights unless otherwise defined in this Privacy Policy.
-         </p>
-         <p><strong>Information Collection and Use</strong></p>
-         <p>For a better experience, while using our Service, I may require you to provide us with certain
-            personally identifiable information. The information that I request will be retained on your device and is not collected by me in any way.
-         </p>
-         <p>The app does use third party services that may collect information used to identify you.</p>
-         <div>
-            <p>Link to privacy policy of third party service providers used by the app</p>
-            <ul>
-               <li><a href="https://www.google.com/policies/privacy/" target="_blank">Google Play Services</a></li>
-            </ul>
-         </div>
-         <p><strong>Log Data</strong></p>
-         <p> I want to inform you that whenever you use my Service, in a case of
-            an error in the app I collect data and information (through third party products) on your phone
-            called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address,
-            device name, operating system version, the configuration of the app when utilizing my Service,
-            the time and date of your use of the Service, and other statistics.
-         </p>
-         <p><strong>Cookies</strong></p>
-         <p>Cookies are files with a small amount of data that are commonly used as anonymous unique identifiers.
-            These are sent to your browser from the websites that you visit and are stored on your device's internal
-            memory.
-         </p>
-         <p>This Service does not use these “cookies” explicitly. However, the app may use third party code and
-            libraries that use “cookies” to collect information and improve their services. You have the option to
-            either accept or refuse these cookies and know when a cookie is being sent to your device. If you choose
-            to refuse our cookies, you may not be able to use some portions of this Service.
-         </p>
-         <p><strong>Service Providers</strong></p>
-         <p> I may employ third-party companies and individuals due to the following reasons:</p>
-         <ul>
-            <li>To facilitate our Service;</li>
-            <li>To provide the Service on our behalf;</li>
-            <li>To perform Service-related services; or</li>
-            <li>To assist us in analyzing how our Service is used.</li>
-         </ul>
-         <p> I want to inform users of this Service that these third parties have access to
-            your Personal Information. The reason is to perform the tasks assigned to them on our behalf. However,
-            they are obligated not to disclose or use the information for any other purpose.
-         </p>
-         <p><strong>Security</strong></p>
-         <p> I value your trust in providing us your Personal Information, thus we are striving
-            to use commercially acceptable means of protecting it. But remember that no method of transmission over
-            the internet, or method of electronic storage is 100% secure and reliable, and I cannot guarantee
-            its absolute security.
-         </p>
-         <p><strong>Links to Other Sites</strong></p>
-         <p>This Service may contain links to other sites. If you click on a third-party link, you will be directed
-            to that site. Note that these external sites are not operated by me. Therefore, I strongly
-            advise you to review the Privacy Policy of these websites. I have no control over
-            and assume no responsibility for the content, privacy policies, or practices of any third-party sites
-            or services.
-         </p>
-         <p><strong>Children’s Privacy</strong></p>
-         <p>These Services do not address anyone under the age of 13. I do not knowingly collect
-            personally identifiable information from children under 13. In the case I discover that a child
-            under 13 has provided me with personal information, I immediately delete this from
-            our servers. If you are a parent or guardian and you are aware that your child has provided us with personal
-            information, please contact me so that I will be able to do necessary actions.
-         </p>
-         <p><strong>Changes to This Privacy Policy</strong></p>
-         <p> I may update our Privacy Policy from time to time. Thus, you are advised to review
-            this page periodically for any changes. I will notify you of any changes by posting
-            the new Privacy Policy on this page. These changes are effective immediately after they are posted on
-            this page.
-         </p>
-         <p><strong>Contact Us</strong></p>
-         <p>If you have any questions or suggestions about my Privacy Policy, do not hesitate to contact
-            me.
-         </p>
-      </div>
-      {% include 'snippets/footer.html' %}
-   </div>
-      <script>
-         /*scroll to top */
-         var btn = $('#button');
-         $(window).scroll(function() {
-         if ($(window).scrollTop() > 0) btn.addClass('show');
-         else btn.removeClass('show');
-         });
-         btn.on('click', function(e) {
-            e.preventDefault();
-            $('html, body').animate({scrollTop:0}, '300');
-         });
-         /*scroll to top ends */
-    </script>
+<div class="col-sm-11 col-md-8 mx-auto">
+<h1>Privacy Policy</h1>
+<p>Last updated March 2021.
+<br><br>
+Welcome to the GURU-LMS, created by Vishal Pandey.</p>
+<h2>Information We Collect</h2>
+<p>When you create an account and use our Service, we collect the following types of information from you:
+<br><br>
+1. Name;<br>
+2. Contact information such as your email address and phone number;<br>
+3. Any other information, such as reviews, content, and bio, you provide us.<br>
+If you create an account using, or otherwise connect your account to, a social
+networking services account (e.g. Google or Facebook),we may also collect information
+provided to us by such social networking service including for example your: name,
+email address, profile picture, gender etc which will be public on those sites.
+<br><br>
+We automatically collect information about how you use our services, for example, pages you have viewed.
+We also collect certain technical information about your device including your
+your browser type, language and identifying information, your operating system.
+<br><br>
+<h2>Sharing Of Your Information</h2>
+<p>The GURU-LMS Services may allow you to connect and share your actions,
+   comments, content, profile, and information publicly or with other people.
+   Please be mindful of your own privacy needs as you choose who to connect
+   with and what to share and make public. We cannot control the privacy or
+ security of information you choose to make public or share with others.
+<br><br>
+
+<h2>How we Use Your Information</h2>
+<p>We generally use your information to
+facilitate the creation of and secure your account on the Services;
+Identify you as a user in our system;
+Provide, personalize, and improve the Services;
+Communicate with you about your use of the Services;
+Develop new products and services,
+Fulfill your requests;
+Send newsletters, surveys, offers and promotional materials related to
+the Services and for other marketing purposes of GURU-LMS using your contact information;
+Protect, investigate, and prevent potentially fraudulent, unauthorized, or illegal activities;
+Protect our rights and the rights of other users; and
+As otherwise described in this Privacy Policy or in notices we provided to you.
+
+<h2>How we Disclose Your Information</h2>
+We may disclose your information if we believe we are required to do so by law,
+or to comply with a court order, judicial or other government subpoena, or warrant.
+and We also may disclose your information if we believe doing so is appropriate or
+necessary to prevent any liability, or fraudulent, abusive, or unlawful uses or to 
+protect GURU-LMS and our Services; or any rights, property, or personal safety.
+
+<h2>Security</h2>
+<p>GURU-LMS takes commercially reasonable steps to help protect your Information against loss,
+misuse and unauthorized access, or disclosure. No company can fully prevent security risks,
+however. While we strive to protect your personal information, we cannot guarantee its
+absolute security. To help protect yourself and your information, choose a unique password
+for our Services and do not use a password on our Services that you would use on any 
+other website or online service.</p>
+
+<h2>Dispute Resolution</h2>
+<p>
+If you believe that GURU-LMS has not adhered to any Statement, please contact us
+by e-mail. We will do our best to address
+your concerns. If you feel that your complaint has been addressed incompletely, 
+we invite you to let us know for further investigation.
+</p>
+<h2>Information Choices</h2>
+You may have the right to know what personal information GURU-LMS has about you and to correct
+any inaccuracies. Please direct any such requests by email to guru.online.classroom.portal@gmail.com
+or by one of the other means listed.</p>
+<h2>Changes and Updates to this Privacy Policy</h2>
+<p>From time to time, we may revise the Policy. To help you stay current of any changes, we
+ note the date the Privacy Policy was last updated above.</p>
+ <b>
+    Note: We expect you to use this site for the the same purpose for which we have created this website.
+    Your account will be disabled if you are found doing any illegal, unlawful or  unhuman activity.
+ </b><br>
+</div>
+   {% include 'snippets/footer.html' %}
+
+   <script>
+      /*scroll to top */
+      var btn = $('#button');
+      $(window).scroll(function() {
+      if ($(window).scrollTop() > 0) btn.addClass('show');
+      else btn.removeClass('show');
+      });
+      btn.on('click', function(e) {
+         e.preventDefault();
+         $('html, body').animate({scrollTop:0}, '300');
+      });
+      /*scroll to top ends */
+   </script>
 {% endblock %}
