@@ -1,10 +1,6 @@
 # GURU
 AN ONLINE CLASS PORTAL<br>
-This portal provides all functionalities for conduction of a smooth online classroom by school/College
-![GitHub repo size](https://img.shields.io/github/repo-size/vishalpandeyvip/GURU)
-![GitHub contributors](https://img.shields.io/github/contributors/vishalpandeyvip/GURU)
-![GitHub stars](https://img.shields.io/github/stars/vishalpandeyvip/GURU?style=social)
-![GitHub forks](https://img.shields.io/github/forks/vishalpandeyvip/GURU?style=social)
+This portal provides all functionalities for conduction of a smooth online classroom by school/College.
 
 
 **Installation**
