@@ -15,8 +15,6 @@ This portal provides all functionalities for conduction of a smooth online class
 6. Run `python manage.py migrate --run-syncdb`
 7. Run `python manage.py runserver`
 
-# Don't try to use login with google functionality, it will give error. It is left intentionally for now.
-
 ## Contributing to GURU
 <!--- If your README is long or you have some specific process or steps you want contributors to follow, consider creating a separate CONTRIBUTING.md file--->
 To contribute to GURU, follow these steps:
