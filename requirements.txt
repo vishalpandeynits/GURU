@@ -6,7 +6,7 @@ django-crispy-forms==1.9.2
 humanize==2.6.0
 Pillow==7.2.0
 six==1.15.0
-Jinja2==2.11.1
+Jinja2==2.11.3
 django-quill-editor==0.1.6
 python-decouple==3.3
 gunicorn==20.0.4
