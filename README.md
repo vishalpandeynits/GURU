@@ -2,8 +2,6 @@
 AN ONLINE CLASS PORTAL<br>
 This portal provides all functionalities for conduction of a smooth online classroom by school/College.
 
-Note: This repository is just for showcase for visitors/ internship recruiters. There is another more better private repository.
-
 **Installation**
 
 <h4> Make sure python and pip is already installed in your system </h4>
